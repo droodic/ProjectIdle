@@ -15,10 +15,12 @@ class PROJECTIDLE_API AOfficeDepartment : public ADepartment
 	GENERATED_BODY()
 	
 public:
-	void GenerateIdea();
+	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void GenerateIdea();
+	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void CallMeeting();
 
-private:
+
+	//public?
 	UPROPERTY(EditAnywhere) int ideasGenerated;
-	UPROPERTY(EditAnywhere) float ideaProgress;
+	UPROPERTY(BlueprintReadWrite) float ideaProgress;
 
 };
