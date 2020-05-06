@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/BoxComponent.h"
 #include "ProjectIdleCharacter.h"
 #include "GameFramework/Actor.h"
 #include "Department.generated.h"
@@ -18,6 +19,9 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* BaseMesh;
 
+	UPROPERTY(VisibleAnywhere)
+		UBoxComponent* CollisionBox;
+
 	ADepartment();
 
 protected:
@@ -28,5 +32,5 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* OtherActor, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector Hitlocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
+	
 };
