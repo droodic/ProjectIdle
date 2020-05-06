@@ -15,9 +15,9 @@ public:
 	// Sets default values for this character's properties
 	AEmployee();
 
-	UPROPERTY(BlueprintReadOnly) float Happiness;
-	UPROPERTY(BlueprintReadOnly) float Performance;
-	UPROPERTY(BlueprintReadOnly) float Salary;
+	UPROPERTY(EditAnywhere) float Morale;
+	UPROPERTY(EditAnywhere) float Performance;
+	UPROPERTY(EditAnywhere) float Salary;
 
 protected:
 	// Called when the game starts or when spawned
