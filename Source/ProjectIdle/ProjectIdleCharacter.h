@@ -17,12 +17,25 @@ public:
 	// Called every frame.
 	virtual void Tick(float DeltaSeconds) override;
 
+	virtual void BeginPlay() override;
+
+
+	UPROPERTY()
+		APlayerController* PlayerControl;
+
+	UPROPERTY()
+		float CameraMovementSpeed = 2;
+
+	UFUNCTION()
+		FVector GetCameraPanDirection();
+
 	/** Returns TopDownCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns CursorToWorld subobject **/
 	FORCEINLINE class UDecalComponent* GetCursorToWorld() { return CursorToWorld; }
+
 
 private:
 	/** Top down camera */

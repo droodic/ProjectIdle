@@ -57,9 +57,17 @@ AProjectIdleCharacter::AProjectIdleCharacter()
 	PrimaryActorTick.bStartWithTickEnabled = true;
 }
 
+void AProjectIdleCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	PlayerControl = Cast<APlayerController>(GetController());
+}
+
 void AProjectIdleCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+
+	AddActorWorldOffset(GetCameraPanDirection() * 2);
 
 	if (CursorToWorld != nullptr)
 	{
@@ -87,4 +95,25 @@ void AProjectIdleCharacter::Tick(float DeltaSeconds)
 			CursorToWorld->SetWorldRotation(CursorR);
 		}
 	}
+}
+
+FVector AProjectIdleCharacter::GetCameraPanDirection()
+{
+	float MousePositionX;
+	float MousePositionY;
+	float CamDirectionX = 0;
+	float CamDirectionY = 0;
+
+	if (PlayerControl != nullptr)
+	{
+		PlayerControl->GetMousePosition(MousePositionX, MousePositionY);
+	}
+	if (MousePositionX == 0) {
+		CamDirectionY = -1;
+	}
+	if (MousePositionY <= 0) {
+		CamDirectionX = 1;
+	}
+
+	return FVector(CamDirectionX, CamDirectionY, 0);
 }
