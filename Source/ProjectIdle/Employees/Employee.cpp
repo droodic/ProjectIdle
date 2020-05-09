@@ -15,6 +15,7 @@ AEmployee::AEmployee()
 void AEmployee::BeginPlay()
 {
 	Super::BeginPlay();
+	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->EmployeeList.Add(this);
 	
 }

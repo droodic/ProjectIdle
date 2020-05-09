@@ -16,9 +16,6 @@ class PROJECTIDLE_API UGameManager : public UGameInstance
 
 public:
 	TArray<class AEmployee*> EmployeeList;
-
-	void Init() override;
-
 	UGameManager();
-
+	virtual void Init();
 };

@@ -3,10 +3,12 @@
 
 #include "GameManager.h"
 
-void UGameManager::Init() {
-	
-}
 
 UGameManager::UGameManager() {
+
+}
+
+void UGameManager::Init()
+{
 
 }
