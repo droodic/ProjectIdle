@@ -24,7 +24,13 @@ public:
 		APlayerController* PlayerControl;
 
 	UPROPERTY()
-		float CameraMovementSpeed = 2;
+		float CameraMovementSpeed = 4.5;
+
+	UPROPERTY()
+		int32 ScreenSizeX;
+
+	UPROPERTY()
+		int32 ScreenSizeY;
 
 	UFUNCTION()
 		FVector GetCameraPanDirection();

@@ -61,13 +61,17 @@ void AProjectIdleCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	PlayerControl = Cast<APlayerController>(GetController());
+	PlayerControl->GetViewportSize(ScreenSizeX, ScreenSizeY);
 }
 
 void AProjectIdleCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+	PlayerControl->GetViewportSize(ScreenSizeX, ScreenSizeY);
 
-	AddActorWorldOffset(GetCameraPanDirection() * 2);
+
+	//AddActorWorldOffset(GetCameraPanDirection() * 2);
+	CameraBoom->AddWorldOffset(GetCameraPanDirection() * CameraMovementSpeed);
 
 	if (CursorToWorld != nullptr)
 	{
@@ -113,6 +117,14 @@ FVector AProjectIdleCharacter::GetCameraPanDirection()
 	}
 	if (MousePositionY <= 0) {
 		CamDirectionX = 1;
+	}
+	if (MousePositionX >= ScreenSizeX - 20) 
+	{
+		CamDirectionY = 1;
+	}
+	if (MousePositionY >= ScreenSizeY - 20)
+	{
+		CamDirectionX = -1;
 	}
 
 	return FVector(CamDirectionX, CamDirectionY, 0);
