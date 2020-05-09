@@ -15,6 +15,7 @@ AEmployee::AEmployee()
 void AEmployee::BeginPlay()
 {
 	Super::BeginPlay();
+	GM->EmployeeList.Add(this);
 	
 }
 

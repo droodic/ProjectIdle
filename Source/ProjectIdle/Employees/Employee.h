@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "ProjectIdle/GameManager.h"
 #include "Employee.generated.h"
 
 UCLASS()
@@ -18,6 +19,8 @@ public:
 	UPROPERTY(EditAnywhere) float Morale;
 	UPROPERTY(EditAnywhere) float Performance;
 	UPROPERTY(EditAnywhere) float Salary;
+
+	UGameManager* GM;
 
 protected:
 	// Called when the game starts or when spawned
