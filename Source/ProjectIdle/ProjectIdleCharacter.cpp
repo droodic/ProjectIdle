@@ -67,7 +67,8 @@ void AProjectIdleCharacter::BeginPlay()
 void AProjectIdleCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
-	PlayerControl->GetViewportSize(ScreenSizeX, ScreenSizeY);
+    PlayerControl->GetViewportSize(ScreenSizeX, ScreenSizeY);
+
 
 
 	//AddActorWorldOffset(GetCameraPanDirection() * 2);
