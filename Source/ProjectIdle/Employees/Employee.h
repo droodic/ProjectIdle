@@ -28,6 +28,10 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
+
+	UPROPERTY(BlueprintReadWrite) class AEmployeeAIC* AI;
+	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void GoMeeting();
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

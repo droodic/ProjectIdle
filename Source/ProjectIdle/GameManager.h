@@ -15,7 +15,7 @@ class PROJECTIDLE_API UGameManager : public UGameInstance
 	GENERATED_BODY()
 
 public:
-	TArray<class AEmployee*> EmployeeList;
+	UPROPERTY(BlueprintReadWrite) TArray<class AEmployee*> EmployeeList;
 	UGameManager();
 	virtual void Init();
 };

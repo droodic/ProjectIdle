@@ -1,0 +1,11 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "EmployeeAIC.h"
+
+
+void AEmployeeAIC::GoMeeting()
+{
+	MoveToLocation(FVector(-710.0, 700.0, 308));
+
+}

@@ -17,8 +17,10 @@ void AOfficeDepartment::GenerateIdea()
 
 void AOfficeDepartment::CallMeeting() 
 {
-	GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Meeting Called"));
 
+	//for (AEmployee* emp : GM->EmployeeList) {
+	//	//emp->AI->GoMeeting();
+	//}
 	//move ai to meeting room, you meet them there to start progress
 }
 
