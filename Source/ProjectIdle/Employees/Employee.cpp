@@ -20,6 +20,8 @@ void AEmployee::BeginPlay()
 	
 }
 
+
+
 // Called every frame
 void AEmployee::Tick(float DeltaTime)
 {
@@ -31,6 +33,12 @@ void AEmployee::Tick(float DeltaTime)
 void AEmployee::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+}
+
+void AEmployee::GoMeeting()
+{
+	//MoveToLocation(FVector(-710.0, 700.0, 308));
 
 }
 
