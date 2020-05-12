@@ -20,6 +20,7 @@ public:
 	UPROPERTY(EditAnywhere) float Morale;
 	UPROPERTY(EditAnywhere) float Performance;
 	UPROPERTY(EditAnywhere) float Salary;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector MeetingLocation;
 
 	UGameManager* GM;
 
@@ -29,7 +30,7 @@ protected:
 
 public:	
 
-	UPROPERTY(BlueprintReadWrite) class AEmployeeAIC* AI;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) class AEmployeeAIC* AI; //custom Cpp AIC ref, unused for now
 	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void GoMeeting();
 
 	// Called every frame
