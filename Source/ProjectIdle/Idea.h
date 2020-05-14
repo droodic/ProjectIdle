@@ -19,5 +19,6 @@ public:
 
 	float GetWorkload();
 
-	Idea();
+	Idea(float chance, float pWorkload, float aWorkload);
+
 };

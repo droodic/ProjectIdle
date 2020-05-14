@@ -6,6 +6,8 @@
 #include "Idea.h"
 #include "Department.h"
 #include "GameManager.h"
+#include "Engine.h"
+#include "Math/RandomStream.h"
 #include "Employees\Employee.h"
 #include "EmployeeAIC.h"
 #include "OfficeDepartment.generated.h"
@@ -20,14 +22,16 @@ class PROJECTIDLE_API AOfficeDepartment : public ADepartment
 	
 public:
 	UGameManager* GM;
+	FRandomStream random;
 	
-	
-	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void GenerateIdea();
-	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void CallMeeting();
-
 	TArray<class Idea*> IdeaList;
 	bool IsGenerating;
 	virtual void Tick(float DeltaTime) override;
+
+	//Functions
+	Idea GenerateIdeaValues();
+	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void GenerateIdea();
+	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void CallMeeting();
 	
 	//public?
 	UPROPERTY(BlueprintReadWrite) int ideasGenerated;

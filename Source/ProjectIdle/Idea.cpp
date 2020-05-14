@@ -8,12 +8,13 @@ float Idea::GetWorkload()
 	return 1.0f;//Replace with random
 }
 
-Idea::Idea()
+Idea::Idea(float chance, float pWorkload, float aWorkload)
 {
-	ChanceOfSuccess = 1.0f;
-	ProgrammerWorkload = 1.0f;
-	ArtistWorkload = 1.0f;
+	ChanceOfSuccess = chance;
+	ProgrammerWorkload = pWorkload;
+	ArtistWorkload = aWorkload;
 }
+
 
 //Idea::~Idea()
 //{
