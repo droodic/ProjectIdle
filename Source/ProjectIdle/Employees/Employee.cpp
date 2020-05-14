@@ -20,7 +20,10 @@ void AEmployee::BeginPlay()
 	
 }
 
-
+void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
+{
+	GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Employee Clicked"));
+}
 
 // Called every frame
 void AEmployee::Tick(float DeltaTime)
