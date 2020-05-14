@@ -10,10 +10,13 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Materials/Material.h"
+#include "GameHUD.h"
 #include "Engine/World.h"
 
 AProjectIdleCharacter::AProjectIdleCharacter()
 {
+	TotalMoney = 1000;
+
 	// Set size for player capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
@@ -62,12 +65,18 @@ void AProjectIdleCharacter::BeginPlay()
 	Super::BeginPlay();
 	PlayerControl = Cast<APlayerController>(GetController());
 	PlayerControl->GetViewportSize(ScreenSizeX, ScreenSizeY);
+	AGameHUD* GameHUD = Cast<AGameHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
+	if (GameHUD != nullptr)
+	{
+		GameHUD->UpdateMoney(TotalMoney);
+	}
 }
 
 void AProjectIdleCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
-	PlayerControl->GetViewportSize(ScreenSizeX, ScreenSizeY);
+    PlayerControl->GetViewportSize(ScreenSizeX, ScreenSizeY);
+
 
 
 	//AddActorWorldOffset(GetCameraPanDirection() * 2);
