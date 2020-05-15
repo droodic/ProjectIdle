@@ -23,14 +23,13 @@ void AEmployee::BeginPlay()
 
 void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 {
+		if (UI != nullptr) {
 
-	if (UI != nullptr) {
-		
-		UI->ShowEmployeeSheet(this);
-	}
-	else {
-		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Employee is Clicked, UI Is null!"));
-	}
+			UI->ShowEmployeeSheet(this);
+		}
+		else {
+			GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Employee is Clicked, UI Is null!"));
+		}
 }
 // Called every frame
 void AEmployee::Tick(float DeltaTime)

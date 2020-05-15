@@ -26,13 +26,27 @@ void AGameHUD::BeginPlay()
 	}
 }
 
-void AGameHUD::ShowEmployeeSheet(class AEmployee* emp) 
+void AGameHUD::ShowEmployeeSheet(class AEmployee* emp)
 {
-	GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Showing Employee Sheet"));
-	EmpSheetWidget->Morale = emp->Morale;
-	EmpSheetWidget->Salary = emp->Salary;
-	EmpSheetWidget->EmployeeRole = emp->EmployeeRole;
-	EmpSheetWidget->AddToViewport();
+
+	if (!EmpSheetWidget->IsInViewport())
+	{
+		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Showing Employee Sheet"));
+		EmpSheetWidget->Morale = emp->Morale;
+		EmpSheetWidget->Salary = emp->Salary;
+		EmpSheetWidget->EmployeeRole = emp->EmployeeRole;
+		EmpSheetWidget->AddToViewport();
+
+	}
+
+	else if (EmpSheetWidget->IsInViewport()){
+		EmpSheetWidget->RemoveFromParent();
+		//GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Showing New Employee Sheet"));
+		//EmpSheetWidget->Morale = emp->Morale;
+		//EmpSheetWidget->Salary = emp->Salary;
+		//EmpSheetWidget->EmployeeRole = emp->EmployeeRole;
+	}
+
 }
 
 void AGameHUD::Tick(float DeltaSeconds)
