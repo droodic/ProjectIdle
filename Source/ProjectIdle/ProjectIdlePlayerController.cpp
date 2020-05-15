@@ -9,6 +9,9 @@
 
 AProjectIdlePlayerController::AProjectIdlePlayerController()
 {
+	bEnableClickEvents = true;
+
+	DefaultClickTraceChannel = TEnumAsByte<ECollisionChannel>(ECollisionChannel::ECC_Pawn);
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Crosshairs;
 }
@@ -37,6 +40,8 @@ void AProjectIdlePlayerController::SetupInputComponent()
 	InputComponent->BindTouch(EInputEvent::IE_Repeat, this, &AProjectIdlePlayerController::MoveToTouchLocation);
 
 	InputComponent->BindAction("ResetVR", IE_Pressed, this, &AProjectIdlePlayerController::OnResetVR);
+
+
 }
 
 void AProjectIdlePlayerController::OnResetVR()
