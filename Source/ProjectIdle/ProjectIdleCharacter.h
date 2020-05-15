@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Runtime/UMG/Public/UMG.h"
 #include "GameFramework/Character.h"
 #include "ProjectIdleCharacter.generated.h"
 
@@ -19,6 +20,17 @@ public:
 
 	virtual void BeginPlay() override;
 
+	UPROPERTY(BlueprintReadOnly)
+		int32 Money = 2000;
+
+	UPROPERTY(BlueprintReadOnly)
+		FString FTxtMoney;
+
+	UPROPERTY(BlueprintReadOnly)
+		class UTextBlock* MoneyText;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class UGameUI> WidgetClass;
 
 	UPROPERTY()
 		APlayerController* PlayerControl;
@@ -57,6 +69,7 @@ private:
 	/** A decal that projects to the cursor location. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UDecalComponent* CursorToWorld;
+
 
 	int32 TotalMoney;
 };
