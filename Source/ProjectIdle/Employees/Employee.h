@@ -27,16 +27,20 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	
 public:	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) class AEmployeeAIC* AI; //custom Cpp AIC ref, unused for now
 	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void GoMeeting();
 
 	// Called every frame
+
+	void NotifyActorOnClicked(FKey ButtonPressed = EKeys::RightMouseButton) override;
+
+
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
+	// Called to bind functionality to inputf
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	
 };
