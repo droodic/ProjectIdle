@@ -5,5 +5,6 @@
 
 AProgrammer::AProgrammer() 
 {
+	EmployeeRole = "Programmer";
 	Salary = 200.f;
 }

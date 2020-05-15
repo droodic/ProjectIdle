@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "ProjectIdle/GameManager.h"
+#include "ProjectIdle\GameHUD.h"
 #include "Engine.h"
 #include "Employee.generated.h"
 
@@ -20,8 +21,11 @@ public:
 	UPROPERTY(EditAnywhere) float Morale;
 	UPROPERTY(EditAnywhere) float Performance;
 	UPROPERTY(EditAnywhere) float Salary;
+	UPROPERTY(EditAnywhere) FString EmployeeRole;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector MeetingLocation;
 
+	//Managers
+	class AGameHUD* UI;
 	UGameManager* GM;
 
 protected:

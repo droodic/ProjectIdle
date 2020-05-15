@@ -9,9 +9,12 @@
 
 AProjectIdlePlayerController::AProjectIdlePlayerController()
 {
+	//SETUP CLICK EVENT 
 	bEnableClickEvents = true;
-
+	ClickEventKeys.Remove(EKeys::LeftMouseButton);
+	ClickEventKeys.Add(EKeys::RightMouseButton);
 	DefaultClickTraceChannel = TEnumAsByte<ECollisionChannel>(ECollisionChannel::ECC_Pawn);
+	
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Crosshairs;
 }

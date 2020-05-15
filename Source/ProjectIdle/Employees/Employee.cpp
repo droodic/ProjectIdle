@@ -6,7 +6,7 @@
 // Sets default values
 AEmployee::AEmployee()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 }
@@ -16,15 +16,21 @@ void AEmployee::BeginPlay()
 {
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
-	GM->EmployeeList.Add(this);
-	
+
+	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0)->GetHUD());
+
 }
 
 void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 {
-	GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Employee Clicked"));
-}
+		if (UI != nullptr) {
 
+			UI->ShowEmployeeSheet(this);
+		}
+		else {
+			GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Employee is Clicked, UI Is null!"));
+		}
+}
 // Called every frame
 void AEmployee::Tick(float DeltaTime)
 {
