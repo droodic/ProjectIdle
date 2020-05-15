@@ -20,6 +20,17 @@ void AGameHUD::BeginPlay()
 			MoneyWidget->AddToViewport();
 		}
 	}
+	if (EmployeeSheetClass)
+	{
+		//EmpSheetWidget = CreateWidget<UEmployeeSheetWidget>(GetWorld(), EmployeeSheetClass);
+	}
+}
+
+void AGameHUD::ShowEmployeeSheet(class AEmployee* emp) 
+{
+	EmpSheetWidget->Morale = emp->Morale;
+	EmpSheetWidget->Salary = emp->Salary;
+	EmpSheetWidget->EmployeeRole = emp->EmployeeRole;
 }
 
 void AGameHUD::Tick(float DeltaSeconds)

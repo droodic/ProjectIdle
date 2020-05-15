@@ -16,15 +16,15 @@ void AEmployee::BeginPlay()
 {
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
-	GM->EmployeeList.Add(this);
+
+	UI = Cast <class AGameHUD* > (UGameplayStatics::GetPlayerController(this->GetOwner(), 0)->GetHUD());
 	
 }
 
 void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 {
-	GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Employee Clicked"));
+	UI->ShowEmployeeSheet(this);
 }
-
 // Called every frame
 void AEmployee::Tick(float DeltaTime)
 {

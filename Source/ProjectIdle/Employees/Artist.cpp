@@ -5,5 +5,5 @@
 
 AArtist::AArtist()
 {
-
+	EmployeeRole = "Artist";
 }

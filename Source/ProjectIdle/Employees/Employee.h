@@ -20,8 +20,11 @@ public:
 	UPROPERTY(EditAnywhere) float Morale;
 	UPROPERTY(EditAnywhere) float Performance;
 	UPROPERTY(EditAnywhere) float Salary;
+	UPROPERTY(EditAnywhere) FString EmployeeRole;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector MeetingLocation;
 
+	//Managers
+	class AGameHUD* UI;
 	UGameManager* GM;
 
 protected:
