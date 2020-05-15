@@ -22,15 +22,17 @@ void AGameHUD::BeginPlay()
 	}
 	if (EmployeeSheetClass)
 	{
-		//EmpSheetWidget = CreateWidget<UEmployeeSheetWidget>(GetWorld(), EmployeeSheetClass);
+		EmpSheetWidget = CreateWidget<UEmployeeSheetWidget>(GetWorld(), EmployeeSheetClass);
 	}
 }
 
 void AGameHUD::ShowEmployeeSheet(class AEmployee* emp) 
 {
+	GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Showing Employee Sheet"));
 	EmpSheetWidget->Morale = emp->Morale;
 	EmpSheetWidget->Salary = emp->Salary;
 	EmpSheetWidget->EmployeeRole = emp->EmployeeRole;
+	EmpSheetWidget->AddToViewport();
 }
 
 void AGameHUD::Tick(float DeltaSeconds)

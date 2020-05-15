@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "ProjectIdle/GameManager.h"
+#include "ProjectIdle\GameHUD.h"
 #include "Engine.h"
 #include "Employee.generated.h"
 
