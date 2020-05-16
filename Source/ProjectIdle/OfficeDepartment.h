@@ -3,13 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Idea.h"
 #include "Department.h"
-#include "GameManager.h"
-#include "Engine.h"
-#include "Math/RandomStream.h"
-#include "Employees\Employee.h"
-#include "EmployeeAIC.h"
 #include "OfficeDepartment.generated.h"
 
 /**
@@ -21,21 +15,36 @@ class PROJECTIDLE_API AOfficeDepartment : public ADepartment
 	GENERATED_BODY()
 	
 public:
-	UGameManager* GM;
-	FRandomStream random;
+	class Idea GenerateIdeaValues();
+	
+	class UGameManager* GM;
+	struct FRandomStream random;
 	
 	TArray<class Idea*> IdeaList;
-	bool IsGenerating;
-	virtual void Tick(float DeltaTime) override;
 
-	//Functions
-	Idea GenerateIdeaValues();
-	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void GenerateIdea();
-	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void CallMeeting();
+	bool IsGenerating;
 	
-	//public?
 	UPROPERTY(BlueprintReadWrite) int ideasGenerated;
 	UPROPERTY(BlueprintReadWrite) float CurrIdeaProgress = 0;
 	UPROPERTY(BlueprintReadWrite) float MaxIdeaProgress = 100;
 
+
+	//UPROPERTY(EditDefaultsOnly, Category = "Widgets") TSubclassOf<UUserWidget> UserWidget;
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets") TArray<TSubclassOf<UUserWidget>> UserWidgets;
+
+	UPROPERTY(VisibleAnywhere) class UCeoDepMenuWidget* OfficeDepartmentUI;
+	UPROPERTY(VisibleAnywhere) class UIdeaGenerationUI* IdeaGenerationWidget;
+
+//Functions
+public:
+	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void GenerateIdea();
+	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void CallMeeting();
+
+	virtual void Tick(float DeltaTime) override;
+
+protected:
+	virtual void BeginPlay() override;
+
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 };
