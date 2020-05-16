@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "OfficeDepartment.h"
 #include "CeoDepMenuWidget.generated.h"
 
 /**
@@ -16,7 +15,6 @@ class PROJECTIDLE_API UCeoDepMenuWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-
-	UPROPERTY(BlueprintReadWrite) AOfficeDepartment* OfficeDep;
+	UPROPERTY(BlueprintReadWrite) class AOfficeDepartment* OfficeDepartment;
 
 };
