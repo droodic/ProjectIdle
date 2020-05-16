@@ -15,6 +15,15 @@ public:
 	// Sets default values for this actor's properties
 	AChair();
 
+	UPROPERTY()
+	FVector ChairLocation;
+
+	UPROPERTY()
+		USceneComponent* Root;
+	UPROPERTY(EditAnywhere)
+		UStaticMeshComponent* Mesh;
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
