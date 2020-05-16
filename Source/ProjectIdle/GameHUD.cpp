@@ -20,6 +20,33 @@ void AGameHUD::BeginPlay()
 			MoneyWidget->AddToViewport();
 		}
 	}
+	if (EmployeeSheetClass)
+	{
+		EmpSheetWidget = CreateWidget<UEmployeeSheetWidget>(GetWorld(), EmployeeSheetClass);
+	}
+}
+
+void AGameHUD::ShowEmployeeSheet(class AEmployee* emp)
+{
+
+	if (!EmpSheetWidget->IsInViewport())
+	{
+		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Showing Employee Sheet"));
+		EmpSheetWidget->Morale = emp->Morale;
+		EmpSheetWidget->Salary = emp->Salary;
+		EmpSheetWidget->EmployeeRole = emp->EmployeeRole;
+		EmpSheetWidget->AddToViewport();
+
+	}
+
+	else if (EmpSheetWidget->IsInViewport()){
+		EmpSheetWidget->RemoveFromParent();
+		//GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Showing New Employee Sheet"));
+		//EmpSheetWidget->Morale = emp->Morale;
+		//EmpSheetWidget->Salary = emp->Salary;
+		//EmpSheetWidget->EmployeeRole = emp->EmployeeRole;
+	}
+
 }
 
 void AGameHUD::Tick(float DeltaSeconds)

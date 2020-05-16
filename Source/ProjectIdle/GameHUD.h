@@ -6,6 +6,8 @@
 #include "GameFramework/HUD.h"
 #include "Components/WidgetComponent.h"
 #include "MoneyWidget.h"
+#include "ProjectIdle\Employees\Employee.h"
+#include "ProjectIdle\Widgets\EmployeeSheetWidget.h"
 #include "GameHUD.generated.h"
 
 /**
@@ -29,6 +31,12 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 		TSubclassOf<UUserWidget> MoneyWidgetClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
+		TSubclassOf<UUserWidget> EmployeeSheetClass;
+
+	void ShowEmployeeSheet(class AEmployee* emp);
+
 private:
 	UMoneyWidget* MoneyWidget;
+	class UEmployeeSheetWidget* EmpSheetWidget;
 };
