@@ -19,6 +19,8 @@ void AEmployee::BeginPlay()
 
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0)->GetHUD());
 
+	
+
 }
 
 void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)

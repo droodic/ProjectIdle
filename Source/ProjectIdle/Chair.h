@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Chair.generated.h"
 
+
+
 UCLASS()
 class PROJECTIDLE_API AChair : public AActor
 {

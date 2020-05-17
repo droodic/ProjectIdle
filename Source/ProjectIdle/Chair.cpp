@@ -2,6 +2,7 @@
 
 
 #include "Chair.h"
+#include "ListManager.h"
 #include "Components/MeshComponent.h"
 
 // Sets default values
@@ -23,6 +24,8 @@ void AChair::BeginPlay()
 	Super::BeginPlay();
 	
 	ChairLocation = this->GetActorLocation();
+	//UE_LOG(LogActor, Warning, TEXT("%s"), *ChairLocation.ToString())
+
 }
 
 // Called every frame
