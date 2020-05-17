@@ -36,6 +36,8 @@ void AListManager::BeginPlay()
 		}
 	}
 
+	//Testing employee and chair array
+
 	//int32 count = Chairs.Num();
 	AChair* chaise = Chairs[0];
 	AEmployee* man = Workers[0];
@@ -45,17 +47,17 @@ void AListManager::BeginPlay()
 	FString sizeString = FString::FromInt(size);
 
 
-	man->ToMeeting(chaise->ChairLocation);
+	//man->ToMeeting(chaise->ChairLocation);
 
-	UE_LOG(LogActor, Warning, TEXT("%s"), *chaise->ChairLocation.ToString())
-	UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
+	//UE_LOG(LogActor, Warning, TEXT("%s"), *chaise->ChairLocation.ToString())
+	//UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
 
-	UE_LOG(LogActor, Warning, TEXT("%s"), *man->StartPosition.ToString())
-	UE_LOG(LogActor, Warning, TEXT("%s"), *mans->StartPosition.ToString())
-	UE_LOG(LogActor, Warning, TEXT("%s"), *man3->StartPosition.ToString())
+	//UE_LOG(LogActor, Warning, TEXT("%s"), *man->StartPosition.ToString())
+	//UE_LOG(LogActor, Warning, TEXT("%s"), *mans->StartPosition.ToString())
+	//UE_LOG(LogActor, Warning, TEXT("%s"), *man3->StartPosition.ToString())
 
-
-	//UE_LOG(LogActor, Warning, TEXT("%s"), *Chairs[1]->ChairLocation.ToString())
+    //End of test
+	MoveToMeeting();
 }
 
 // Called every frame
@@ -65,3 +67,14 @@ void AListManager::Tick(float DeltaTime)
 
 }
 
+void AListManager::MoveToMeeting()
+{
+	int32 chairSize = Chairs.Num();
+	int32 employeeSize = Workers.Num();
+	for (int i = 0; i < chairSize; i++)
+	{
+		AEmployee* man = Workers[i];
+		AChair* chaise = Chairs[i];
+		man->ToMeeting(chaise->ChairLocation);
+	}
+}

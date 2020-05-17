@@ -17,6 +17,7 @@ void AEmployee::BeginPlay()
 {
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
+	GM->EmployeeList.Add(this);
 
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0)->GetHUD());
 
@@ -82,5 +83,4 @@ void AEmployee::ToMeeting(FVector Destination)
 {
 	//MoveToLocation(FVector(-710.0, 700.0, 308));
 	this->SetActorRelativeLocation(Destination);
-
 }
