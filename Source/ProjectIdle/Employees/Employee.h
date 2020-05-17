@@ -24,9 +24,12 @@ public:
 	UPROPERTY(EditAnywhere) FString EmployeeRole;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector MeetingLocation;
 
+	FVector StartPosition;
+
 	//Managers
 	class AGameHUD* UI;
 	UGameManager* GM;
+	class AListManager* Work;
 
 protected:
 	// Called when the game starts or when spawned
@@ -36,6 +39,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) class AEmployeeAIC* AI; //custom Cpp AIC ref, unused for now
 	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void GoMeeting();
+	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void ToMeeting(FVector Destination);
 
 	// Called every frame
 
