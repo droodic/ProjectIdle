@@ -19,7 +19,6 @@ public:
 	
 	class UGameManager* GM;
 	struct FRandomStream random;
-	
 	TArray<class Idea*> IdeaList;
 
 	bool IsGenerating;
@@ -28,12 +27,8 @@ public:
 	UPROPERTY(BlueprintReadWrite) float CurrIdeaProgress = 0;
 	UPROPERTY(BlueprintReadWrite) float MaxIdeaProgress = 100;
 
-
-	//UPROPERTY(EditDefaultsOnly, Category = "Widgets") TSubclassOf<UUserWidget> UserWidget;
-	UPROPERTY(EditDefaultsOnly, Category = "Widgets") TArray<TSubclassOf<UUserWidget>> UserWidgets;
-
-	UPROPERTY(VisibleAnywhere) class UCeoDepMenuWidget* OfficeDepartmentUI;
-	UPROPERTY(VisibleAnywhere) class UIdeaGenerationUI* IdeaGenerationWidget;
+	UPROPERTY(EditAnywhere, Category = "Widgets") TSubclassOf<UUserWidget> UserWidget;
+	class UOfficeWidget* OfficeWidget;
 
 //Functions
 public:

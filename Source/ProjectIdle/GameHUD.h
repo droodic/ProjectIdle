@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
 #include "Components/WidgetComponent.h"
-#include "MoneyWidget.h"
+#include "Widgets/MoneyWidget.h"
 #include "ProjectIdle\Employees\Employee.h"
 #include "ProjectIdle\Widgets\EmployeeSheetWidget.h"
 #include "GameHUD.generated.h"
