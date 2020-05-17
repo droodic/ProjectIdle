@@ -16,6 +16,7 @@ AListManager::AListManager()
 void AListManager::BeginPlay()
 {
 	Super::BeginPlay();
+	GM = GetWorld()->GetGameInstance<UGameManager>();
 	
 	UWorld* world = GetWorld();
 	for (TActorIterator<AChair> It(world, AChair::StaticClass()); It; ++It)
@@ -39,12 +40,12 @@ void AListManager::BeginPlay()
 	//Testing employee and chair array
 
 	//int32 count = Chairs.Num();
-	AChair* chaise = Chairs[0];
-	AEmployee* man = Workers[0];
-	AEmployee* mans = Workers[1];
-	AEmployee* man3 = Workers[2];
-	int32 size = Workers.Num();
-	FString sizeString = FString::FromInt(size);
+	//AChair* chaise = Chairs[0];
+	//AEmployee* man = Workers[0];
+	//AEmployee* mans = Workers[1];
+	//AEmployee* man3 = Workers[2];
+	//int32 size = Workers.Num();
+	//FString sizeString = FString::FromInt(size);
 
 
 	//man->ToMeeting(chaise->ChairLocation);

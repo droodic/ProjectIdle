@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Chair.h"
+#include "ProjectIdle/GameManager.h"
 #include "Employees/Employee.h"
 #include "ListManager.generated.h"
 
@@ -22,6 +23,8 @@ public:
 	TArray<AEmployee*> Workers;
 
 	FVector Location;
+
+	UGameManager* GM;
 
 	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void MoveToMeeting();
 
