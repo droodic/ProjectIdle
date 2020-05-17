@@ -35,8 +35,25 @@ void AListManager::BeginPlay()
 			Workers.Add(worker);
 		}
 	}
+
 	//int32 count = Chairs.Num();
-	//AChair* chaise = Chairs[0];
+	AChair* chaise = Chairs[0];
+	AEmployee* man = Workers[0];
+	AEmployee* mans = Workers[1];
+	AEmployee* man3 = Workers[2];
+	int32 size = Workers.Num();
+	FString sizeString = FString::FromInt(size);
+
+
+	man->ToMeeting(chaise->ChairLocation);
+
+	UE_LOG(LogActor, Warning, TEXT("%s"), *chaise->ChairLocation.ToString())
+	UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
+
+	UE_LOG(LogActor, Warning, TEXT("%s"), *man->StartPosition.ToString())
+	UE_LOG(LogActor, Warning, TEXT("%s"), *mans->StartPosition.ToString())
+	UE_LOG(LogActor, Warning, TEXT("%s"), *man3->StartPosition.ToString())
+
 
 	//UE_LOG(LogActor, Warning, TEXT("%s"), *Chairs[1]->ChairLocation.ToString())
 }

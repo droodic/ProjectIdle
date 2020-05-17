@@ -22,6 +22,8 @@ void AEmployee::BeginPlay()
 
 	Work = Cast<AListManager>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 
+	StartPosition = this->GetActorLocation();
+
 	if (Work != nullptr)
 	{
 		//MeetingLocation = Work->Chairs[0]->ChairLocation;	
@@ -43,11 +45,6 @@ void AEmployee::BeginPlay()
 		//AI2->SetActorLocation(reset);
 	}
 
-	//this->SetActorLocation(MeetingLocation);
-	//Work->Workers[1]->SetActorLocation(Work->Chairs[1]->ChairLocation);
-
-
-	//this->SetActorLocation(reset);
 }
 
 void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
@@ -78,5 +75,12 @@ void AEmployee::GoMeeting()
 {
 	//MoveToLocation(FVector(-710.0, 700.0, 308));
 
+
 }
 
+void AEmployee::ToMeeting(FVector Destination)
+{
+	//MoveToLocation(FVector(-710.0, 700.0, 308));
+	this->SetActorRelativeLocation(Destination);
+
+}

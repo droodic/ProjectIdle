@@ -25,7 +25,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector MeetingLocation;
 
 	FVector StartPosition;
-	FVector StartPositionTest;
 
 	//Managers
 	class AGameHUD* UI;
@@ -40,6 +39,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) class AEmployeeAIC* AI; //custom Cpp AIC ref, unused for now
 	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void GoMeeting();
+	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void ToMeeting(FVector Destination);
 
 	// Called every frame
 
