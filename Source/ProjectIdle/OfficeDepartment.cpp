@@ -3,8 +3,7 @@
 
 #include "OfficeDepartment.h"
 #include "Idea.h"
-#include "CeoDepMenuWidget.h"
-#include "UI/IdeaGenerationUI.h"
+#include "Widgets/OfficeWidget.h"
 #include "Components/WidgetComponent.h"
 
 Idea AOfficeDepartment::GenerateIdeaValues()
@@ -15,13 +14,10 @@ Idea AOfficeDepartment::GenerateIdeaValues()
 
 void AOfficeDepartment::BeginPlay()
 {
-	if (UserWidgets[0])
+
+	if (UserWidget)
 	{
-		OfficeDepartmentUI = CreateWidget<UCeoDepMenuWidget>(GetWorld(), UserWidgets[0]);
-	}
-	if (UserWidgets[1])
-	{
-		IdeaGenerationWidget = CreateWidget<UIdeaGenerationUI>(GetWorld(), UserWidgets[1]);
+		OfficeWidget = CreateWidget<UOfficeWidget>(GetWorld(), UserWidget);
 	}
 }
 
@@ -29,15 +25,7 @@ void AOfficeDepartment::GenerateIdea()
 {
 	IsGenerating = true;
 	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, "Generating Idea");
-	
-	if (OfficeDepartmentUI)
-	{
-		OfficeDepartmentUI->RemoveFromParent();
-	}
-	if (IdeaGenerationWidget)
-	{
-		IdeaGenerationWidget->AddToViewport();
-	}
+
 
 	
 
@@ -75,9 +63,9 @@ void AOfficeDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	if (OtherActor != nullptr && Cast<AProjectIdleCharacter>(OtherActor))
 	{
-		if (OfficeDepartmentUI)
+		if (OfficeWidget)
 		{
-			OfficeDepartmentUI->AddToViewport();
+			OfficeWidget->AddToViewport();
 		}
 
 	}
@@ -87,9 +75,9 @@ void AOfficeDepartment::NotifyActorEndOverlap(AActor* OtherActor)
 {
 	if (OtherActor != nullptr && Cast<AProjectIdleCharacter>(OtherActor))
 	{
-		if (OfficeDepartmentUI)
+		if (OfficeWidget)
 		{
-			OfficeDepartmentUI->RemoveFromParent();
+			OfficeWidget->RemoveFromParent();
 		}
 	}
 }
