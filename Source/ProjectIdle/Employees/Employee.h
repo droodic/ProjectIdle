@@ -24,9 +24,13 @@ public:
 	UPROPERTY(EditAnywhere) FString EmployeeRole;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector MeetingLocation;
 
+	FVector StartPosition;
+	FVector StartPositionTest;
+
 	//Managers
 	class AGameHUD* UI;
 	UGameManager* GM;
+	class AListManager* Work;
 
 protected:
 	// Called when the game starts or when spawned

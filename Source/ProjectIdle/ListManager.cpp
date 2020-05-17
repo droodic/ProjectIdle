@@ -27,10 +27,18 @@ void AListManager::BeginPlay()
 		}
 	}
 
+	for (TActorIterator<AEmployee> It(world, AEmployee::StaticClass()); It; ++It)
+	{
+		AEmployee* worker = *It;
+		if (worker != nullptr)
+		{
+			Workers.Add(worker);
+		}
+	}
 	//int32 count = Chairs.Num();
 	//AChair* chaise = Chairs[0];
 
-	UE_LOG(LogActor, Warning, TEXT("%s"), *Chairs[1]->ChairLocation.ToString())
+	//UE_LOG(LogActor, Warning, TEXT("%s"), *Chairs[1]->ChairLocation.ToString())
 }
 
 // Called every frame

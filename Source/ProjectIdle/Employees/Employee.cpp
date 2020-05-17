@@ -2,6 +2,7 @@
 
 
 #include "Employee.h"
+#include "ProjectIdle/ListManager.h"
 
 // Sets default values
 AEmployee::AEmployee()
@@ -19,8 +20,34 @@ void AEmployee::BeginPlay()
 
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0)->GetHUD());
 
-	
+	Work = Cast<AListManager>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 
+	if (Work != nullptr)
+	{
+		//MeetingLocation = Work->Chairs[0]->ChairLocation;	
+		//MoveLoc = Work->Chairs[1]->ChairLocation;
+	}
+	FVector reset = FVector(0, 0, 278);
+
+	//auto AI = Work->Workers[0];
+	//auto AI2 = Work->Workers[1];
+
+	/*StartPosition = Work->Workers[0]->GetActorLocation();
+	StartPositionTest = Work->Workers[1]->GetActorLocation();
+	UE_LOG(LogActor, Warning, TEXT("%s"), *StartPosition.ToString())
+	UE_LOG(LogActor, Warning, TEXT("%s"), *StartPositionTest.ToString())*/
+
+	if (AI != nullptr)
+	{
+		//AI->SetActorLocation(MeetingLocation);
+		//AI2->SetActorLocation(reset);
+	}
+
+	//this->SetActorLocation(MeetingLocation);
+	//Work->Workers[1]->SetActorLocation(Work->Chairs[1]->ChairLocation);
+
+
+	//this->SetActorLocation(reset);
 }
 
 void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
