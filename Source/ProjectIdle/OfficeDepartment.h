@@ -34,9 +34,9 @@ public:
 
 //Functions
 public:
-	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void GenerateIdea();
-	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void CallMeeting();
-
+	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void GenerateIdea();
+	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void ViewBacklog();
+	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void CallMeeting();
 
 protected:
 	virtual void BeginPlay() override;

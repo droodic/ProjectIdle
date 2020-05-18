@@ -32,6 +32,15 @@ void AOfficeDepartment::BeginPlay()
 	}
 }
 
+void AOfficeDepartment::ViewBacklog() 
+{
+	if (OfficeWidget)
+	{
+		OfficeDepMenuWidget->RemoveFromParent();
+		OfficeWidget->AddToViewport();
+	}
+}
+
 void AOfficeDepartment::GenerateIdea()
 {
 	IsGenerating = true;
@@ -89,9 +98,12 @@ void AOfficeDepartment::NotifyActorEndOverlap(AActor* OtherActor)
 {
 	if (OtherActor != nullptr && Cast<AProjectIdleCharacter>(OtherActor))
 	{
-		if (OfficeDepMenuWidget)
+		if (OfficeDepMenuWidget->IsInViewport())
 		{
 			OfficeDepMenuWidget->RemoveFromParent();
+		}
+		if (OfficeWidget->IsInViewport()) {
+			OfficeWidget->RemoveFromParent();
 		}
 	}
 }
