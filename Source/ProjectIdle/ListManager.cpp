@@ -40,7 +40,8 @@ void AListManager::BeginPlay()
 	//Testing employee and chair array
 
 	//int32 count = Chairs.Num();
-	//AChair* chaise = Chairs[0];
+	AChair* chaise = Chairs[0];
+	AChair* chaise1 = Chairs[1];
 	//AEmployee* man = Workers[0];
 	//AEmployee* mans = Workers[1];
 	//AEmployee* man3 = Workers[2];
@@ -50,7 +51,9 @@ void AListManager::BeginPlay()
 
 	//man->ToMeeting(chaise->ChairLocation);
 
-	//UE_LOG(LogActor, Warning, TEXT("%s"), *chaise->ChairLocation.ToString())
+    UE_LOG(LogActor, Warning, TEXT("%s"), *chaise->GetActorLocation().ToString())
+	UE_LOG(LogActor, Warning, TEXT("%s"), *chaise1->GetActorLocation().ToString())
+
 	//UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
 
 	//UE_LOG(LogActor, Warning, TEXT("%s"), *man->StartPosition.ToString())
@@ -76,6 +79,6 @@ void AListManager::MoveToMeeting()
 	{
 		AEmployee* man = Workers[i];
 		AChair* chaise = Chairs[i];
-		man->ToMeeting(chaise->ChairLocation);
+		man->ToMeeting(chaise->GetActorLocation());
 	}
 }

@@ -22,7 +22,7 @@ public:
 
 	UPROPERTY()
 		USceneComponent* Root;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* Mesh;
 
 

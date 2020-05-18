@@ -25,11 +25,6 @@ void AEmployee::BeginPlay()
 
 	StartPosition = this->GetActorLocation();
 
-	if (Work != nullptr)
-	{
-		//MeetingLocation = Work->Chairs[0]->ChairLocation;	
-		//MoveLoc = Work->Chairs[1]->ChairLocation;
-	}
 	FVector reset = FVector(0, 0, 278);
 
 	//auto AI = Work->Workers[0];
@@ -39,12 +34,6 @@ void AEmployee::BeginPlay()
 	StartPositionTest = Work->Workers[1]->GetActorLocation();
 	UE_LOG(LogActor, Warning, TEXT("%s"), *StartPosition.ToString())
 	UE_LOG(LogActor, Warning, TEXT("%s"), *StartPositionTest.ToString())*/
-
-	if (AI != nullptr)
-	{
-		//AI->SetActorLocation(MeetingLocation);
-		//AI2->SetActorLocation(reset);
-	}
 
 }
 
