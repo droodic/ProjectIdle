@@ -11,7 +11,6 @@ ADepartment::ADepartment()
 	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ClickableMesh"));
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("RangeBox"));
 	CollisionBox->AttachTo(BaseMesh);
-
 	RootComponent = BaseMesh;
 }
 

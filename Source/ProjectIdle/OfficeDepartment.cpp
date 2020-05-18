@@ -4,7 +4,13 @@
 #include "OfficeDepartment.h"
 #include "Idea.h"
 #include "Widgets/OfficeWidget.h"
+#include "CeoDepMenuWidget.h"
 #include "Components/WidgetComponent.h"
+
+AOfficeDepartment::AOfficeDepartment() 
+{
+	
+}
 
 Idea AOfficeDepartment::GenerateIdeaValues()
 {
@@ -14,10 +20,15 @@ Idea AOfficeDepartment::GenerateIdeaValues()
 
 void AOfficeDepartment::BeginPlay()
 {
-
-	if (UserWidget)
+	Super::BeginPlay();
+	if (UserWidgets[0])
 	{
-		OfficeWidget = CreateWidget<UOfficeWidget>(GetWorld(), UserWidget);
+		OfficeWidget = CreateWidget<UOfficeWidget>(GetWorld(), UserWidgets[0]);
+	}
+	if (UserWidgets[1])
+	{
+		OfficeDepMenuWidget = CreateWidget<UCeoDepMenuWidget>(GetWorld(), UserWidgets[1]);
+		OfficeDepMenuWidget->OfficeDepartment = this;
 	}
 }
 
@@ -47,8 +58,11 @@ void AOfficeDepartment::CallMeeting()
 
 void AOfficeDepartment::Tick(float DeltaTime)
 {
+	Super::Tick(DeltaTime);
+	GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Red, "!!!");
 	if (IsGenerating && CurrIdeaProgress <= MaxIdeaProgress)
 	{
+		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, "???");
 		CurrIdeaProgress += DeltaTime * 15; // + DeltaTime * SpeedModifer (? - Have some algorithm to be able to scale this)
 		if (CurrIdeaProgress >= MaxIdeaProgress) {
 			IsGenerating = false;
@@ -63,9 +77,9 @@ void AOfficeDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	if (OtherActor != nullptr && Cast<AProjectIdleCharacter>(OtherActor))
 	{
-		if (OfficeWidget)
+		if (OfficeDepMenuWidget)
 		{
-			OfficeWidget->AddToViewport();
+			OfficeDepMenuWidget->AddToViewport();
 		}
 
 	}
@@ -75,9 +89,9 @@ void AOfficeDepartment::NotifyActorEndOverlap(AActor* OtherActor)
 {
 	if (OtherActor != nullptr && Cast<AProjectIdleCharacter>(OtherActor))
 	{
-		if (OfficeWidget)
+		if (OfficeDepMenuWidget)
 		{
-			OfficeWidget->RemoveFromParent();
+			OfficeDepMenuWidget->RemoveFromParent();
 		}
 	}
 }

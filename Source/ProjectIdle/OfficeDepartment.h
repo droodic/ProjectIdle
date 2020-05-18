@@ -15,6 +15,7 @@ class PROJECTIDLE_API AOfficeDepartment : public ADepartment
 	GENERATED_BODY()
 	
 public:
+	AOfficeDepartment();
 	class Idea GenerateIdeaValues();
 	
 	class UGameManager* GM;
@@ -24,10 +25,11 @@ public:
 	bool IsGenerating;
 	
 	UPROPERTY(BlueprintReadWrite) int ideasGenerated;
-	UPROPERTY(BlueprintReadWrite) float CurrIdeaProgress = 0;
-	UPROPERTY(BlueprintReadWrite) float MaxIdeaProgress = 100;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) float CurrIdeaProgress = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) float MaxIdeaProgress = 100;
 
-	UPROPERTY(EditAnywhere, Category = "Widgets") TSubclassOf<UUserWidget> UserWidget;
+	UPROPERTY(EditAnywhere, Category = "Widgets") TArray<TSubclassOf<UUserWidget>> UserWidgets;
+	class UCeoDepMenuWidget* OfficeDepMenuWidget;
 	class UOfficeWidget* OfficeWidget;
 
 //Functions
@@ -35,10 +37,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void GenerateIdea();
 	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void CallMeeting();
 
-	virtual void Tick(float DeltaTime) override;
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
