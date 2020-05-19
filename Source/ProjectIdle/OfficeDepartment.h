@@ -30,7 +30,7 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Widgets") TArray<TSubclassOf<UUserWidget>> UserWidgets;
 	class UCeoDepMenuWidget* OfficeDepMenuWidget;
-	class UOfficeWidget* OfficeWidget;
+	class UIdeaBacklogWidget* BacklogWidget;
 
 //Functions
 public:

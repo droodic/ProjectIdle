@@ -3,7 +3,7 @@
 
 #include "OfficeDepartment.h"
 #include "Idea.h"
-#include "Widgets/OfficeWidget.h"
+#include "Widgets/IdeaBacklogWidget.h"
 #include "CeoDepMenuWidget.h"
 #include "Components/WidgetComponent.h"
 
@@ -23,7 +23,7 @@ void AOfficeDepartment::BeginPlay()
 	Super::BeginPlay();
 	if (UserWidgets[0])
 	{
-		OfficeWidget = CreateWidget<UOfficeWidget>(GetWorld(), UserWidgets[0]);
+		BacklogWidget = CreateWidget<UIdeaBacklogWidget>(GetWorld(), UserWidgets[0]);
 	}
 	if (UserWidgets[1])
 	{
@@ -34,10 +34,10 @@ void AOfficeDepartment::BeginPlay()
 
 void AOfficeDepartment::ViewBacklog() 
 {
-	if (OfficeWidget)
+	if (BacklogWidget)
 	{
 		OfficeDepMenuWidget->RemoveFromParent();
-		OfficeWidget->AddToViewport();
+		BacklogWidget->AddToViewport();
 	}
 }
 
@@ -102,8 +102,8 @@ void AOfficeDepartment::NotifyActorEndOverlap(AActor* OtherActor)
 		{
 			OfficeDepMenuWidget->RemoveFromParent();
 		}
-		if (OfficeWidget->IsInViewport()) {
-			OfficeWidget->RemoveFromParent();
+		if (BacklogWidget->IsInViewport()) {
+			BacklogWidget->RemoveFromParent();
 		}
 	}
 }
