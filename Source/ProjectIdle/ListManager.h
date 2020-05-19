@@ -22,7 +22,7 @@ public:
 
 	TArray<AEmployee*> Workers;
 
-	FVector Location;
+	FVector OfficeLocation;
 
 	UGameManager* GM;
 
