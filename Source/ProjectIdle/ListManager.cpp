@@ -9,7 +9,7 @@ AListManager::AListManager()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	OfficeLocation = FVector(-720.0, 900, 200);
 }
 
 // Called when the game starts or when spawned
@@ -40,8 +40,8 @@ void AListManager::BeginPlay()
 	//Testing employee and chair array
 
 	//int32 count = Chairs.Num();
-	AChair* chaise = Chairs[0];
-	AChair* chaise1 = Chairs[1];
+	//AChair* chaise = Chairs[0];
+	//AChair* chaise1 = Chairs[1];
 	//AEmployee* man = Workers[0];
 	//AEmployee* mans = Workers[1];
 	//AEmployee* man3 = Workers[2];
@@ -49,16 +49,10 @@ void AListManager::BeginPlay()
 	//FString sizeString = FString::FromInt(size);
 
 
-	//man->ToMeeting(chaise->ChairLocation);
-
-    UE_LOG(LogActor, Warning, TEXT("%s"), *chaise->GetActorLocation().ToString())
-	UE_LOG(LogActor, Warning, TEXT("%s"), *chaise1->GetActorLocation().ToString())
+     // UE_LOG(LogActor, Warning, TEXT("%s"), *chaise->GetActorLocation().ToString())
+	//UE_LOG(LogActor, Warning, TEXT("%s"), *chaise1->GetActorLocation().ToString())
 
 	//UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
-
-	//UE_LOG(LogActor, Warning, TEXT("%s"), *man->StartPosition.ToString())
-	//UE_LOG(LogActor, Warning, TEXT("%s"), *mans->StartPosition.ToString())
-	//UE_LOG(LogActor, Warning, TEXT("%s"), *man3->StartPosition.ToString())
 
     //End of test
 	MoveToMeeting();
@@ -75,10 +69,45 @@ void AListManager::MoveToMeeting()
 {
 	int32 chairSize = Chairs.Num();
 	int32 employeeSize = Workers.Num();
-	for (int i = 0; i < chairSize; i++)
+	int32 LoopUntil;
+	bool MoreEmployeeThanChair = false;
+
+	if (chairSize > employeeSize)
 	{
-		AEmployee* man = Workers[i];
-		AChair* chaise = Chairs[i];
-		man->ToMeeting(chaise->GetActorLocation());
+		LoopUntil = chairSize - employeeSize;
+	}
+	else if(employeeSize > chairSize)
+	{
+		//If there too many employee
+		MoreEmployeeThanChair = true;
+		LoopUntil = employeeSize;
+	}
+	else
+	{
+		LoopUntil = chairSize;
+	}
+
+	for (int i = 0; i < LoopUntil; i++)
+	{
+		if (MoreEmployeeThanChair)
+		{
+			if (i < employeeSize - chairSize)
+			{
+				AEmployee* man = Workers[i];
+				AChair* chaise = Chairs[i];
+				man->ToMeeting(chaise->GetActorLocation());
+			}
+			else
+			{
+				AEmployee* man = Workers[i];
+				man->ToMeeting(OfficeLocation);
+			}
+		}
+		else
+		{
+			AEmployee* man = Workers[i];
+			AChair* chaise = Chairs[i];
+			man->ToMeeting(chaise->GetActorLocation());
+		}
 	}
 }
