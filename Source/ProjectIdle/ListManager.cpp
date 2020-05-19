@@ -70,6 +70,11 @@ void AListManager::MoveToMeeting()
 	int32 chairSize = Chairs.Num();
 	int32 employeeSize = Workers.Num();
 	int32 LoopUntil;
+
+	FString sizeString = FString::FromInt(chairSize);
+    UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
+
+
 	bool MoreEmployeeThanChair = false;
 
 	if (chairSize > employeeSize)
@@ -91,7 +96,7 @@ void AListManager::MoveToMeeting()
 	{
 		if (MoreEmployeeThanChair)
 		{
-			if (i < employeeSize - chairSize)
+			if (i < chairSize)
 			{
 				AEmployee* man = Workers[i];
 				AChair* chaise = Chairs[i];
