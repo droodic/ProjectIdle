@@ -77,8 +77,15 @@ void AEmployee::ToMeeting(FVector Destination)
 	auto EmployeAI = Cast<AEmployeeAIC>(GetController());
 	if (EmployeAI)
 	{
-		//EmployeAI->MoveTo(Destination);
 		EmployeAI->MoveToLocation(Destination);
 	}
-	//this->SetActorRelativeLocation(Destination);
+}
+
+void AEmployee::ReturnPositionAfterMeeting(FVector Destination)
+{
+	auto EmployeAI = Cast<AEmployeeAIC>(GetController());
+	if (EmployeAI)
+	{
+		EmployeAI->MoveToLocation(Destination);
+	}
 }

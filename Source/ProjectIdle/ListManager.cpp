@@ -116,3 +116,15 @@ void AListManager::MoveToMeeting()
 		}
 	}
 }
+
+void AListManager::BackFromMeeting()
+{
+	int32 employeeSize = Workers.Num();
+
+	for (int i = 0; i < employeeSize; i++)
+	{
+		AEmployee* man = Workers[i];
+		man->ReturnPositionAfterMeeting(man->StartPosition);
+	}
+
+}
