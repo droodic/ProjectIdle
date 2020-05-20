@@ -7,9 +7,9 @@
 #include "CeoDepMenuWidget.h"
 #include "Components/WidgetComponent.h"
 
-AOfficeDepartment::AOfficeDepartment() 
+AOfficeDepartment::AOfficeDepartment()
 {
-	
+
 }
 
 Idea AOfficeDepartment::GenerateIdeaValues()
@@ -21,20 +21,20 @@ Idea AOfficeDepartment::GenerateIdeaValues()
 void AOfficeDepartment::BeginPlay()
 {
 	Super::BeginPlay();
-	if (UserWidgets[0])
+	if (UserWidgets[0] != nullptr)
 	{
 		BacklogWidget = CreateWidget<UIdeaBacklogWidget>(GetWorld(), UserWidgets[0]);
 	}
-	if (UserWidgets[1])
+	if (UserWidgets[1] != nullptr)
 	{
 		OfficeDepMenuWidget = CreateWidget<UCeoDepMenuWidget>(GetWorld(), UserWidgets[1]);
 		OfficeDepMenuWidget->OfficeDepartment = this;
 	}
 }
 
-void AOfficeDepartment::ViewBacklog() 
+void AOfficeDepartment::ViewBacklog()
 {
-	if (BacklogWidget)
+	if (BacklogWidget != nullptr)
 	{
 		OfficeDepMenuWidget->RemoveFromParent();
 		BacklogWidget->AddToViewport();
@@ -47,11 +47,11 @@ void AOfficeDepartment::GenerateIdea()
 	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, "Generating Idea");
 
 
-	
+
 
 	//When idea gen complete
 	//Enable widget call meeting btn if >1?
-	
+
 }
 
 void AOfficeDepartment::CallMeeting()
@@ -77,7 +77,10 @@ void AOfficeDepartment::Tick(float DeltaTime)
 			IsGenerating = false;
 			CurrIdeaProgress = 0;
 			ideasGenerated++;
-			IdeaList.Add(new Idea(GenerateIdeaValues())); //Use randomized values later
+			auto newIdea = IdeaList.Add(new Idea(GenerateIdeaValues())); //Use randomized values later
+
+			//TEST*** make method / optimize
+			BacklogWidget->DisplayNewIdea();
 		}
 	}
 }
@@ -86,11 +89,10 @@ void AOfficeDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	if (OtherActor != nullptr && Cast<AProjectIdleCharacter>(OtherActor))
 	{
-		if (OfficeDepMenuWidget)
+		if (OfficeDepMenuWidget != nullptr)
 		{
 			OfficeDepMenuWidget->AddToViewport();
 		}
-
 	}
 }
 
@@ -102,8 +104,10 @@ void AOfficeDepartment::NotifyActorEndOverlap(AActor* OtherActor)
 		{
 			OfficeDepMenuWidget->RemoveFromParent();
 		}
-		if (BacklogWidget->IsInViewport()) {
+		else if (BacklogWidget->IsInViewport()) 
+		{
 			BacklogWidget->RemoveFromParent();
 		}
+
 	}
 }
