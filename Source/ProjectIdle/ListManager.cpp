@@ -17,7 +17,7 @@ void AListManager::BeginPlay()
 {
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
-	GM->lm = this;
+	GM->lm = this; //temp assign, need to change class name , maybe move functions to gm
 	UWorld* world = GetWorld();
 	for (TActorIterator<AChair> It(world, AChair::StaticClass()); It; ++It)
 	{
