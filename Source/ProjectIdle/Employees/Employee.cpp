@@ -23,11 +23,8 @@ void AEmployee::BeginPlay()
 	GM->EmployeeList.Add(this);
 
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0)->GetHUD());
-
 	Work = Cast<AListManager>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-
 	StartPosition = this->GetActorLocation();
-
 	FVector reset = FVector(0, 0, 278);
 
 	//auto AI = Work->Workers[0];

@@ -16,6 +16,7 @@ class PROJECTIDLE_API UGameManager : public UGameInstance
 
 public:
 	UPROPERTY(BlueprintReadWrite) TArray<class AEmployee*> EmployeeList;
+	UPROPERTY(BlueprintReadWrite) class AListManager* lm;
 	UGameManager();
 	virtual void Init();
 };

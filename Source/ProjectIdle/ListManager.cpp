@@ -17,7 +17,7 @@ void AListManager::BeginPlay()
 {
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
-	
+	GM->lm = this;
 	UWorld* world = GetWorld();
 	for (TActorIterator<AChair> It(world, AChair::StaticClass()); It; ++It)
 	{
@@ -55,7 +55,7 @@ void AListManager::BeginPlay()
 	//UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
 
     //End of test
-	MoveToMeeting();
+	//MoveToMeeting();
 }
 
 // Called every frame
