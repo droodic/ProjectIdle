@@ -3,6 +3,8 @@
 
 #include "Employee.h"
 #include "ProjectIdle/EmployeeAIC.h"
+#include "ProjectIdle/GameHUD.h"
+#include "Engine.h"
 #include "ProjectIdle/ListManager.h"
 
 // Sets default values
@@ -72,7 +74,7 @@ void AEmployee::GoMeeting()
 void AEmployee::ToMeeting(FVector Destination)
 {
 	//MoveToLocation(FVector(-710.0, 700.0, 308));
-	AEmployeeAIC* EmployeAI = Cast<AEmployeeAIC>(GetController());
+	auto EmployeAI = Cast<AEmployeeAIC>(GetController());
 	if (EmployeAI)
 	{
 		//EmployeAI->MoveTo(Destination);

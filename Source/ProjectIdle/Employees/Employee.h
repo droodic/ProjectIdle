@@ -4,9 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "ProjectIdle/GameManager.h"
-#include "ProjectIdle\GameHUD.h"
-#include "Engine.h"
 #include "Employee.generated.h"
 
 UCLASS()
@@ -28,7 +25,7 @@ public:
 
 	//Managers
 	class AGameHUD* UI;
-	UGameManager* GM;
+	class UGameManager* GM;
 	class AListManager* Work;
 
 protected:
@@ -37,7 +34,7 @@ protected:
 	
 public:	
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) class AEmployeeAIC* AI; //custom Cpp AIC ref, unused for now
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite) AEmployeeAIC* AI; //custom Cpp AIC ref, unused for now
 	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void GoMeeting();
 	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void ToMeeting(FVector Destination);
 
