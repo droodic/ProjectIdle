@@ -46,21 +46,17 @@ void AOfficeDepartment::GenerateIdea()
 	IsGenerating = true;
 	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, "Generating Idea");
 
-
-	
-
 	//When idea gen complete
 	//Enable widget call meeting btn if >1?
-	
 }
 
 void AOfficeDepartment::CallMeeting()
 {
 	/*
 	for (AEmployee* emp : GM->EmployeeList) {
-	//	//emp->AI->GoMeeting();
-	//}
-	//move ai to meeting room, you meet them there to start progress
+		emp->AI->GoMeeting();
+	}
+	move ai to meeting room, you meet them there to start progress
 	*/
 }
 
@@ -90,7 +86,6 @@ void AOfficeDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
 		{
 			OfficeDepMenuWidget->AddToViewport();
 		}
-
 	}
 }
 
