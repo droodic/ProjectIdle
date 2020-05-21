@@ -23,11 +23,8 @@ void AEmployee::BeginPlay()
 	GM->EmployeeList.Add(this);
 
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0)->GetHUD());
-
 	Work = Cast<AListManager>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-
 	StartPosition = this->GetActorLocation();
-
 	FVector reset = FVector(0, 0, 278);
 
 	//auto AI = Work->Workers[0];
@@ -77,8 +74,15 @@ void AEmployee::ToMeeting(FVector Destination)
 	auto EmployeAI = Cast<AEmployeeAIC>(GetController());
 	if (EmployeAI)
 	{
-		//EmployeAI->MoveTo(Destination);
 		EmployeAI->MoveToLocation(Destination);
 	}
-	//this->SetActorRelativeLocation(Destination);
+}
+
+void AEmployee::ReturnPositionAfterMeeting(FVector Destination)
+{
+	auto EmployeAI = Cast<AEmployeeAIC>(GetController());
+	if (EmployeAI)
+	{
+		EmployeAI->MoveToLocation(Destination);
+	}
 }

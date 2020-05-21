@@ -95,7 +95,7 @@ void AProjectIdleCharacter::Tick(float DeltaSeconds)
 
 
 	//AddActorWorldOffset(GetCameraPanDirection() * 2);
-	CameraBoom->AddWorldOffset(GetCameraPanDirection() * CameraMovementSpeed);
+	//CameraBoom->AddWorldOffset(GetCameraPanDirection() * CameraMovementSpeed);
 
 	if (CursorToWorld != nullptr)
 	{

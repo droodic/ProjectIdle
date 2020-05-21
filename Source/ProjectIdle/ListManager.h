@@ -27,6 +27,7 @@ public:
 	UGameManager* GM;
 
 	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void MoveToMeeting();
+	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void BackFromMeeting();
 
 protected:
 	// Called when the game starts or when spawned

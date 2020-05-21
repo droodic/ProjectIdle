@@ -17,7 +17,7 @@ void AListManager::BeginPlay()
 {
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
-	
+	GM->lm = this; //temp assign, need to change class name , maybe move functions to gm
 	UWorld* world = GetWorld();
 	for (TActorIterator<AChair> It(world, AChair::StaticClass()); It; ++It)
 	{
@@ -55,7 +55,7 @@ void AListManager::BeginPlay()
 	//UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
 
     //End of test
-	MoveToMeeting();
+	//MoveToMeeting();
 }
 
 // Called every frame
@@ -115,4 +115,16 @@ void AListManager::MoveToMeeting()
 			man->ToMeeting(chaise->GetActorLocation());
 		}
 	}
+}
+
+void AListManager::BackFromMeeting()
+{
+	int32 employeeSize = Workers.Num();
+
+	for (int i = 0; i < employeeSize; i++)
+	{
+		AEmployee* man = Workers[i];
+		man->ReturnPositionAfterMeeting(man->StartPosition);
+	}
+
 }
