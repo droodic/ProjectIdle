@@ -20,7 +20,7 @@ public:
 
 	TArray<AChair*> Chairs;
 
-	TArray<AEmployee*> Workers;
+	//TArray<AEmployee*> Workers;
 
 	FVector OfficeLocation;
 
