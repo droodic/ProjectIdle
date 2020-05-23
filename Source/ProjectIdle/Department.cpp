@@ -21,6 +21,8 @@ void ADepartment::BeginPlay()
 	
 }
 
+
+
 // Called every frame
 void ADepartment::Tick(float DeltaTime)
 {

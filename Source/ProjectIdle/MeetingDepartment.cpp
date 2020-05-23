@@ -7,7 +7,7 @@
 // Sets default values
 AMeetingDepartment::AMeetingDepartment()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	OfficeLocation = FVector(-720.0, 900, 200);
 
@@ -19,8 +19,21 @@ void AMeetingDepartment::BeginPlay()
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->lm = this;
-	 //temp assign, need to change class name , maybe move functions to gm
+	//temp assign, need to change class name , maybe move functions to gm
 	UWorld* world = GetWorld();
+
+	if (UserWidget != nullptr) {
+		MeetingWidget = CreateWidget<UMeetingDepWidget>(GetWorld(), UserWidget);
+	}
+}
+
+void AMeetingDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	MeetingWidget->AddToViewport();
+}
+void AMeetingDepartment::NotifyActorEndOverlap(AActor* OtherActor)
+{
+	MeetingWidget->RemoveFromParent();
 }
 
 // Called every frame
@@ -37,16 +50,16 @@ void AMeetingDepartment::MoveToMeeting()
 	int32 LoopUntil;
 
 	FString sizeString = FString::FromInt(chairSize);
-    UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
+	UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
 
 
-	bool MoreEmployeeThanChair = false;
+		bool MoreEmployeeThanChair = false;
 
 	if (chairSize > employeeSize)
 	{
 		LoopUntil = chairSize - employeeSize;
 	}
-	else if(employeeSize > chairSize)
+	else if (employeeSize > chairSize)
 	{
 		//If there too many employee
 		MoreEmployeeThanChair = true;

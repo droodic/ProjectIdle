@@ -85,7 +85,7 @@ void AOfficeDepartment::Tick(float DeltaTime)
 
 void AOfficeDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-	if (OtherActor != nullptr && Cast<AProjectIdleCharacter>(OtherActor))
+	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
 	{
 		if (OfficeDepMenuWidget != nullptr)
 		{
@@ -96,7 +96,7 @@ void AOfficeDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
 
 void AOfficeDepartment::NotifyActorEndOverlap(AActor* OtherActor)
 {
-	if (OtherActor != nullptr && Cast<AProjectIdleCharacter>(OtherActor))
+	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
 	{
 		if (OfficeDepMenuWidget->IsInViewport())
 		{
