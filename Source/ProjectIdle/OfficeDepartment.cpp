@@ -6,24 +6,22 @@
 #include "Widgets/IdeaBacklogWidget.h"
 #include "CeoDepMenuWidget.h"
 #include "Components/WidgetComponent.h"
-
-AOfficeDepartment::AOfficeDepartment()
-{
-
-}
+#include "Kismet/KismetMathLibrary.h"
 
 Idea AOfficeDepartment::GenerateIdeaValues()
 {
 	//Later find random name, description, etc
-	return Idea(random.FRandRange(0, 100), random.FRandRange(0, 100), random.FRandRange(0, 100));
+	return Idea(UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f));
 }
 
 void AOfficeDepartment::BeginPlay()
 {
 	Super::BeginPlay();
+
 	if (UserWidgets[0] != nullptr)
 	{
 		BacklogWidget = CreateWidget<UIdeaBacklogWidget>(GetWorld(), UserWidgets[0]);
+		BacklogWidget->OfficeDepartment = this;
 	}
 	if (UserWidgets[1] != nullptr)
 	{
@@ -46,21 +44,17 @@ void AOfficeDepartment::GenerateIdea()
 	IsGenerating = true;
 	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, "Generating Idea");
 
-
-
-
 	//When idea gen complete
 	//Enable widget call meeting btn if >1?
-
 }
 
 void AOfficeDepartment::CallMeeting()
 {
 	/*
 	for (AEmployee* emp : GM->EmployeeList) {
-	//	//emp->AI->GoMeeting();
-	//}
-	//move ai to meeting room, you meet them there to start progress
+		emp->AI->GoMeeting();
+	}
+	move ai to meeting room, you meet them there to start progress
 	*/
 }
 
@@ -77,7 +71,11 @@ void AOfficeDepartment::Tick(float DeltaTime)
 			IsGenerating = false;
 			CurrIdeaProgress = 0;
 			ideasGenerated++;
-			auto newIdea = IdeaList.Add(new Idea(GenerateIdeaValues())); //Use randomized values later
+			
+			//auto newIdea = IdeaList.Add(new Idea(GenerateIdeaValues())); //Use randomized values later
+			
+			auto newIdea = new Idea(GenerateIdeaValues());
+			BacklogWidget->GetIdea(newIdea);
 
 			//TEST*** make method / optimize
 			BacklogWidget->DisplayNewIdea();
@@ -108,6 +106,5 @@ void AOfficeDepartment::NotifyActorEndOverlap(AActor* OtherActor)
 		{
 			BacklogWidget->RemoveFromParent();
 		}
-
 	}
 }

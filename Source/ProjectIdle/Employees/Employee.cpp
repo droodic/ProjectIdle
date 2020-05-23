@@ -3,9 +3,9 @@
 
 #include "Employee.h"
 #include "ProjectIdle/EmployeeAIC.h"
+#include "ProjectIdle/GameManager.h"
 #include "ProjectIdle/GameHUD.h"
 #include "Engine.h"
-#include "ProjectIdle/ListManager.h"
 
 // Sets default values
 AEmployee::AEmployee()
@@ -20,14 +20,11 @@ void AEmployee::BeginPlay()
 {
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
+	
 	GM->EmployeeList.Add(this);
 
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0)->GetHUD());
-
-	Work = Cast<AListManager>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-
 	StartPosition = this->GetActorLocation();
-
 	FVector reset = FVector(0, 0, 278);
 
 	//auto AI = Work->Workers[0];

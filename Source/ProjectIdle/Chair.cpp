@@ -2,7 +2,7 @@
 
 
 #include "Chair.h"
-#include "ListManager.h"
+#include "GameManager.h"
 #include "Components/MeshComponent.h"
 
 // Sets default values
@@ -22,7 +22,8 @@ AChair::AChair()
 void AChair::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	GM = GetWorld()->GetGameInstance<UGameManager>();
+	GM->MeetingChairList.Add(this);
 	ChairLocation = this->GetActorLocation();
 	//UE_LOG(LogActor, Warning, TEXT("%s"), *ChairLocation.ToString())
 

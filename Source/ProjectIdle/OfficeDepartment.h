@@ -15,14 +15,10 @@ class PROJECTIDLE_API AOfficeDepartment : public ADepartment
 	GENERATED_BODY()
 	
 public:
-	AOfficeDepartment();
-	class Idea GenerateIdeaValues();
-	
-	class UGameManager* GM;
-	struct FRandomStream random;
-	TArray<class Idea*> IdeaList;
-
 	bool IsGenerating;
+
+	class UGameManager* GM;
+	TArray<class Idea*> IdeaList;
 	
 	UPROPERTY(BlueprintReadWrite) int ideasGenerated;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float CurrIdeaProgress = 0;
@@ -44,4 +40,6 @@ protected:
 
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
+	
+	 class Idea GenerateIdeaValues();
 };
