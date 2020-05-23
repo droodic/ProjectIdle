@@ -7,18 +7,18 @@
 #include "Chair.h"
 #include "ProjectIdle/GameManager.h"
 #include "Employees/Employee.h"
-#include "ListManager.generated.h"
+#include "MeetingDepartment.generated.h"
 
 UCLASS()
-class PROJECTIDLE_API AListManager : public AActor
+class PROJECTIDLE_API AMeetingDepartment : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AListManager();
-
-	TArray<AChair*> Chairs;
+	AMeetingDepartment();
+	 //Move this to game manager if need a clean global reference
+	//TArray<AChair*> Chairs;
 
 	//TArray<AEmployee*> Workers;
 

@@ -19,7 +19,7 @@ public:
 
 	UPROPERTY()
 	FVector ChairLocation;
-
+	class UGameManager* GM;
 	UPROPERTY()
 		USceneComponent* Root;
 	UPROPERTY(VisibleAnywhere)

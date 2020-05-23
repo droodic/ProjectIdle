@@ -26,7 +26,6 @@ public:
 	//Managers
 	class AGameHUD* UI;
 	class UGameManager* GM;
-	class AListManager* Work;
 
 protected:
 	// Called when the game starts or when spawned
