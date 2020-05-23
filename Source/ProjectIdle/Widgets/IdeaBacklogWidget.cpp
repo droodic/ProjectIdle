@@ -19,7 +19,7 @@ void UIdeaBacklogWidget::DisplayNewIdea() {
 	{
 		IdeaButton2->SetVisibility(ESlateVisibility::Visible);
 	}
-	else 
+	else if (!IdeaButton3->IsVisible())
 	{
 		IdeaButton3->SetVisibility(ESlateVisibility::Visible);
 	}
