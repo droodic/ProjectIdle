@@ -44,7 +44,7 @@ public:
 	UPROPERTY()
 		int32 ScreenSizeY;
 
-	bool IsCharacterMoving = false;
+	bool OutOfBound = false;
 
 	UFUNCTION()
 		FVector GetCameraPanDirection();

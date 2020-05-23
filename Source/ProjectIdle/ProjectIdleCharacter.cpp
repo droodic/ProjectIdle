@@ -99,30 +99,32 @@ void AProjectIdleCharacter::Tick(float DeltaSeconds)
 
 	if (CursorToWorld != nullptr)
 	{
-		if (UHeadMountedDisplayFunctionLibrary::IsHeadMountedDisplayEnabled())
-		{
-			if (UWorld* World = GetWorld())
+			if (UHeadMountedDisplayFunctionLibrary::IsHeadMountedDisplayEnabled())
 			{
-				FHitResult HitResult;
-				FCollisionQueryParams Params(NAME_None, FCollisionQueryParams::GetUnknownStatId());
-				FVector StartLocation = TopDownCameraComponent->GetComponentLocation();
-				FVector EndLocation = TopDownCameraComponent->GetComponentRotation().Vector() * 2000.0f;
-				Params.AddIgnoredActor(this);
-				World->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility, Params);
-				FQuat SurfaceRotation = HitResult.ImpactNormal.ToOrientationRotator().Quaternion();
-				CursorToWorld->SetWorldLocationAndRotation(HitResult.Location, SurfaceRotation);
+				if (UWorld* World = GetWorld())
+				{
+
+					FHitResult HitResult;
+					FCollisionQueryParams Params(NAME_None, FCollisionQueryParams::GetUnknownStatId());
+					FVector StartLocation = TopDownCameraComponent->GetComponentLocation();
+					FVector EndLocation = TopDownCameraComponent->GetComponentRotation().Vector() * 2000.0f;
+					Params.AddIgnoredActor(this);
+					World->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility, Params);
+					FQuat SurfaceRotation = HitResult.ImpactNormal.ToOrientationRotator().Quaternion();
+					CursorToWorld->SetWorldLocationAndRotation(HitResult.Location, SurfaceRotation);
+				}
 			}
-		}
-		else if (APlayerController* PC = Cast<APlayerController>(GetController()))
-		{
-			FHitResult TraceHitResult;
-			PC->GetHitResultUnderCursor(ECC_Visibility, true, TraceHitResult);
-			FVector CursorFV = TraceHitResult.ImpactNormal;
-			FRotator CursorR = CursorFV.Rotation();
-			CursorToWorld->SetWorldLocation(TraceHitResult.Location);
-			CursorToWorld->SetWorldRotation(CursorR);
-		}
+			else if (APlayerController* PC = Cast<APlayerController>(GetController()))
+			{
+				FHitResult TraceHitResult;
+				PC->GetHitResultUnderCursor(ECC_Visibility, true, TraceHitResult);
+				FVector CursorFV = TraceHitResult.ImpactNormal;
+				FRotator CursorR = CursorFV.Rotation();
+				CursorToWorld->SetWorldLocation(TraceHitResult.Location);
+				CursorToWorld->SetWorldRotation(CursorR);
+			}
 	}
+	//TopDownCameraComponent->AddWorldOffset(GetCameraPanDirection() * CameraMovementSpeed);
 }
 
 FVector AProjectIdleCharacter::GetCameraPanDirection()
@@ -135,18 +137,25 @@ FVector AProjectIdleCharacter::GetCameraPanDirection()
 	if (PlayerControl != nullptr)
 	{
 		PlayerControl->GetMousePosition(MousePositionX, MousePositionY);
+		FString mouseX = FString::FromInt(MousePositionX);
+		FString mouseY = FString::FromInt(MousePositionY);
+		UE_LOG(LogActor, Warning, TEXT("%s"), *mouseX)
+		UE_LOG(LogActor, Warning, TEXT("%s"), *mouseY)
+
 	}
-	if (MousePositionX == 0) {
+	if (MousePositionX >= 1 && MousePositionX <= 20) 
+	{
 		CamDirectionY = -1;
 	}
-	if (MousePositionY <= 0) {
+	if (MousePositionY <= 1)
+	{
 		CamDirectionX = 1;
 	}
-	if (MousePositionX >= ScreenSizeX - 20) 
+	if (MousePositionX >= ScreenSizeX - 15) 
 	{
 		CamDirectionY = 1;
 	}
-	if (MousePositionY >= ScreenSizeY - 20)
+	if (MousePositionY >= ScreenSizeY - 15)
 	{
 		CamDirectionX = -1;
 	}
