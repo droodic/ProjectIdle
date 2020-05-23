@@ -37,5 +37,5 @@ public:
 
 private:
 	UMoneyWidget* MoneyWidget;
-	class UEmployeeSheetWidget* EmpSheetWidget;
+	UEmployeeSheetWidget* EmpSheetWidget;
 };

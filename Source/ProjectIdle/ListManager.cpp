@@ -28,14 +28,16 @@ void AListManager::BeginPlay()
 		}
 	}
 
-	for (TActorIterator<AEmployee> It(world, AEmployee::StaticClass()); It; ++It)
-	{
-		AEmployee* worker = *It;
-		if (worker != nullptr)
-		{
-			Workers.Add(worker);
-		}
-	}
+
+
+	//for (TActorIterator<AEmployee> It(world, AEmployee::StaticClass()); It; ++It)
+	//{
+	//	AEmployee* worker = *It;
+	//	if (worker != nullptr)
+	//	{
+	//		Workers.Add(worker);
+	//	}
+	//}
 
 	//Testing employee and chair array
 
@@ -68,7 +70,7 @@ void AListManager::Tick(float DeltaTime)
 void AListManager::MoveToMeeting()
 {
 	int32 chairSize = Chairs.Num();
-	int32 employeeSize = Workers.Num();
+	int32 employeeSize = GM->EmployeeList.Num();
 	int32 LoopUntil;
 
 	FString sizeString = FString::FromInt(chairSize);
@@ -98,33 +100,33 @@ void AListManager::MoveToMeeting()
 		{
 			if (i < chairSize)
 			{
-				AEmployee* man = Workers[i];
+				//AEmployee* man = GM->EmployeeList[i];
 				AChair* chaise = Chairs[i];
-				man->ToMeeting(chaise->GetActorLocation());
+				GM->EmployeeList[i]->ToMeeting(chaise->GetActorLocation());
 			}
 			else
 			{
-				AEmployee* man = Workers[i];
-				man->ToMeeting(OfficeLocation);
+				//AEmployee* man = GM->EmployeeList[i];
+				GM->EmployeeList[i]->ToMeeting(OfficeLocation);
 			}
 		}
 		else
 		{
-			AEmployee* man = Workers[i];
+			//AEmployee* man = GM->EmployeeList[i];
 			AChair* chaise = Chairs[i];
-			man->ToMeeting(chaise->GetActorLocation());
+			GM->EmployeeList[i]->ToMeeting(chaise->GetActorLocation());
 		}
 	}
 }
 
 void AListManager::BackFromMeeting()
 {
-	int32 employeeSize = Workers.Num();
+	int32 employeeSize = GM->EmployeeList.Num();
 
 	for (int i = 0; i < employeeSize; i++)
 	{
-		AEmployee* man = Workers[i];
-		man->ReturnPositionAfterMeeting(man->StartPosition);
+		//AEmployee* man = GM->EmployeeList[i];
+		GM->EmployeeList[i]->ReturnPositionAfterMeeting(GM->EmployeeList[i]->StartPosition);
 	}
 
 }
