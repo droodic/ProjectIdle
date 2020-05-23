@@ -75,10 +75,10 @@ void AOfficeDepartment::Tick(float DeltaTime)
 			//auto newIdea = IdeaList.Add(new Idea(GenerateIdeaValues())); //Use randomized values later
 			
 			auto newIdea = new Idea(GenerateIdeaValues());
-			BacklogWidget->GetIdea(newIdea);
 
 			//TEST*** make method / optimize
 			BacklogWidget->DisplayNewIdea();
+			BacklogWidget->GetIdea(newIdea);
 		}
 	}
 }
