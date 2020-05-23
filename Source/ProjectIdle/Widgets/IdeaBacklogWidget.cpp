@@ -28,19 +28,7 @@ void UIdeaBacklogWidget::DisplayNewIdea() {
 void UIdeaBacklogWidget::NativeConstruct() {
 	Super::NativeConstruct();
 
-	T_GameTitle->SetText(FText::FromString("TEST GAME"));
-	T_GameDescription->SetText(FText::FromString("Game Description"));
 
-	//->SetText(UEnum::GetDisplayNameTextByValue(2));
-	
-	T_SuccessChance->SetText(FText::AsPercent(newIdea->SuccessChance/100.f));
-	
-	T_Weight->SetText((newIdea->ProgrammerWorkload > newIdea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
-
-	if (newIdea->ProgrammerWorkload == newIdea->ArtistWorkload)
-	{
-		T_Weight->SetText(FText::FromString("All"));
-	}
 
 	//IdeaButton1->SetVisibility(ESlateVisibility::Hidden);
 	//IdeaButton2->SetVisibility(ESlateVisibility::Hidden);
@@ -50,4 +38,17 @@ void UIdeaBacklogWidget::NativeConstruct() {
 void UIdeaBacklogWidget::GetIdea(Idea* idea) 
 {
 	newIdea = idea;
+	T_GameTitle->SetText(FText::FromString("TEST GAME"));
+	T_GameDescription->SetText(FText::FromString("Game Description"));
+
+	//->SetText(UEnum::GetDisplayNameTextByValue(2));
+
+	T_SuccessChance->SetText(FText::AsPercent(newIdea->SuccessChance / 100.f));
+
+	T_Weight->SetText((newIdea->ProgrammerWorkload > newIdea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
+
+	if (newIdea->ProgrammerWorkload == newIdea->ArtistWorkload)
+	{
+		T_Weight->SetText(FText::FromString("All"));
+	}
 }
