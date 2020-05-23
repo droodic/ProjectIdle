@@ -10,12 +10,18 @@ float Idea::GetWorkload()
 
 Idea::Idea(float chance, float pWorkload, float aWorkload)
 {
-	ChanceOfSuccess = chance;
+	SuccessChance = chance;
 	ProgrammerWorkload = pWorkload;
 	ArtistWorkload = aWorkload;
 }
 
-
-//Idea::~Idea()
-//{
-//}
+Idea::Idea(FString name, FString description, FString mainWeight, EGenre genre, float chance, float programmerWorkload, float artistWorkload) 
+{
+	IdeaName = name;
+	IdeaDescription = description;
+	MainWeight = mainWeight;
+	Genre = genre;
+	SuccessChance = chance;
+	ProgrammerWorkload = programmerWorkload;
+	ArtistWorkload = artistWorkload;
+}
