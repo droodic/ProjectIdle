@@ -46,7 +46,7 @@ void AMeetingDepartment::TakeIdea()
 	//else if (UserWidget == nullptr) {
 	//	GEngine->AddOnScreenDebugMessage(105, 5.f, FColor::Red, "NULPTR userwidget");
 	//}
-	MeetingWidget->AddToViewport();
+	//MeetingWidget->AddToViewport();
 }
 
 void AMeetingDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
