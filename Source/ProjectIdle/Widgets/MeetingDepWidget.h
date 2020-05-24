@@ -14,5 +14,7 @@ class PROJECTIDLE_API UMeetingDepWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
+public:
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_Genre;
 	
 };

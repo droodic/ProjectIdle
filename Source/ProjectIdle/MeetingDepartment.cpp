@@ -2,6 +2,7 @@
 
 
 #include "MeetingDepartment.h"
+#include "Idea.h"
 #include "EngineUtils.h"
 
 // Sets default values
@@ -18,22 +19,40 @@ void AMeetingDepartment::BeginPlay()
 {
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
-	GM->lm = this;
+	GM->MeetingDepartment = this;
 	//temp assign, need to change class name , maybe move functions to gm
 	UWorld* world = GetWorld();
-
 	if (UserWidget != nullptr) {
 		MeetingWidget = CreateWidget<UMeetingDepWidget>(GetWorld(), UserWidget);
+		//TakeIdea();
 	}
+}
+
+void AMeetingDepartment::TakeIdea()
+{
+	if (MeetingWidget != nullptr && UserWidget != nullptr) {
+		MeetingWidget->T_Genre->SetText(FText::FromString("TEST2"));
+
+	}
+	else {
+		GEngine->AddOnScreenDebugMessage(105, 5.f, FColor::Red, "NULPTR");
+	}
+
 }
 
 void AMeetingDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-	MeetingWidget->AddToViewport();
+	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
+	{
+		MeetingWidget->AddToViewport();
+	}
 }
 void AMeetingDepartment::NotifyActorEndOverlap(AActor* OtherActor)
 {
-	MeetingWidget->RemoveFromParent();
+	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
+	{
+		MeetingWidget->RemoveFromParent();
+	}
 }
 
 // Called every frame
@@ -42,6 +61,8 @@ void AMeetingDepartment::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
+
+
 
 void AMeetingDepartment::MoveToMeeting()
 {

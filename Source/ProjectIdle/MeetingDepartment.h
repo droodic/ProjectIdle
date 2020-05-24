@@ -32,6 +32,7 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Widgets")TSubclassOf<UUserWidget> UserWidget;
 	class UMeetingDepWidget* MeetingWidget;
+	class Idea* CurrentIdea;
 
 protected:
 	// Called when the game starts or when spawned
@@ -42,5 +43,5 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
+	void TakeIdea();
 };
