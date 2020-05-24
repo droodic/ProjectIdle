@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Chair.h"
-#include "Widgets/MeetingDepWidget.h"
+
 #include "Department.h"
 #include "ProjectIdle/GameManager.h"
 #include "Employees/Employee.h"
@@ -19,10 +19,6 @@ class PROJECTIDLE_API AMeetingDepartment : public ADepartment
 public:	
 	// Sets default values for this actor's properties
 	AMeetingDepartment();
-	 //Move this to game manager if need a clean global reference
-	//TArray<AChair*> Chairs;
-
-	//TArray<AEmployee*> Workers;
 
 	FVector OfficeLocation;
 	UGameManager* GM;

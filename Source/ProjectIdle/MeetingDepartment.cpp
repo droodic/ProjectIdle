@@ -3,7 +3,10 @@
 
 #include "MeetingDepartment.h"
 #include "Idea.h"
+#include "Components/WidgetComponent.h"
+#include "Widgets/MeetingDepWidget.h"
 #include "EngineUtils.h"
+
 
 // Sets default values
 AMeetingDepartment::AMeetingDepartment()
@@ -14,6 +17,7 @@ AMeetingDepartment::AMeetingDepartment()
 
 }
 
+
 // Called when the game starts or when spawned
 void AMeetingDepartment::BeginPlay()
 {
@@ -23,21 +27,26 @@ void AMeetingDepartment::BeginPlay()
 	//temp assign, need to change class name , maybe move functions to gm
 	UWorld* world = GetWorld();
 	if (UserWidget != nullptr) {
-		MeetingWidget = CreateWidget<UMeetingDepWidget>(GetWorld(), UserWidget);
-		//TakeIdea();
+		MeetingWidget = CreateWidget<UMeetingDepWidget>(UGameplayStatics::GetPlayerController(this,0), UserWidget);
 	}
+
+	TakeIdea();
 }
 
 void AMeetingDepartment::TakeIdea()
 {
-	if (MeetingWidget != nullptr && UserWidget != nullptr) {
-		MeetingWidget->T_Genre->SetText(FText::FromString("TEST2"));
-
-	}
-	else {
-		GEngine->AddOnScreenDebugMessage(105, 5.f, FColor::Red, "NULPTR");
-	}
-
+	//if (MeetingWidget != nullptr && UserWidget != nullptr) {
+	//	MeetingWidget->T_Genre->SetText(FText::FromString("TEST2"));
+	//	GEngine->AddOnScreenDebugMessage(105, 5.f, FColor::Red, "work");
+	//}
+	//else if (MeetingWidget == nullptr)
+	//{
+	//	GEngine->AddOnScreenDebugMessage(105, 5.f, FColor::Red, "NULPTR meetingwidget");
+	//}
+	//else if (UserWidget == nullptr) {
+	//	GEngine->AddOnScreenDebugMessage(105, 5.f, FColor::Red, "NULPTR userwidget");
+	//}
+	MeetingWidget->AddToViewport();
 }
 
 void AMeetingDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
