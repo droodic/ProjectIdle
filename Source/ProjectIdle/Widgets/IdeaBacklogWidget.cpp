@@ -44,8 +44,6 @@ void UIdeaBacklogWidget::GetIdea(Idea* idea)
 	T_GameTitle->SetText(FText::FromString("TEST GAME"));
 	T_GameDescription->SetText(FText::FromString("Game Description"));
 
-	//->SetText(UEnum::GetDisplayNameTextByValue(2));
-
 	T_SuccessChance->SetText(FText::AsPercent(newIdea->SuccessChance / 100.f));
 
 	T_Weight->SetText((newIdea->ProgrammerWorkload > newIdea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
@@ -58,24 +56,24 @@ void UIdeaBacklogWidget::GetIdea(Idea* idea)
 
 void UIdeaBacklogWidget::SendIdea()
 {
-	if (GM != nullptr)
+	if (GM == nullptr)
 	{
-		if (GM->MeetingDepartment == nullptr) {
-			GEngine->AddOnScreenDebugMessage(102, 5.f, FColor::Red, "GM->MeetingDepartment is null");
-		}
-
-		else if (GM->MeetingDepartment != nullptr) {
-			GM->MeetingDepartment->TakeIdea();
-			GEngine->AddOnScreenDebugMessage(103, 5.f, FColor::Red, "Meeting TakeIdea");
-		}
-		
-
-	}
-	else {
 		GM = GetWorld()->GetGameInstance<UGameManager>();
 		SendIdea();
 		GEngine->AddOnScreenDebugMessage(101, 5.f, FColor::Red, "populate GM");
 	}
 
+	if (GM->MeetingDepartment == nullptr) {
+		GEngine->AddOnScreenDebugMessage(102, 5.f, FColor::Red, "GM->MeetingDepartment is null");
+	}
+
+	else if (GM->MeetingDepartment != nullptr) {
+		GM->MeetingDepartment->TakeIdea();
+		GEngine->AddOnScreenDebugMessage(103, 5.f, FColor::Red, "Meeting TakeIdea");
+	}
+
 
 }
+
+
+
