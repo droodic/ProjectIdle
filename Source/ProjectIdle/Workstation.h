@@ -26,6 +26,9 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* ComputerMesh;
 
+	UPROPERTY()
+	FVector StationLocation;
+
 	class UGameManager* GM;
 
     EType type;
@@ -37,5 +40,5 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
+	/*UFUNCTION() FVector WorkstationPosition();*/
 };

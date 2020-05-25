@@ -23,13 +23,16 @@ void AWorkstation::BeginPlay()
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->WorkstationList.Add(this);
-	
+	StationLocation = this->GetActorLocation();
 }
 
 // Called every frame
 void AWorkstation::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
+//FVector AWorkstation::WorkstationPosition()
+//{
+//
+//}
