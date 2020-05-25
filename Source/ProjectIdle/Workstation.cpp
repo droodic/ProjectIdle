@@ -2,6 +2,7 @@
 
 
 #include "Workstation.h"
+#include "ProjectIdle/GameManager.h"
 #include "Engine.h"
 
 // Sets default values
@@ -20,6 +21,8 @@ AWorkstation::AWorkstation()
 void AWorkstation::BeginPlay()
 {
 	Super::BeginPlay();
+	GM = GetWorld()->GetGameInstance<UGameManager>();
+	GM->WorkstationList.Add(this);
 	
 }
 

@@ -26,6 +26,8 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* ComputerMesh;
 
+	class UGameManager* GM;
+
     EType type;
 
 protected:
