@@ -67,7 +67,7 @@ public:
 	void GetIdea(class Idea* idea);
 
 private:
-	void Back();
+	UFUNCTION() void Back();
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void SendIdea();

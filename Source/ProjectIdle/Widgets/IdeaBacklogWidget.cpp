@@ -31,14 +31,14 @@ void UIdeaBacklogWidget::DisplayNewIdea() {
 
 void UIdeaBacklogWidget::Back()
 {
-	GEngine->AddOnScreenDebugMessage(4, 5.f, FColor::Green, "Idea1");
+	GEngine->AddOnScreenDebugMessage(12039, 5.f, FColor::Green, "Idea1");
 	OfficeDepartment->Back();
 }
 
 void UIdeaBacklogWidget::NativeConstruct() {
 	Super::NativeConstruct();
 
-	if (Back_Btn->OnClicked.IsBound())
+	if (!Back_Btn->OnClicked.IsBound())
 	{
 		Back_Btn->OnClicked.AddDynamic(this, &UIdeaBacklogWidget::Back);
 	}
