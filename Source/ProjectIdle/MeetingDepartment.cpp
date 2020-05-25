@@ -2,25 +2,68 @@
 
 
 #include "MeetingDepartment.h"
+#include "Idea.h"
+#include "Components/WidgetComponent.h"
+#include "Widgets/MeetingDepWidget.h"
 #include "EngineUtils.h"
+
 
 // Sets default values
 AMeetingDepartment::AMeetingDepartment()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	OfficeLocation = FVector(-720.0, 900, 200);
 
 }
+
 
 // Called when the game starts or when spawned
 void AMeetingDepartment::BeginPlay()
 {
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
-	GM->lm = this;
-	 //temp assign, need to change class name , maybe move functions to gm
+	GM->MeetingDepartment = this;
+	//temp assign, need to change class name , maybe move functions to gm
 	UWorld* world = GetWorld();
+	if (UserWidget != nullptr) {
+		MeetingWidget = CreateWidget<UMeetingDepWidget>(UGameplayStatics::GetPlayerController(this, 0), UserWidget);
+	}
+
+	TakeIdea();
+}
+
+void AMeetingDepartment::TakeIdea()
+{
+	if (MeetingWidget != nullptr && UserWidget != nullptr) {
+		MeetingWidget->T_Genre->SetText(FText::FromString("TEST2"));
+		GEngine->AddOnScreenDebugMessage(105, 5.f, FColor::Red, "work");
+	}
+	else if (MeetingWidget == nullptr)
+	{
+		GEngine->AddOnScreenDebugMessage(105, 5.f, FColor::Red, "NULPTR meetingwidget");
+	}
+	else if (UserWidget == nullptr) {
+		GEngine->AddOnScreenDebugMessage(105, 5.f, FColor::Red, "NULPTR userwidget");
+	}
+	//MeetingWidget->AddToViewport();
+}
+
+
+
+void AMeetingDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
+	{
+		MeetingWidget->AddToViewport();
+	}
+}
+void AMeetingDepartment::NotifyActorEndOverlap(AActor* OtherActor)
+{
+	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
+	{
+		MeetingWidget->RemoveFromParent();
+	}
 }
 
 // Called every frame
@@ -30,6 +73,8 @@ void AMeetingDepartment::Tick(float DeltaTime)
 
 }
 
+
+
 void AMeetingDepartment::MoveToMeeting()
 {
 	int32 chairSize = GM->MeetingChairList.Num();
@@ -37,16 +82,16 @@ void AMeetingDepartment::MoveToMeeting()
 	int32 LoopUntil;
 
 	FString sizeString = FString::FromInt(chairSize);
-    UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
+	UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
 
 
-	bool MoreEmployeeThanChair = false;
+		bool MoreEmployeeThanChair = false;
 
 	if (chairSize > employeeSize)
 	{
 		LoopUntil = chairSize - employeeSize;
 	}
-	else if(employeeSize > chairSize)
+	else if (employeeSize > chairSize)
 	{
 		//If there too many employee
 		MoreEmployeeThanChair = true;

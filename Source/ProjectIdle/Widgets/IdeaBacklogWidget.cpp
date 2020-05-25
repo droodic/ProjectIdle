@@ -3,23 +3,26 @@
 
 #include "IdeaBacklogWidget.h"
 #include "Engine.h"
+#include "ProjectIdle/GameManager.h"
+#include "ProjectIdle/MeetingDepartment.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "ProjectIdle/Idea.h"
 
+
 void UIdeaBacklogWidget::DisplayNewIdea() {
-	
+
 	GEngine->AddOnScreenDebugMessage(5, 5.f, FColor::Red, "Displaying new idea");
-	
-	if (!IdeaButton1->IsVisible()) 
+
+	if (!IdeaButton1->IsVisible())
 	{
 		IdeaButton1->SetVisibility(ESlateVisibility::Visible);
 	}
-	else if (!IdeaButton2->IsVisible()) 
+	else if (!IdeaButton2->IsVisible())
 	{
 		IdeaButton2->SetVisibility(ESlateVisibility::Visible);
 	}
-	else 
+	else if (!IdeaButton3->IsVisible())
 	{
 		IdeaButton3->SetVisibility(ESlateVisibility::Visible);
 	}
@@ -35,13 +38,11 @@ void UIdeaBacklogWidget::NativeConstruct() {
 	//IdeaButton3->SetVisibility(ESlateVisibility::Hidden); //array?
 }
 
-void UIdeaBacklogWidget::GetIdea(Idea* idea) 
+void UIdeaBacklogWidget::GetIdea(Idea* idea)
 {
 	newIdea = idea;
 	T_GameTitle->SetText(FText::FromString("TEST GAME"));
 	T_GameDescription->SetText(FText::FromString("Game Description"));
-
-	//->SetText(UEnum::GetDisplayNameTextByValue(2));
 
 	T_SuccessChance->SetText(FText::AsPercent(newIdea->SuccessChance / 100.f));
 
@@ -52,3 +53,27 @@ void UIdeaBacklogWidget::GetIdea(Idea* idea)
 		T_Weight->SetText(FText::FromString("All"));
 	}
 }
+
+void UIdeaBacklogWidget::SendIdea()
+{
+	if (GM == nullptr)
+	{
+		GM = GetWorld()->GetGameInstance<UGameManager>();
+		SendIdea();
+		GEngine->AddOnScreenDebugMessage(101, 5.f, FColor::Red, "populate GM");
+	}
+
+	if (GM->MeetingDepartment == nullptr) {
+		GEngine->AddOnScreenDebugMessage(102, 5.f, FColor::Red, "GM->MeetingDepartment is null");
+	}
+
+	else if (GM->MeetingDepartment != nullptr) {
+		GM->MeetingDepartment->TakeIdea();
+		GEngine->AddOnScreenDebugMessage(103, 5.f, FColor::Red, "Meeting TakeIdea");
+	}
+
+
+}
+
+
+

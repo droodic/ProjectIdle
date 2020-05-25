@@ -62,11 +62,9 @@ void AOfficeDepartment::CallMeeting()
 void AOfficeDepartment::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Red, "!!!");
 	if (IsGenerating && CurrIdeaProgress <= MaxIdeaProgress)
 	{
-		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, "???");
-		CurrIdeaProgress += DeltaTime * 15; // + DeltaTime * SpeedModifer (? - Have some algorithm to be able to scale this)
+		CurrIdeaProgress += DeltaTime * 30; // + DeltaTime * SpeedModifer (? - Have some algorithm to be able to scale this)
 		if (CurrIdeaProgress >= MaxIdeaProgress) {
 			IsGenerating = false;
 			CurrIdeaProgress = 0;
@@ -85,7 +83,7 @@ void AOfficeDepartment::Tick(float DeltaTime)
 
 void AOfficeDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-	if (OtherActor != nullptr && Cast<AProjectIdleCharacter>(OtherActor))
+	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
 	{
 		if (OfficeDepMenuWidget != nullptr)
 		{
@@ -96,7 +94,7 @@ void AOfficeDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
 
 void AOfficeDepartment::NotifyActorEndOverlap(AActor* OtherActor)
 {
-	if (OtherActor != nullptr && Cast<AProjectIdleCharacter>(OtherActor))
+	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
 	{
 		if (OfficeDepMenuWidget->IsInViewport())
 		{
