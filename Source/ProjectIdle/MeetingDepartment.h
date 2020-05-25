@@ -28,7 +28,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void BackFromMeeting();
 
 	UPROPERTY(EditAnywhere, Category = "Widgets")TSubclassOf<UUserWidget> UserWidget;
-	class UMeetingDepWidget* MeetingWidget;
+	UPROPERTY() class UMeetingDepWidget* MeetingWidget;
 	class Idea* CurrentIdea;
 
 protected:

@@ -19,6 +19,8 @@ public:
 	UPROPERTY(BlueprintReadWrite) TArray<class AEmployee*> EmployeeList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AChair*> MeetingChairList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AWorkstation*> WorkstationList;
+
+	UPROPERTY(BlueprintReadWrite) class AOfficeDepartment* OfficeDepartment;
 	UPROPERTY(BlueprintReadWrite) class AMeetingDepartment* MeetingDepartment;
 	UPROPERTY(BlueprintReadWrite) class AWorkstation* WorkStation;
 	virtual void Init();

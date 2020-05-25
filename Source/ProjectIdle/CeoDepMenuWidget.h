@@ -16,5 +16,5 @@ class PROJECTIDLE_API UCeoDepMenuWidget : public UUserWidget
 
 public:
 	UPROPERTY(BlueprintReadWrite) class AOfficeDepartment* OfficeDepartment;
-
+	virtual void NativeConstruct() override;
 };

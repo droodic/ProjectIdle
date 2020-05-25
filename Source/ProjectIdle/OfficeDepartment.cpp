@@ -6,6 +6,8 @@
 #include "Widgets/IdeaBacklogWidget.h"
 #include "CeoDepMenuWidget.h"
 #include "Components/WidgetComponent.h"
+#include "GameManager.h"
+#include "GameHUD.h"
 #include "Kismet/KismetMathLibrary.h"
 
 Idea AOfficeDepartment::GenerateIdeaValues()
@@ -17,16 +19,19 @@ Idea AOfficeDepartment::GenerateIdeaValues()
 void AOfficeDepartment::BeginPlay()
 {
 	Super::BeginPlay();
+	//GM = GetWorld()->GetGameInstance<UGameManager>(); //unused
+	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
 
 	if (UserWidgets[0] != nullptr)
 	{
-		BacklogWidget = CreateWidget<UIdeaBacklogWidget>(GetWorld(), UserWidgets[0]);
+		BacklogWidget = CreateWidget<UIdeaBacklogWidget>(UGameplayStatics::GetPlayerController(this, 0), UserWidgets[0]);
 		BacklogWidget->OfficeDepartment = this;
 	}
 	if (UserWidgets[1] != nullptr)
 	{
-		OfficeDepMenuWidget = CreateWidget<UCeoDepMenuWidget>(GetWorld(), UserWidgets[1]);
+		OfficeDepMenuWidget = CreateWidget<UCeoDepMenuWidget>(UGameplayStatics::GetPlayerController(this, 0), UserWidgets[1]);
 		OfficeDepMenuWidget->OfficeDepartment = this;
+		//OfficeDepMenuWidget->AddToRoot();
 	}
 }
 
@@ -34,7 +39,7 @@ void AOfficeDepartment::ViewBacklog()
 {
 	if (BacklogWidget != nullptr)
 	{
-		OfficeDepMenuWidget->RemoveFromParent();
+		OfficeDepMenuWidget->RemoveFromViewport();
 		BacklogWidget->AddToViewport();
 	}
 }
@@ -69,9 +74,9 @@ void AOfficeDepartment::Tick(float DeltaTime)
 			IsGenerating = false;
 			CurrIdeaProgress = 0;
 			ideasGenerated++;
-			
+
 			//auto newIdea = IdeaList.Add(new Idea(GenerateIdeaValues())); //Use randomized values later
-			
+
 			auto newIdea = new Idea(GenerateIdeaValues());
 
 			//TEST*** make method / optimize
@@ -85,10 +90,12 @@ void AOfficeDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
 	{
-		if (OfficeDepMenuWidget != nullptr)
+		if (OfficeDepMenuWidget != nullptr) //&& OfficeDepMenuWidget->IsValidLowLevel())
 		{
 			OfficeDepMenuWidget->AddToViewport();
 		}
+
+		//UI->ShowWidget(OfficeDepMenuWidget, UserWidgets[1]); 
 	}
 }
 
@@ -98,11 +105,11 @@ void AOfficeDepartment::NotifyActorEndOverlap(AActor* OtherActor)
 	{
 		if (OfficeDepMenuWidget->IsInViewport())
 		{
-			OfficeDepMenuWidget->RemoveFromParent();
+			OfficeDepMenuWidget->RemoveFromViewport();
 		}
-		else if (BacklogWidget->IsInViewport()) 
+		else if (BacklogWidget->IsInViewport())
 		{
-			BacklogWidget->RemoveFromParent();
+			BacklogWidget->RemoveFromViewport();
 		}
 	}
 }

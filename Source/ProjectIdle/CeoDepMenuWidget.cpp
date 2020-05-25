@@ -2,4 +2,10 @@
 
 
 #include "CeoDepMenuWidget.h"
+#include "Engine.h"
 
+void UCeoDepMenuWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+	//AddToRoot();
+}
