@@ -32,7 +32,18 @@ void AWorkstation::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-//FVector AWorkstation::WorkstationPosition()
-//{
-//
-//}
+void AWorkstation::UpdateWorkstationPosition()
+{
+	int32 employeeSize = GM->EmployeeList.Num();
+	int32 workstationSize = GM->WorkstationList.Num();
+	FVector testing = FVector(0, 0, 0);
+
+	if (employeeSize > 0 && workstationSize > 0)
+	{
+		for (int i = 0; i < employeeSize; i++)
+		{
+			GM->EmployeeList[i]->StartPosition = testing;
+		}
+	}
+
+}

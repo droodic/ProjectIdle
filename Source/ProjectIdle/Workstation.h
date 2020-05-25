@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Employees/Employee.h"
 #include "GameFramework/Actor.h"
 #include "Workstation.generated.h"
 
@@ -40,5 +41,5 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	/*UFUNCTION() FVector WorkstationPosition();*/
+	UFUNCTION() void UpdateWorkstationPosition();
 };
