@@ -12,9 +12,11 @@ AWorkstation::AWorkstation()
 	PrimaryActorTick.bCanEverTick = true;
 	DeskMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DeskMesh"));
 	ComputerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ComputerMesh"));
+	ChairMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ChairMesh"));
 	RootComponent = DeskMesh;
 
 	ComputerMesh->SetupAttachment(RootComponent);
+	ChairMesh->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned

@@ -26,7 +26,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* ComputerMesh;
-
+	UPROPERTY(VisibleAnywhere)
+		UStaticMeshComponent* ChairMesh;
 	UPROPERTY()
 	FVector StationLocation;
 
