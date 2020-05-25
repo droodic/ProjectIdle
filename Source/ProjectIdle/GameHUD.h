@@ -33,9 +33,13 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 		TSubclassOf<UUserWidget> EmployeeSheetClass;
 
+	//class UCeoDepMenuWidget* OfficeDepMenuWidget;
+
 	void ShowEmployeeSheet(class AEmployee* emp);
+	void ShowWidget(UUserWidget* Widgetc, TSubclassOf<UUserWidget> WidgetClass);
 
 private:
 	UMoneyWidget* MoneyWidget;
-	UEmployeeSheetWidget* EmpSheetWidget;
+	UPROPERTY() UEmployeeSheetWidget* EmpSheetWidget;
+	//template<class T>
 };

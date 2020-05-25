@@ -62,7 +62,7 @@ void AMeetingDepartment::NotifyActorEndOverlap(AActor* OtherActor)
 {
 	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
 	{
-		MeetingWidget->RemoveFromParent();
+		MeetingWidget->RemoveFromViewport();
 	}
 }
 

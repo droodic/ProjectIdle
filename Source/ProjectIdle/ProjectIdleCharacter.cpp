@@ -71,7 +71,7 @@ void AProjectIdleCharacter::BeginPlay()
 	PlayerControl = Cast<APlayerController>(GetController());
 	PlayerControl->GetViewportSize(ScreenSizeX, ScreenSizeY);
 
-	auto Widget = CreateWidget<UGameUI>(GetWorld(), WidgetClass);
+	auto Widget = CreateWidget<UGameUI>(UGameplayStatics::GetPlayerController(this, 0), WidgetClass);
 	if (Widget)
 	{
 	    Widget->player = this;

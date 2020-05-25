@@ -18,6 +18,8 @@ public:
 	bool IsGenerating;
 
 	class UGameManager* GM;
+	class AGameHUD* UI;
+
 	TArray<class Idea*> IdeaList;
 	
 	UPROPERTY(BlueprintReadWrite) int ideasGenerated;
@@ -25,8 +27,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float MaxIdeaProgress = 100;
 
 	UPROPERTY(EditAnywhere, Category = "Widgets") TArray<TSubclassOf<UUserWidget>> UserWidgets;
-	class UCeoDepMenuWidget* OfficeDepMenuWidget;
-	class UIdeaBacklogWidget* BacklogWidget;
+
+	UPROPERTY() class UCeoDepMenuWidget* OfficeDepMenuWidget; //added in gamehud, get ref from gamehud instead
+	UPROPERTY() class UIdeaBacklogWidget* BacklogWidget;
+
 
 //Functions
 public:
