@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Chair.h"
+#include "Workstation.h"
 
 #include "Department.h"
 #include "ProjectIdle/GameManager.h"
