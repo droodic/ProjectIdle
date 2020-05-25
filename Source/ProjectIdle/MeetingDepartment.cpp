@@ -30,13 +30,13 @@ void AMeetingDepartment::BeginPlay()
 		MeetingWidget = CreateWidget<UMeetingDepWidget>(UGameplayStatics::GetPlayerController(this, 0), UserWidget);
 	}
 
-	TakeIdea();
+	//TakeIdea();
 }
 
-void AMeetingDepartment::TakeIdea()
+void AMeetingDepartment::TakeIdea(Idea* SentIdea)
 {
 	if (MeetingWidget != nullptr && UserWidget != nullptr) {
-		MeetingWidget->T_Genre->SetText(FText::FromString("TEST2"));
+		MeetingWidget->T_Genre->SetText(FText::FromString("CHOSEN IDEA")); //Change this dynamically with SentIdea object parameters, need to change stuff in IdeaBacklogwidget to make it work
 		GEngine->AddOnScreenDebugMessage(105, 5.f, FColor::Red, "work");
 	}
 	else if (MeetingWidget == nullptr)

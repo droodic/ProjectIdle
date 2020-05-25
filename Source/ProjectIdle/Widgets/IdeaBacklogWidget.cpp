@@ -30,12 +30,6 @@ void UIdeaBacklogWidget::DisplayNewIdea() {
 
 void UIdeaBacklogWidget::NativeConstruct() {
 	Super::NativeConstruct();
-
-
-
-	//IdeaButton1->SetVisibility(ESlateVisibility::Hidden);
-	//IdeaButton2->SetVisibility(ESlateVisibility::Hidden);
-	//IdeaButton3->SetVisibility(ESlateVisibility::Hidden); //array?
 }
 
 void UIdeaBacklogWidget::GetIdea(Idea* idea)
@@ -59,7 +53,6 @@ void UIdeaBacklogWidget::SendIdea()
 	if (GM == nullptr)
 	{
 		GM = GetWorld()->GetGameInstance<UGameManager>();
-		SendIdea();
 		GEngine->AddOnScreenDebugMessage(101, 5.f, FColor::Red, "populate GM");
 	}
 
@@ -68,8 +61,9 @@ void UIdeaBacklogWidget::SendIdea()
 	}
 
 	else if (GM->MeetingDepartment != nullptr) {
-		GM->MeetingDepartment->TakeIdea();
+		GM->MeetingDepartment->TakeIdea(newIdea);
 		GEngine->AddOnScreenDebugMessage(103, 5.f, FColor::Red, "Meeting TakeIdea");
+
 	}
 
 
