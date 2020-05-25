@@ -38,6 +38,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void ViewBacklog();
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void CallMeeting();
 
+	void Back();
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
