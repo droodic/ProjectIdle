@@ -3,11 +3,12 @@
 
 #include "IdeaBacklogWidget.h"
 #include "Engine.h"
+#include "ProjectIdle/Idea.h"
 #include "ProjectIdle/GameManager.h"
 #include "ProjectIdle/MeetingDepartment.h"
+#include "ProjectIdle/OfficeDepartment.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
-#include "ProjectIdle/Idea.h"
 
 
 void UIdeaBacklogWidget::DisplayNewIdea() {
@@ -28,25 +29,69 @@ void UIdeaBacklogWidget::DisplayNewIdea() {
 	}
 }
 
+void UIdeaBacklogWidget::Back()
+{
+	GEngine->AddOnScreenDebugMessage(4, 5.f, FColor::Green, "Idea1");
+	OfficeDepartment->Back();
+}
+
 void UIdeaBacklogWidget::NativeConstruct() {
 	Super::NativeConstruct();
+
+	if (Back_Btn->OnClicked.IsBound())
+	{
+		Back_Btn->OnClicked.AddDynamic(this, &UIdeaBacklogWidget::Back);
+	}
 }
 
 void UIdeaBacklogWidget::GetIdea(Idea* idea)
 {
 	newIdea = idea;
-	T_GameTitle->SetText(FText::FromString("TEST GAME"));
-	T_GameDescription->SetText(FText::FromString("Game Description"));
 
-	T_SuccessChance->SetText(FText::AsPercent(newIdea->SuccessChance / 100.f));
-
-	T_Weight->SetText((newIdea->ProgrammerWorkload > newIdea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
-
-	if (newIdea->ProgrammerWorkload == newIdea->ArtistWorkload)
+	if (!IdeaButton1->IsVisible())
 	{
-		T_Weight->SetText(FText::FromString("All"));
+		T_GameTitle->SetText(FText::FromString("TEST GAME"));
+		T_GameDescription->SetText(FText::FromString("Game Description"));
+
+		T_SuccessChance->SetText(FText::AsPercent(newIdea->SuccessChance / 100.f));
+
+		T_Weight->SetText((newIdea->ProgrammerWorkload > newIdea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
+
+		if (newIdea->ProgrammerWorkload == newIdea->ArtistWorkload)
+		{
+			T_Weight->SetText(FText::FromString("All"));
+		}
+	}
+	else if (!IdeaButton2->IsVisible())
+	{
+		T_GameTitle_2->SetText(FText::FromString("TEST GAME"));
+		T_GameDescription_2->SetText(FText::FromString("Game Description"));
+
+		T_SuccessChance_2->SetText(FText::AsPercent(newIdea->SuccessChance / 100.f));
+
+		T_Weight_2->SetText((newIdea->ProgrammerWorkload > newIdea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
+
+		if (newIdea->ProgrammerWorkload == newIdea->ArtistWorkload)
+		{
+			T_Weight_2->SetText(FText::FromString("All"));
+		}
+	}
+	else if (!IdeaButton3->IsVisible())
+	{
+		T_GameTitle_3->SetText(FText::FromString("TEST GAME"));
+		T_GameDescription_3->SetText(FText::FromString("Game Description"));
+
+		T_SuccessChance_3->SetText(FText::AsPercent(newIdea->SuccessChance / 100.f));
+
+		T_Weight_3->SetText((newIdea->ProgrammerWorkload > newIdea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
+
+		if (newIdea->ProgrammerWorkload == newIdea->ArtistWorkload)
+		{
+			T_Weight_3->SetText(FText::FromString("All"));
+		}
 	}
 }
+
 
 void UIdeaBacklogWidget::SendIdea()
 {
@@ -65,8 +110,6 @@ void UIdeaBacklogWidget::SendIdea()
 		GEngine->AddOnScreenDebugMessage(103, 5.f, FColor::Red, "Meeting TakeIdea");
 
 	}
-
-
 }
 
 

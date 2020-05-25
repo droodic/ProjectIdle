@@ -44,6 +44,18 @@ void AOfficeDepartment::ViewBacklog()
 	}
 }
 
+void AOfficeDepartment::Back()
+{
+	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, "Back Button");
+
+
+	if (BacklogWidget != nullptr)
+	{
+		BacklogWidget->RemoveFromViewport();
+		OfficeDepMenuWidget->AddToViewport();
+	}
+}
+
 void AOfficeDepartment::GenerateIdea()
 {
 	IsGenerating = true;

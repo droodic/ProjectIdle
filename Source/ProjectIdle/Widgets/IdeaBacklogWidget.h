@@ -14,13 +14,15 @@ class PROJECTIDLE_API UIdeaBacklogWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
-	class AOfficeDepartment* OfficeDepartment;
 	class UGameManager* GM;
+
+	class AOfficeDepartment* OfficeDepartment;
 	class Idea* newIdea;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* IdeaButton1;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* IdeaButton2;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* IdeaButton3;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Back_Btn;
 	
 #pragma region IdeaButton1
 	
@@ -63,5 +65,10 @@ public:
 
 	void DisplayNewIdea();
 	void GetIdea(class Idea* idea);
+
+private:
+	void Back();
+
+public:
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void SendIdea();
 };
