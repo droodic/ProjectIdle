@@ -18,6 +18,7 @@ public:
 	UGameManager();
 	UPROPERTY(BlueprintReadWrite) TArray<class AEmployee*> EmployeeList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AChair*> MeetingChairList;
+	UPROPERTY(BlueprintReadWrite) TArray<class AWorkstation*> WorkstationList;
 	UPROPERTY(BlueprintReadWrite) class AMeetingDepartment* MeetingDepartment;
 	virtual void Init();
 };
