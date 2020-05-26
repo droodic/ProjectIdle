@@ -15,6 +15,8 @@ class PROJECTIDLE_API AOfficeDepartment : public ADepartment
 	GENERATED_BODY()
 	
 public:
+	AOfficeDepartment();
+
 	bool IsGenerating;
 
 	class UGameManager* GM;
@@ -32,6 +34,11 @@ public:
 
 	UPROPERTY() class UCeoDepMenuWidget* OfficeDepMenuWidget; //added in gamehud, get ref from gamehud instead
 	UPROPERTY() class UIdeaBacklogWidget* BacklogWidget;
+
+	UPROPERTY(VisibleAnywhere)
+		UStaticMeshComponent* ComputerMesh;
+	UPROPERTY(VisibleAnywhere)
+		UStaticMeshComponent* ChairMesh;
 
 
 //Functions
