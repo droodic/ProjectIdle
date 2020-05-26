@@ -3,12 +3,20 @@
 
 #include "OfficeDepartment.h"
 #include "Idea.h"
-#include "Widgets/IdeaBacklogWidget.h"
+#include "Widgets/IdeaBacklogWidget.h" 
 #include "CeoDepMenuWidget.h"
 #include "Components/WidgetComponent.h"
 #include "GameManager.h"
 #include "GameHUD.h"
 #include "Kismet/KismetMathLibrary.h"
+
+AOfficeDepartment::AOfficeDepartment() {
+	ComputerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ComputerMesh"));
+	ChairMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ChairMesh"));
+
+	ComputerMesh->SetupAttachment(RootComponent);
+	ChairMesh->SetupAttachment(RootComponent);
+}
 
 Idea AOfficeDepartment::GenerateIdeaValues()
 {
@@ -41,6 +49,18 @@ void AOfficeDepartment::ViewBacklog()
 	{
 		OfficeDepMenuWidget->RemoveFromViewport();
 		BacklogWidget->AddToViewport();
+	}
+}
+
+void AOfficeDepartment::Back()
+{
+	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, "Back Button");
+
+
+	if (BacklogWidget != nullptr)
+	{
+		BacklogWidget->RemoveFromViewport();
+		OfficeDepMenuWidget->AddToViewport();
 	}
 }
 
