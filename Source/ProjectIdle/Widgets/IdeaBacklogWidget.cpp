@@ -15,15 +15,15 @@ void UIdeaBacklogWidget::DisplayNewIdea() {
 
 	GEngine->AddOnScreenDebugMessage(5, 5.f, FColor::Red, "Displaying new idea");
 
-	if (!IdeaButton1->IsVisible())
+	if (/*!IdeaButton1->IsVisible()*/OfficeDepartment->Index == 0)
 	{
 		IdeaButton1->SetVisibility(ESlateVisibility::Visible);
 	}
-	else if (!IdeaButton2->IsVisible())
+	else if(/*!IdeaButton2->IsVisible()*/OfficeDepartment->Index == 1)
 	{
 		IdeaButton2->SetVisibility(ESlateVisibility::Visible);
 	}
-	else if (!IdeaButton3->IsVisible())
+	else if(/*!IdeaButton3->IsVisible()*/OfficeDepartment->Index == 2)
 	{
 		IdeaButton3->SetVisibility(ESlateVisibility::Visible);
 	}
@@ -31,7 +31,6 @@ void UIdeaBacklogWidget::DisplayNewIdea() {
 
 void UIdeaBacklogWidget::Back()
 {
-	GEngine->AddOnScreenDebugMessage(12039, 5.f, FColor::Green, "Idea1");
 	OfficeDepartment->Back();
 }
 
@@ -47,11 +46,12 @@ void UIdeaBacklogWidget::NativeConstruct() {
 void UIdeaBacklogWidget::GetIdea(Idea* idea)
 {
 	newIdea = idea;
+	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, FString::FromInt(OfficeDepartment->Index));
 
-	if (!IdeaButton1->IsVisible())
+	if (/*!IdeaButton1->IsVisible()*/OfficeDepartment->Index == 0)
 	{
 		T_GameTitle->SetText(FText::FromString("TEST GAME"));
-		T_GameDescription->SetText(FText::FromString("Game Description"));
+		T_GameDescription->SetText(FText::FromString("Game Description of game 1"));
 
 		T_SuccessChance->SetText(FText::AsPercent(newIdea->SuccessChance / 100.f));
 
@@ -62,10 +62,10 @@ void UIdeaBacklogWidget::GetIdea(Idea* idea)
 			T_Weight->SetText(FText::FromString("All"));
 		}
 	}
-	else if (!IdeaButton2->IsVisible())
+	else if (/*!IdeaButton1->IsVisible()*/OfficeDepartment->Index == 1)
 	{
-		T_GameTitle_2->SetText(FText::FromString("TEST GAME"));
-		T_GameDescription_2->SetText(FText::FromString("Game Description"));
+		T_GameTitle_2->SetText(FText::FromString("TEST GAME 2"));
+		T_GameDescription_2->SetText(FText::FromString("Game Description of game 2"));
 
 		T_SuccessChance_2->SetText(FText::AsPercent(newIdea->SuccessChance / 100.f));
 
@@ -76,10 +76,10 @@ void UIdeaBacklogWidget::GetIdea(Idea* idea)
 			T_Weight_2->SetText(FText::FromString("All"));
 		}
 	}
-	else if (!IdeaButton3->IsVisible())
+	else if (/*!IdeaButton1->IsVisible()*/OfficeDepartment->Index == 2)
 	{
-		T_GameTitle_3->SetText(FText::FromString("TEST GAME"));
-		T_GameDescription_3->SetText(FText::FromString("Game Description"));
+		T_GameTitle_3->SetText(FText::FromString("TEST GAME 3"));
+		T_GameDescription_3->SetText(FText::FromString("Game Description of game 3"));
 
 		T_SuccessChance_3->SetText(FText::AsPercent(newIdea->SuccessChance / 100.f));
 
@@ -92,7 +92,6 @@ void UIdeaBacklogWidget::GetIdea(Idea* idea)
 	}
 }
 
-
 void UIdeaBacklogWidget::SendIdea()
 {
 	if (GM == nullptr)
@@ -104,13 +103,8 @@ void UIdeaBacklogWidget::SendIdea()
 	if (GM->MeetingDepartment == nullptr) {
 		GEngine->AddOnScreenDebugMessage(102, 5.f, FColor::Red, "GM->MeetingDepartment is null");
 	}
-
 	else if (GM->MeetingDepartment != nullptr) {
 		GM->MeetingDepartment->TakeIdea(newIdea);
 		GEngine->AddOnScreenDebugMessage(103, 5.f, FColor::Red, "Meeting TakeIdea");
-
 	}
 }
-
-
-

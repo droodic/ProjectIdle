@@ -22,6 +22,8 @@ public:
 	class UGameManager* GM;
 	class AGameHUD* UI;
 
+	int Index = 0;
+
 	TArray<class Idea*> IdeaList;
 	
 	UPROPERTY(BlueprintReadWrite) int ideasGenerated;

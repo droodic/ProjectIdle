@@ -60,6 +60,9 @@ public:
 
 #pragma endregion
 
+private:
+	TArray<class Idea*> IdeaList;
+
 public:
 	virtual void NativeConstruct() override;
 

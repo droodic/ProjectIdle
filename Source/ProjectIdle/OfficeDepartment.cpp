@@ -99,9 +99,14 @@ void AOfficeDepartment::Tick(float DeltaTime)
 
 			auto newIdea = new Idea(GenerateIdeaValues());
 
+			if (Index > 2) { Index = 0; }
+
+			IdeaList.Insert(newIdea, Index);
+
 			//TEST*** make method / optimize
 			BacklogWidget->DisplayNewIdea();
 			BacklogWidget->GetIdea(newIdea);
+			Index++;
 		}
 	}
 }
