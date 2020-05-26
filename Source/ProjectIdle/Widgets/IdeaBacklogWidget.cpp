@@ -120,7 +120,12 @@ void UIdeaBacklogWidget::SendIdea() {
 		GEngine->AddOnScreenDebugMessage(102, 5.f, FColor::Red, "GM->MeetingDepartment is null");
 	}
 	else if (GM->MeetingDepartment != nullptr) {
-		GM->MeetingDepartment->TakeIdea(newIdea);
+		auto tIdea = OfficeDepartment->IdeaList[ChosenIndex];
+		if (tIdea != nullptr) {
+			GEngine->AddOnScreenDebugMessage(1036, 5.f, FColor::Red, "tIdea work");
+			GM->MeetingDepartment->TakeIdea(tIdea);
+		}
+		//GM->MeetingDepartment->TakeIdea(OfficeDepartment->IdeaList[ChosenIndex]);
 		GEngine->AddOnScreenDebugMessage(103, 5.f, FColor::Red, "Meeting TakeIdea");
 	}
 	else if (newIdea == nullptr) {
