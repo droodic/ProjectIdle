@@ -4,6 +4,8 @@
 #include "MeetingDepartment.h"
 #include "Idea.h"
 #include "Components/WidgetComponent.h"
+#include "ProjectIdle/GameManager.h"
+#include "ProjectIdle/OfficeDepartment.h"
 #include "Widgets/MeetingDepWidget.h"
 #include "EngineUtils.h"
 
@@ -35,9 +37,18 @@ void AMeetingDepartment::BeginPlay()
 
 void AMeetingDepartment::TakeIdea(Idea* SentIdea)
 {
-	if (MeetingWidget != nullptr && UserWidget != nullptr) {
-		MeetingWidget->T_Genre->SetText(FText::FromString("CHOSEN IDEA")); //Change this dynamically with SentIdea object parameters, need to change stuff in IdeaBacklogwidget to make it work
-		GEngine->AddOnScreenDebugMessage(105, 5.f, FColor::Red, "work");
+	//CurrentIdea = GM->OfficeDepartment->IdeaList[IdeaIndex];
+	if (MeetingWidget != nullptr && UserWidget != nullptr && SentIdea != nullptr) {
+		MeetingWidget->T_GameTitle->SetText(FText::FromString(SentIdea->IdeaName));
+		//MeetingWidget->T_Genre->SetText(FText::FromString(SentIdea->Genre));
+		MeetingWidget->T_GameDescription->SetText(FText::FromString(SentIdea->IdeaDescription));
+		MeetingWidget->T_SuccessChance->SetText(FText::AsPercent(SentIdea->SuccessChance / 100.f));
+		MeetingWidget->T_Weight->SetText((SentIdea->ProgrammerWorkload > SentIdea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
+		if (SentIdea->ProgrammerWorkload == SentIdea->ArtistWorkload)
+		{
+			MeetingWidget->T_Weight->SetText(FText::FromString("All"));
+		}
+		GEngine->AddOnScreenDebugMessage(105, 5.f, FColor::Red, "Idea Transferred");
 	}
 	else if (MeetingWidget == nullptr)
 	{
@@ -120,6 +131,8 @@ void AMeetingDepartment::MoveToMeeting()
 			GM->EmployeeList[i]->ToMeeting(GM->MeetingChairList[i]->GetActorLocation());
 		}
 	}
+
+	
 }
 
 void AMeetingDepartment::BackFromMeeting()
