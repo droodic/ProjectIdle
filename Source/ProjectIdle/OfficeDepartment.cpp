@@ -3,12 +3,20 @@
 
 #include "OfficeDepartment.h"
 #include "Idea.h"
-#include "Widgets/IdeaBacklogWidget.h"
+#include "Widgets/IdeaBacklogWidget.h" 
 #include "CeoDepMenuWidget.h"
 #include "Components/WidgetComponent.h"
 #include "GameManager.h"
 #include "GameHUD.h"
 #include "Kismet/KismetMathLibrary.h"
+
+AOfficeDepartment::AOfficeDepartment() {
+	ComputerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ComputerMesh"));
+	ChairMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ChairMesh"));
+
+	ComputerMesh->SetupAttachment(RootComponent);
+	ChairMesh->SetupAttachment(RootComponent);
+}
 
 Idea AOfficeDepartment::GenerateIdeaValues()
 {
