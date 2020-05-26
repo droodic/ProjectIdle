@@ -5,6 +5,8 @@
 #include "Idea.h"
 #include "Components/WidgetComponent.h"
 #include "Widgets/MeetingDepWidget.h"
+#include "Employees/Artist.h"
+#include "Employees/Programmer.h"
 #include "EngineUtils.h"
 
 
@@ -81,8 +83,8 @@ void AMeetingDepartment::MoveToMeeting()
 	int32 employeeSize = GM->EmployeeList.Num();
 	int32 LoopUntil;
 
-	FString sizeString = FString::FromInt(chairSize);
-	UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
+	//FString sizeString = FString::FromInt(chairSize);
+	//UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
 
 
 		bool MoreEmployeeThanChair = false;
@@ -125,10 +127,33 @@ void AMeetingDepartment::MoveToMeeting()
 void AMeetingDepartment::BackFromMeeting()
 {
 	int32 employeeSize = GM->EmployeeList.Num();
+    
+
 
 	for (int i = 0; i < employeeSize; i++)
 	{
-		GM->EmployeeList[i]->ReturnPositionAfterMeeting(GM->EmployeeList[i]->StartPosition);
+
+		if (GM->EmployeeList[i]->IsA(AArtist::StaticClass()))
+		{
+			GM->EmployeeList[i]->ReturnPositionAfterMeeting(GM->EmployeeList[i]->StartPosition);
+		}
+
+		else if (GM->EmployeeList[i]->IsA(AProgrammer::StaticClass()))
+		{
+
+		}
 	}
+
+	//	//FString position = FString::FromInt(i);
+ //       //UE_LOG(LogActor, Warning, TEXT("%s"), *position)
+	//	//UE_LOG(LogActor, Warning, TEXT("%s"), *GM->EmployeeList[i]->GetActorLocation().ToString())
+	//	//if (GM->WorkStation)
+	//	//{
+	//	//	GM->WorkStation->UpdateWorkstationPosition();
+	//	//	GM->EmployeeList[i]->ReturnPositionAfterMeeting(GM->EmployeeList[i]->StartPosition);
+	//	//}
+	//	//GM->EmployeeList[i]->ReturnPositionAfterMeeting(GM->EmployeeList[i]->StartPosition);
+
+	//}
 
 }

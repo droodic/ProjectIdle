@@ -25,7 +25,14 @@ void AWorkstation::BeginPlay()
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->WorkstationList.Add(this);
+	GM->WorkStation = this;
 	StationLocation = this->GetActorLocation();
+
+	int32 workstationSize = GM->WorkstationList.Num();
+
+	//FString mouseY = FString::FromInt(workstationSize);
+	//UE_LOG(LogActor, Warning, TEXT("%s"), *mouseY)
+	//UE_LOG(LogActor, Warning, TEXT("%s"), *StationLocation.ToString())
 }
 
 // Called every frame
@@ -38,14 +45,12 @@ void AWorkstation::UpdateWorkstationPosition()
 {
 	int32 employeeSize = GM->EmployeeList.Num();
 	int32 workstationSize = GM->WorkstationList.Num();
+	FVector AStationLocation = this->GetActorLocation();
 	FVector testing = FVector(0, 0, 0);
 
-	if (employeeSize > 0 && workstationSize > 0)
+	for (int i = 0; i < 3; i++)
 	{
-		for (int i = 0; i < employeeSize; i++)
-		{
-			GM->EmployeeList[i]->StartPosition = testing;
-		}
+		GM->EmployeeList[i]->StartPosition = testing;
 	}
 
 }
