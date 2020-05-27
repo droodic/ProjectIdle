@@ -31,6 +31,8 @@ public:
 	UPROPERTY()
 	FVector StationLocation;
 
+	UPROPERTY() bool HasEmployee;
+
 	class UGameManager* GM;
 
     EType type;
