@@ -27,6 +27,8 @@ public:
 
 	FVector StartPosition;
 	APlayerCameraManager* Camera;
+	UPROPERTY() FVector StartPosition;
+	UPROPERTY() bool HasWorkStation;
 	//Managers
 	class AGameHUD* UI;
 	class UGameManager* GM;
