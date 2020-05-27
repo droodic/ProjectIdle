@@ -149,23 +149,6 @@ void AMeetingDepartment::BackFromMeeting()
 	{
 		GM->EmployeeList[i]->ReturnPositionAfterMeeting(GM->EmployeeList[i]->StartPosition);
 		GM->EmployeeList[i]->WorkProgressBar->SetVisibility(true);
-		if (GM->WorkstationList.Num() > 0)
-		{
-		   FVector test = GM->EmployeeList[i]->StartPosition;
-		   UE_LOG(LogActor, Warning, TEXT("%s"), *test.ToString())
-		   GM->EmployeeList[i]->ReturnPositionAfterMeeting(test);
-
-		}
-
-		//if (GM->EmployeeList[i]->IsA(AArtist::StaticClass()))
-		//{
-		//	GM->EmployeeList[i]->ReturnPositionAfterMeeting(GM->EmployeeList[i]->StartPosition);
-		//}
-
-		//else if (GM->EmployeeList[i]->IsA(AProgrammer::StaticClass()))
-		//{
-
-		//}
 	}
 
 	//	//FString position = FString::FromInt(i);
