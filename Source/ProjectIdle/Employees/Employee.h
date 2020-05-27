@@ -32,6 +32,7 @@ public:
 	UPROPERTY() FVector StartPosition;
 	APlayerCameraManager* Camera;
 	UPROPERTY() bool HasWorkStation;
+	UPROPERTY() bool IsWorking;
 	//Managers
 	class AGameHUD* UI;
 	class UGameManager* GM;
@@ -46,14 +47,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void GoMeeting();
 	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void ToMeeting(FVector Destination);
 	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void ReturnPositionAfterMeeting(FVector Destination);
+	void BeginWork();
 
 	// Called every frame
 
 	void NotifyActorOnClicked(FKey ButtonPressed = EKeys::RightMouseButton) override;
-
-
 	virtual void Tick(float DeltaTime) override;
-
 	// Called to bind functionality to inputf
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	

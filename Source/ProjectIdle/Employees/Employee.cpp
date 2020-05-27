@@ -46,14 +46,18 @@ void AEmployee::BeginPlay()
 	WorkProgressBar->SetVisibility(false);
 }
 
-	//auto AI = Work->Workers[0];
-	//auto AI2 = Work->Workers[1];
+//auto AI = Work->Workers[0];
+//auto AI2 = Work->Workers[1];
 
-	/*StartPosition = Work->Workers[0]->GetActorLocation();
-	StartPositionTest = Work->Workers[1]->GetActorLocation();
-	UE_LOG(LogActor, Warning, TEXT("%s"), *StartPosition.ToString())
-	UE_LOG(LogActor, Warning, TEXT("%s"), *StartPositionTest.ToString())*/
+/*StartPosition = Work->Workers[0]->GetActorLocation();
+StartPositionTest = Work->Workers[1]->GetActorLocation();
+UE_LOG(LogActor, Warning, TEXT("%s"), *StartPosition.ToString())
+UE_LOG(LogActor, Warning, TEXT("%s"), *StartPositionTest.ToString())*/
 
+
+void AEmployee::BeginWork() {
+	IsWorking = true;
+}
 
 void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 {
@@ -75,6 +79,40 @@ void AEmployee::Tick(float DeltaTime)
 	if (WorkProgressBar != nullptr) {
 		WorkProgressBar->SetWorldRotation(Camera->GetCameraRotation());
 		WorkProgressBar->AddLocalRotation(FRotator(0, 180, 0));
+	}
+
+
+	//Test function - Workers reduce workloads, make function / use timer +event instead of tick
+	if (IsWorking && CurrentWorkload > 0) {
+		CurrentWorkload -= (DeltaTime * (Performance / 2));
+		if (CurrentWorkload <= 0) {
+			//Self workload finished, check to see if others remain. If others in same department remain, go to them, and take 50% of their remainding workload if there's more than 10 seconds left of WL
+			//If none remain, give player money if idea was successful
+			for (auto AnEmployee : GM->EmployeeList) {
+				if (EmployeeRole == "Programmer" && AnEmployee->EmployeeRole == "Programmer") {
+					if (AnEmployee->CurrentWorkload > 0) {
+						AnEmployee->CurrentWorkload /= 2;
+						CurrentWorkload += AnEmployee->CurrentWorkload / 2;
+						GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Programmer workload finished, taking workload from another employee"));
+						break;
+					}
+				}
+				if (EmployeeRole == "Artist" && AnEmployee->EmployeeRole == "Artist") {
+					if (AnEmployee->CurrentWorkload > 0) {
+						AnEmployee->CurrentWorkload /= 2;
+						CurrentWorkload += AnEmployee->CurrentWorkload / 2;
+						GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Artist workload finished, taking workload from another employee"));
+						break;
+					}
+				}
+			}
+
+
+		}
+		if (CurrentWorkload <= 0) { //Change to condition checking if all other employee are also done, then prepare to give money
+			IsWorking = false;
+			WorkProgressBar->SetVisibility(false);
+		}
 	}
 }
 
