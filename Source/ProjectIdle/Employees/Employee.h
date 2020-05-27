@@ -21,8 +21,8 @@ public:
 	UPROPERTY(EditAnywhere) FString EmployeeRole;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector MeetingLocation;
 
-	FVector StartPosition;
-
+	UPROPERTY() FVector StartPosition;
+	UPROPERTY() bool HasWorkStation;
 	//Managers
 	class AGameHUD* UI;
 	class UGameManager* GM;

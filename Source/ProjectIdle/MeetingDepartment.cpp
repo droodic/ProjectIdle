@@ -87,11 +87,11 @@ void AMeetingDepartment::MoveToMeeting()
 	//UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
 
 
-		bool MoreEmployeeThanChair = false;
+	bool MoreEmployeeThanChair = false;
 
 	if (chairSize > employeeSize)
 	{
-		LoopUntil = chairSize - employeeSize;
+		LoopUntil =  employeeSize;
 	}
 	else if (employeeSize > chairSize)
 	{
@@ -128,20 +128,27 @@ void AMeetingDepartment::BackFromMeeting()
 {
 	int32 employeeSize = GM->EmployeeList.Num();
     
-
+	GM->WorkStation->UpdateWorkstationPosition();
 
 	for (int i = 0; i < employeeSize; i++)
 	{
-
-		if (GM->EmployeeList[i]->IsA(AArtist::StaticClass()))
+		if (GM->WorkstationList.Num() > 0)
 		{
-			GM->EmployeeList[i]->ReturnPositionAfterMeeting(GM->EmployeeList[i]->StartPosition);
+		   FVector test = GM->EmployeeList[i]->StartPosition;
+		   UE_LOG(LogActor, Warning, TEXT("%s"), *test.ToString())
+		   GM->EmployeeList[i]->ReturnPositionAfterMeeting(test);
+
 		}
 
-		else if (GM->EmployeeList[i]->IsA(AProgrammer::StaticClass()))
-		{
+		//if (GM->EmployeeList[i]->IsA(AArtist::StaticClass()))
+		//{
+		//	GM->EmployeeList[i]->ReturnPositionAfterMeeting(GM->EmployeeList[i]->StartPosition);
+		//}
 
-		}
+		//else if (GM->EmployeeList[i]->IsA(AProgrammer::StaticClass()))
+		//{
+
+		//}
 	}
 
 	//	//FString position = FString::FromInt(i);

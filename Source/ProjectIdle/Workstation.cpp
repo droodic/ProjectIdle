@@ -3,6 +3,10 @@
 
 #include "Workstation.h"
 #include "ProjectIdle/GameManager.h"
+#include "Employees/Artist.h"
+#include "Employees/Programmer.h"
+#include "Workstations/ArtistStation.h"
+#include "Workstations/ProgrammerStation.h"
 #include "Engine.h"
 
 // Sets default values
@@ -25,9 +29,9 @@ void AWorkstation::BeginPlay()
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->WorkstationList.Add(this);
-	GM->WorkStation = this;
 	StationLocation = this->GetActorLocation();
-
+	GM->WorkStation = this;
+	HasEmployee = false;
 	int32 workstationSize = GM->WorkstationList.Num();
 
 	//FString mouseY = FString::FromInt(workstationSize);
@@ -48,9 +52,41 @@ void AWorkstation::UpdateWorkstationPosition()
 	FVector AStationLocation = this->GetActorLocation();
 	FVector testing = FVector(0, 0, 0);
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < workstationSize; i++)
 	{
-		GM->EmployeeList[i]->StartPosition = testing;
-	}
+		if (GM->WorkstationList[i]->IsA(AProgrammerStation::StaticClass()))
+		{
+			if (GM->WorkstationList[i]->HasEmployee == false)
+			{
+				FVector current = GM->WorkstationList[i]->StationLocation;
+				for (int j = 0; j < employeeSize; j++)
+				{
+					if (GM->EmployeeList[j]->IsA(AProgrammer::StaticClass()) && GM->EmployeeList[j]->HasWorkStation == false)
+					{
+						GM->WorkstationList[i]->HasEmployee = true;
+						GM->EmployeeList[j]->HasWorkStation = true;
+						GM->EmployeeList[j]->StartPosition = GM->WorkstationList[i]->StationLocation;;
+						break;
+					}
+				}
+			}
+		}
 
+		if (GM->WorkstationList[i]->IsA(AArtistStation::StaticClass()))
+		{
+			if (GM->WorkstationList[i]->HasEmployee == false)
+			{
+				for (int j = 0; j < employeeSize; j++)
+				{
+					if (GM->EmployeeList[j]->IsA(AArtist::StaticClass()) && GM->EmployeeList[j]->HasWorkStation == false)
+					{
+						GM->WorkstationList[i]->HasEmployee = true;
+						GM->EmployeeList[j]->HasWorkStation = true;
+						GM->EmployeeList[j]->StartPosition = GM->WorkstationList[i]->StationLocation;
+						break;
+					}
+				}
+			}
+		}
+	}
 }
