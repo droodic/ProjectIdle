@@ -34,10 +34,8 @@ void AWorkstation::BeginPlay()
 	FVector zero = FVector(200, 0, 0);
 	StationVector = this->GetActorLocation();
 	FRotator rotation = this->GetActorRotation();
-	FRotator text = FRotator(0, 0.000031, 0);
-	UE_LOG(LogActor, Warning, TEXT("%s"), *rotation.ToString())
-	//UE_LOG(LogActor, Warning, TEXT("%s"), *text.ToString())
-	if (rotation.operator==(text))
+	//UE_LOG(LogActor, Warning, TEXT("%s"), *rotation.ToString())
+	if (rotation.Yaw >= 0 && rotation.Yaw <= 2 || rotation.Yaw >= 358 && rotation.Yaw <= 360)
 	{
 		StationLocation = this->GetActorLocation().operator+(zero);
 	}
