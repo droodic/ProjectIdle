@@ -14,12 +14,13 @@ Idea::Idea(float chance, float pWorkload, float aWorkload)
 	ArtistWorkload = aWorkload;
 }
 
-Idea::Idea(FString name, FString description, /*FString mainWeight,*/ EGenre genre, float chance, float programmerWorkload, float artistWorkload)
+Idea::Idea(FString name, FString description, /*FString mainWeight,*/ EGenre genre, FLinearColor coverColor,float chance, float programmerWorkload, float artistWorkload)
 {
 	IdeaName = name;
 	IdeaDescription = description;
 	//MainWeight = mainWeight;
 	Genre = genre;
+	CoverColor = coverColor;
 	SuccessChance = chance;
 	ProgrammerWorkload = programmerWorkload;
 	ArtistWorkload = artistWorkload;

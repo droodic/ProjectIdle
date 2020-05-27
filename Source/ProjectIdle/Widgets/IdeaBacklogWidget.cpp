@@ -61,11 +61,7 @@ void UIdeaBacklogWidget::GetIdea(Idea* idea)
 
 	if (OfficeDepartment->Index == 0)
 	{
-		I_GameCover->SetColorAndOpacity(FLinearColor::MakeRandomColor());
-
-		/*T_GameTitle->SetText(FText::FromString("TEST GAME"));
-		T_GameDescription->SetText(FText::FromString("Game Description of game 1"));
-		*/
+		I_GameCover->SetColorAndOpacity(newIdea->CoverColor);
 
 		T_GameTitle->SetText(FText::FromString(newIdea->IdeaName));
 		T_GameDescription->SetText(FText::FromString(newIdea->IdeaDescription));
@@ -83,12 +79,7 @@ void UIdeaBacklogWidget::GetIdea(Idea* idea)
 	}
 	else if (OfficeDepartment->Index == 1)
 	{
-		I_GameCover_2->SetColorAndOpacity(FLinearColor::MakeRandomColor());
-
-		/*
-		T_GameTitle_2->SetText(FText::FromString("TEST GAME 2"));
-		T_GameDescription_2->SetText(FText::FromString("Game Description of game 2"));
-		*/
+		I_GameCover_2->SetColorAndOpacity(newIdea->CoverColor);
 
 		T_GameTitle_2->SetText(FText::FromString(newIdea->IdeaName));
 		T_GameDescription_2->SetText(FText::FromString(newIdea->IdeaDescription));
@@ -106,12 +97,8 @@ void UIdeaBacklogWidget::GetIdea(Idea* idea)
 	}
 	else if (OfficeDepartment->Index == 2)
 	{
-		I_GameCover_3->SetColorAndOpacity(FLinearColor::MakeRandomColor());
+		I_GameCover_3->SetColorAndOpacity(newIdea->CoverColor);
 		
-		/*
-		T_GameTitle_3->SetText(FText::FromString("TEST GAME 3"));
-		T_GameDescription_3->SetText(FText::FromString("Game Description of game 3"));
-		*/
 		
 		T_GameTitle_3->SetText(FText::FromString(newIdea->IdeaName));
 		T_GameDescription_3->SetText(FText::FromString(newIdea->IdeaDescription));
