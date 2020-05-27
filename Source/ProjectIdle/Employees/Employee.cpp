@@ -2,10 +2,12 @@
 
 
 #include "Employee.h"
+#include "AIModule\Classes\DetourCrowdAIController.h"
 #include "ProjectIdle/EmployeeAIC.h"
 #include "ProjectIdle/GameManager.h"
 #include "ProjectIdle/GameHUD.h"
 #include "EWorkProgressWidget.h"
+#include "Runtime\AIModule\Classes\Blueprint\AIBlueprintHelperLibrary.h"
 #include "Engine.h"
 
 // Sets default values
@@ -89,6 +91,7 @@ void AEmployee::ToMeeting(FVector Destination)
 	if (EmployeAI)
 	{
 		EmployeAI->MoveToLocation(Destination);
+		//UAIBlueprintHelperLibrary::SimpleMoveToLocation(EmployeAI, Destination);
 	}
 }
 
@@ -98,6 +101,7 @@ void AEmployee::ReturnPositionAfterMeeting(FVector Destination)
 	if (EmployeAI)
 	{
 		EmployeAI->MoveToLocation(Destination);
+		//UAIBlueprintHelperLibrary::SimpleMoveToLocation(EmployeAI, Destination);
 	}
 	else
 	{
