@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework\Character.h"
+#include "ProjectIdle\EmployeeAIC.h"
 #include "Components\WidgetComponent.h"
 #include "Employee.generated.h"
 
@@ -25,6 +26,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UWidgetComponent* WorkProgressBar;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float AssignedWorkload;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float CurrentWorkload;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) class AEmployeeAIC* AI;
 	//UPROPERTY() float GivenWorkload;
 
 	//int CurrentWorkload;
@@ -55,5 +58,5 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	// Called to bind functionality to inputf
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
+
 };

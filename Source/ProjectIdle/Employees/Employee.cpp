@@ -89,24 +89,36 @@ void AEmployee::Tick(float DeltaTime)
 			//Self workload finished, check to see if others remain. If others in same department remain, go to them, and take 50% of their remainding workload if there's more than 10 seconds left of WL
 			//If none remain, give player money if idea was successful
 			for (auto AnEmployee : GM->EmployeeList) {
+				auto ThisEmployeeAI = Cast<AAIController>(GetController());
 				if (EmployeeRole == "Programmer" && AnEmployee->EmployeeRole == "Programmer") {
-					if (AnEmployee->CurrentWorkload > 0) {
-						AnEmployee->CurrentWorkload /= 2;
-						CurrentWorkload += AnEmployee->CurrentWorkload / 2;
-						GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Programmer workload finished, taking workload from another employee"));
-						break;
+					if (AnEmployee->CurrentWorkload >= 10) {//change to editor editable constant 
+						ThisEmployeeAI->MoveToLocation(AnEmployee->GetActorLocation());
+						auto Distance = FVector::Dist(GetActorLocation(), AnEmployee->GetActorLocation());
+						if (Distance <= 15) { //3.0 is tolerance float
+							AnEmployee->CurrentWorkload /= 2;
+							CurrentWorkload += AnEmployee->CurrentWorkload / 2;
+							ReturnPositionAfterMeeting(StartPosition);
+							GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Programmer workload finished, taking workload from another employee"));
+							break;
+						}
 					}
 				}
-				if (EmployeeRole == "Artist" && AnEmployee->EmployeeRole == "Artist") {
-					if (AnEmployee->CurrentWorkload > 0) {
-						AnEmployee->CurrentWorkload /= 2;
-						CurrentWorkload += AnEmployee->CurrentWorkload / 2;
-						GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Artist workload finished, taking workload from another employee"));
-						break;
+
+				else if (EmployeeRole == "Artist" && AnEmployee->EmployeeRole == "Artist") {
+					if (AnEmployee->CurrentWorkload >= 10) {
+						
+						ThisEmployeeAI->MoveToLocation(AnEmployee->GetActorLocation());
+						auto Distance = FVector::Dist(GetActorLocation(), AnEmployee->GetActorLocation());
+						if (Distance <= 15) {
+							AnEmployee->CurrentWorkload /= 2;
+							CurrentWorkload += AnEmployee->CurrentWorkload / 2;
+							ReturnPositionAfterMeeting(StartPosition);
+							GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Artist workload finished, taking workload from another employee"));
+							break;
+						}
 					}
 				}
 			}
-
 
 		}
 		if (CurrentWorkload <= 0) { //Change to condition checking if all other employee are also done, then prepare to give money
@@ -115,6 +127,8 @@ void AEmployee::Tick(float DeltaTime)
 		}
 	}
 }
+
+
 
 // Called to bind functionality to input
 void AEmployee::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -147,6 +161,7 @@ void AEmployee::ReturnPositionAfterMeeting(FVector Destination)
 	if (EmployeAI)
 	{
 		EmployeAI->MoveToLocation(Destination);
+
 		//UAIBlueprintHelperLibrary::SimpleMoveToLocation(EmployeAI, Destination);
 	}
 	else
