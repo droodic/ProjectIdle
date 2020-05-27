@@ -8,7 +8,7 @@
 #include "Workstation.h"
 
 #include "Department.h"
-#include "ProjectIdle/GameManager.h"
+
 #include "Employees/Employee.h"
 #include "MeetingDepartment.generated.h"
 
@@ -29,7 +29,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Widgets")TSubclassOf<UUserWidget> UserWidget;
 	UPROPERTY() class UMeetingDepWidget* MeetingWidget;
-	class Idea* CurrentIdea;
+	//class Idea* CurrentIdea;
+
+
 
 protected:
 	// Called when the game starts or when spawned
@@ -41,4 +43,5 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	void TakeIdea(class Idea* Idea);
+	//void TakeIdea(int IdeaIndex);
 };

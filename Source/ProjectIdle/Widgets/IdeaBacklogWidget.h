@@ -15,10 +15,12 @@ class PROJECTIDLE_API UIdeaBacklogWidget : public UUserWidget
 	GENERATED_BODY()
 public:
 	class UGameManager* GM;
-
 	class AOfficeDepartment* OfficeDepartment;
 	class Idea* newIdea;
 
+	UPROPERTY(BlueprintReadWrite) int ChosenIndex;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* CallMeetingBtn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* IdeaButton1;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* IdeaButton2;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* IdeaButton3;
@@ -65,13 +67,14 @@ private:
 
 public:
 	virtual void NativeConstruct() override;
-
 	void DisplayNewIdea();
 	void GetIdea(class Idea* idea);
 
 private:
 	UFUNCTION() void Back();
+	UFUNCTION() void CallMeeting();
+	void SendIdea();
+	
 
 public:
-	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void SendIdea();
 };

@@ -25,6 +25,7 @@ void AEmployee::BeginPlay()
 
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0)->GetHUD());
 	StartPosition = this->GetActorLocation();
+	HasWorkStation = false;
 	FVector reset = FVector(0, 0, 278);
 
 	//auto AI = Work->Workers[0];
@@ -84,5 +85,9 @@ void AEmployee::ReturnPositionAfterMeeting(FVector Destination)
 	if (EmployeAI)
 	{
 		EmployeAI->MoveToLocation(Destination);
+	}
+	else
+	{
+		UE_LOG(LogActor, Warning, TEXT("%s"), "Null")
 	}
 }

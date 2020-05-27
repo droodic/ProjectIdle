@@ -3,6 +3,10 @@
 
 #include "Workstation.h"
 #include "ProjectIdle/GameManager.h"
+#include "Employees/Artist.h"
+#include "Employees/Programmer.h"
+#include "Workstations/ArtistStation.h"
+#include "Workstations/ProgrammerStation.h"
 #include "Engine.h"
 
 // Sets default values
@@ -26,6 +30,13 @@ void AWorkstation::BeginPlay()
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->WorkstationList.Add(this);
 	StationLocation = this->GetActorLocation();
+	GM->WorkStation = this;
+	HasEmployee = false;
+	int32 workstationSize = GM->WorkstationList.Num();
+
+	//FString mouseY = FString::FromInt(workstationSize);
+	//UE_LOG(LogActor, Warning, TEXT("%s"), *mouseY)
+	//UE_LOG(LogActor, Warning, TEXT("%s"), *StationLocation.ToString())
 }
 
 // Called every frame
@@ -38,14 +49,44 @@ void AWorkstation::UpdateWorkstationPosition()
 {
 	int32 employeeSize = GM->EmployeeList.Num();
 	int32 workstationSize = GM->WorkstationList.Num();
+	FVector AStationLocation = this->GetActorLocation();
 	FVector testing = FVector(0, 0, 0);
 
-	if (employeeSize > 0 && workstationSize > 0)
+	for (int i = 0; i < workstationSize; i++)
 	{
-		for (int i = 0; i < employeeSize; i++)
+		if (GM->WorkstationList[i]->IsA(AProgrammerStation::StaticClass()))
 		{
-			GM->EmployeeList[i]->StartPosition = testing;
+			if (GM->WorkstationList[i]->HasEmployee == false)
+			{
+				FVector current = GM->WorkstationList[i]->StationLocation;
+				for (int j = 0; j < employeeSize; j++)
+				{
+					if (GM->EmployeeList[j]->IsA(AProgrammer::StaticClass()) && GM->EmployeeList[j]->HasWorkStation == false)
+					{
+						GM->WorkstationList[i]->HasEmployee = true;
+						GM->EmployeeList[j]->HasWorkStation = true;
+						GM->EmployeeList[j]->StartPosition = GM->WorkstationList[i]->StationLocation;;
+						break;
+					}
+				}
+			}
+		}
+
+		if (GM->WorkstationList[i]->IsA(AArtistStation::StaticClass()))
+		{
+			if (GM->WorkstationList[i]->HasEmployee == false)
+			{
+				for (int j = 0; j < employeeSize; j++)
+				{
+					if (GM->EmployeeList[j]->IsA(AArtist::StaticClass()) && GM->EmployeeList[j]->HasWorkStation == false)
+					{
+						GM->WorkstationList[i]->HasEmployee = true;
+						GM->EmployeeList[j]->HasWorkStation = true;
+						GM->EmployeeList[j]->StartPosition = GM->WorkstationList[i]->StationLocation;
+						break;
+					}
+				}
+			}
 		}
 	}
-
 }
