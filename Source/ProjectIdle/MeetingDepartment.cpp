@@ -5,6 +5,7 @@
 #include "Idea.h"
 #include "Components/WidgetComponent.h"
 #include "ProjectIdle/GameManager.h"
+#include "ProjectIdle/Idea.h"
 #include "ProjectIdle/OfficeDepartment.h"
 #include "Widgets/MeetingDepWidget.h"
 #include "Employees/Artist.h"
@@ -41,8 +42,9 @@ void AMeetingDepartment::TakeIdea(Idea* SentIdea)
 {
 	CurrentIdea = SentIdea;
 	if (MeetingWidget != nullptr && UserWidget != nullptr && SentIdea != nullptr) {
+		MeetingWidget->I_GameCover->SetColorAndOpacity(SentIdea->CoverColor);
 		MeetingWidget->T_GameTitle->SetText(FText::FromString(SentIdea->IdeaName));
-		//MeetingWidget->T_Genre->SetText(FText::FromString(SentIdea->Genre));
+		MeetingWidget->T_Genre->SetText(Idea::GenreToText(SentIdea->Genre));
 		MeetingWidget->T_GameDescription->SetText(FText::FromString(SentIdea->IdeaDescription));
 		MeetingWidget->T_SuccessChance->SetText(FText::AsPercent(SentIdea->SuccessChance / 100.f));
 		MeetingWidget->T_Weight->SetText((SentIdea->ProgrammerWorkload > SentIdea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
