@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+//#include "DetourCrowdAIController.h"
 #include "EmployeeAIC.generated.h"
 
 /**
@@ -15,5 +16,6 @@ class PROJECTIDLE_API AEmployeeAIC : public AAIController
 	GENERATED_BODY()
 	
 public:
+
 	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void GoMeeting();
 };

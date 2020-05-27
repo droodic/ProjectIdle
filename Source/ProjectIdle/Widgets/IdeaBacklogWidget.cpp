@@ -20,14 +20,17 @@ void UIdeaBacklogWidget::DisplayNewIdea() {
 	if (/*!IdeaButton1->IsVisible()*/OfficeDepartment->Index == 0)
 	{
 		IdeaButton1->SetVisibility(ESlateVisibility::Visible);
+		IdeaButton1->SetRenderOpacity(1);
 	}
 	else if(/*!IdeaButton2->IsVisible()*/OfficeDepartment->Index == 1)
 	{
 		IdeaButton2->SetVisibility(ESlateVisibility::Visible);
+		IdeaButton2->SetRenderOpacity(1);
 	}
 	else if(/*!IdeaButton3->IsVisible()*/OfficeDepartment->Index == 2)
 	{
 		IdeaButton3->SetVisibility(ESlateVisibility::Visible);
+		IdeaButton3->SetRenderOpacity(1);
 	}
 }
 
@@ -133,6 +136,20 @@ void UIdeaBacklogWidget::CallMeeting()
 	{
 		GM = GetWorld()->GetGameInstance<UGameManager>();
 		GEngine->AddOnScreenDebugMessage(101, 5.f, FColor::Red, "populate GM");
+	}
+
+	//Quick way to disable chosen idea button after calling meeting with it, need cleaner approach
+	if (OfficeDepartment->Index-1 == 0) {
+		IdeaButton1->SetVisibility(ESlateVisibility::HitTestInvisible);
+		IdeaButton1->SetRenderOpacity(0.3);
+	}
+	else if (OfficeDepartment->Index-1 == 1) {
+		IdeaButton2->SetVisibility(ESlateVisibility::HitTestInvisible);
+		IdeaButton2->SetRenderOpacity(0.3);
+	}
+	else if (OfficeDepartment->Index-1 == 2) {
+		IdeaButton3->SetVisibility(ESlateVisibility::HitTestInvisible);
+		IdeaButton3->SetRenderOpacity(0.3);
 	}
 	GM->MeetingDepartment->MoveToMeeting();
 	SendIdea();
