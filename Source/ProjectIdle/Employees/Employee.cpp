@@ -92,30 +92,33 @@ void AEmployee::Tick(float DeltaTime)
 				auto ThisEmployeeAI = Cast<AAIController>(GetController());
 				if (EmployeeRole == "Programmer" && AnEmployee->EmployeeRole == "Programmer") {
 					if (AnEmployee->CurrentWorkload >= 10) {//change to editor editable constant 
-						ThisEmployeeAI->MoveToLocation(AnEmployee->GetActorLocation());
-						auto Distance = FVector::Dist(GetActorLocation(), AnEmployee->GetActorLocation());
-						if (Distance <= 15) { //3.0 is tolerance float
-							AnEmployee->CurrentWorkload /= 2;
-							CurrentWorkload += AnEmployee->CurrentWorkload / 2;
-							ReturnPositionAfterMeeting(StartPosition);
-							GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Programmer workload finished, taking workload from another employee"));
-							break;
-						}
+						//ThisEmployeeAI->MoveToLocation(AnEmployee->GetActorLocation(), 30.f);
+
+
+						AnEmployee->CurrentWorkload /= 2;
+						CurrentWorkload += AnEmployee->CurrentWorkload / 2;
+						ReturnPositionAfterMeeting(StartPosition);
+						GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Programmer workload finished, taking workload from another employee"));
+						break;
+
 					}
 				}
 
 				else if (EmployeeRole == "Artist" && AnEmployee->EmployeeRole == "Artist") {
 					if (AnEmployee->CurrentWorkload >= 10) {
-						
-						ThisEmployeeAI->MoveToLocation(AnEmployee->GetActorLocation());
-						auto Distance = FVector::Dist(GetActorLocation(), AnEmployee->GetActorLocation());
-						if (Distance <= 15) {
-							AnEmployee->CurrentWorkload /= 2;
-							CurrentWorkload += AnEmployee->CurrentWorkload / 2;
-							ReturnPositionAfterMeeting(StartPosition);
-							GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Artist workload finished, taking workload from another employee"));
-							break;
-						}
+
+						//ThisEmployeeAI->MoveToLocation(AnEmployee->GetActorLocation(), 30.f);
+						//auto Distance = FVector::Dist(GetActorLocation(), AnEmployee->GetActorLocation());
+						//while (Distance > 10.f) {
+						//	Distance = FVector::Dist(GetActorLocation(), AnEmployee->GetActorLocation());
+
+						//}
+
+						AnEmployee->CurrentWorkload /= 2;
+						CurrentWorkload += AnEmployee->CurrentWorkload / 2;
+						ReturnPositionAfterMeeting(StartPosition);
+						GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Programmer workload finished, taking workload from another employee"));
+						break;
 					}
 				}
 			}
