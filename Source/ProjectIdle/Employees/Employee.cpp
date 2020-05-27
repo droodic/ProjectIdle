@@ -8,6 +8,7 @@
 #include "ProjectIdle/GameHUD.h"
 #include "EWorkProgressWidget.h"
 #include "Runtime\AIModule\Classes\Blueprint\AIBlueprintHelperLibrary.h"
+#include "Runtime\Engine\Classes\Kismet\KismetMathLibrary.h"
 #include "Engine.h"
 
 // Sets default values
@@ -97,7 +98,7 @@ void AEmployee::Tick(float DeltaTime)
 
 						AnEmployee->CurrentWorkload /= 2;
 						CurrentWorkload += AnEmployee->CurrentWorkload / 2;
-						ReturnPositionAfterMeeting(StartPosition);
+						//ReturnPositionAfterMeeting(StartPosition);
 						GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Programmer workload finished, taking workload from another employee"));
 						break;
 
@@ -116,7 +117,7 @@ void AEmployee::Tick(float DeltaTime)
 
 						AnEmployee->CurrentWorkload /= 2;
 						CurrentWorkload += AnEmployee->CurrentWorkload / 2;
-						ReturnPositionAfterMeeting(StartPosition);
+						//ReturnPositionAfterMeeting(StartPosition);
 						GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Programmer workload finished, taking workload from another employee"));
 						break;
 					}
@@ -153,8 +154,10 @@ void AEmployee::ToMeeting(FVector Destination)
 	auto EmployeAI = Cast<AAIController>(GetController());
 	if (EmployeAI)
 	{
+		auto LookAtRotator = FRotator(UKismetMathLibrary::MakeRotator(0, 0, UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Destination).Yaw));
+		UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
+		SetActorRotation(LookAtRotator);
 		EmployeAI->MoveToLocation(Destination);
-		//UAIBlueprintHelperLibrary::SimpleMoveToLocation(EmployeAI, Destination);
 	}
 }
 
@@ -163,8 +166,10 @@ void AEmployee::ReturnPositionAfterMeeting(FVector Destination)
 	auto EmployeAI = Cast<AAIController>(GetController());
 	if (EmployeAI)
 	{
+		auto LookAtRotator = FRotator(UKismetMathLibrary::MakeRotator(0, 0, UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Destination).Yaw));
+		UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
+		SetActorRotation(LookAtRotator);
 		EmployeAI->MoveToLocation(Destination);
-
 		//UAIBlueprintHelperLibrary::SimpleMoveToLocation(EmployeAI, Destination);
 	}
 	else
