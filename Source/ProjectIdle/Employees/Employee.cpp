@@ -85,7 +85,7 @@ void AEmployee::GoMeeting()
 void AEmployee::ToMeeting(FVector Destination)
 {
 	//MoveToLocation(FVector(-710.0, 700.0, 308));
-	auto EmployeAI = Cast<AEmployeeAIC>(GetController());
+	auto EmployeAI = Cast<AAIController>(GetController());
 	if (EmployeAI)
 	{
 		EmployeAI->MoveToLocation(Destination);
@@ -94,7 +94,7 @@ void AEmployee::ToMeeting(FVector Destination)
 
 void AEmployee::ReturnPositionAfterMeeting(FVector Destination)
 {
-	auto EmployeAI = Cast<AEmployeeAIC>(GetController());
+	auto EmployeAI = Cast<AAIController>(GetController());
 	if (EmployeAI)
 	{
 		EmployeAI->MoveToLocation(Destination);
