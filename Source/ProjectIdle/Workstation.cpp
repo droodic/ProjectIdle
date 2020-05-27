@@ -31,7 +31,21 @@ void AWorkstation::BeginPlay()
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->WorkstationList.Add(this);
-	StationLocation = this->GetActorLocation();
+	FVector zero = FVector(200, 0, 0);
+	StationVector = this->GetActorLocation();
+	FRotator rotation = this->GetActorRotation();
+	FRotator text = FRotator(0, 0.000031, 0);
+	UE_LOG(LogActor, Warning, TEXT("%s"), *rotation.ToString())
+	//UE_LOG(LogActor, Warning, TEXT("%s"), *text.ToString())
+	if (rotation.operator==(text))
+	{
+		StationLocation = this->GetActorLocation().operator+(zero);
+	}
+	else
+	{
+		StationLocation = this->GetActorLocation().operator-(zero);
+	}
+	//StationLocation = this->GetActorLocation().operator-(zero);
 	GM->WorkStation = this;
 	HasEmployee = false;
 	int32 workstationSize = GM->WorkstationList.Num();
