@@ -29,7 +29,7 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Widgets")TSubclassOf<UUserWidget> UserWidget;
 	UPROPERTY() class UMeetingDepWidget* MeetingWidget;
-	//class Idea* CurrentIdea;
+	class Idea* CurrentIdea;
 
 
 

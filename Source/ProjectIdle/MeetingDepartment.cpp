@@ -37,7 +37,7 @@ void AMeetingDepartment::BeginPlay()
 
 void AMeetingDepartment::TakeIdea(Idea* SentIdea)
 {
-	//CurrentIdea = GM->OfficeDepartment->IdeaList[IdeaIndex];
+	CurrentIdea = SentIdea;
 	if (MeetingWidget != nullptr && UserWidget != nullptr && SentIdea != nullptr) {
 		MeetingWidget->T_GameTitle->SetText(FText::FromString(SentIdea->IdeaName));
 		//MeetingWidget->T_Genre->SetText(FText::FromString(SentIdea->Genre));
@@ -142,6 +142,7 @@ void AMeetingDepartment::BackFromMeeting()
 	for (int i = 0; i < employeeSize; i++)
 	{
 		GM->EmployeeList[i]->ReturnPositionAfterMeeting(GM->EmployeeList[i]->StartPosition);
+		GM->EmployeeList[i]->WorkProgressBar->SetVisibility(true);
 	}
 
 }
