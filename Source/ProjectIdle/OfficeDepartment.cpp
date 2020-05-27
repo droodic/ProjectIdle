@@ -102,7 +102,6 @@ void AOfficeDepartment::Tick(float DeltaTime)
 			if (Index > 2) { Index = 0; }
 
 			IdeaList.Insert(newIdea, Index);
-
 			//TEST*** make method / optimize
 			BacklogWidget->DisplayNewIdea();
 			BacklogWidget->GetIdea(newIdea);

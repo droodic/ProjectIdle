@@ -37,16 +37,22 @@ void UIdeaBacklogWidget::Back()
 void UIdeaBacklogWidget::NativeConstruct() {
 	Super::NativeConstruct();
 
+	//GM = GetWorld()->GetGameInstance<UGameManager>();
+
 	if (!Back_Btn->OnClicked.IsBound())
 	{
 		Back_Btn->OnClicked.AddDynamic(this, &UIdeaBacklogWidget::Back);
+	}
+	if (!CallMeetingBtn->OnClicked.IsBound())
+	{
+		CallMeetingBtn->OnClicked.AddDynamic(this, &UIdeaBacklogWidget::CallMeeting);
 	}
 }
 
 void UIdeaBacklogWidget::GetIdea(Idea* idea)
 {
 	newIdea = idea;
-	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, FString::FromInt(OfficeDepartment->Index));
+	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, FString::FromInt(OfficeDepartment->Index -1));
 
 	if (/*!IdeaButton1->IsVisible()*/OfficeDepartment->Index == 0)
 	{
@@ -92,19 +98,37 @@ void UIdeaBacklogWidget::GetIdea(Idea* idea)
 	}
 }
 
-void UIdeaBacklogWidget::SendIdea()
+void UIdeaBacklogWidget::CallMeeting()
 {
+
 	if (GM == nullptr)
 	{
 		GM = GetWorld()->GetGameInstance<UGameManager>();
 		GEngine->AddOnScreenDebugMessage(101, 5.f, FColor::Red, "populate GM");
 	}
+	GM->MeetingDepartment->MoveToMeeting();
+	SendIdea();
 
+}
+
+//Called by CallMeeting
+void UIdeaBacklogWidget::SendIdea() {
+
+	
+	//Gm populated in CallMeeting
 	if (GM->MeetingDepartment == nullptr) {
 		GEngine->AddOnScreenDebugMessage(102, 5.f, FColor::Red, "GM->MeetingDepartment is null");
 	}
 	else if (GM->MeetingDepartment != nullptr) {
-		GM->MeetingDepartment->TakeIdea(newIdea);
+		auto tIdea = OfficeDepartment->IdeaList[ChosenIndex];
+		if (tIdea != nullptr) {
+			GEngine->AddOnScreenDebugMessage(1036, 5.f, FColor::Red, "tIdea work");
+			GM->MeetingDepartment->TakeIdea(tIdea);
+		}
+		//GM->MeetingDepartment->TakeIdea(OfficeDepartment->IdeaList[ChosenIndex]);
 		GEngine->AddOnScreenDebugMessage(103, 5.f, FColor::Red, "Meeting TakeIdea");
+	}
+	else if (newIdea == nullptr) {
+		GEngine->AddOnScreenDebugMessage(106, 5.f, FColor::Red, "newIdea null");
 	}
 }
