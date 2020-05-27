@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 
-enum class EGenre : int16
+enum class EGenre : uint8
 {
 	ACTION,
 	FPS,

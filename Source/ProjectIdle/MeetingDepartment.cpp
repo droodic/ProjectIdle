@@ -149,6 +149,17 @@ void AMeetingDepartment::BackFromMeeting()
 	{
 		GM->EmployeeList[i]->ReturnPositionAfterMeeting(GM->EmployeeList[i]->StartPosition);
 		GM->EmployeeList[i]->WorkProgressBar->SetVisibility(true);
+
+		//Assign workload test - move to own function/clean up later
+		if (GM->EmployeeList[i]->EmployeeRole == "Artist") {
+			GM->EmployeeList[i]->AssignedWorkload = CurrentIdea->ArtistWorkload / GM->NumOfArtists;
+			GM->EmployeeList[i]->CurrentWorkload = GM->EmployeeList[i]->AssignedWorkload;
+		}
+		else if (GM->EmployeeList[i]->EmployeeRole == "Programmer") {
+			GM->EmployeeList[i]->AssignedWorkload = CurrentIdea->ProgrammerWorkload / GM->NumOfProgrammers;
+			GM->EmployeeList[i]->CurrentWorkload = GM->EmployeeList[i]->AssignedWorkload;
+		}
+
 		if (GM->WorkstationList.Num() > 0)
 		{
 		   FVector test = GM->EmployeeList[i]->StartPosition;

@@ -23,6 +23,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector MeetingLocation;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UWidgetComponent* WorkProgressBar;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) float AssignedWorkload;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) float CurrentWorkload;
+	//UPROPERTY() float GivenWorkload;
+
 	//int CurrentWorkload;
 
 	UPROPERTY() FVector StartPosition;

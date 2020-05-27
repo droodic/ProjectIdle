@@ -26,6 +26,14 @@ void AEmployee::BeginPlay()
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->EmployeeList.Add(this);
 
+	//Find better way maybe, enum? 
+	if (EmployeeRole == "Artist") {
+		GM->NumOfArtists++;
+	}
+	else if (EmployeeRole == "Programmer") {
+		GM->NumOfProgrammers++;
+	}
+
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0)->GetHUD());
 	StartPosition = this->GetActorLocation();
 	HasWorkStation = false;
