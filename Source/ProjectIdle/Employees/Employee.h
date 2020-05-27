@@ -3,7 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "GameFramework\Character.h"
+#include "Components\WidgetComponent.h"
 #include "Employee.generated.h"
 
 UCLASS()
@@ -21,7 +22,11 @@ public:
 	UPROPERTY(EditAnywhere) FString EmployeeRole;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector MeetingLocation;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UWidgetComponent* WorkProgressBar;
+	//int CurrentWorkload;
+
 	UPROPERTY() FVector StartPosition;
+	APlayerCameraManager* Camera;
 	UPROPERTY() bool HasWorkStation;
 	//Managers
 	class AGameHUD* UI;

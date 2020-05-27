@@ -54,9 +54,6 @@ void AOfficeDepartment::ViewBacklog()
 
 void AOfficeDepartment::Back()
 {
-	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, "Back Button");
-
-
 	if (BacklogWidget != nullptr)
 	{
 		BacklogWidget->RemoveFromViewport();
@@ -95,9 +92,9 @@ void AOfficeDepartment::Tick(float DeltaTime)
 			CurrIdeaProgress = 0;
 			ideasGenerated++;
 
-			//auto newIdea = IdeaList.Add(new Idea(GenerateIdeaValues())); //Use randomized values later
-
-			auto newIdea = new Idea(GenerateIdeaValues());
+			auto randomNumber = UKismetMathLibrary::RandomIntegerInRange(0, 100);
+			//auto newIdea = new Idea(GenerateIdeaValues());
+			auto newIdea = new Idea("GAME " + FString::FromInt(randomNumber), "Game description of game " + FString::FromInt(randomNumber), Idea::GetRandomGenre(), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f));
 
 			if (Index > 2) { Index = 0; }
 
@@ -105,6 +102,7 @@ void AOfficeDepartment::Tick(float DeltaTime)
 			//TEST*** make method / optimize
 			BacklogWidget->DisplayNewIdea();
 			BacklogWidget->GetIdea(newIdea);
+
 			Index++;
 		}
 	}

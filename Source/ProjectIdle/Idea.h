@@ -15,7 +15,7 @@ enum class EGenre : int16
 };
 
 /**
- * 
+ *
  */
 class PROJECTIDLE_API Idea
 {
@@ -23,7 +23,7 @@ class PROJECTIDLE_API Idea
 public:
 	class UImage* IdeaCover;
 
-	EGenre Genre;
+	TEnumAsByte<EGenre> Genre;
 
 	FString IdeaName;
 	FString IdeaDescription;
@@ -33,9 +33,15 @@ public:
 	float ProgrammerWorkload;
 	float ArtistWorkload;
 
-	float GetWorkload();
 
+public:
 	Idea(float chance, float pWorkload, float aWorkload);
 
-	Idea(FString name, FString description, FString mainWeight, EGenre genre, float chance, float programmerWorkload, float artistWorkload);
+	Idea(FString name, FString description,/*FString MainWeight,*/ EGenre genre, float chance, float programmerWorkload, float artistWorkload);
+
+public:
+	static EGenre GetRandomGenre();
+	static FText GenreToText(EGenre genre);
+
+	float GetWorkload();
 };
