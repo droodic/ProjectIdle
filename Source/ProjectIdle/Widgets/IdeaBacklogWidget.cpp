@@ -9,6 +9,8 @@
 #include "ProjectIdle/OfficeDepartment.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
+#include "Kismet/KismetMathLibrary.h"
+
 
 
 void UIdeaBacklogWidget::DisplayNewIdea() {
@@ -54,24 +56,41 @@ void UIdeaBacklogWidget::GetIdea(Idea* idea)
 	newIdea = idea;
 	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, FString::FromInt(OfficeDepartment->Index -1));
 
-	if (/*!IdeaButton1->IsVisible()*/OfficeDepartment->Index == 0)
+	if (OfficeDepartment->Index == 0)
 	{
-		T_GameTitle->SetText(FText::FromString("TEST GAME"));
-		T_GameDescription->SetText(FText::FromString("Game Description of game 1"));
+		I_GameCover->SetColorAndOpacity(FLinearColor::MakeRandomColor());
 
+		/*T_GameTitle->SetText(FText::FromString("TEST GAME"));
+		T_GameDescription->SetText(FText::FromString("Game Description of game 1"));
+		*/
+
+		T_GameTitle->SetText(FText::FromString(newIdea->IdeaName));
+		T_GameDescription->SetText(FText::FromString(newIdea->IdeaDescription));
+		
+		T_Genre->SetText(Idea::GenreToText(newIdea->Genre));
+		
 		T_SuccessChance->SetText(FText::AsPercent(newIdea->SuccessChance / 100.f));
 
 		T_Weight->SetText((newIdea->ProgrammerWorkload > newIdea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
-
+		
 		if (newIdea->ProgrammerWorkload == newIdea->ArtistWorkload)
 		{
 			T_Weight->SetText(FText::FromString("All"));
 		}
 	}
-	else if (/*!IdeaButton1->IsVisible()*/OfficeDepartment->Index == 1)
+	else if (OfficeDepartment->Index == 1)
 	{
+		I_GameCover_2->SetColorAndOpacity(FLinearColor::MakeRandomColor());
+
+		/*
 		T_GameTitle_2->SetText(FText::FromString("TEST GAME 2"));
 		T_GameDescription_2->SetText(FText::FromString("Game Description of game 2"));
+		*/
+
+		T_GameTitle_2->SetText(FText::FromString(newIdea->IdeaName));
+		T_GameDescription_2->SetText(FText::FromString(newIdea->IdeaDescription));
+
+		T_Genre_2->SetText(Idea::GenreToText(newIdea->Genre));
 
 		T_SuccessChance_2->SetText(FText::AsPercent(newIdea->SuccessChance / 100.f));
 
@@ -82,11 +101,20 @@ void UIdeaBacklogWidget::GetIdea(Idea* idea)
 			T_Weight_2->SetText(FText::FromString("All"));
 		}
 	}
-	else if (/*!IdeaButton1->IsVisible()*/OfficeDepartment->Index == 2)
+	else if (OfficeDepartment->Index == 2)
 	{
+		I_GameCover_3->SetColorAndOpacity(FLinearColor::MakeRandomColor());
+		
+		/*
 		T_GameTitle_3->SetText(FText::FromString("TEST GAME 3"));
 		T_GameDescription_3->SetText(FText::FromString("Game Description of game 3"));
+		*/
+		
+		T_GameTitle_3->SetText(FText::FromString(newIdea->IdeaName));
+		T_GameDescription_3->SetText(FText::FromString(newIdea->IdeaDescription));
 
+		T_Genre_3->SetText(Idea::GenreToText(newIdea->Genre));
+		
 		T_SuccessChance_3->SetText(FText::AsPercent(newIdea->SuccessChance / 100.f));
 
 		T_Weight_3->SetText((newIdea->ProgrammerWorkload > newIdea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));

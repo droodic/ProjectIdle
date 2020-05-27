@@ -2,11 +2,7 @@
 
 
 #include "Idea.h"
-
-float Idea::GetWorkload()
-{
-	return 1.0f;//Replace with random
-}
+#include "Kismet/KismetMathLibrary.h"
 
 Idea::Idea(float chance, float pWorkload, float aWorkload)
 {
@@ -18,13 +14,75 @@ Idea::Idea(float chance, float pWorkload, float aWorkload)
 	ArtistWorkload = aWorkload;
 }
 
-Idea::Idea(FString name, FString description, FString mainWeight, EGenre genre, float chance, float programmerWorkload, float artistWorkload) 
+Idea::Idea(FString name, FString description, /*FString mainWeight,*/ EGenre genre, float chance, float programmerWorkload, float artistWorkload)
 {
 	IdeaName = name;
 	IdeaDescription = description;
-	MainWeight = mainWeight;
+	//MainWeight = mainWeight;
 	Genre = genre;
 	SuccessChance = chance;
 	ProgrammerWorkload = programmerWorkload;
 	ArtistWorkload = artistWorkload;
+}
+
+float Idea::GetWorkload()
+{
+	return 1.0f;//Replace with random
+}
+
+EGenre Idea::GetRandomGenre()
+{
+	auto randomNumber = UKismetMathLibrary::RandomIntegerInRange(0, 5);
+
+	switch (randomNumber)
+	{
+	case 0:
+		return EGenre::ACTION;
+		break;
+	case 1:
+		return EGenre::ADVENTURE;
+		break;
+	case 2:
+		return EGenre::FPS;
+		break;
+	case 3:
+		return EGenre::HORROR;
+		break;
+	case 4:
+		return EGenre::PUZZLE;
+		break;
+	case 5:
+		return EGenre::RPG;
+		break;
+	}
+
+	return EGenre::ACTION;
+}
+
+FText Idea::GenreToText(EGenre genre)
+{
+	FText text;
+	switch (genre)
+	{
+	case EGenre::ACTION:
+		text = FText::FromString("Action");
+		break;
+	case EGenre::FPS:
+		text = FText::FromString("FPS");
+		break;
+	case EGenre::PUZZLE:
+		text = FText::FromString("Puzzle");
+		break;
+	case EGenre::ADVENTURE:
+		text = FText::FromString("Advencture");
+		break;
+	case EGenre::HORROR:
+		text = FText::FromString("Horror");
+		break;
+	case EGenre::RPG:
+		text = FText::FromString("RPG");
+		break;
+	}
+
+	return text;
 }
