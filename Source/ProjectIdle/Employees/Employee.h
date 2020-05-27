@@ -25,9 +25,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UWidgetComponent* WorkProgressBar;
 	//int CurrentWorkload;
 
-	FVector StartPosition;
-	APlayerCameraManager* Camera;
 	UPROPERTY() FVector StartPosition;
+	APlayerCameraManager* Camera;
 	UPROPERTY() bool HasWorkStation;
 	//Managers
 	class AGameHUD* UI;
