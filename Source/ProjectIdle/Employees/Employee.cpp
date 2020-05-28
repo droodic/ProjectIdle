@@ -92,7 +92,7 @@ void AEmployee::Tick(float DeltaTime)
 			for (auto AnEmployee : GM->EmployeeList) {
 				auto ThisEmployeeAI = Cast<AAIController>(GetController());
 				if (EmployeeRole == "Programmer" && AnEmployee->EmployeeRole == "Programmer") {
-					if (AnEmployee->CurrentWorkload >= 10) {//change to editor editable constant 
+					if (AnEmployee->CurrentWorkload >= 5) {//change to editor editable constant 
 						//ThisEmployeeAI->MoveToLocation(AnEmployee->GetActorLocation(), 30.f);
 
 
@@ -106,7 +106,7 @@ void AEmployee::Tick(float DeltaTime)
 				}
 
 				else if (EmployeeRole == "Artist" && AnEmployee->EmployeeRole == "Artist") {
-					if (AnEmployee->CurrentWorkload >= 10) {
+					if (AnEmployee->CurrentWorkload >= 5) {
 
 						//ThisEmployeeAI->MoveToLocation(AnEmployee->GetActorLocation(), 30.f);
 						//auto Distance = FVector::Dist(GetActorLocation(), AnEmployee->GetActorLocation());
@@ -128,6 +128,19 @@ void AEmployee::Tick(float DeltaTime)
 		if (CurrentWorkload <= 0) { //Change to condition checking if all other employee are also done, then prepare to give money
 			IsWorking = false;
 			WorkProgressBar->SetVisibility(false);
+
+			bool isOver = true;
+			for (auto AnEmployee : GM->EmployeeList) {
+				if (AnEmployee->IsWorking == true) {
+					isOver = false;
+				}
+
+			}
+			if (isOver == true) {
+
+				GM->Money += 10000; //Use algo later, and do real way of assgning money
+			}
+
 		}
 	}
 }

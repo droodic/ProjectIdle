@@ -74,10 +74,10 @@ void AGameHUD::DrawHUD()
 	Super::DrawHUD();
 }
 
-void AGameHUD::UpdateMoney(int32 Value)
-{
-	if (MoneyWidget)
-	{
-		MoneyWidget->UpdateMoney(Value);
-	}
-}
+//void AGameHUD::UpdateMoney(int32 Value)
+//{
+//	if (MoneyWidget)
+//	{
+//		MoneyWidget->UpdateMoney(Value);
+//	}
+//}

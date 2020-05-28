@@ -78,13 +78,8 @@ void AProjectIdleCharacter::BeginPlay()
 		Widget->AddToViewport();
 	}
 
-
-
 	AGameHUD* GameHUD = Cast<AGameHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
-	if (GameHUD != nullptr)
-	{
-		GameHUD->UpdateMoney(TotalMoney);
-	}
+
 }
 
 void AProjectIdleCharacter::Tick(float DeltaSeconds)
