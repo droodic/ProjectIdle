@@ -11,6 +11,7 @@
 #include "Employees/Artist.h"
 #include "Employees/Programmer.h"
 #include "EngineUtils.h"
+#include "Runtime\Engine\Classes\Kismet\KismetMathLibrary.h"
 
 
 // Sets default values
@@ -148,6 +149,7 @@ void AMeetingDepartment::BackFromMeeting()
 	for (int i = 0; i < employeeSize; i++)
 	{
 		GM->EmployeeList[i]->ReturnPositionAfterMeeting(GM->EmployeeList[i]->StartPosition);
+		//GM->EmployeeList[i]->SetActorRotation(UKismetMathLibrary::FindLookAtRotation(GM->EmployeeList[i]->GetActorLocation(), GM->EmployeeList[i]->StartPosition));
 		GM->EmployeeList[i]->WorkProgressBar->SetVisibility(true);
 
 		//Assign workload test - move to own function/clean up later, also needs to be called when are at their workstation not before
@@ -162,13 +164,6 @@ void AMeetingDepartment::BackFromMeeting()
 			GM->EmployeeList[i]->BeginWork();
 		}
 
-		if (GM->WorkstationList.Num() > 0)
-		{
-		   FVector test = GM->EmployeeList[i]->StartPosition;
-		   UE_LOG(LogActor, Warning, TEXT("%s"), *test.ToString())
-		   GM->EmployeeList[i]->ReturnPositionAfterMeeting(test);
-
-		}
 
 		//if (GM->EmployeeList[i]->IsA(AArtist::StaticClass()))
 		//{

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework\Character.h"
+#include "ProjectIdle\EmployeeAIC.h"
 #include "Components\WidgetComponent.h"
 #include "Employee.generated.h"
 
@@ -46,6 +47,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UWidgetComponent* WorkProgressBar;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float AssignedWorkload;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float CurrentWorkload;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) class AEmployeeAIC* AI;
 	//UPROPERTY() float GivenWorkload;
 
 	class UEmployeeSheetWidget* EmployeeSheetWidget;

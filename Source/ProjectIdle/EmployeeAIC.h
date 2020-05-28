@@ -17,5 +17,6 @@ class PROJECTIDLE_API AEmployeeAIC : public AAIController
 	
 public:
 
-	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void GoMeeting();
+	//UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void GoMeeting();
+
 };
