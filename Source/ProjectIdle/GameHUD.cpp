@@ -32,13 +32,18 @@ void AGameHUD::ShowEmployeeSheet(class AEmployee* emp)
 	if (!EmpSheetWidget->IsInViewport())
 	{
 		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Showing Employee Sheet"));
-		EmpSheetWidget->Morale = emp->Morale;
-		EmpSheetWidget->Salary = emp->Salary;
-		EmpSheetWidget->EmployeeRole = emp->EmployeeRole;
+
+		EmpSheetWidget->EmployeeName_T->Text = emp->EmployeeName;
+		EmpSheetWidget->EmployeeRole_T->Text = EmpSheetWidget->RoleToText(emp->Roles);
+		EmpSheetWidget->EmployeePosition_T->Text = EmpSheetWidget->PositionToText(emp->Position);
+		EmpSheetWidget->Salary_T->Text = FText::AsCurrency(emp->Salary);
+		EmpSheetWidget->Morale_T->Text = FText::FromString(FString::FromInt(emp->Morale));
+
+		//EmpSheetWidget->Morale = emp->Morale;
+		//EmpSheetWidget->Salary = emp->Salary;
+		//EmpSheetWidget->EmployeeRole = emp->EmployeeRole;
 		EmpSheetWidget->AddToViewport();
-
 	}
-
 	else if (EmpSheetWidget->IsInViewport()) {
 		EmpSheetWidget->RemoveFromViewport();
 		//GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Showing New Employee Sheet"));
@@ -46,7 +51,6 @@ void AGameHUD::ShowEmployeeSheet(class AEmployee* emp)
 		//EmpSheetWidget->Salary = emp->Salary;
 		//EmpSheetWidget->EmployeeRole = emp->EmployeeRole;
 	}
-
 }
 
 //template<class T>
@@ -74,10 +78,10 @@ void AGameHUD::DrawHUD()
 	Super::DrawHUD();
 }
 
-void AGameHUD::UpdateMoney(int32 Value)
-{
-	if (MoneyWidget)
-	{
-		MoneyWidget->UpdateMoney(Value);
-	}
-}
+//void AGameHUD::UpdateMoney(int32 Value)
+//{
+//	if (MoneyWidget)
+//	{
+//		MoneyWidget->UpdateMoney(Value);
+//	}
+//}

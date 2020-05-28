@@ -17,9 +17,31 @@ class PROJECTIDLE_API UEmployeeSheetWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	class AEmployee* Employee;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* EmployeeName_T;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* EmployeeRole_T;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* EmployeePosition_T;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* Morale_T;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* Salary_T;
+	//UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* Performance_T;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Promote_Btn;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Fire_Btn;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) FString EmployeeRole;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float Morale;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float Performance;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float Salary;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) FString EmployeeRole;
 	
+public:
+	void Promote();
+	void Fire();
+
+	FText RoleToText(enum ERole role);
+	FText PositionToText(enum EPosition position);
+
+private:
+	virtual void NativeConstruct() override;
 };

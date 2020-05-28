@@ -8,7 +8,7 @@ Idea::Idea(float chance, float pWorkload, float aWorkload)
 {
 	IdeaName = "Random Name";
 	IdeaDescription = "Random Description";
-	//Genre = EGenre::ADVENTURE;
+	Genre = GetRandomGenre();
 	SuccessChance = chance;
 	ProgrammerWorkload = pWorkload;
 	ArtistWorkload = aWorkload;

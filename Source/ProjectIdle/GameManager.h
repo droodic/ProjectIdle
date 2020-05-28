@@ -17,6 +17,9 @@ class PROJECTIDLE_API UGameManager : public UGameInstance
 public:
 	UGameManager();
 	UPROPERTY(BlueprintReadWrite) TArray<class AEmployee*> EmployeeList;
+	int NumOfProgrammers;
+	int NumOfArtists;
+	UPROPERTY(BlueprintReadWrite) int Money;
 	UPROPERTY(BlueprintReadWrite) TArray<class AChair*> MeetingChairList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AWorkstation*> WorkstationList;
 

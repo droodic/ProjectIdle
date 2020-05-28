@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 
-enum class EGenre : int16
+enum class EGenre : uint8
 {
 	ACTION,
 	FPS,
@@ -23,7 +23,7 @@ class PROJECTIDLE_API Idea
 public:
 	class UImage* IdeaCover;
 
-	TEnumAsByte<EGenre> Genre;
+	EGenre Genre;
 
 	FString IdeaName;
 	FString IdeaDescription;

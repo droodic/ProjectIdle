@@ -73,8 +73,8 @@ public:
 private:
 	UFUNCTION() void Back();
 	UFUNCTION() void CallMeeting();
-	void SendIdea();
 	
+	void SendIdea();
 
 public:
 };
