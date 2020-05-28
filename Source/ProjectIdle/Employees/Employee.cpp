@@ -44,6 +44,11 @@ void AEmployee::BeginPlay()
 	auto WidgetInstance = Cast<UEWorkProgressWidget>(WorkloadWidget);
 	WidgetInstance->EmployeeRef = this;
 	WorkProgressBar->SetVisibility(false);
+
+	if (EmployeeSheetWidget)
+	{
+		EmployeeSheetWidget->Employee = this;
+	}
 }
 
 //auto AI = Work->Workers[0];
@@ -121,6 +126,35 @@ void AEmployee::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void AEmployee::Promote()
+{
+	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, TEXT("Promote button called"));
+
+	//EPosition(1);
+	switch (Position)
+	{
+	case EPosition::Intern:
+		Position = EPosition::Junior;
+		Salary += 200;
+		break;
+	case EPosition::Junior:
+		Position = EPosition::Programmer;
+		Salary += 200;
+		break;
+	case EPosition::Programmer:
+		Position = EPosition::SeniorProgrammer;
+		Salary += 200;
+		break;
+	case EPosition::SeniorProgrammer:
+		Salary += 100;
+		break;
+	}
+}
+
+void AEmployee::Fire()
+{
 }
 
 void AEmployee::GoMeeting()

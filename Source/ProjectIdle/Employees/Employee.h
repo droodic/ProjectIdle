@@ -7,6 +7,22 @@
 #include "Components\WidgetComponent.h"
 #include "Employee.generated.h"
 
+UENUM(Meta = (ScriptName = "Role"))
+enum class ERole : uint8
+{
+	Programmer             UMETA(DisplayName = "Programmer"),
+	Artist				   UMETA(DisplayName = "Artist")
+};
+
+UENUM(Meta = (ScriptName = "Position"))
+enum class EPosition : uint8
+{
+	Intern				   UMETA(DisplayName = "Intern"),
+	Junior				   UMETA(DisplayName = "Junior"),
+	Programmer			   UMETA(DisplayName = "Programmer"),
+	SeniorProgrammer	   UMETA(DisplayName = "Senior")
+};
+
 UCLASS()
 class PROJECTIDLE_API AEmployee : public ACharacter
 {
@@ -16,9 +32,14 @@ public:
 	// Sets default values for this character's properties
 	AEmployee();
 
-	UPROPERTY(EditAnywhere) float Morale;
+	UPROPERTY(EditAnywhere) ERole Roles = ERole::Programmer;
+	UPROPERTY(EditAnywhere) EPosition Position = EPosition::Intern;
+
+	UPROPERTY(EditAnywhere) FText EmployeeName;
+
+	UPROPERTY(EditAnywhere) float Morale = 1;
 	UPROPERTY(EditAnywhere) float Performance;
-	UPROPERTY(EditAnywhere) float Salary;
+	UPROPERTY(EditAnywhere) float Salary = 200;
 	UPROPERTY(EditAnywhere) FString EmployeeRole;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector MeetingLocation;
 
@@ -26,6 +47,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float AssignedWorkload;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float CurrentWorkload;
 	//UPROPERTY() float GivenWorkload;
+
+	class UEmployeeSheetWidget* EmployeeSheetWidget;
 
 	//int CurrentWorkload;
 
@@ -56,4 +79,6 @@ public:
 	// Called to bind functionality to inputf
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
+	void Promote();
+	void Fire();
 };

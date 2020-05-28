@@ -23,7 +23,7 @@ class PROJECTIDLE_API Idea
 public:
 	class UImage* IdeaCover;
 
-	TEnumAsByte<EGenre> Genre;
+	EGenre Genre;
 
 	FString IdeaName;
 	FString IdeaDescription;
