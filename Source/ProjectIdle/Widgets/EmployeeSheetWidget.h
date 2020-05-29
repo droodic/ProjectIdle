@@ -30,7 +30,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Fire_Btn;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) FString EmployeeRole;
-	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float Morale;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float Performance;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float Salary;
