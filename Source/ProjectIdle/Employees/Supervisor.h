@@ -13,5 +13,6 @@ class PROJECTIDLE_API ASupervisor : public AEmployee
 
 public:
 	// Sets default values for this character's properties
+	ASupervisor(ERole Department);
 	ASupervisor();
 };
