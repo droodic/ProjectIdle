@@ -38,7 +38,7 @@ void AGameHUD::ShowEmployeeSheet(class AEmployee* emp)
 		EmpSheetWidget->EmployeePosition_T->Text = EmpSheetWidget->PositionToText(emp->Position);
 		EmpSheetWidget->Salary_T->Text = FText::AsCurrency(emp->Salary);
 		EmpSheetWidget->Morale_T->Text = FText::FromString(FString::FromInt(emp->Morale));
-
+		EmpSheetWidget->Performance = emp->Performance;
 		//EmpSheetWidget->Morale = emp->Morale;
 		//EmpSheetWidget->Salary = emp->Salary;
 		//EmpSheetWidget->EmployeeRole = emp->EmployeeRole;

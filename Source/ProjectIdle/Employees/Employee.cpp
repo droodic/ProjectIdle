@@ -16,8 +16,12 @@ AEmployee::AEmployee()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
 	WorkProgressBar = CreateDefaultSubobject<UWidgetComponent>(TEXT("WorkloadProgressBar")); //Maybe make Employee BP to set this up, because if later Employee classes emerge if we
 	WorkProgressBar->AttachTo(RootComponent);
+	WorkProgressBar->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	
+
 }
 
 // Called when the game starts or when spawned
@@ -41,11 +45,12 @@ void AEmployee::BeginPlay()
 	FVector reset = FVector(0, 0, 278);
 
 	Camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
-	auto WorkloadWidget = WorkProgressBar->GetUserWidgetObject();
-	auto WidgetInstance = Cast<UEWorkProgressWidget>(WorkloadWidget);
-	WidgetInstance->EmployeeRef = this;
-	WorkProgressBar->SetVisibility(false);
-
+	if (WorkProgressBar != nullptr) {
+		auto WorkloadWidget = WorkProgressBar->GetUserWidgetObject();
+		auto WidgetInstance = Cast<UEWorkProgressWidget>(WorkloadWidget);
+		WidgetInstance->EmployeeRef = this;
+		WorkProgressBar->SetVisibility(false);
+	}
 	if (EmployeeSheetWidget)
 	{
 		EmployeeSheetWidget->Employee = this;
@@ -99,7 +104,6 @@ void AEmployee::Tick(float DeltaTime)
 				if (EmployeeRole == "Programmer" && AnEmployee->EmployeeRole == "Programmer") {
 					if (AnEmployee->CurrentWorkload >= 5) {//change to editor editable constant 
 						//ThisEmployeeAI->MoveToLocation(AnEmployee->GetActorLocation(), 30.f);
-
 
 						AnEmployee->CurrentWorkload /= 2;
 						CurrentWorkload += AnEmployee->CurrentWorkload / 2;
