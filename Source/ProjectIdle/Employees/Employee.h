@@ -21,7 +21,8 @@ enum class EPosition : uint8
 	Intern				   UMETA(DisplayName = "Intern"),
 	Junior				   UMETA(DisplayName = "Junior"),
 	Programmer			   UMETA(DisplayName = "Programmer"),
-	SeniorProgrammer	   UMETA(DisplayName = "Senior")
+	SeniorProgrammer	   UMETA(DisplayName = "Senior"),
+	Supervisor             UMETA(DisplayName = "Supervisor")
 };
 
 UCLASS()
@@ -33,7 +34,7 @@ public:
 	// Sets default values for this character's properties
 	AEmployee();
 
-	UPROPERTY(EditAnywhere) ERole Roles = ERole::Programmer;
+	UPROPERTY(EditAnywhere) ERole Roles;
 	UPROPERTY(EditAnywhere) EPosition Position = EPosition::Intern;
 
 	UPROPERTY(EditAnywhere) FText EmployeeName;
