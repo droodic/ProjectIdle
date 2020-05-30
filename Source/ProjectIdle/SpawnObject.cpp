@@ -41,10 +41,10 @@ void ASpawnObject::SpawnWorker()
 			SpawnParameters.Owner = this;
 			SpawnParameters.Instigator = Instigator;
 
-			FVector SpawnLocation = FVector(0, 0, 260);
+			FVector SpawnLocation = FVector(0, 0, 270);
 			FRotator SpawnRotation = FRotator::ZeroRotator;
 			World->SpawnActor<AEmployee>(SpawnProgrammer, SpawnLocation, SpawnRotation, SpawnParameters);
-			GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, "Works");
+			//GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, "Works");
 
 		}
 
