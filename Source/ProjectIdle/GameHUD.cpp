@@ -42,6 +42,7 @@ void AGameHUD::ShowEmployeeSheet(class AEmployee* employee)
 
 		EmpSheetWidget->Employee = employee;
 
+		EmpSheetWidget->Performance = emp->Performance;
 		EmpSheetWidget->AddToViewport();
 	}
 	else if (EmpSheetWidget->IsInViewport()) 
