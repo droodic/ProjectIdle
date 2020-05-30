@@ -2,8 +2,8 @@
 
 
 #include "SpawnObject.h"
-#include "Engine/World.h"
-#include "GameManager.h"
+//#include "Engine/World.h"
+//#include "GameManager.h"
 #include "Engine.h"
 
 // Sets default values
@@ -18,8 +18,8 @@ ASpawnObject::ASpawnObject()
 void ASpawnObject::BeginPlay()
 {
 	Super::BeginPlay();
-	GM = GetWorld()->GetGameInstance<UGameManager>();
-	GM->Spawning = this;
+	//GM = GetWorld()->GetGameInstance<UGameManager>();
+	//GM->Spawning = this;
 }
 
 // Called every frame
@@ -29,25 +29,45 @@ void ASpawnObject::Tick(float DeltaTime)
 
 }
 
-void ASpawnObject::SpawnWorker()
-{
-	if (SpawnProgrammer)
-	{
-		UWorld* World = GetWorld();
-
-		if (World)
-		{
-			FActorSpawnParameters SpawnParameters;
-			SpawnParameters.Owner = this;
-			SpawnParameters.Instigator = Instigator;
-
-			FVector SpawnLocation = FVector(0, 0, 270);
-			FRotator SpawnRotation = FRotator::ZeroRotator;
-			World->SpawnActor<AEmployee>(SpawnProgrammer, SpawnLocation, SpawnRotation, SpawnParameters);
-			//GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, "Works");
-
-		}
-
-	}
-}
+//void ASpawnObject::HireProgrammer()
+//{
+//	if (SpawnProgrammer)
+//	{
+//		UWorld* World = GetWorld();
+//
+//		if (World)
+//		{
+//			FActorSpawnParameters SpawnParameters;
+//			SpawnParameters.Owner = this;
+//			SpawnParameters.Instigator = Instigator;
+//
+//			FVector SpawnLocation = FVector(0, 0, 270);
+//			FRotator SpawnRotation = FRotator::ZeroRotator;
+//			World->SpawnActor<AEmployee>(SpawnProgrammer, SpawnLocation, SpawnRotation, SpawnParameters);
+//			//GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, "Works");
+//
+//		}
+//
+//	}
+//}
+//
+//void ASpawnObject::HireArtist()
+//{
+//	if (SpawnArtist)
+//	{
+//		UWorld* World = GetWorld();
+//
+//		if (World)
+//		{
+//			FActorSpawnParameters SpawnParameters;
+//			SpawnParameters.Owner = this;
+//			SpawnParameters.Instigator = Instigator;
+//
+//			FVector SpawnLocation = FVector(0, 0, 270);
+//			FRotator SpawnRotation = FRotator::ZeroRotator;
+//			World->SpawnActor<AEmployee>(SpawnArtist, SpawnLocation, SpawnRotation, SpawnParameters);
+//		}
+//
+//	}
+//}
 
