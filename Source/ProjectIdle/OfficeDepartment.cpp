@@ -137,9 +137,9 @@ void AOfficeDepartment::NotifyActorEndOverlap(AActor* OtherActor)
 	}
 }
 
-void AOfficeDepartment::HireProgrammer()
+void AOfficeDepartment::HireEmployee(TArray<TSubclassOf<AEmployee>> SpawnEmployee, int Position)
 {
-	if (SpawnWorker[0])
+	if (SpawnEmployee[Position])
 	{
 		UWorld* World = GetWorld();
 
@@ -151,30 +151,9 @@ void AOfficeDepartment::HireProgrammer()
 
 			FVector SpawnLocation = FVector(0, 0, 270);
 			FRotator SpawnRotation = FRotator::ZeroRotator;
-			World->SpawnActor<AEmployee>(SpawnWorker[0], SpawnLocation, SpawnRotation, SpawnParameters);
-			//GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, "Works");
-
+			World->SpawnActor<AEmployee>(SpawnEmployee[Position], SpawnLocation, SpawnRotation, SpawnParameters);
 		}
 
 	}
 }
 
-void AOfficeDepartment::HireArtist()
-{
-	if (SpawnWorker[1])
-	{
-		UWorld* World = GetWorld();
-
-		if (World)
-		{
-			FActorSpawnParameters SpawnParameters;
-			SpawnParameters.Owner = this;
-			SpawnParameters.Instigator = Instigator;
-
-			FVector SpawnLocation = FVector(0, 0, 270);
-			FRotator SpawnRotation = FRotator::ZeroRotator;
-			World->SpawnActor<AEmployee>(SpawnWorker[1], SpawnLocation, SpawnRotation, SpawnParameters);
-		}
-
-	}
-}

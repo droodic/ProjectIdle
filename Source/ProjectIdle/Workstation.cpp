@@ -34,8 +34,8 @@ void AWorkstation::BeginPlay()
 	FVector zero = FVector(200, 0, 0);
 	StationVector = this->GetActorLocation();
 	FRotator rotation = this->GetActorRotation();
-	//UE_LOG(LogActor, Warning, TEXT("%s"), *rotation.ToString())
-	if (rotation.Yaw >= 0 && rotation.Yaw <= 2 || rotation.Yaw >= 358 && rotation.Yaw <= 360)
+
+	if (rotation.Yaw == 0 || rotation.Yaw == 360)
 	{
 		StationLocation = this->GetActorLocation().operator+(zero);
 	}
@@ -43,11 +43,11 @@ void AWorkstation::BeginPlay()
 	{
 		StationLocation = this->GetActorLocation().operator-(zero);
 	}
-	//StationLocation = this->GetActorLocation().operator-(zero);
+
 	GM->WorkStation = this;
 	HasEmployee = false;
-	int32 workstationSize = GM->WorkstationList.Num();
 
+	//int32 workstationSize = GM->WorkstationList.Num();
 	//FString mouseY = FString::FromInt(workstationSize);
 	//UE_LOG(LogActor, Warning, TEXT("%s"), *mouseY)
 	//UE_LOG(LogActor, Warning, TEXT("%s"), *StationLocation.ToString())

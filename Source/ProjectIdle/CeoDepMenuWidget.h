@@ -16,5 +16,15 @@ class PROJECTIDLE_API UCeoDepMenuWidget : public UUserWidget
 
 public:
 	UPROPERTY(BlueprintReadWrite) class AOfficeDepartment* OfficeDepartment;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_Prog_Btn;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_Artist_Btn;
+	UPROPERTY() FString Worker;
+
 	virtual void NativeConstruct() override;
+
+private:
+	UFUNCTION() void CallHiring();
+	UFUNCTION() void CallProgrammerSpawn();
+	UFUNCTION() void CallArtistSpawn();
 };
