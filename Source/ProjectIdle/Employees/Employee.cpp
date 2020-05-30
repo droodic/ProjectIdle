@@ -28,7 +28,7 @@ void AEmployee::BeginPlay()
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->EmployeeList.Add(this);
-	AI = Cast<AAIController>(GetController());
+	AI = Cast<AEmployeeAIC>(GetController());
 	//Find better way maybe, enum? 
 	if (EmployeeRole == "Artist") {
 		GM->NumOfArtists++;
@@ -81,7 +81,7 @@ void AEmployee::Tick(float DeltaTime)
 		WorkProgressBar->AddLocalRotation(FRotator(0, 180, 0));
 	}
 
-	if (!IsMoving) {
+	if (!AI->IsMoving) {
 		//Test function - Workers reduce workloads, make function / use timer +event instead of tick
 		if (IsWorking && CurrentWorkload > 0) { //remove isworking once ismoving is implement?
 			CurrentWorkload -= (DeltaTime * (Performance / 2));
@@ -136,7 +136,7 @@ void AEmployee::Tick(float DeltaTime)
 			}
 		}
 	}
-	else if (IsMoving){
+	else if (AI->IsMoving){
 		//auto Distance = FVector::Dist(GetActorLocation(), AnEmployee->GetActorLocation());
 		//while (Distance > 10.f) {
 		//	Distance = FVector::Dist(GetActorLocation(), AnEmployee->GetActorLocation());
@@ -196,7 +196,7 @@ void AEmployee::ToMeeting(FVector Destination)
 		UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
 		SetActorRotation(LookAtRotator);
 		AI->MoveToLocation(Destination);
-		IsMoving = true;
+		AI->IsMoving = true;
 		//Make all this moving stuff, lookat, IsMoving, into 1 function
 	}
 }
@@ -210,7 +210,7 @@ void AEmployee::ReturnPositionAfterMeeting(FVector Destination)
 		UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
 		SetActorRotation(LookAtRotator);
 		AI->MoveToLocation(Destination);
-		IsMoving = true;
+		AI->IsMoving = true;
 		//AI->OnMoveCompleted(AI->MoveToLocation(Destination), EPathFollowingRequestResult::RequestSuccessful);
 		GEngine->AddOnScreenDebugMessage(2213, 5, FColor::Green, TEXT("path complete?"));
 		//UAIBlueprintHelperLibrary::SimpleMoveToLocation(EmployeAI, Destination);
