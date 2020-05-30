@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
-//#include "DetourCrowdAIController.h"
+
 #include "EmployeeAIC.generated.h"
 
 /**
@@ -16,7 +16,10 @@ class PROJECTIDLE_API AEmployeeAIC : public AAIController
 	GENERATED_BODY()
 	
 public:
+	AEmployeeAIC(const FObjectInitializer& ObjectInitializer);
 
-	//UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void GoMeeting();
-
+	UPROPERTY(BlueprintReadWrite) bool IsMoving = false;
+protected:
+//	AEmployeeAIC(const FObjectInitializer& ObjectInitializer);
+	virtual void OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result) override;
 };

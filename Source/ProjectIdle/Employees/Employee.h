@@ -52,12 +52,13 @@ public:
 	//UPROPERTY() float GivenWorkload;
 
 	class UEmployeeSheetWidget* EmployeeSheetWidget;
-
+	//class AAIController* AI;
 	//int CurrentWorkload;
 
 	UPROPERTY() FVector StartPosition;
 	APlayerCameraManager* Camera;
 	UPROPERTY() bool HasWorkStation;
+	//bool IsMoving;
 	UPROPERTY() bool IsWorking;
 	//Managers
 	class AGameHUD* UI;

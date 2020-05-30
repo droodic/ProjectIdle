@@ -8,6 +8,7 @@
 #include "Components/WidgetComponent.h"
 #include "GameManager.h"
 #include "GameHUD.h"
+#include "Engine/World.h"
 #include "Kismet/KismetMathLibrary.h"
 
 AOfficeDepartment::AOfficeDepartment() {
@@ -27,7 +28,7 @@ Idea AOfficeDepartment::GenerateIdeaValues()
 void AOfficeDepartment::BeginPlay()
 {
 	Super::BeginPlay();
-	//GM = GetWorld()->GetGameInstance<UGameManager>(); //unused
+	GM = GetWorld()->GetGameInstance<UGameManager>(); //unused
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
 
 	if (UserWidgets[0] != nullptr)
@@ -135,3 +136,24 @@ void AOfficeDepartment::NotifyActorEndOverlap(AActor* OtherActor)
 		}
 	}
 }
+
+void AOfficeDepartment::HireEmployee(TArray<TSubclassOf<AEmployee>> SpawnEmployee, int Position)
+{
+	if (SpawnEmployee[Position])
+	{
+		UWorld* World = GetWorld();
+
+		if (World)
+		{
+			FActorSpawnParameters SpawnParameters;
+			SpawnParameters.Owner = this;
+			SpawnParameters.Instigator = Instigator;
+
+			FVector SpawnLocation = FVector(0, 0, 270);
+			FRotator SpawnRotation = FRotator::ZeroRotator;
+			World->SpawnActor<AEmployee>(SpawnEmployee[Position], SpawnLocation, SpawnRotation, SpawnParameters);
+		}
+
+	}
+}
+

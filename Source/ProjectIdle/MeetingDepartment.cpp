@@ -92,8 +92,8 @@ void AMeetingDepartment::MoveToMeeting()
 	int32 employeeSize = GM->EmployeeList.Num();
 	int32 LoopUntil;
 
-	//FString sizeString = FString::FromInt(chairSize);
-	//UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
+	FString sizeString = FString::FromInt(employeeSize);
+	UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
 
 	bool MoreEmployeeThanChair = false;
 
@@ -142,7 +142,7 @@ void AMeetingDepartment::BackFromMeeting()
 	{
 		GM->EmployeeList[i]->ReturnPositionAfterMeeting(GM->EmployeeList[i]->StartPosition);
 		//GM->EmployeeList[i]->SetActorRotation(UKismetMathLibrary::FindLookAtRotation(GM->EmployeeList[i]->GetActorLocation(), GM->EmployeeList[i]->StartPosition));
-		GM->EmployeeList[i]->WorkProgressBar->SetVisibility(true);
+		//GM->EmployeeList[i]->
 
 		//Assign workload test - move to own function/clean up later, also needs to be called when are at their workstation not before
 		if (GM->EmployeeList[i]->EmployeeRole == ERole::Artist) {

@@ -40,12 +40,17 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* ChairMesh;
 
+	UPROPERTY(EditAnywhere) TArray<TSubclassOf<class AEmployee>> SpawnWorker;
+
 
 //Functions
 public:
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void GenerateIdea();
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void ViewBacklog();
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void CallMeeting();
+	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void HireEmployee(TArray<TSubclassOf<AEmployee>> SpawnEmployee, int Position);
+	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void HireProgrammer();
+	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void HireArtist();
 
 	void Back();
 

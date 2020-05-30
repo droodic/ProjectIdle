@@ -20,8 +20,6 @@ AEmployee::AEmployee()
 	WorkProgressBar = CreateDefaultSubobject<UWidgetComponent>(TEXT("WorkloadProgressBar")); //Maybe make Employee BP to set this up, because if later Employee classes emerge if we
 	WorkProgressBar->AttachTo(RootComponent);
 	WorkProgressBar->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-	
-
 }
 
 // Called when the game starts or when spawned
@@ -30,7 +28,7 @@ void AEmployee::BeginPlay()
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->EmployeeList.Add(this);
-
+	AI = Cast<AEmployeeAIC>(GetController());
 	//Find better way maybe, enum? 
 	switch (EmployeeRole)
 	{
@@ -53,7 +51,7 @@ void AEmployee::BeginPlay()
 	StartPosition = this->GetActorLocation();
 	HasWorkStation = false;
 	FVector reset = FVector(0, 0, 278);
-
+	this->SpawnDefaultController();
 	Camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
 	if (WorkProgressBar != nullptr) {
 		auto WorkloadWidget = WorkProgressBar->GetUserWidgetObject();
@@ -65,18 +63,17 @@ void AEmployee::BeginPlay()
 	{
 		EmployeeSheetWidget->Employee = this;
 	}
+	
+	int32 number = GM->EmployeeList.Num();
+
+	FString sizeString = FString::FromInt(number);
+	UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
+
 }
-
-//auto AI = Work->Workers[0];
-//auto AI2 = Work->Workers[1];
-
-/*StartPosition = Work->Workers[0]->GetActorLocation();
-StartPositionTest = Work->Workers[1]->GetActorLocation();
-UE_LOG(LogActor, Warning, TEXT("%s"), *StartPosition.ToString())
-UE_LOG(LogActor, Warning, TEXT("%s"), *StartPositionTest.ToString())*/
 
 void AEmployee::BeginWork() {
 	IsWorking = true;
+	WorkProgressBar->SetVisibility(true);
 }
 
 void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
@@ -104,7 +101,7 @@ void AEmployee::Tick(float DeltaTime)
 	}
 
 	//Test function - Workers reduce workloads, make function / use timer +event instead of tick
-	if (IsWorking && CurrentWorkload > 0) {
+	if (IsWorking && CurrentWorkload > 0 && !AI->IsMoving) { //remove isworking once ismoving is implement? && !AI->IsMoving
 		CurrentWorkload -= (DeltaTime * (Performance / 2));
 		if (CurrentWorkload <= 0) {
 			//Self workload finished, check to see if others remain. If others in same department remain, go to them, and take 50% of their remainding workload if there's more than 10 seconds left of WL
@@ -127,11 +124,6 @@ void AEmployee::Tick(float DeltaTime)
 					if (AnEmployee->CurrentWorkload >= 5) {
 
 						//ThisEmployeeAI->MoveToLocation(AnEmployee->GetActorLocation(), 30.f);
-						//auto Distance = FVector::Dist(GetActorLocation(), AnEmployee->GetActorLocation());
-						//while (Distance > 10.f) {
-						//	Distance = FVector::Dist(GetActorLocation(), AnEmployee->GetActorLocation());
-
-						//}
 
 						AnEmployee->CurrentWorkload /= 2;
 						CurrentWorkload += AnEmployee->CurrentWorkload / 2;
@@ -158,6 +150,8 @@ void AEmployee::Tick(float DeltaTime)
 			}
 		}
 	}
+
+
 }
 
 // Called to bind functionality to input
@@ -204,30 +198,39 @@ void AEmployee::GoMeeting()
 
 void AEmployee::ToMeeting(FVector Destination)
 {
-	//MoveToLocation(FVector(-710.0, 700.0, 308));
-	auto EmployeAI = Cast<AAIController>(GetController());
-	if (EmployeAI)
+	if (AI)
 	{
 		auto LookAtRotator = FRotator(UKismetMathLibrary::MakeRotator(0, 0, UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Destination).Yaw));
 		UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
 		SetActorRotation(LookAtRotator);
-		EmployeAI->MoveToLocation(Destination);
-	}
-}
-
-void AEmployee::ReturnPositionAfterMeeting(FVector Destination)
-{
-	auto EmployeAI = Cast<AAIController>(GetController());
-	if (EmployeAI)
-	{
-		auto LookAtRotator = FRotator(UKismetMathLibrary::MakeRotator(0, 0, UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Destination).Yaw));
-		UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
-		SetActorRotation(LookAtRotator);
-		EmployeAI->MoveToLocation(Destination);
-		//UAIBlueprintHelperLibrary::SimpleMoveToLocation(EmployeAI, Destination);
+		AI->MoveToLocation(Destination);
+		AI->IsMoving = true;
+		//Make all this moving stuff, lookat, IsMoving, into 1 function
 	}
 	else
 	{
 		UE_LOG(LogActor, Warning, TEXT("%s"), "Null")
 	}
 }
+
+void AEmployee::ReturnPositionAfterMeeting(FVector Destination)
+{
+	//auto EmployeAI = Cast<AAIController>(GetController());
+	if (AI)
+	{
+		auto LookAtRotator = FRotator(UKismetMathLibrary::MakeRotator(0, 0, UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Destination).Yaw));
+		UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
+		SetActorRotation(LookAtRotator);
+		AI->MoveToLocation(Destination);
+		AI->IsMoving = true;
+		//AI->OnMoveCompleted(AI->MoveToLocation(Destination), EPathFollowingRequestResult::RequestSuccessful);
+		//GEngine->AddOnScreenDebugMessage(2213, 5, FColor::Green, TEXT("path complete?"));
+		//UAIBlueprintHelperLibrary::SimpleMoveToLocation(EmployeAI, Destination);
+		//Make all this moving stuff, lookat, IsMoving, into 1 function
+	}
+	else
+	{
+		UE_LOG(LogActor, Warning, TEXT("%s"), "Null")
+	}
+}
+
