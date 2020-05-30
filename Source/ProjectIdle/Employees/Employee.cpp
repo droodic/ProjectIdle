@@ -55,6 +55,7 @@ void AEmployee::BeginPlay()
 	{
 		EmployeeSheetWidget->Employee = this;
 	}
+
 }
 
 //auto AI = Work->Workers[0];
@@ -228,3 +229,4 @@ void AEmployee::ReturnPositionAfterMeeting(FVector Destination)
 		UE_LOG(LogActor, Warning, TEXT("%s"), "Null")
 	}
 }
+
