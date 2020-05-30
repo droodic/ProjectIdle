@@ -14,5 +14,6 @@ AEmployeeAIC::AEmployeeAIC(const FObjectInitializer& ObjectInitializer) : Super(
 void AEmployeeAIC::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result)
 {
 	GEngine->AddOnScreenDebugMessage(2215, 5, FColor::Green, TEXT("path complete?"));
+	IsMoving = false;
 
 }

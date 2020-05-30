@@ -150,7 +150,7 @@ void AMeetingDepartment::BackFromMeeting()
 	{
 		GM->EmployeeList[i]->ReturnPositionAfterMeeting(GM->EmployeeList[i]->StartPosition);
 		//GM->EmployeeList[i]->SetActorRotation(UKismetMathLibrary::FindLookAtRotation(GM->EmployeeList[i]->GetActorLocation(), GM->EmployeeList[i]->StartPosition));
-		GM->EmployeeList[i]->WorkProgressBar->SetVisibility(true);
+		//GM->EmployeeList[i]->
 
 		//Assign workload test - move to own function/clean up later, also needs to be called when are at their workstation not before
 		if (GM->EmployeeList[i]->EmployeeRole == "Artist") {
