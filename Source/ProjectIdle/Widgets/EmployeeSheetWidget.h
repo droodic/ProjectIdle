@@ -19,28 +19,25 @@ class PROJECTIDLE_API UEmployeeSheetWidget : public UUserWidget
 public:
 	class AEmployee* Employee;
 
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* EmployeeName_T;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* EmployeeRole_T;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* EmployeePosition_T;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* Morale_T;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* Salary_T;
-	//UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* Performance_T;
-
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Promote_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Fire_Btn;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) FString EmployeeRole;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) float Morale;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) float Performance;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) float Salary;
-	
-public:
-	void Promote();
-	void Fire();
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* EmployeeName_T;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* EmployeeRole_T;
+	UPROPERTY(BlueprintReadWrite) ERole EmployeeRole;
+	UPROPERTY(BlueprintReadWrite) EPosition EmployeePosition;
 
-	FText RoleToText(enum ERole role);
-	FText PositionToText(enum EPosition position);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) float Morale;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) float Salary;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) float Performance;
+
+public:
+	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void Promote();
+	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void Fire();
+
+	UFUNCTION(BlueprintCallable, Category = "Converters") FText RoleToText(enum ERole role);
+	UFUNCTION(BlueprintGetter, Category = "Converters") FText PositionToText(enum EPosition position);
+	UFUNCTION(BlueprintGetter, Category = "Converters") FText SalaryToText(float salar);
 
 private:
 	virtual void NativeConstruct() override;

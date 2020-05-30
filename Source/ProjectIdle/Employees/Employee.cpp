@@ -28,12 +28,22 @@ void AEmployee::BeginPlay()
 	GM->EmployeeList.Add(this);
 
 	//Find better way maybe, enum? 
-	if (EmployeeRole == "Artist") {
+	switch (EmployeeRole)
+	{
+	case ERole::Programmer:
+		GM->NumOfProgrammers++;
+		break;
+	case ERole::Artist:
+		GM->NumOfArtists++;
+		break;
+	}
+	
+	/*if (EmployeeRole == "Artist") {
 		GM->NumOfArtists++;
 	}
 	else if (EmployeeRole == "Programmer") {
 		GM->NumOfProgrammers++;
-	}
+	}*/
 
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0)->GetHUD());
 	StartPosition = this->GetActorLocation();
@@ -45,11 +55,6 @@ void AEmployee::BeginPlay()
 	auto WidgetInstance = Cast<UEWorkProgressWidget>(WorkloadWidget);
 	WidgetInstance->EmployeeRef = this;
 	WorkProgressBar->SetVisibility(false);
-
-	if (EmployeeSheetWidget)
-	{
-		EmployeeSheetWidget->Employee = this;
-	}
 }
 
 //auto AI = Work->Workers[0];
@@ -59,7 +64,6 @@ void AEmployee::BeginPlay()
 StartPositionTest = Work->Workers[1]->GetActorLocation();
 UE_LOG(LogActor, Warning, TEXT("%s"), *StartPosition.ToString())
 UE_LOG(LogActor, Warning, TEXT("%s"), *StartPositionTest.ToString())*/
-
 
 void AEmployee::BeginWork() {
 	IsWorking = true;
@@ -71,10 +75,12 @@ void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 
 		UI->ShowEmployeeSheet(this);
 	}
-	else {
-		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Employee is Clicked, UI Is null!"));
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, TEXT("Employee is Clicked, UI Is null!"));
 	}
 }
+
 // Called every frame
 void AEmployee::Tick(float DeltaTime)
 {
@@ -87,7 +93,6 @@ void AEmployee::Tick(float DeltaTime)
 		WorkProgressBar->AddLocalRotation(FRotator(0, 180, 0));
 	}
 
-
 	//Test function - Workers reduce workloads, make function / use timer +event instead of tick
 	if (IsWorking && CurrentWorkload > 0) {
 		CurrentWorkload -= (DeltaTime * (Performance / 2));
@@ -96,7 +101,7 @@ void AEmployee::Tick(float DeltaTime)
 			//If none remain, give player money if idea was successful
 			for (auto AnEmployee : GM->EmployeeList) {
 				auto ThisEmployeeAI = Cast<AAIController>(GetController());
-				if (EmployeeRole == "Programmer" && AnEmployee->EmployeeRole == "Programmer") {
+				if (EmployeeRole == ERole::Programmer && AnEmployee->EmployeeRole == ERole::Programmer) {
 					if (AnEmployee->CurrentWorkload >= 5) {//change to editor editable constant 
 						//ThisEmployeeAI->MoveToLocation(AnEmployee->GetActorLocation(), 30.f);
 
@@ -109,8 +114,7 @@ void AEmployee::Tick(float DeltaTime)
 
 					}
 				}
-
-				else if (EmployeeRole == "Artist" && AnEmployee->EmployeeRole == "Artist") {
+				else if (EmployeeRole == ERole::Artist && AnEmployee->EmployeeRole == ERole::Artist) {
 					if (AnEmployee->CurrentWorkload >= 5) {
 
 						//ThisEmployeeAI->MoveToLocation(AnEmployee->GetActorLocation(), 30.f);
@@ -128,7 +132,6 @@ void AEmployee::Tick(float DeltaTime)
 					}
 				}
 			}
-
 		}
 		if (CurrentWorkload <= 0) { //Change to condition checking if all other employee are also done, then prepare to give money
 			IsWorking = false;
@@ -139,60 +142,55 @@ void AEmployee::Tick(float DeltaTime)
 				if (AnEmployee->IsWorking == true) {
 					isOver = false;
 				}
-
 			}
 			if (isOver == true) {
 
 				GM->Money += 10000; //Use algo later, and do real way of assgning money
 			}
-
 		}
 	}
 }
-
-
 
 // Called to bind functionality to input
 void AEmployee::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
 void AEmployee::Promote()
 {
-	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, TEXT("Promote button called"));
+	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, "Promote button called");
 
-	//EPosition(1);
-	switch (Position)
+	switch (EmployeePosition)
 	{
 	case EPosition::Intern:
-		Position = EPosition::Junior;
+		EmployeePosition = EPosition::Junior;
 		Salary += 200;
 		break;
 	case EPosition::Junior:
-		Position = EPosition::Programmer;
+		EmployeePosition = EPosition::Programmer;
 		Salary += 200;
 		break;
 	case EPosition::Programmer:
-		Position = EPosition::SeniorProgrammer;
+		EmployeePosition = EPosition::SeniorProgrammer;
 		Salary += 200;
 		break;
 	case EPosition::SeniorProgrammer:
 		Salary += 100;
 		break;
 	}
+
+	UI->RefreshEmployeeSheet(this);
 }
 
 void AEmployee::Fire()
 {
+	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Red, "The employee is Fired!");
 }
 
 void AEmployee::GoMeeting()
 {
 	//MoveToLocation(FVector(-710.0, 700.0, 308));
-
-
 }
 
 void AEmployee::ToMeeting(FVector Destination)

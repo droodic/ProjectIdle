@@ -5,6 +5,6 @@
 
 AArtist::AArtist()
 {
-	EmployeeRole = "Artist";
+	EmployeeRole = ERole::Artist;
 	Salary = 100.0f;
 }
