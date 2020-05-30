@@ -49,16 +49,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float AssignedWorkload;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float CurrentWorkload;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) class AEmployeeAIC* AI;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite) class AEmployeeAIC* AI;
 	//UPROPERTY() float GivenWorkload;
 
 	class UEmployeeSheetWidget* EmployeeSheetWidget;
-
+	class AAIController* AI;
 	//int CurrentWorkload;
 
 	UPROPERTY() FVector StartPosition;
 	APlayerCameraManager* Camera;
 	UPROPERTY() bool HasWorkStation;
+	bool IsMoving;
 	UPROPERTY() bool IsWorking;
 	//Managers
 	class AGameHUD* UI;
