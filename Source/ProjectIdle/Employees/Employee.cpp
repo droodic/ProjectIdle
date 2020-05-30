@@ -137,10 +137,8 @@ void AEmployee::Tick(float DeltaTime)
 		}
 	}
 	else if (AI->IsMoving){
-		//auto Distance = FVector::Dist(GetActorLocation(), AnEmployee->GetActorLocation());
-		//while (Distance > 10.f) {
-		//	Distance = FVector::Dist(GetActorLocation(), AnEmployee->GetActorLocation());
-		//}
+
+		//Implemented by override IsMoveComplete in EmployeeAIC , maybe don't need bool here, just call sit animation directly from AIC
 	}
 
 }
@@ -212,7 +210,7 @@ void AEmployee::ReturnPositionAfterMeeting(FVector Destination)
 		AI->MoveToLocation(Destination);
 		AI->IsMoving = true;
 		//AI->OnMoveCompleted(AI->MoveToLocation(Destination), EPathFollowingRequestResult::RequestSuccessful);
-		GEngine->AddOnScreenDebugMessage(2213, 5, FColor::Green, TEXT("path complete?"));
+		//GEngine->AddOnScreenDebugMessage(2213, 5, FColor::Green, TEXT("path complete?"));
 		//UAIBlueprintHelperLibrary::SimpleMoveToLocation(EmployeAI, Destination);
 		//Make all this moving stuff, lookat, IsMoving, into 1 function
 	}

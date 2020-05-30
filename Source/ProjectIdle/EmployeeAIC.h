@@ -18,7 +18,7 @@ class PROJECTIDLE_API AEmployeeAIC : public AAIController
 public:
 	AEmployeeAIC(const FObjectInitializer& ObjectInitializer);
 
-	bool IsMoving = false;
+	UPROPERTY(BlueprintReadWrite) bool IsMoving = false;
 protected:
 //	AEmployeeAIC(const FObjectInitializer& ObjectInitializer);
 	virtual void OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result) override;
