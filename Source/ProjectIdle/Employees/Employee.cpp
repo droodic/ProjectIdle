@@ -41,7 +41,7 @@ void AEmployee::BeginPlay()
 	StartPosition = this->GetActorLocation();
 	HasWorkStation = false;
 	FVector reset = FVector(0, 0, 278);
-
+	this->SpawnDefaultController();
 	Camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
 	if (WorkProgressBar != nullptr) {
 		auto WorkloadWidget = WorkProgressBar->GetUserWidgetObject();
@@ -53,6 +53,12 @@ void AEmployee::BeginPlay()
 	{
 		EmployeeSheetWidget->Employee = this;
 	}
+	
+	int32 number = GM->EmployeeList.Num();
+
+	FString sizeString = FString::FromInt(number);
+	UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
+
 }
 
 void AEmployee::BeginWork() {
@@ -193,6 +199,10 @@ void AEmployee::ToMeeting(FVector Destination)
 		AI->IsMoving = true;
 		//Make all this moving stuff, lookat, IsMoving, into 1 function
 	}
+	else
+	{
+		UE_LOG(LogActor, Warning, TEXT("%s"), "Null")
+	}
 }
 
 void AEmployee::ReturnPositionAfterMeeting(FVector Destination)
@@ -215,3 +225,4 @@ void AEmployee::ReturnPositionAfterMeeting(FVector Destination)
 		UE_LOG(LogActor, Warning, TEXT("%s"), "Null")
 	}
 }
+

@@ -97,8 +97,8 @@ void AMeetingDepartment::MoveToMeeting()
 	int32 employeeSize = GM->EmployeeList.Num();
 	int32 LoopUntil;
 
-	//FString sizeString = FString::FromInt(chairSize);
-	//UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
+	FString sizeString = FString::FromInt(employeeSize);
+	UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
 
 
 	bool MoreEmployeeThanChair = false;
