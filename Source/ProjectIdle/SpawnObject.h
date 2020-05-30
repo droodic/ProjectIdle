@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Employees/Programmer.h"
+//#include "Employees/Programmer.h"
 #include "SpawnObject.generated.h"
 
 UCLASS()
@@ -16,8 +16,9 @@ public:
 	// Sets default values for this actor's properties
 	ASpawnObject();
 
-	UPROPERTY(EditAnywhere) TSubclassOf<class AEmployee> SpawnProgrammer;
-	class UGameManager* GM;
+	//UPROPERTY(EditAnywhere) TSubclassOf<class AEmployee> SpawnProgrammer;
+	//UPROPERTY(EditAnywhere) TSubclassOf<class AEmployee> SpawnArtist;
+	//class UGameManager* GM;
 
 protected:
 	// Called when the game starts or when spawned
@@ -25,6 +26,7 @@ protected:
 
 public:	
 	// Called every frame
-	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void SpawnWorker();
+	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void HireProgrammer();
+	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void HireArtist();
 	virtual void Tick(float DeltaTime) override;
 };

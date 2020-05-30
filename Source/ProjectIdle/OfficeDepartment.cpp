@@ -8,6 +8,7 @@
 #include "Components/WidgetComponent.h"
 #include "GameManager.h"
 #include "GameHUD.h"
+#include "Engine/World.h"
 #include "Kismet/KismetMathLibrary.h"
 
 AOfficeDepartment::AOfficeDepartment() {
@@ -27,7 +28,7 @@ Idea AOfficeDepartment::GenerateIdeaValues()
 void AOfficeDepartment::BeginPlay()
 {
 	Super::BeginPlay();
-	//GM = GetWorld()->GetGameInstance<UGameManager>(); //unused
+	GM = GetWorld()->GetGameInstance<UGameManager>(); //unused
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
 
 	if (UserWidgets[0] != nullptr)
@@ -133,5 +134,47 @@ void AOfficeDepartment::NotifyActorEndOverlap(AActor* OtherActor)
 		{
 			BacklogWidget->RemoveFromViewport();
 		}
+	}
+}
+
+void AOfficeDepartment::HireProgrammer()
+{
+	if (SpawnWorker[0])
+	{
+		UWorld* World = GetWorld();
+
+		if (World)
+		{
+			FActorSpawnParameters SpawnParameters;
+			SpawnParameters.Owner = this;
+			SpawnParameters.Instigator = Instigator;
+
+			FVector SpawnLocation = FVector(0, 0, 270);
+			FRotator SpawnRotation = FRotator::ZeroRotator;
+			World->SpawnActor<AEmployee>(SpawnWorker[0], SpawnLocation, SpawnRotation, SpawnParameters);
+			//GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, "Works");
+
+		}
+
+	}
+}
+
+void AOfficeDepartment::HireArtist()
+{
+	if (SpawnWorker[1])
+	{
+		UWorld* World = GetWorld();
+
+		if (World)
+		{
+			FActorSpawnParameters SpawnParameters;
+			SpawnParameters.Owner = this;
+			SpawnParameters.Instigator = Instigator;
+
+			FVector SpawnLocation = FVector(0, 0, 270);
+			FRotator SpawnRotation = FRotator::ZeroRotator;
+			World->SpawnActor<AEmployee>(SpawnWorker[1], SpawnLocation, SpawnRotation, SpawnParameters);
+		}
+
 	}
 }
