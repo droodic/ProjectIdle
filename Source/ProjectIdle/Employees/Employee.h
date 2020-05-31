@@ -45,6 +45,8 @@ public:
 	UPROPERTY(EditAnywhere) FString EmployeeRole;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector MeetingLocation;
 
+	UPROPERTY() int WorkstationPositionRef;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UWidgetComponent* WorkProgressBar;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float AssignedWorkload;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float CurrentWorkload;

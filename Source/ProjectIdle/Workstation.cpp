@@ -31,6 +31,7 @@ void AWorkstation::BeginPlay()
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->WorkstationList.Add(this);
+	GM->WorkStation = this;
 	FVector zero = FVector(200, 0, 0);
 	StationVector = this->GetActorLocation();
 	FRotator rotation = this->GetActorRotation();
@@ -44,7 +45,6 @@ void AWorkstation::BeginPlay()
 		StationLocation = this->GetActorLocation().operator-(zero);
 	}
 
-	GM->WorkStation = this;
 	HasEmployee = false;
 
 	//int32 workstationSize = GM->WorkstationList.Num();
@@ -79,7 +79,8 @@ void AWorkstation::UpdateWorkstationPosition()
 					{
 						GM->WorkstationList[i]->HasEmployee = true;
 						GM->EmployeeList[j]->HasWorkStation = true;
-						GM->EmployeeList[j]->StartPosition = GM->WorkstationList[i]->StationLocation;;
+						GM->EmployeeList[j]->StartPosition = GM->WorkstationList[i]->StationLocation;
+						GM->EmployeeList[j]->WorkstationPositionRef = i;
 						break;
 					}
 				}
@@ -97,6 +98,7 @@ void AWorkstation::UpdateWorkstationPosition()
 						GM->WorkstationList[i]->HasEmployee = true;
 						GM->EmployeeList[j]->HasWorkStation = true;
 						GM->EmployeeList[j]->StartPosition = GM->WorkstationList[i]->StationLocation;
+						GM->EmployeeList[j]->WorkstationPositionRef = i;
 						break;
 					}
 				}

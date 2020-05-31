@@ -5,6 +5,7 @@
 #include "AIModule\Classes\DetourCrowdAIController.h"
 #include "ProjectIdle/EmployeeAIC.h"
 #include "ProjectIdle/GameManager.h"
+#include "ProjectIdle/Workstation.h"
 #include "ProjectIdle/GameHUD.h"
 #include "EWorkProgressWidget.h"
 #include "Runtime\AIModule\Classes\Blueprint\AIBlueprintHelperLibrary.h"
@@ -32,6 +33,9 @@ void AEmployee::BeginPlay()
 
 	Camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
 	GM->EmployeeList.Add(this);
+	this->SpawnDefaultController();
+	AI = Cast<AEmployeeAIC>(GetController());
+
 	//Find better way maybe, enum? 
 	if (EmployeeRole == "Artist") {
 		GM->NumOfArtists++;
@@ -43,7 +47,7 @@ void AEmployee::BeginPlay()
 	StartPosition = this->GetActorLocation();
 	HasWorkStation = false;
 	FVector reset = FVector(0, 0, 278);
-	this->SpawnDefaultController();
+	Camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
 	if (WorkProgressBar != nullptr) {
 		auto WorkloadWidget = WorkProgressBar->GetUserWidgetObject();
 		auto WidgetInstance = Cast<UEWorkProgressWidget>(WorkloadWidget);
@@ -54,11 +58,15 @@ void AEmployee::BeginPlay()
 	{
 		EmployeeSheetWidget->Employee = this;
 	}
+	
 
-	int32 number = GM->EmployeeList.Num();
+	
+    GM->WorkStation->UpdateWorkstationPosition();
 
-	FString sizeString = FString::FromInt(number);
-	UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
+	//int32 number = WorkstationPositionRef;
+
+	//FString sizeString = FString::FromInt(number);
+	//UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
 
 }
 

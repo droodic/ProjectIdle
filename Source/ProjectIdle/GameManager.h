@@ -26,7 +26,6 @@ public:
 	UPROPERTY(BlueprintReadWrite) class AOfficeDepartment* OfficeDepartment;
 	UPROPERTY(BlueprintReadWrite) class AMeetingDepartment* MeetingDepartment;
 	UPROPERTY(BlueprintReadWrite) class AWorkstation* WorkStation;
-	//UPROPERTY(BlueprintReadWrite) class ASpawnObject* Spawning;
 
 	virtual void Init();
 
