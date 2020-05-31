@@ -147,7 +147,7 @@ void AOfficeDepartment::HireEmployee(TArray<TSubclassOf<AEmployee>> SpawnEmploye
 		{
 			FActorSpawnParameters SpawnParameters;
 			SpawnParameters.Owner = this;
-			SpawnParameters.Instigator = Instigator;
+			SpawnParameters.Instigator = GetInstigator();
 
 			FVector SpawnLocation = FVector(0, 0, 270);
 			FRotator SpawnRotation = FRotator::ZeroRotator;
