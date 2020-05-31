@@ -59,8 +59,8 @@ public:
 	UPROPERTY() FVector StartPosition;
 	APlayerCameraManager* Camera;
 	UPROPERTY() bool HasWorkStation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsWorking;
 	//bool IsMoving;
-	UPROPERTY() bool IsWorking;
 	//Managers
 	class AGameHUD* UI;
 	class UGameManager* GM;
