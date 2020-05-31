@@ -26,9 +26,12 @@ AEmployee::AEmployee()
 void AEmployee::BeginPlay()
 {
 	Super::BeginPlay();
-	GM = GetWorld()->GetGameInstance<UGameManager>();
-	GM->EmployeeList.Add(this);
 	AI = Cast<AEmployeeAIC>(GetController());
+	GM = GetWorld()->GetGameInstance<UGameManager>();
+	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0)->GetHUD());
+
+	Camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
+	GM->EmployeeList.Add(this);
 	//Find better way maybe, enum? 
 	if (EmployeeRole == "Artist") {
 		GM->NumOfArtists++;
@@ -37,12 +40,10 @@ void AEmployee::BeginPlay()
 		GM->NumOfProgrammers++;
 	}
 
-	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0)->GetHUD());
 	StartPosition = this->GetActorLocation();
 	HasWorkStation = false;
 	FVector reset = FVector(0, 0, 278);
 	this->SpawnDefaultController();
-	Camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
 	if (WorkProgressBar != nullptr) {
 		auto WorkloadWidget = WorkProgressBar->GetUserWidgetObject();
 		auto WidgetInstance = Cast<UEWorkProgressWidget>(WorkloadWidget);
@@ -53,7 +54,7 @@ void AEmployee::BeginPlay()
 	{
 		EmployeeSheetWidget->Employee = this;
 	}
-	
+
 	int32 number = GM->EmployeeList.Num();
 
 	FString sizeString = FString::FromInt(number);
@@ -62,7 +63,7 @@ void AEmployee::BeginPlay()
 }
 
 void AEmployee::BeginWork() {
-	IsWorking = true;
+	HasWorkload = true;
 	WorkProgressBar->SetVisibility(true);
 }
 
@@ -83,62 +84,74 @@ void AEmployee::Tick(float DeltaTime)
 
 	//add a if enabled condition or smth
 
+	if (HasWorkload && CurrentWorkload > 0 && !AI->IsMoving) {
+		WorkloadProgress(DeltaTime * (Performance / 2));
+	}
+
+}
+
+void AEmployee::WorkloadProgress(float Multiplier) {
+	//Test function - Workers reduce workloads, make function / use timer +event instead of tick
 	if (WorkProgressBar != nullptr) {
 		WorkProgressBar->SetWorldRotation(Camera->GetCameraRotation());
 		WorkProgressBar->AddLocalRotation(FRotator(0, 180, 0));
 	}
 
-	//Test function - Workers reduce workloads, make function / use timer +event instead of tick
-	if (IsWorking && CurrentWorkload > 0 && !AI->IsMoving) { //remove isworking once ismoving is implement? && !AI->IsMoving
-		CurrentWorkload -= (DeltaTime * (Performance / 2));
-		if (CurrentWorkload <= 0) {
-			//Self workload finished, check to see if others remain. If others in same department remain, go to them, and take 50% of their remainding workload if there's more than 10 seconds left of WL
-			//If none remain, give player money if idea was successful
-			for (auto AnEmployee : GM->EmployeeList) {
-				auto ThisEmployeeAI = Cast<AAIController>(GetController());
-				if (EmployeeRole == "Programmer" && AnEmployee->EmployeeRole == "Programmer") {
-					if (AnEmployee->CurrentWorkload >= 5) {//change to editor editable constant 
-						//ThisEmployeeAI->MoveToLocation(AnEmployee->GetActorLocation(), 30.f);
+	//remove isworking once ismoving is implement? && !AI->IsMoving
+	if (!IsWorking && WorkAnim != nullptr) {
 
-						AnEmployee->CurrentWorkload /= 2;
-						CurrentWorkload += AnEmployee->CurrentWorkload / 2;
-						//ReturnPositionAfterMeeting(StartPosition);
-						GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Programmer workload finished, taking workload from another employee"));
-						break;
+		auto LookAtRotator = FRotator(UKismetMathLibrary::MakeRotator(0, 0, UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), StartPosition).Yaw));
+		UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
+		SetActorRotation(LookAtRotator);
+		//GetMesh()->PlayAnimation(WorkAnim, false);
+		
+		IsWorking = true;
+	}
 
-					}
+	CurrentWorkload -= Multiplier;
+	if (CurrentWorkload <= 0) {
+		//Self workload finished, check to see if others remain. If others in same department remain, go to them, and take 50% of their remainding workload if there's more than 10 seconds left of WL
+		//If none remain, give player money if idea was successful
+		for (auto AnEmployee : GM->EmployeeList) {
+			auto ThisEmployeeAI = Cast<AAIController>(GetController());
+			if (EmployeeRole == "Programmer" && AnEmployee->EmployeeRole == "Programmer") {
+				if (AnEmployee->CurrentWorkload >= 5) {//change to editor editable constant 
+					AnEmployee->CurrentWorkload /= 2;
+					CurrentWorkload += AnEmployee->CurrentWorkload / 2;
+					GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Programmer workload finished, taking workload from another employee"));
+					break;
+
 				}
+			}
 
-				else if (EmployeeRole == "Artist" && AnEmployee->EmployeeRole == "Artist") {
-					if (AnEmployee->CurrentWorkload >= 5) {
+			else if (EmployeeRole == "Artist" && AnEmployee->EmployeeRole == "Artist") {
+				if (AnEmployee->CurrentWorkload >= 5) {
 
-						//ThisEmployeeAI->MoveToLocation(AnEmployee->GetActorLocation(), 30.f);
-
-						AnEmployee->CurrentWorkload /= 2;
-						CurrentWorkload += AnEmployee->CurrentWorkload / 2;
-						//ReturnPositionAfterMeeting(StartPosition);
-						GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Programmer workload finished, taking workload from another employee"));
-						break;
-					}
+					AnEmployee->CurrentWorkload /= 2;
+					CurrentWorkload += AnEmployee->CurrentWorkload / 2;
+					GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Programmer workload finished, taking workload from another employee"));
+					break;
 				}
+			}
+		}
+
+	}
+	if (CurrentWorkload <= 0) { //Change to condition checking if all other employee are also done, then prepare to give money
+		HasWorkload = false;
+		WorkProgressBar->SetVisibility(false);
+		//go back to regular animation ?
+
+		bool isOver = true;
+		for (auto AnEmployee : GM->EmployeeList) {
+			if (AnEmployee->HasWorkload == true) {
+				isOver = false;
+
 			}
 
 		}
-		if (CurrentWorkload <= 0) { //Change to condition checking if all other employee are also done, then prepare to give money
-			IsWorking = false;
-			WorkProgressBar->SetVisibility(false);
+		if (isOver == true) {
 
-			bool isOver = true;
-			for (auto AnEmployee : GM->EmployeeList) {
-				if (AnEmployee->IsWorking == true) {
-					isOver = false;
-				}
-
-			}
-			if (isOver == true) {
-
-				GM->Money += 10000; //Use algo later, and do real way of assgning money
-			}
+			GM->Money += 10000; //Use algo later, and do real way of assgning money
 		}
 	}
 
@@ -183,8 +196,7 @@ void AEmployee::Fire()
 
 void AEmployee::GoMeeting()
 {
-	//MoveToLocation(FVector(-710.0, 700.0, 308));
-
+	//delete?
 
 }
 
@@ -207,7 +219,6 @@ void AEmployee::ToMeeting(FVector Destination)
 
 void AEmployee::ReturnPositionAfterMeeting(FVector Destination)
 {
-	//auto EmployeAI = Cast<AAIController>(GetController());
 	if (AI)
 	{
 		auto LookAtRotator = FRotator(UKismetMathLibrary::MakeRotator(0, 0, UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Destination).Yaw));
@@ -215,9 +226,6 @@ void AEmployee::ReturnPositionAfterMeeting(FVector Destination)
 		SetActorRotation(LookAtRotator);
 		AI->MoveToLocation(Destination);
 		AI->IsMoving = true;
-		//AI->OnMoveCompleted(AI->MoveToLocation(Destination), EPathFollowingRequestResult::RequestSuccessful);
-		//GEngine->AddOnScreenDebugMessage(2213, 5, FColor::Green, TEXT("path complete?"));
-		//UAIBlueprintHelperLibrary::SimpleMoveToLocation(EmployeAI, Destination);
 		//Make all this moving stuff, lookat, IsMoving, into 1 function
 	}
 	else

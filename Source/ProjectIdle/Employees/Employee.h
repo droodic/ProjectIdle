@@ -59,11 +59,19 @@ public:
 	UPROPERTY() FVector StartPosition;
 	APlayerCameraManager* Camera;
 	UPROPERTY() bool HasWorkStation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool HasWorkload;
+	UPROPERTY(BlueprintReadWrite) bool IsMoving = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsWorking;
+
 	//bool IsMoving;
 	//Managers
 	class AGameHUD* UI;
 	class UGameManager* GM;
+
+
+	//Animation
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) class UAnimationAsset* WorkAnim;
+	bool HasAnimated = false;
 
 protected:
 	// Called when the game starts or when spawned
@@ -84,6 +92,7 @@ public:
 	// Called to bind functionality to inputf
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
+	void WorkloadProgress(float Multiplier);
 	void Promote();
 	void Fire();
 };
