@@ -144,6 +144,7 @@ void AMeetingDepartment::BackFromMeeting()
 {
 	int32 employeeSize = GM->EmployeeList.Num();
     
+	//Call a second time in case, they had no workstation on hire
 	GM->WorkStation->UpdateWorkstationPosition();
 
 	for (int i = 0; i < employeeSize; i++)
@@ -153,39 +154,20 @@ void AMeetingDepartment::BackFromMeeting()
 		//GM->EmployeeList[i]->
 
 		//Assign workload test - move to own function/clean up later, also needs to be called when are at their workstation not before
-		if (GM->EmployeeList[i]->EmployeeRole == "Artist") {
+		if (GM->EmployeeList[i]->EmployeeRole == "Artist") 
+		{
 			GM->EmployeeList[i]->AssignedWorkload = CurrentIdea->ArtistWorkload / GM->NumOfArtists;
 			GM->EmployeeList[i]->CurrentWorkload = GM->EmployeeList[i]->AssignedWorkload;
 			GM->EmployeeList[i]->BeginWork();
 		}
-		else if (GM->EmployeeList[i]->EmployeeRole == "Programmer") {
+		else if (GM->EmployeeList[i]->EmployeeRole == "Programmer") 
+		{
 			GM->EmployeeList[i]->AssignedWorkload = CurrentIdea->ProgrammerWorkload / GM->NumOfProgrammers;
 			GM->EmployeeList[i]->CurrentWorkload = GM->EmployeeList[i]->AssignedWorkload;
 			GM->EmployeeList[i]->BeginWork();
 		}
 
-
-		//if (GM->EmployeeList[i]->IsA(AArtist::StaticClass()))
-		//{
-		//	GM->EmployeeList[i]->ReturnPositionAfterMeeting(GM->EmployeeList[i]->StartPosition);
-		//}
-
-		//else if (GM->EmployeeList[i]->IsA(AProgrammer::StaticClass()))
-		//{
-
-		//}
 	}
 
-	//	//FString position = FString::FromInt(i);
- //       //UE_LOG(LogActor, Warning, TEXT("%s"), *position)
-	//	//UE_LOG(LogActor, Warning, TEXT("%s"), *GM->EmployeeList[i]->GetActorLocation().ToString())
-	//	//if (GM->WorkStation)
-	//	//{
-	//	//	GM->WorkStation->UpdateWorkstationPosition();
-	//	//	GM->EmployeeList[i]->ReturnPositionAfterMeeting(GM->EmployeeList[i]->StartPosition);
-	//	//}
-	//	//GM->EmployeeList[i]->ReturnPositionAfterMeeting(GM->EmployeeList[i]->StartPosition);
-
-	//}
 
 }

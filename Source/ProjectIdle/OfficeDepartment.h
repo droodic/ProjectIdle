@@ -41,6 +41,8 @@ public:
 		UStaticMeshComponent* ChairMesh;
 
 	UPROPERTY(EditAnywhere) TArray<TSubclassOf<class AEmployee>> SpawnWorker;
+	UPROPERTY(EditAnywhere) TArray<TSubclassOf<class AActor>> SpawnActors;
+
 
 
 //Functions
@@ -49,6 +51,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void ViewBacklog();
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void CallMeeting();
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void HireEmployee(TArray<TSubclassOf<AEmployee>> SpawnEmployee, int Position);
+	//For future use, will spawn any actor
+	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void GenerateActor(TArray<TSubclassOf<AActor>> SpawnEmployee, int Position);
 	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void HireProgrammer();
 	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void HireArtist();
 

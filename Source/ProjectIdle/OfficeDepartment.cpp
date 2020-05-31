@@ -8,6 +8,7 @@
 #include "Components/WidgetComponent.h"
 #include "GameManager.h"
 #include "GameHUD.h"
+#include "Workstation.h"
 #include "Engine/World.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -156,4 +157,13 @@ void AOfficeDepartment::HireEmployee(TArray<TSubclassOf<AEmployee>> SpawnEmploye
 
 	}
 }
+
+//Future transition 
+void AOfficeDepartment::GenerateActor(TArray<TSubclassOf<AActor>> SpawnEmployee, int Position)
+{
+	int lastPosition = GM->WorkstationList.Num() - 1;
+	FVector OffSet = FVector(0, -320, 0);
+}
+
+
 
