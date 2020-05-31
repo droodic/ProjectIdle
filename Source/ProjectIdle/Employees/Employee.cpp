@@ -140,7 +140,7 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		HasWorkload = false;
 		WorkProgressBar->SetVisibility(false);
 		//go back to regular animation ?
-
+		IsWorking = false;
 		bool isOver = true;
 		for (auto AnEmployee : GM->EmployeeList) {
 			if (AnEmployee->HasWorkload == true) {
