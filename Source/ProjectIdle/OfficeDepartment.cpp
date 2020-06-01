@@ -178,7 +178,7 @@ void AOfficeDepartment::GenerateActor(TArray<TSubclassOf<AActor>> Spawn, int Pos
 			SpawnParameters.Instigator = GetInstigator();
 			if (Position == 0 || Position == 1)
 			{
-				SpawnLocation = FVector(0, 0, 270);
+				SpawnLocation = FVector(110, 1090, 270);
 				SpawnRotation = FRotator::ZeroRotator;
 			}
 			if(Position == 3)

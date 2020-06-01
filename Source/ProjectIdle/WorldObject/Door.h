@@ -4,25 +4,22 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Chair.generated.h"
-
-
+#include "Door.generated.h"
 
 UCLASS()
-class PROJECTIDLE_API AChair : public AActor
+class PROJECTIDLE_API ADoor : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AChair();
+	ADoor();
 
 	class UGameManager* GM;
 
-	UPROPERTY() FVector ChairLocation;
+	UPROPERTY() FVector DoorLocation;
 	UPROPERTY() USceneComponent* Root;
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* Mesh;
-
 
 protected:
 	// Called when the game starts or when spawned
