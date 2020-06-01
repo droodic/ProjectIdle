@@ -35,7 +35,7 @@ void AWorkstation::BeginPlay()
 	DisableStation(DisableObject);
 	GM->WorkstationList.Add(this);
 	GM->WorkStation = this;
-	
+	HasEmployee = false;
 	StationLocation = ChairMesh->GetComponentLocation();
 	
 	//FVector zero = FVector(200, 0, 0);
@@ -54,12 +54,11 @@ void AWorkstation::BeginPlay()
 		StationLocation = StationLocation = DeskMesh->GetSocketLocation("TransformSocket").operator-(zero);
 	}*/
 	
-	HasEmployee = false;
 
-	//int32 workstationSize = GM->WorkstationList.Num();
-	//FString mouseY = FString::FromInt(workstationSize);
-	//UE_LOG(LogActor, Warning, TEXT("%s"), *mouseY)
-	//UE_LOG(LogActor, Warning, TEXT("%s"), *StationLocation.ToString())
+
+	int32 workstationSize = WorkstationActiveLenght();
+	FString mouseY = FString::FromInt(workstationSize);
+	UE_LOG(LogActor, Warning, TEXT("%s"), *mouseY)
 }
 
 // Called every frame
@@ -71,7 +70,7 @@ void AWorkstation::Tick(float DeltaTime)
 void AWorkstation::UpdateWorkstationPosition()
 {
 	int32 employeeSize = GM->EmployeeList.Num();
-	int32 workstationSize = WorkstationActiveLenght();
+	int32 workstationSize = GM->WorkstationList.Num();
 	FVector AStationLocation = this->GetActorLocation();
 	FVector testing = FVector(0, 0, 0);
 
@@ -79,12 +78,12 @@ void AWorkstation::UpdateWorkstationPosition()
 	{
 		if (GM->WorkstationList[i]->IsA(AProgrammerStation::StaticClass()))
 		{
-			if (GM->WorkstationList[i]->HasEmployee == false)
+			if (GM->WorkstationList[i]->HasEmployee == false && !GM->WorkstationList[i]->DisableObject)
 			{
 				FVector current = GM->WorkstationList[i]->StationLocation;
 				for (int j = 0; j < employeeSize; j++)
 				{
-					if (GM->EmployeeList[j]->IsA(AProgrammer::StaticClass()) && GM->EmployeeList[j]->HasWorkStation == false)
+					if (GM->EmployeeList[j]->EmployeeRole == "Programmer" && GM->EmployeeList[j]->HasWorkStation == false)
 					{
 						GM->WorkstationList[i]->HasEmployee = true;
 						GM->EmployeeList[j]->HasWorkStation = true;
@@ -96,9 +95,9 @@ void AWorkstation::UpdateWorkstationPosition()
 			}
 		}
 
-		if (GM->WorkstationList[i]->IsA(AArtistStation::StaticClass()))
+		else if (GM->WorkstationList[i]->IsA(AArtistStation::StaticClass()))
 		{
-			if (GM->WorkstationList[i]->HasEmployee == false)
+			if (GM->WorkstationList[i]->HasEmployee == false && !GM->WorkstationList[i]->DisableObject)
 			{
 				for (int j = 0; j < employeeSize; j++)
 				{
@@ -108,7 +107,7 @@ void AWorkstation::UpdateWorkstationPosition()
 						GM->EmployeeList[j]->HasWorkStation = true;
 						GM->EmployeeList[j]->StartPosition = GM->WorkstationList[i]->StationLocation;
 						GM->EmployeeList[j]->WorkstationPositionRef = i;
-						break;
+					    break;
 					}
 				}
 			}
