@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ProjectIdle\Employees\Employee.h"
+//#include "ProjectIdle\Employees\Employee.h"
 #include "AIController.h"
 #include "EmployeeAIC.generated.h"
 
