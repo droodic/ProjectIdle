@@ -5,7 +5,9 @@
 #include "Components/Button.h"
 #include "ProjectIdle/GameManager.h"
 #include "OfficeDepartment.h"
-#include "Workstation.h"
+#include "ProjectIdle/Workstation.h"
+#include "Workstations/ArtistStation.h"
+#include "Workstations/ProgrammerStation.h"
 #include "Engine.h"
 
 void UCeoDepMenuWidget::NativeConstruct()
@@ -30,6 +32,7 @@ void UCeoDepMenuWidget::CallProgrammerSpawn()
 
 void UCeoDepMenuWidget::CallArtistSpawn()
 {
+	//ActiveWorkstation();
 	OfficeDepartment->GenerateActor(OfficeDepartment->SpawnActors, 1);
 }
 
@@ -37,4 +40,19 @@ void UCeoDepMenuWidget::CallArtistSpawn()
 void UCeoDepMenuWidget::CallHiring()
 {
 	OfficeDepartment->GenerateActor(OfficeDepartment->SpawnActors, 3);
+}
+
+void UCeoDepMenuWidget::ActiveWorkstation()
+{
+	int32 length = GM->WorkstationList.Num();
+
+	for (int i = 0; i < length; i++)
+	{
+		
+		if (GM->WorkstationList[i]->DisableObject)
+		{
+			//GM->WorkstationList[i]->DisableStation(false);
+		}
+		break;
+	}
 }

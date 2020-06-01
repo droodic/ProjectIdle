@@ -48,7 +48,7 @@ void AWorkstation::BeginPlay()
 		StationLocation = this->GetActorLocation().operator-(zero);
 	}
 
-	int32 workstationSize = GM->WorkstationList.Num();
+	int32 workstationSize = WorkstationActiveLenght();
 	FString mouseY = FString::FromInt(workstationSize);
 	UE_LOG(LogActor, Warning, TEXT("%s"), *mouseY)
 	//UE_LOG(LogActor, Warning, TEXT("%s"), *StationLocation.ToString())
@@ -63,7 +63,7 @@ void AWorkstation::Tick(float DeltaTime)
 void AWorkstation::UpdateWorkstationPosition()
 {
 	int32 employeeSize = GM->EmployeeList.Num();
-	int32 workstationSize = GM->WorkstationList.Num();
+	int32 workstationSize = WorkstationActiveLenght();
 	FVector AStationLocation = this->GetActorLocation();
 	FVector testing = FVector(0, 0, 0);
 
@@ -122,4 +122,19 @@ void AWorkstation::DisableStation(bool Disable)
 		this->SetActorEnableCollision(true);
 		this->SetActorTickEnabled(true);
 	}
+}
+
+int AWorkstation::WorkstationActiveLenght()
+{
+	int count = 0;
+	int length = GM->WorkstationList.Num();
+
+	for (int i = 0; i < length; i++)
+	{
+		if (!GM->WorkstationList[i]->DisableObject)
+		{
+			count++;
+		}
+	}
+	return count;
 }
