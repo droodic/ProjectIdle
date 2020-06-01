@@ -27,6 +27,8 @@ public:
 	UPROPERTY(BlueprintReadWrite) class AMeetingDepartment* MeetingDepartment;
 	UPROPERTY(BlueprintReadWrite) class AWorkstation* WorkStation;
 
+	UPROPERTY(BlueprintReadWrite) int EmployeeNameIndex;
+
 	virtual void Init();
 
 
