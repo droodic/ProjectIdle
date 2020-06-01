@@ -28,12 +28,13 @@ void UCeoDepMenuWidget::NativeConstruct()
 
 void UCeoDepMenuWidget::CallProgrammerSpawn()
 {
+	ActiveWorkstation(0);
 	OfficeDepartment->GenerateActor(OfficeDepartment->SpawnActors, 0);
 }
 
 void UCeoDepMenuWidget::CallArtistSpawn()
 {
-	ActiveWorkstation();
+	ActiveWorkstation(1);
 	OfficeDepartment->GenerateActor(OfficeDepartment->SpawnActors, 1);
 }
 
@@ -43,18 +44,30 @@ void UCeoDepMenuWidget::CallHiring()
 	OfficeDepartment->GenerateActor(OfficeDepartment->SpawnActors, 3);
 }
 
-void UCeoDepMenuWidget::ActiveWorkstation()
+void UCeoDepMenuWidget::ActiveWorkstation(int Number)
 {
 	int32 length = GM->WorkstationList.Num();
 
 	for (int i = 0; i < length; i++)
 	{
-		
-		if (GM->WorkstationList[i]->DisableObject)
+		if (Number == 0)
 		{
-			GM->WorkstationList[i]->DisableStation(false);
-			//To leave the function once one if found.
-			return;
+			if (GM->WorkstationList[i]->DisableObject && GM->WorkstationList[i]->IsA(AProgrammerStation::StaticClass()))
+			{
+				GM->WorkstationList[i]->DisableStation(false);
+				//To leave the function once one if found.
+				return;
+			}
 		}
+		if (Number == 1)
+		{
+			if (GM->WorkstationList[i]->DisableObject && GM->WorkstationList[i]->IsA(AArtistStation::StaticClass()))
+			{
+				GM->WorkstationList[i]->DisableStation(false);
+				//To leave the function once one if found.
+				return;
+			}
+		}
+		
 	}
 }
