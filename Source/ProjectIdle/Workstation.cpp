@@ -66,7 +66,6 @@ void AWorkstation::BeginPlay()
 void AWorkstation::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	DisableStation(DisableObject);
 }
 
 void AWorkstation::UpdateWorkstationPosition()
