@@ -38,6 +38,7 @@ public:
 		FVector StationVector;
 
 	UPROPERTY() bool HasEmployee;
+	UPROPERTY(EditAnywhere, Category = "Disable") bool DisableObject;
 
 	class UGameManager* GM;
 
@@ -52,4 +53,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	UFUNCTION() void UpdateWorkstationPosition();
+	UFUNCTION() void DisableStation(bool Disable);
+	UFUNCTION() int WorkstationActiveLenght();
 };

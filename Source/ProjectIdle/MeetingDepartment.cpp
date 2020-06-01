@@ -118,16 +118,16 @@ void AMeetingDepartment::MoveToMeeting()
 		{
 			if (i < chairSize)
 			{
-				GM->EmployeeList[i]->ToMeeting(GM->MeetingChairList[i]->GetActorLocation());
+				GM->EmployeeList[i]->MoveEmployee(GM->MeetingChairList[i]->GetActorLocation());
 			}
 			else
 			{
-				GM->EmployeeList[i]->ToMeeting(OfficeLocation);
+				GM->EmployeeList[i]->MoveEmployee(OfficeLocation);
 			}
 		}
 		else
 		{
-			GM->EmployeeList[i]->ToMeeting(GM->MeetingChairList[i]->GetActorLocation());
+			GM->EmployeeList[i]->MoveEmployee(GM->MeetingChairList[i]->GetActorLocation());
 		}
 	}
 }
@@ -141,7 +141,7 @@ void AMeetingDepartment::BackFromMeeting()
 
 	for (int i = 0; i < employeeSize; i++)
 	{
-		GM->EmployeeList[i]->ReturnPositionAfterMeeting(GM->EmployeeList[i]->StartPosition);
+		GM->EmployeeList[i]->MoveEmployee(GM->EmployeeList[i]->StartPosition);
 		//GM->EmployeeList[i]->SetActorRotation(UKismetMathLibrary::FindLookAtRotation(GM->EmployeeList[i]->GetActorLocation(), GM->EmployeeList[i]->StartPosition));
 		//GM->EmployeeList[i]->
 

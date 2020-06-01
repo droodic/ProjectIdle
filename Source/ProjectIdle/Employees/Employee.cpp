@@ -72,12 +72,14 @@ void AEmployee::BeginPlay()
 
 	
     GM->WorkStation->UpdateWorkstationPosition();
-
+	UE_LOG(LogActor, Warning, TEXT("%s"), *StartPosition.ToString())
 	//int32 number = WorkstationPositionRef;
 
 	//FString sizeString = FString::FromInt(number);
 	//UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
-
+	MoveEmployee(StartPosition);
+	CurrentWorkload = 10.f;
+	BeginWork();
 }
 
 void AEmployee::BeginWork() {
@@ -120,9 +122,9 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 	//remove isworking once ismoving is implement? && !AI->IsMoving
 	if (!IsWorking && WorkAnim != nullptr) {
 
-		auto LookAtRotator = FRotator(UKismetMathLibrary::MakeRotator(0, 0, UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), StartPosition).Yaw));
-		UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
-		SetActorRotation(LookAtRotator);
+		//auto LookAtRotator = FRotator(UKismetMathLibrary::MakeRotator(0, 0, UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), GM->WorkstationList[WorkstationPositionRef]->ChairMesh->GetComponentRotation()).Yaw));
+		//UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
+		SetActorRotation(GM->WorkstationList[WorkstationPositionRef]->ChairMesh->GetComponentRotation());
 		//GetMesh()->PlayAnimation(WorkAnim, false);
 		
 		IsWorking = true;
@@ -218,10 +220,10 @@ void AEmployee::Fire()
 void AEmployee::GoMeeting()
 {
 	//delete?
-
+	//yeah
 }
 
-void AEmployee::ToMeeting(FVector Destination)
+void AEmployee::MoveEmployee(FVector Destination)
 {
 	if (AI)
 	{
@@ -232,26 +234,6 @@ void AEmployee::ToMeeting(FVector Destination)
 		AI->IsMoving = true;
 		//Make all this moving stuff, lookat, IsMoving, into 1 function
 	}
-	else
-	{
-		UE_LOG(LogActor, Warning, TEXT("%s"), "Null")
-	}
 }
 
-void AEmployee::ReturnPositionAfterMeeting(FVector Destination)
-{
-	if (AI)
-	{
-		auto LookAtRotator = FRotator(UKismetMathLibrary::MakeRotator(0, 0, UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Destination).Yaw));
-		UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
-		SetActorRotation(LookAtRotator);
-		AI->MoveToLocation(Destination);
-		AI->IsMoving = true;
-		//Make all this moving stuff, lookat, IsMoving, into 1 function
-	}
-	else
-	{
-		UE_LOG(LogActor, Warning, TEXT("%s"), "Null")
-	}
-}
 

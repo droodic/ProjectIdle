@@ -46,6 +46,8 @@ public:
 
 	UPROPERTY() int WorkstationPositionRef;
 
+
+	//class AWorkstation* WorkstationRef;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UWidgetComponent* WorkProgressBar;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float AssignedWorkload;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float CurrentWorkload;
@@ -82,8 +84,8 @@ public:
 
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite) AEmployeeAIC* AI; //custom Cpp AIC ref, unused for now
 	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void GoMeeting();
-	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void ToMeeting(FVector Destination);
-	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void ReturnPositionAfterMeeting(FVector Destination);
+	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void MoveEmployee(FVector Destination);
+	//UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void ReturnPositionAfterMeeting(FVector Destination);
 	void BeginWork();
 
 	// Called every frame

@@ -23,28 +23,37 @@ AWorkstation::AWorkstation()
 	ComputerMesh->SetupAttachment(RootComponent);
 	ChairMesh->SetupAttachment(RootComponent);
 	KeyboardMesh->SetupAttachment(RootComponent);
+
 }
 
 // Called when the game starts or when spawned
 void AWorkstation::BeginPlay()
 {
 	Super::BeginPlay();
+
 	GM = GetWorld()->GetGameInstance<UGameManager>();
+	DisableStation(DisableObject);
 	GM->WorkstationList.Add(this);
 	GM->WorkStation = this;
-	FVector zero = FVector(200, 0, 0);
-	StationVector = this->GetActorLocation();
-	FRotator rotation = this->GetActorRotation();
+	
+	StationLocation = ChairMesh->GetComponentLocation();
+	
+	//FVector zero = FVector(200, 0, 0);
+	//StationVector = this->GetActorLocation();
+	//FRotator rotation = this->GetActorRotation();
 
-	if (rotation.Yaw == 0 || rotation.Yaw == 360)
+	//StationLocation = DeskMesh->GetSocketLocation("TransformSocket");
+	//ChairMesh->Getforw
+	/*if (rotation.Yaw == 0 || rotation.Yaw == 360)
 	{
-		StationLocation = this->GetActorLocation().operator+(zero);
+		StationLocation = this->StationLocation = DeskMesh->GetSocketLocation("TransformSocket").operator+(zero);
+		
 	}
 	else
 	{
-		StationLocation = this->GetActorLocation().operator-(zero);
-	}
-
+		StationLocation = StationLocation = DeskMesh->GetSocketLocation("TransformSocket").operator-(zero);
+	}*/
+	
 	HasEmployee = false;
 
 	//int32 workstationSize = GM->WorkstationList.Num();
@@ -62,7 +71,7 @@ void AWorkstation::Tick(float DeltaTime)
 void AWorkstation::UpdateWorkstationPosition()
 {
 	int32 employeeSize = GM->EmployeeList.Num();
-	int32 workstationSize = GM->WorkstationList.Num();
+	int32 workstationSize = WorkstationActiveLenght();
 	FVector AStationLocation = this->GetActorLocation();
 	FVector testing = FVector(0, 0, 0);
 
@@ -105,4 +114,35 @@ void AWorkstation::UpdateWorkstationPosition()
 			}
 		}
 	}
+}
+
+void AWorkstation::DisableStation(bool Disable)
+{
+	if (Disable)
+	{
+		this->SetActorHiddenInGame(true);
+		this->SetActorEnableCollision(false);
+		this->SetActorTickEnabled(false);
+	}
+	else
+	{
+		this->SetActorHiddenInGame(false);
+		this->SetActorEnableCollision(true);
+		this->SetActorTickEnabled(true);
+	}
+}
+
+int AWorkstation::WorkstationActiveLenght()
+{
+	int count = 0;
+	int length = GM->WorkstationList.Num();
+
+	for (int i = 0; i < length; i++)
+	{
+		if (!GM->WorkstationList[i]->DisableObject)
+		{
+			count++;
+		}
+	}
+	return count;
 }

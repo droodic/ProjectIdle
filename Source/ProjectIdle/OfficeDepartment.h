@@ -43,7 +43,10 @@ public:
 	UPROPERTY(EditAnywhere) TArray<TSubclassOf<class AEmployee>> SpawnWorker;
 	UPROPERTY(EditAnywhere) TArray<TSubclassOf<class AActor>> SpawnActors;
 
+	FORCEINLINE class UDecalComponent* GetCursorToWorld() { return CursorToWorld; }
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		class UDecalComponent* CursorToWorld;
 
 //Functions
 public:
