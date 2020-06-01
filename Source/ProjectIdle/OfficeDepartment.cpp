@@ -8,6 +8,7 @@
 #include "Components/WidgetComponent.h"
 #include "GameManager.h"
 #include "GameHUD.h"
+#include "Workstation.h"
 #include "Engine/World.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -147,7 +148,7 @@ void AOfficeDepartment::HireEmployee(TArray<TSubclassOf<AEmployee>> SpawnEmploye
 		{
 			FActorSpawnParameters SpawnParameters;
 			SpawnParameters.Owner = this;
-			SpawnParameters.Instigator = Instigator;
+			SpawnParameters.Instigator = GetInstigator();
 
 			FVector SpawnLocation = FVector(0, 0, 270);
 			FRotator SpawnRotation = FRotator::ZeroRotator;
@@ -156,4 +157,13 @@ void AOfficeDepartment::HireEmployee(TArray<TSubclassOf<AEmployee>> SpawnEmploye
 
 	}
 }
+
+//Future transition 
+void AOfficeDepartment::GenerateActor(TArray<TSubclassOf<AActor>> SpawnEmployee, int Position)
+{
+	int lastPosition = GM->WorkstationList.Num() - 1;
+	FVector OffSet = FVector(0, -320, 0);
+}
+
+
 

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Employees/Employee.h"
+//#include "Employees/Employee.h"
 #include "GameFramework/Actor.h"
 #include "Workstation.generated.h"
 
@@ -42,6 +42,7 @@ public:
 	class UGameManager* GM;
 
     EType type;
+
 
 protected:
 	// Called when the game starts or when spawned
