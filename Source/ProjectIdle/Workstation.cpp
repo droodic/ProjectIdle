@@ -66,6 +66,7 @@ void AWorkstation::BeginPlay()
 void AWorkstation::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	DisableStation(DisableObject);
 }
 
 void AWorkstation::UpdateWorkstationPosition()
@@ -122,13 +123,14 @@ void AWorkstation::DisableStation(bool Disable)
 	{
 		this->SetActorHiddenInGame(true);
 		this->SetActorEnableCollision(false);
-		this->SetActorTickEnabled(false);
+		//Turn off if active
+	    this->SetActorTickEnabled(true);
 	}
 	else
 	{
 		this->SetActorHiddenInGame(false);
 		this->SetActorEnableCollision(true);
-		this->SetActorTickEnabled(true);
+		this->SetActorTickEnabled(false);
 	}
 }
 

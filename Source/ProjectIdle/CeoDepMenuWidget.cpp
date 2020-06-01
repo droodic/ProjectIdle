@@ -14,6 +14,7 @@ void UCeoDepMenuWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 	//AddToRoot();
+	GM = GetWorld()->GetGameInstance<UGameManager>();
 
 	if (!Hire_Prog_Btn->OnClicked.IsBound())
 	{
@@ -32,7 +33,7 @@ void UCeoDepMenuWidget::CallProgrammerSpawn()
 
 void UCeoDepMenuWidget::CallArtistSpawn()
 {
-	//ActiveWorkstation();
+	ActiveWorkstation();
 	OfficeDepartment->GenerateActor(OfficeDepartment->SpawnActors, 1);
 }
 
@@ -51,8 +52,9 @@ void UCeoDepMenuWidget::ActiveWorkstation()
 		
 		if (GM->WorkstationList[i]->DisableObject)
 		{
-			//GM->WorkstationList[i]->DisableStation(false);
+			GM->WorkstationList[i]->DisableStation(false);
+			//To leave the function once one if found.
+			return;
 		}
-		break;
 	}
 }
