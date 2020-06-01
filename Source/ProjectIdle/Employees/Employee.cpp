@@ -20,6 +20,7 @@ AEmployee::AEmployee()
 
 	WorkProgressBar = CreateDefaultSubobject<UWidgetComponent>(TEXT("WorkloadProgressBar")); //Maybe make Employee BP to set this up, because if later Employee classes emerge if we
 	WorkProgressBar->AttachTo(RootComponent);
+	WorkProgressBar->SetVisibility(false);
 	WorkProgressBar->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 }
 
@@ -78,8 +79,8 @@ void AEmployee::BeginPlay()
 	//FString sizeString = FString::FromInt(number);
 	//UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
 	MoveEmployee(StartPosition);
-	CurrentWorkload = 10.f;
-	BeginWork();
+	//CurrentWorkload = 10.f;
+	//BeginWork();
 }
 
 void AEmployee::BeginWork() {

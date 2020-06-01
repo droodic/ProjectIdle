@@ -29,5 +29,5 @@ private:
 	UFUNCTION() void CallHiring();
 	UFUNCTION() void CallProgrammerSpawn();
 	UFUNCTION() void CallArtistSpawn();
-	UFUNCTION() void ActiveWorkstation();
+	UFUNCTION() void ActiveWorkstation(int Number);
 };
