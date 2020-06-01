@@ -62,7 +62,7 @@ void AEmployee::BeginPlay()
 
 	
     GM->WorkStation->UpdateWorkstationPosition();
-
+	UE_LOG(LogActor, Warning, TEXT("%s"), *StartPosition.ToString())
 	//int32 number = WorkstationPositionRef;
 
 	//FString sizeString = FString::FromInt(number);
@@ -205,7 +205,7 @@ void AEmployee::Fire()
 void AEmployee::GoMeeting()
 {
 	//delete?
-
+	//yeah
 }
 
 void AEmployee::ToMeeting(FVector Destination)
@@ -219,10 +219,6 @@ void AEmployee::ToMeeting(FVector Destination)
 		AI->IsMoving = true;
 		//Make all this moving stuff, lookat, IsMoving, into 1 function
 	}
-	else
-	{
-		UE_LOG(LogActor, Warning, TEXT("%s"), "Null")
-	}
 }
 
 void AEmployee::ReturnPositionAfterMeeting(FVector Destination)
@@ -235,10 +231,6 @@ void AEmployee::ReturnPositionAfterMeeting(FVector Destination)
 		AI->MoveToLocation(Destination);
 		AI->IsMoving = true;
 		//Make all this moving stuff, lookat, IsMoving, into 1 function
-	}
-	else
-	{
-		UE_LOG(LogActor, Warning, TEXT("%s"), "Null")
 	}
 }
 

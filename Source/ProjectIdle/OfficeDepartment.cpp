@@ -5,6 +5,7 @@
 #include "Idea.h"
 #include "Widgets/IdeaBacklogWidget.h" 
 #include "CeoDepMenuWidget.h"
+#include "Components/DecalComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameManager.h"
 #include "GameHUD.h"
@@ -108,6 +109,8 @@ void AOfficeDepartment::Tick(float DeltaTime)
 			Index++;
 		}
 	}
+
+
 }
 
 void AOfficeDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
@@ -159,10 +162,37 @@ void AOfficeDepartment::HireEmployee(TArray<TSubclassOf<AEmployee>> SpawnEmploye
 }
 
 //Future transition 
-void AOfficeDepartment::GenerateActor(TArray<TSubclassOf<AActor>> SpawnEmployee, int Position)
+void AOfficeDepartment::GenerateActor(TArray<TSubclassOf<AActor>> Spawn, int Position)
 {
-	int lastPosition = GM->WorkstationList.Num() - 1;
-	FVector OffSet = FVector(0, -320, 0);
+
+	if (Spawn[Position])
+	{
+		UWorld* World = GetWorld();
+
+		if (World)
+		{
+			FVector SpawnLocation;
+			FRotator SpawnRotation;
+			FActorSpawnParameters SpawnParameters;
+			SpawnParameters.Owner = this;
+			SpawnParameters.Instigator = GetInstigator();
+			if (Position == 0 || Position == 1)
+			{
+				SpawnLocation = FVector(0, 0, 270);
+				SpawnRotation = FRotator::ZeroRotator;
+			}
+			if(Position == 3)
+			{
+				FVector OffSet = FVector(0, -320, 0);
+				int lastPosition = GM->WorkstationList.Num() - 1;
+				SpawnLocation = GM->WorkstationList[lastPosition]->GetActorLocation() - OffSet;
+				SpawnRotation = FRotator::ZeroRotator;
+			}
+
+			World->SpawnActor<AActor>(Spawn[Position], SpawnLocation, SpawnRotation, SpawnParameters);
+		}
+
+	}
 }
 
 

@@ -23,19 +23,22 @@ AWorkstation::AWorkstation()
 	ComputerMesh->SetupAttachment(RootComponent);
 	ChairMesh->SetupAttachment(RootComponent);
 	KeyboardMesh->SetupAttachment(RootComponent);
+
 }
 
 // Called when the game starts or when spawned
 void AWorkstation::BeginPlay()
 {
 	Super::BeginPlay();
+
 	GM = GetWorld()->GetGameInstance<UGameManager>();
+	DisableStation(DisableObject);
 	GM->WorkstationList.Add(this);
 	GM->WorkStation = this;
 	FVector zero = FVector(200, 0, 0);
 	StationVector = this->GetActorLocation();
 	FRotator rotation = this->GetActorRotation();
-
+	HasEmployee = false;
 	if (rotation.Yaw == 0 || rotation.Yaw == 360)
 	{
 		StationLocation = this->GetActorLocation().operator+(zero);
@@ -45,11 +48,9 @@ void AWorkstation::BeginPlay()
 		StationLocation = this->GetActorLocation().operator-(zero);
 	}
 
-	HasEmployee = false;
-
-	//int32 workstationSize = GM->WorkstationList.Num();
-	//FString mouseY = FString::FromInt(workstationSize);
-	//UE_LOG(LogActor, Warning, TEXT("%s"), *mouseY)
+	int32 workstationSize = GM->WorkstationList.Num();
+	FString mouseY = FString::FromInt(workstationSize);
+	UE_LOG(LogActor, Warning, TEXT("%s"), *mouseY)
 	//UE_LOG(LogActor, Warning, TEXT("%s"), *StationLocation.ToString())
 }
 
@@ -104,5 +105,21 @@ void AWorkstation::UpdateWorkstationPosition()
 				}
 			}
 		}
+	}
+}
+
+void AWorkstation::DisableStation(bool Disable)
+{
+	if (Disable)
+	{
+		this->SetActorHiddenInGame(true);
+		this->SetActorEnableCollision(false);
+		this->SetActorTickEnabled(false);
+	}
+	else
+	{
+		this->SetActorHiddenInGame(false);
+		this->SetActorEnableCollision(true);
+		this->SetActorTickEnabled(true);
 	}
 }

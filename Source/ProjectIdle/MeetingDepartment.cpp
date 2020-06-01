@@ -150,6 +150,8 @@ void AMeetingDepartment::BackFromMeeting()
 	for (int i = 0; i < employeeSize; i++)
 	{
 		GM->EmployeeList[i]->ReturnPositionAfterMeeting(GM->EmployeeList[i]->StartPosition);
+		FVector ok = GM->EmployeeList[i]->StartPosition;
+		UE_LOG(LogActor, Warning, TEXT("%s"), *ok.ToString())
 		//GM->EmployeeList[i]->SetActorRotation(UKismetMathLibrary::FindLookAtRotation(GM->EmployeeList[i]->GetActorLocation(), GM->EmployeeList[i]->StartPosition));
 		//GM->EmployeeList[i]->
 

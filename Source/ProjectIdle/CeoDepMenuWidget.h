@@ -16,6 +16,7 @@ class PROJECTIDLE_API UCeoDepMenuWidget : public UUserWidget
 
 public:
 	UPROPERTY(BlueprintReadWrite) class AOfficeDepartment* OfficeDepartment;
+	class UGameManager* GM;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_Prog_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_Artist_Btn;
