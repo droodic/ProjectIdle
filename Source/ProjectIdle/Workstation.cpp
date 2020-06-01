@@ -32,19 +32,25 @@ void AWorkstation::BeginPlay()
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->WorkstationList.Add(this);
 	GM->WorkStation = this;
-	FVector zero = FVector(200, 0, 0);
-	StationVector = this->GetActorLocation();
-	FRotator rotation = this->GetActorRotation();
+	
+	StationLocation = ChairMesh->GetComponentLocation();
+	
+	//FVector zero = FVector(200, 0, 0);
+	//StationVector = this->GetActorLocation();
+	//FRotator rotation = this->GetActorRotation();
 
-	if (rotation.Yaw == 0 || rotation.Yaw == 360)
+	//StationLocation = DeskMesh->GetSocketLocation("TransformSocket");
+	//ChairMesh->Getforw
+	/*if (rotation.Yaw == 0 || rotation.Yaw == 360)
 	{
-		StationLocation = this->GetActorLocation().operator+(zero);
+		StationLocation = this->StationLocation = DeskMesh->GetSocketLocation("TransformSocket").operator+(zero);
+		
 	}
 	else
 	{
-		StationLocation = this->GetActorLocation().operator-(zero);
-	}
-
+		StationLocation = StationLocation = DeskMesh->GetSocketLocation("TransformSocket").operator-(zero);
+	}*/
+	
 	HasEmployee = false;
 
 	//int32 workstationSize = GM->WorkstationList.Num();
