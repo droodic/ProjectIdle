@@ -90,13 +90,13 @@ void AEmployee::IsDepartmentWorking() {
 			Employee->CurrentWorkload /= 2;
 			BeginWork();
 			GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Newly hired employee takes part in current department dev"));
+			break;
 		}
 	}
 }
 
 void AEmployee::BeginWork() {
 	HasWorkload = true;
-	WorkProgressBar->SetVisibility(true);
 }
 
 void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
@@ -138,7 +138,7 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		//UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
 		SetActorRotation(GM->WorkstationList[WorkstationPositionRef]->ChairMesh->GetComponentRotation());
 		//GetMesh()->PlayAnimation(WorkAnim, false);
-
+		WorkProgressBar->SetVisibility(true);
 		IsWorking = true;
 	}
 
