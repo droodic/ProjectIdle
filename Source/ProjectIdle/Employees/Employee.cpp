@@ -46,14 +46,14 @@ void AEmployee::BeginPlay()
 		GM->NumOfArtists++;
 		break;
 	}
-	
-	//Find better way maybe, enum? 
-	if (EmployeeRole == ERole::Artist) {
-		GM->NumOfArtists++;
-	}
-	else if (EmployeeRole == ERole::Programmer) {
-		GM->NumOfProgrammers++;
-	}
+
+	////Find better way maybe, enum? 
+	//if (EmployeeRole == ERole::Artist) {
+	//	GM->NumOfArtists++;
+	//}
+	//else if (EmployeeRole == ERole::Programmer) {
+	//	GM->NumOfProgrammers++;
+	//}
 
 	StartPosition = this->GetActorLocation();
 	HasWorkStation = false;
@@ -69,18 +69,18 @@ void AEmployee::BeginPlay()
 	{
 		EmployeeSheetWidget->Employee = this;
 	}
-	
+
 	//Temp solution will fix
 	//For active station
-    GM->WorkStation->UpdateWorkstationPosition();
+	GM->WorkStation->UpdateWorkstationPosition();
 
 
 	UE_LOG(LogActor, Warning, TEXT("%s"), *StartPosition.ToString())
-	//int32 number = WorkstationPositionRef;
+		//int32 number = WorkstationPositionRef;
 
-	//FString sizeString = FString::FromInt(number);
-	//UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
-	MoveEmployee(StartPosition);
+		//FString sizeString = FString::FromInt(number);
+		//UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
+		MoveEmployee(StartPosition);
 	//CurrentWorkload = 10.f;
 	//BeginWork();
 }
@@ -129,7 +129,7 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		//UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
 		SetActorRotation(GM->WorkstationList[WorkstationPositionRef]->ChairMesh->GetComponentRotation());
 		//GetMesh()->PlayAnimation(WorkAnim, false);
-		
+
 		IsWorking = true;
 	}
 

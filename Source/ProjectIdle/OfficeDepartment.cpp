@@ -5,6 +5,8 @@
 #include "Idea.h"
 #include "Widgets/IdeaBacklogWidget.h" 
 #include "CeoDepMenuWidget.h"
+#include "Employees\Programmer.h"
+#include "Employees\Artist.h"
 #include "Components/DecalComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameManager.h"
@@ -44,6 +46,8 @@ void AOfficeDepartment::BeginPlay()
 		OfficeDepMenuWidget->OfficeDepartment = this;
 		//OfficeDepMenuWidget->AddToRoot();
 	}
+	
+	//GetDepartmentUIValues(); //call this on click to see ui in wbp
 }
 
 void AOfficeDepartment::ViewBacklog()
@@ -63,6 +67,29 @@ void AOfficeDepartment::Back()
 		OfficeDepMenuWidget->AddToViewport();
 	}
 }
+
+void AOfficeDepartment::GetDepartmentUIValues()
+{
+	TProgSalary = 0.f;
+	TArtistSalary = 0.f;
+
+	for (auto Employee : GM->EmployeeList) {
+		if (Cast<AProgrammer>(Employee) != nullptr) {
+			TProgSalary += Employee->Salary;
+			AvgProgMorale += Employee->Morale;
+		}
+		else if (Cast<AArtist>(Employee) != nullptr) {
+			TArtistSalary += Employee->Salary;
+			AvgArtistMorale += Employee->Morale;
+		}
+	}
+
+	AvgProgMorale = AvgProgMorale / GM->NumOfProgrammers;
+	AvgArtistMorale = AvgArtistMorale / GM->NumOfArtists;
+
+
+}
+
 
 void AOfficeDepartment::GenerateIdea()
 {
@@ -97,7 +124,7 @@ void AOfficeDepartment::Tick(float DeltaTime)
 
 			auto randomNumber = UKismetMathLibrary::RandomIntegerInRange(0, 100);
 			//auto newIdea = new Idea(GenerateIdeaValues());
-			auto newIdea = new Idea("GAME " + FString::FromInt(randomNumber), "Game description of game " + FString::FromInt(randomNumber), Idea::GetRandomGenre(), FLinearColor::MakeRandomColor() ,UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(50.f, 100.f), UKismetMathLibrary::RandomFloatInRange(50.f, 100.f));
+			auto newIdea = new Idea("GAME " + FString::FromInt(randomNumber), "Game description of game " + FString::FromInt(randomNumber), Idea::GetRandomGenre(), FLinearColor::MakeRandomColor(), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(50.f, 100.f), UKismetMathLibrary::RandomFloatInRange(50.f, 100.f));
 
 			if (Index > 2) { Index = 0; }
 
@@ -156,6 +183,7 @@ void AOfficeDepartment::HireEmployee(TArray<TSubclassOf<AEmployee>> SpawnEmploye
 			FVector SpawnLocation = FVector(0, 0, 270);
 			FRotator SpawnRotation = FRotator::ZeroRotator;
 			World->SpawnActor<AEmployee>(SpawnEmployee[Position], SpawnLocation, SpawnRotation, SpawnParameters);
+			
 		}
 
 	}
@@ -181,7 +209,7 @@ void AOfficeDepartment::GenerateActor(TArray<TSubclassOf<AActor>> Spawn, int Pos
 				SpawnLocation = FVector(110, 1090, 270);
 				SpawnRotation = FRotator::ZeroRotator;
 			}
-			if(Position == 3)
+			if (Position == 3)
 			{
 				FVector OffSet = FVector(0, -320, 0);
 				int lastPosition = GM->WorkstationList.Num() - 1;
@@ -190,6 +218,7 @@ void AOfficeDepartment::GenerateActor(TArray<TSubclassOf<AActor>> Spawn, int Pos
 			}
 
 			World->SpawnActor<AActor>(Spawn[Position], SpawnLocation, SpawnRotation, SpawnParameters);
+			GetDepartmentUIValues();
 		}
 
 	}
