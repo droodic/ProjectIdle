@@ -37,8 +37,7 @@ void AEmployee::BeginPlay()
 	this->SpawnDefaultController();
 	AI = Cast<AEmployeeAIC>(GetController());
 
-	//Find better way maybe, enum? 
-	switch (EmployeeRole)
+	switch (Roles)
 	{
 	case ERole::Programmer:
 		GM->NumOfProgrammers++;
@@ -48,6 +47,7 @@ void AEmployee::BeginPlay()
 		break;
 	}
 	
+	//Find better way maybe, enum? 
 	/*if (EmployeeRole == "Artist") {
 		GM->NumOfArtists++;
 	}
@@ -191,18 +191,18 @@ void AEmployee::Promote()
 {
 	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, "Promote button called");
 
-	switch (EmployeePosition)
+	switch (Position)
 	{
 	case EPosition::Intern:
-		EmployeePosition = EPosition::Junior;
+		Position = EPosition::Junior;
 		Salary += 200;
 		break;
 	case EPosition::Junior:
-		EmployeePosition = EPosition::Programmer;
+		Position = EPosition::Programmer;
 		Salary += 200;
 		break;
 	case EPosition::Programmer:
-		EmployeePosition = EPosition::SeniorProgrammer;
+		Position = EPosition::SeniorProgrammer;
 		Salary += 200;
 		break;
 	case EPosition::SeniorProgrammer:

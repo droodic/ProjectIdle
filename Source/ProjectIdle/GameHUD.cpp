@@ -34,15 +34,15 @@ void AGameHUD::ShowEmployeeSheet(class AEmployee* employee)
 		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Showing Employee Sheet"));
 
 		EmpSheetWidget->EmployeeName_T->Text = employee->EmployeeName;
-		EmpSheetWidget->EmployeeRole_T->Text = EmpSheetWidget->RoleToText(employee->EmployeeRole);
+		EmpSheetWidget->EmployeeRole_T->Text = EmpSheetWidget->RoleToText(employee->Roles);
 		
-		EmpSheetWidget->EmployeePosition = employee->EmployeePosition;
+		EmpSheetWidget->EmployeePosition = employee->Position;
 		EmpSheetWidget->Salary = employee->Salary;
 		EmpSheetWidget->Morale = employee->Morale;
 
 		EmpSheetWidget->Employee = employee;
 
-		EmpSheetWidget->Performance = emp->Performance;
+		EmpSheetWidget->Performance = employee->Performance;
 		EmpSheetWidget->AddToViewport();
 	}
 	else if (EmpSheetWidget->IsInViewport()) 
@@ -53,7 +53,7 @@ void AGameHUD::ShowEmployeeSheet(class AEmployee* employee)
 
 void AGameHUD::RefreshEmployeeSheet(AEmployee* employee)
 {
-	EmpSheetWidget->EmployeePosition = employee->EmployeePosition;
+	EmpSheetWidget->EmployeePosition = employee->Position;
 	EmpSheetWidget->Salary = employee->Salary;
 	EmpSheetWidget->Morale = employee->Morale;
 }

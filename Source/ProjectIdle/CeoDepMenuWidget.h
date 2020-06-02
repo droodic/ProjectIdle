@@ -16,6 +16,7 @@ class PROJECTIDLE_API UCeoDepMenuWidget : public UUserWidget
 
 public:
 	UPROPERTY(BlueprintReadWrite) class AOfficeDepartment* OfficeDepartment;
+	
 	class UGameManager* GM;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_Prog_Btn;
@@ -23,6 +24,21 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* Total_Artist_Btn;
 	UPROPERTY() FString Worker;
 
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* IdeaButton1;
+
+#pragma region IdeaButton1
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UImage* I_GameCover;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_GameTitle;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_GameDescription;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_Genre;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_SuccessChance;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_Weight;
+
+#pragma endregion
+	
+public:
 	virtual void NativeConstruct() override;
 
 private:

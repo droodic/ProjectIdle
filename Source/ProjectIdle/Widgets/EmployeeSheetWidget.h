@@ -24,6 +24,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* EmployeeName_T;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* EmployeeRole_T;
+
 	UPROPERTY(BlueprintReadWrite) ERole EmployeeRole;
 	UPROPERTY(BlueprintReadWrite) EPosition EmployeePosition;
 
