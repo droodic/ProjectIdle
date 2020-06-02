@@ -37,7 +37,7 @@ public:
 	UPROPERTY(EditAnywhere) ERole Roles;
 	UPROPERTY(EditAnywhere) EPosition Position = EPosition::Intern;
 
-	UPROPERTY(EditAnywhere) FText EmployeeName;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere) FText EmployeeName;
 
 	UPROPERTY(EditAnywhere) float Morale = 1;
 	UPROPERTY(EditAnywhere) float Performance;
