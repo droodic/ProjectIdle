@@ -34,7 +34,7 @@ public:
 	// Sets default values for this character's properties
 	AEmployee();
 
-	UPROPERTY(EditAnywhere) ERole Roles = ERole::Programmer;
+	UPROPERTY(EditAnywhere) ERole EmployeeRole = ERole::Programmer;
 	UPROPERTY(EditAnywhere) EPosition Position = EPosition::Intern;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere) FText EmployeeName;
@@ -42,7 +42,7 @@ public:
 	UPROPERTY(EditAnywhere) float Morale = 1;
 	UPROPERTY(EditAnywhere) float Performance;
 	UPROPERTY(EditAnywhere) float Salary = 200;
-	UPROPERTY(EditAnywhere) FString EmployeeRole;
+	//UPROPERTY(EditAnywhere) FString EmployeeRole;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector MeetingLocation;
 
 	UPROPERTY() int WorkstationPositionRef;

@@ -146,13 +146,13 @@ void AMeetingDepartment::BackFromMeeting()
 		//GM->EmployeeList[i]->
 
 		//Assign workload test - move to own function/clean up later, also needs to be called when are at their workstation not before
-		if (GM->EmployeeList[i]->EmployeeRole == "Artist") 
+		if (GM->EmployeeList[i]->EmployeeRole == ERole::Artist)
 		{
 			GM->EmployeeList[i]->AssignedWorkload = CurrentIdea->ArtistWorkload / GM->NumOfArtists;
 			GM->EmployeeList[i]->CurrentWorkload = GM->EmployeeList[i]->AssignedWorkload;
 			GM->EmployeeList[i]->BeginWork();
 		}
-		else if (GM->EmployeeList[i]->EmployeeRole == "Programmer") 
+		else if (GM->EmployeeList[i]->EmployeeRole == ERole::Programmer)
 		{
 			GM->EmployeeList[i]->AssignedWorkload = CurrentIdea->ProgrammerWorkload / GM->NumOfProgrammers;
 			GM->EmployeeList[i]->CurrentWorkload = GM->EmployeeList[i]->AssignedWorkload;

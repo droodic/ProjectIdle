@@ -5,7 +5,6 @@
 #include "AIModule\Classes\DetourCrowdAIController.h"
 #include "ProjectIdle/EmployeeAIC.h"
 #include "ProjectIdle/GameManager.h"
-#include "ProjectIdle\DataTable.h"
 #include "ProjectIdle/Workstation.h"
 #include "ProjectIdle/GameHUD.h"
 #include "EWorkProgressWidget.h"
@@ -38,7 +37,7 @@ void AEmployee::BeginPlay()
 	this->SpawnDefaultController();
 	AI = Cast<AEmployeeAIC>(GetController());
 
-	switch (Roles)
+	switch (EmployeeRole)
 	{
 	case ERole::Programmer:
 		GM->NumOfProgrammers++;
@@ -48,14 +47,13 @@ void AEmployee::BeginPlay()
 		break;
 	}
 	
-	UDataTable
 	//Find better way maybe, enum? 
-	/*if (EmployeeRole == "Artist") {
+	if (EmployeeRole == ERole::Artist) {
 		GM->NumOfArtists++;
 	}
-	else if (EmployeeRole == "Programmer") {
+	else if (EmployeeRole == ERole::Programmer) {
 		GM->NumOfProgrammers++;
-	}*/
+	}
 
 	StartPosition = this->GetActorLocation();
 	HasWorkStation = false;
@@ -139,7 +137,7 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		//If none remain, give player money if idea was successful
 		for (auto AnEmployee : GM->EmployeeList) {
 			auto ThisEmployeeAI = Cast<AAIController>(GetController());
-			if (EmployeeRole == "Programmer" && AnEmployee->EmployeeRole == "Programmer") {
+			if (EmployeeRole == ERole::Programmer && AnEmployee->EmployeeRole == ERole::Programmer) {
 				if (AnEmployee->CurrentWorkload >= 5) {//change to editor editable constant 
 					AnEmployee->CurrentWorkload /= 2;
 					CurrentWorkload += AnEmployee->CurrentWorkload / 2;
@@ -149,9 +147,8 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 				}
 			}
 
-			else if (EmployeeRole == "Artist" && AnEmployee->EmployeeRole == "Artist") {
+			else if (EmployeeRole == ERole::Artist && AnEmployee->EmployeeRole == ERole::Artist) {
 				if (AnEmployee->CurrentWorkload >= 5) {
-
 					AnEmployee->CurrentWorkload /= 2;
 					CurrentWorkload += AnEmployee->CurrentWorkload / 2;
 					GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Programmer workload finished, taking workload from another employee"));

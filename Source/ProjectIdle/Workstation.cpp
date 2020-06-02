@@ -83,7 +83,7 @@ void AWorkstation::UpdateWorkstationPosition()
 				FVector current = GM->WorkstationList[i]->StationLocation;
 				for (int j = 0; j < employeeSize; j++)
 				{
-					if (GM->EmployeeList[j]->EmployeeRole == "Programmer" && GM->EmployeeList[j]->HasWorkStation == false)
+					if (GM->EmployeeList[j]->IsA(AProgrammer::StaticClass()) && GM->EmployeeList[j]->HasWorkStation == false)
 					{
 						GM->WorkstationList[i]->HasEmployee = true;
 						GM->EmployeeList[j]->HasWorkStation = true;

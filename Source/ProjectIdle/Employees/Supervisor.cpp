@@ -5,17 +5,16 @@
 
 ASupervisor::ASupervisor() {
 	Salary = 100.f;
-	Roles = ERole::Programmer;
+	EmployeeRole = ERole::Programmer;
 	Position = EPosition::Supervisor;
-	EmployeeRole = "Supervisor"; //temp
+	EmployeeRole = ERole::Programmer;
 }
 
 // Sets default values
 ASupervisor::ASupervisor(ERole Department)
 {
 	Salary = 100.f;
-	Roles = Department;
+	EmployeeRole = Department;
 	Position = EPosition::Supervisor;
-	EmployeeRole = "Supervisor"; //temp
 
 }
