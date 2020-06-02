@@ -137,7 +137,7 @@ void AMeetingDepartment::BackFromMeeting()
 	int32 employeeSize = GM->EmployeeList.Num();
     
 	//Call a second time in case, they had no workstation on hire
-	GM->WorkStation->UpdateWorkstationPosition();
+	//GM->WorkStation->TestFunction();
 
 	for (int i = 0; i < employeeSize; i++)
 	{

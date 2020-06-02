@@ -55,5 +55,5 @@ public:
 	UFUNCTION() void UpdateWorkstationPosition();
 	UFUNCTION() void DisableStation(bool Disable);
 	UFUNCTION() int WorkstationActiveLenght();
-	UFUNCTION() void TestFunction();
+	//UFUNCTION() void TestFunction();
 };
