@@ -5,6 +5,7 @@
 #include "AIModule\Classes\DetourCrowdAIController.h"
 #include "ProjectIdle/EmployeeAIC.h"
 #include "ProjectIdle/GameManager.h"
+#include "ProjectIdle\DataTable.h"
 #include "ProjectIdle/Workstation.h"
 #include "ProjectIdle/GameHUD.h"
 #include "EWorkProgressWidget.h"
@@ -47,6 +48,7 @@ void AEmployee::BeginPlay()
 		break;
 	}
 	
+	UDataTable
 	//Find better way maybe, enum? 
 	/*if (EmployeeRole == "Artist") {
 		GM->NumOfArtists++;
