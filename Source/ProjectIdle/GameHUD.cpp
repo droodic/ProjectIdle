@@ -34,7 +34,7 @@ void AGameHUD::ShowEmployeeSheet(class AEmployee* employee)
 		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Showing Employee Sheet"));
 
 		EmpSheetWidget->EmployeeName_T->Text = employee->EmployeeName;
-		EmpSheetWidget->EmployeeRole_T->Text = EmpSheetWidget->RoleToText(employee->Roles);
+		EmpSheetWidget->EmployeeRole_T->Text = EmpSheetWidget->RoleToText(employee->EmployeeRole);
 		
 		EmpSheetWidget->EmployeePosition = employee->Position;
 		EmpSheetWidget->Salary = employee->Salary;

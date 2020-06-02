@@ -81,7 +81,7 @@ void AWorkstation::UpdateWorkstationPosition()
 			{
 				if (GM->WorkstationList[i]->HasEmployee == false)
 				{
-					for (int j = 0; j < employeeSize; j++)
+					if (GM->EmployeeList[j]->IsA(AProgrammer::StaticClass()) && GM->EmployeeList[j]->HasWorkStation == false)
 					{
 						if (GM->EmployeeList[j]->EmployeeRole == "Programmer" && GM->EmployeeList[j]->HasWorkStation == false)
 						{
