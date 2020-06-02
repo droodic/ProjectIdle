@@ -54,7 +54,9 @@ void UCeoDepMenuWidget::ActiveWorkstation(int Number)
 		{
 			if (GM->WorkstationList[i]->DisableObject && GM->WorkstationList[i]->IsA(AProgrammerStation::StaticClass()))
 			{
-				GM->WorkstationList[i]->DisableStation(false);
+				//GM->WorkstationList[i]->IsObjectDisable = false;
+				//GM->WorkstationList[i]->DisableStation(false);
+				GM->WorkstationList[i]->DisableObject = false;
 				//To leave the function once one if found.
 				return;
 			}
@@ -63,7 +65,9 @@ void UCeoDepMenuWidget::ActiveWorkstation(int Number)
 		{
 			if (GM->WorkstationList[i]->DisableObject && GM->WorkstationList[i]->IsA(AArtistStation::StaticClass()))
 			{
-				GM->WorkstationList[i]->DisableStation(false);
+				//GM->WorkstationList[i]->IsObjectDisable = false;
+				//GM->WorkstationList[i]->DisableStation(false);
+				GM->WorkstationList[i]->DisableObject = false;
 				//To leave the function once one if found.
 				return;
 			}

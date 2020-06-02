@@ -73,8 +73,7 @@ void AEmployee::BeginPlay()
 	//Temp solution will fix
 	//For active station
     GM->WorkStation->UpdateWorkstationPosition();
-	//On spawn
-	GM->WorkStation->TestFunction();
+
 
 	UE_LOG(LogActor, Warning, TEXT("%s"), *StartPosition.ToString())
 	//int32 number = WorkstationPositionRef;
