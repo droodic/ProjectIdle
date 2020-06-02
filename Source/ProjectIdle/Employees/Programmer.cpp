@@ -6,6 +6,6 @@
 
 AProgrammer::AProgrammer() 
 {
-	EmployeeRole = "Programmer";
+	Roles = ERole::Programmer;
 	Salary = 200.f;
 }

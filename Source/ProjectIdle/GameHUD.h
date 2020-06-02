@@ -24,8 +24,6 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 
-
-
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 		TSubclassOf<UUserWidget> MoneyWidgetClass;
 
@@ -34,11 +32,12 @@ public:
 
 	//class UCeoDepMenuWidget* OfficeDepMenuWidget;
 
-	void ShowEmployeeSheet(class AEmployee* emp);
-	void ShowWidget(UUserWidget* Widgetc, TSubclassOf<UUserWidget> WidgetClass);
-
 private:
 	UMoneyWidget* MoneyWidget;
-	UPROPERTY() UEmployeeSheetWidget* EmpSheetWidget;
-	//template<class T>
+	UEmployeeSheetWidget* EmpSheetWidget;
+
+public:
+	void ShowEmployeeSheet(class AEmployee* employee);
+	void RefreshEmployeeSheet(class AEmployee* employee);
+	void ShowWidget(UUserWidget* Widgetc, TSubclassOf<UUserWidget> WidgetClass);
 };

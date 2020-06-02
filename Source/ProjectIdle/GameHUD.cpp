@@ -15,6 +15,7 @@ void AGameHUD::BeginPlay()
 	if (MoneyWidgetClass)
 	{
 		MoneyWidget = CreateWidget<UMoneyWidget>(UGameplayStatics::GetPlayerController(this, 0), MoneyWidgetClass);
+
 		if (MoneyWidget)
 		{
 			MoneyWidget->AddToViewport();
@@ -26,51 +27,57 @@ void AGameHUD::BeginPlay()
 	}
 }
 
-void AGameHUD::ShowEmployeeSheet(class AEmployee* emp)
+void AGameHUD::ShowEmployeeSheet(class AEmployee* employee)
 {
-
 	if (!EmpSheetWidget->IsInViewport())
 	{
 		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Showing Employee Sheet"));
 
-		EmpSheetWidget->EmployeeName_T->Text = emp->EmployeeName;
-		EmpSheetWidget->EmployeeRole_T->Text = EmpSheetWidget->RoleToText(emp->Roles);
-		EmpSheetWidget->EmployeePosition_T->Text = EmpSheetWidget->PositionToText(emp->Position);
-		EmpSheetWidget->Salary_T->Text = FText::AsCurrency(emp->Salary);
-		EmpSheetWidget->Morale_T->Text = FText::FromString(FString::FromInt(emp->Morale));
-		EmpSheetWidget->Performance = emp->Performance;
-		//EmpSheetWidget->Morale = emp->Morale;
-		//EmpSheetWidget->Salary = emp->Salary;
-		//EmpSheetWidget->EmployeeRole = emp->EmployeeRole;
+		EmpSheetWidget->EmployeeName_T->Text = employee->EmployeeName;
+		EmpSheetWidget->EmployeeRole_T->Text = EmpSheetWidget->RoleToText(employee->Roles);
+		
+		EmpSheetWidget->EmployeePosition = employee->Position;
+		EmpSheetWidget->Salary = employee->Salary;
+		EmpSheetWidget->Morale = employee->Morale;
+
+		EmpSheetWidget->Employee = employee;
+
+		EmpSheetWidget->Performance = employee->Performance;
 		EmpSheetWidget->AddToViewport();
 	}
-	else if (EmpSheetWidget->IsInViewport()) {
+	else if (EmpSheetWidget->IsInViewport()) 
+	{
 		EmpSheetWidget->RemoveFromViewport();
-		//GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Showing New Employee Sheet"));
-		//EmpSheetWidget->Morale = emp->Morale;
-		//EmpSheetWidget->Salary = emp->Salary;
-		//EmpSheetWidget->EmployeeRole = emp->EmployeeRole;
 	}
 }
 
-//template<class T>
+void AGameHUD::RefreshEmployeeSheet(AEmployee* employee)
+{
+	EmpSheetWidget->EmployeePosition = employee->Position;
+	EmpSheetWidget->Salary = employee->Salary;
+	EmpSheetWidget->Morale = employee->Morale;
+}
+
 void AGameHUD::ShowWidget(UUserWidget* Widgetc, TSubclassOf<UUserWidget> WidgetClass)
 {
 	//auto UseClass = Widgetc;
 		//Widgetc->RemoveFromViewport();
-	if (Widgetc != nullptr && Widgetc->IsValidLowLevel()) {
+	if (Widgetc != nullptr && Widgetc->IsValidLowLevel()) 
+	{
 		Widgetc->AddToViewport();
 	}
-	else {
+	else 
+	{
 		auto NewWidget = CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(this, 0), WidgetClass);
 		NewWidget->AddToViewport();
 	}
-
 }
 
 void AGameHUD::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+
+
 }
 
 void AGameHUD::DrawHUD()

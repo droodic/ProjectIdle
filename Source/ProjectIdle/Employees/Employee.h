@@ -34,7 +34,7 @@ public:
 	// Sets default values for this character's properties
 	AEmployee();
 
-	UPROPERTY(EditAnywhere) ERole Roles;
+	UPROPERTY(EditAnywhere) ERole Roles = ERole::Programmer;
 	UPROPERTY(EditAnywhere) EPosition Position = EPosition::Intern;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere) FText EmployeeName;
@@ -46,7 +46,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector MeetingLocation;
 
 	UPROPERTY() int WorkstationPositionRef;
-
 
 	//class AWorkstation* WorkstationRef;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UWidgetComponent* WorkProgressBar;

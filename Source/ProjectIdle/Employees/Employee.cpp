@@ -37,6 +37,17 @@ void AEmployee::BeginPlay()
 	this->SpawnDefaultController();
 	AI = Cast<AEmployeeAIC>(GetController());
 	//UDataTable
+
+	switch (Roles)
+	{
+	case ERole::Programmer:
+		GM->NumOfProgrammers++;
+		break;
+	case ERole::Artist:
+		GM->NumOfArtists++;
+		break;
+	}
+	
 	//Find better way maybe, enum? 
 	if (EmployeeRole == "Artist")
 	{
@@ -45,7 +56,7 @@ void AEmployee::BeginPlay()
 	else if (EmployeeRole == "Programmer")
 	{
 		GM->NumOfProgrammers++;
-	}
+	}*/
 
 	StartPosition = this->GetActorLocation();
 	HasWorkStation = false;
@@ -89,10 +100,12 @@ void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 
 		UI->ShowEmployeeSheet(this);
 	}
-	else {
-		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Employee is Clicked, UI Is null!"));
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, TEXT("Employee is Clicked, UI Is null!"));
 	}
 }
+
 // Called every frame
 void AEmployee::Tick(float DeltaTime)
 {
@@ -178,14 +191,12 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 void AEmployee::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
 void AEmployee::Promote()
 {
-	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, TEXT("Promote button called"));
+	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, "Promote button called");
 
-	//EPosition(1);
 	switch (Position)
 	{
 	case EPosition::Intern:
@@ -204,10 +215,13 @@ void AEmployee::Promote()
 		Salary += 100;
 		break;
 	}
+
+	UI->RefreshEmployeeSheet(this);
 }
 
 void AEmployee::Fire()
 {
+	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Red, "The employee is Fired!");
 }
 
 void AEmployee::GoMeeting()

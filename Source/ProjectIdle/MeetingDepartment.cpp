@@ -11,8 +11,7 @@
 #include "Employees/Artist.h"
 #include "Employees/Programmer.h"
 #include "EngineUtils.h"
-#include "Runtime\Engine\Classes\Kismet\KismetMathLibrary.h"
-
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 AMeetingDepartment::AMeetingDepartment()
@@ -20,7 +19,6 @@ AMeetingDepartment::AMeetingDepartment()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	OfficeLocation = FVector(-720.0, 900, 200);
-
 }
 
 
@@ -32,7 +30,8 @@ void AMeetingDepartment::BeginPlay()
 	GM->MeetingDepartment = this;
 	//temp assign, need to change class name , maybe move functions to gm
 	UWorld* world = GetWorld();
-	if (UserWidget != nullptr) {
+	if (UserWidget != nullptr) 
+	{
 		MeetingWidget = CreateWidget<UMeetingDepWidget>(UGameplayStatics::GetPlayerController(this, 0), UserWidget);
 	}
 
@@ -65,8 +64,6 @@ void AMeetingDepartment::TakeIdea(Idea* SentIdea)
 	//MeetingWidget->AddToViewport();
 }
 
-
-
 void AMeetingDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
@@ -89,8 +86,6 @@ void AMeetingDepartment::Tick(float DeltaTime)
 
 }
 
-
-
 void AMeetingDepartment::MoveToMeeting()
 {
 	int32 chairSize = GM->MeetingChairList.Num();
@@ -100,12 +95,11 @@ void AMeetingDepartment::MoveToMeeting()
 	FString sizeString = FString::FromInt(employeeSize);
 	UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
 
-
 	bool MoreEmployeeThanChair = false;
 
 	if (chairSize > employeeSize)
 	{
-		LoopUntil =  employeeSize;
+		LoopUntil = employeeSize;
 	}
 	else if (employeeSize > chairSize)
 	{
@@ -136,8 +130,6 @@ void AMeetingDepartment::MoveToMeeting()
 			GM->EmployeeList[i]->MoveEmployee(GM->MeetingChairList[i]->GetActorLocation());
 		}
 	}
-
-	
 }
 
 void AMeetingDepartment::BackFromMeeting()
