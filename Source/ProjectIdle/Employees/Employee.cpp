@@ -76,13 +76,22 @@ void AEmployee::BeginPlay()
 
 
 	UE_LOG(LogActor, Warning, TEXT("%s"), *StartPosition.ToString())
-		//int32 number = WorkstationPositionRef;
-
-		//FString sizeString = FString::FromInt(number);
-		//UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
-		MoveEmployee(StartPosition);
+	MoveEmployee(StartPosition);
+	IsDepartmentWorking();
 	//CurrentWorkload = 10.f;
 	//BeginWork();
+}
+
+void AEmployee::IsDepartmentWorking() {
+	for (auto Employee : GM->EmployeeList) {
+		if (Employee->EmployeeRole == EmployeeRole && Employee->CurrentWorkload > 5.f) {
+			this->AssignedWorkload = Employee->AssignedWorkload;
+			this->CurrentWorkload = Employee->CurrentWorkload / 2;
+			Employee->CurrentWorkload /= 2;
+			BeginWork();
+			GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Newly hired employee takes part in current department dev"));
+		}
+	}
 }
 
 void AEmployee::BeginWork() {

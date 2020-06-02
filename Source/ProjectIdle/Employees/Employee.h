@@ -98,4 +98,5 @@ public:
 	void WorkloadProgress(float Multiplier);
 	void Promote();
 	void Fire();
+	void IsDepartmentWorking();
 };
