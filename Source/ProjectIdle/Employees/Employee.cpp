@@ -46,14 +46,14 @@ void AEmployee::BeginPlay()
 		GM->NumOfArtists++;
 		break;
 	}
-	
-	//Find better way maybe, enum? 
-	if (EmployeeRole == ERole::Artist) {
-		GM->NumOfArtists++;
-	}
-	else if (EmployeeRole == ERole::Programmer) {
-		GM->NumOfProgrammers++;
-	}
+
+	////Find better way maybe, enum? 
+	//if (EmployeeRole == ERole::Artist) {
+	//	GM->NumOfArtists++;
+	//}
+	//else if (EmployeeRole == ERole::Programmer) {
+	//	GM->NumOfProgrammers++;
+	//}
 
 	StartPosition = this->GetActorLocation();
 	HasWorkStation = false;
@@ -69,25 +69,34 @@ void AEmployee::BeginPlay()
 	{
 		EmployeeSheetWidget->Employee = this;
 	}
-	
+
 	//Temp solution will fix
 	//For active station
-    GM->WorkStation->UpdateWorkstationPosition();
+	GM->WorkStation->UpdateWorkstationPosition();
 
 
 	UE_LOG(LogActor, Warning, TEXT("%s"), *StartPosition.ToString())
-	//int32 number = WorkstationPositionRef;
-
-	//FString sizeString = FString::FromInt(number);
-	//UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
 	MoveEmployee(StartPosition);
+	IsDepartmentWorking();
 	//CurrentWorkload = 10.f;
 	//BeginWork();
 }
 
+void AEmployee::IsDepartmentWorking() {
+	for (auto Employee : GM->EmployeeList) {
+		if (Employee->EmployeeRole == EmployeeRole && Employee->CurrentWorkload > 5.f) {
+			this->AssignedWorkload = Employee->AssignedWorkload;
+			this->CurrentWorkload = Employee->CurrentWorkload / 2;
+			Employee->CurrentWorkload /= 2;
+			BeginWork();
+			GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Newly hired employee takes part in current department dev"));
+			break;
+		}
+	}
+}
+
 void AEmployee::BeginWork() {
 	HasWorkload = true;
-	WorkProgressBar->SetVisibility(true);
 }
 
 void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
@@ -129,7 +138,7 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		//UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
 		SetActorRotation(GM->WorkstationList[WorkstationPositionRef]->ChairMesh->GetComponentRotation());
 		//GetMesh()->PlayAnimation(WorkAnim, false);
-		
+		WorkProgressBar->SetVisibility(true);
 		IsWorking = true;
 	}
 

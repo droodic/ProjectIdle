@@ -39,9 +39,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere) FText EmployeeName;
 
-	UPROPERTY(EditAnywhere) float Morale = 1;
-	UPROPERTY(EditAnywhere) float Performance;
-	UPROPERTY(EditAnywhere) float Salary = 200;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere) float Morale = 1;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere) float Performance;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere) float Salary = 200;
 	//UPROPERTY(EditAnywhere) FString EmployeeRole;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector MeetingLocation;
 
@@ -98,4 +98,5 @@ public:
 	void WorkloadProgress(float Multiplier);
 	void Promote();
 	void Fire();
+	void IsDepartmentWorking();
 };

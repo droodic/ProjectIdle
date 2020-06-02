@@ -23,6 +23,10 @@ public:
 	class AGameHUD* UI;
 
 	int Index = 0;
+	UPROPERTY(BlueprintReadWrite) float TProgSalary = 0.f;
+	UPROPERTY(BlueprintReadWrite) float TArtistSalary = 0.f;
+	UPROPERTY(BlueprintReadWrite) float AvgProgMorale = 0.f;
+	UPROPERTY(BlueprintReadWrite) float AvgArtistMorale = 0.f;
 
 	TArray<class Idea*> IdeaList;
 	
@@ -60,6 +64,9 @@ public:
 	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void HireArtist();
 
 	void Back();
+	UFUNCTION(BlueprintCallable) void GetDepartmentUIValues();
+	//int GetArtistSalary();
+
 
 protected:
 	virtual void BeginPlay() override;
@@ -67,5 +74,5 @@ protected:
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 	
-	 class Idea GenerateIdeaValues();
+	class Idea GenerateIdeaValues();
 };
