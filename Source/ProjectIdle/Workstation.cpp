@@ -31,8 +31,8 @@ void AWorkstation::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GM = GetWorld()->GetGameInstance<UGameManager>();
 	DisableStation(DisableObject);
+	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->WorkstationList.Add(this);
 	GM->WorkStation = this;
 	HasEmployee = false;
@@ -76,42 +76,92 @@ void AWorkstation::UpdateWorkstationPosition()
 
 	for (int i = 0; i < workstationSize; i++)
 	{
-		if (GM->WorkstationList[i]->IsA(AProgrammerStation::StaticClass()))
+		if (!GM->WorkstationList[i]->DisableObject)
 		{
-			if (GM->WorkstationList[i]->HasEmployee == false && !GM->WorkstationList[i]->DisableObject)
+			if (GM->WorkstationList[i]->IsA(AProgrammerStation::StaticClass()))
 			{
-				FVector current = GM->WorkstationList[i]->StationLocation;
-				for (int j = 0; j < employeeSize; j++)
+				if (GM->WorkstationList[i]->HasEmployee == false)
 				{
-					if (GM->EmployeeList[j]->EmployeeRole == "Programmer" && GM->EmployeeList[j]->HasWorkStation == false)
+					for (int j = 0; j < employeeSize; j++)
 					{
-						GM->WorkstationList[i]->HasEmployee = true;
-						GM->EmployeeList[j]->HasWorkStation = true;
-						GM->EmployeeList[j]->StartPosition = GM->WorkstationList[i]->StationLocation;
-						GM->EmployeeList[j]->WorkstationPositionRef = i;
-						break;
+						if (GM->EmployeeList[j]->EmployeeRole == "Programmer" && GM->EmployeeList[j]->HasWorkStation == false)
+						{
+							GM->WorkstationList[i]->HasEmployee = true;
+							GM->EmployeeList[j]->HasWorkStation = true;
+							GM->EmployeeList[j]->StartPosition = GM->WorkstationList[i]->StationLocation;
+							GM->EmployeeList[j]->WorkstationPositionRef = i;
+							break;
+						}
 					}
 				}
 			}
-		}
 
-		else if (GM->WorkstationList[i]->IsA(AArtistStation::StaticClass()))
-		{
-			if (GM->WorkstationList[i]->HasEmployee == false && !GM->WorkstationList[i]->DisableObject)
+			else if (GM->WorkstationList[i]->IsA(AArtistStation::StaticClass()))
 			{
-				for (int j = 0; j < employeeSize; j++)
+				if (GM->WorkstationList[i]->HasEmployee == false)
 				{
-					if (GM->EmployeeList[j]->IsA(AArtist::StaticClass()) && GM->EmployeeList[j]->HasWorkStation == false)
+					for (int j = 0; j < employeeSize; j++)
 					{
-						GM->WorkstationList[i]->HasEmployee = true;
-						GM->EmployeeList[j]->HasWorkStation = true;
-						GM->EmployeeList[j]->StartPosition = GM->WorkstationList[i]->StationLocation;
-						GM->EmployeeList[j]->WorkstationPositionRef = i;
-					    break;
+						if (GM->EmployeeList[j]->IsA(AArtist::StaticClass()) && GM->EmployeeList[j]->HasWorkStation == false)
+						{
+							GM->WorkstationList[i]->HasEmployee = true;
+							GM->EmployeeList[j]->HasWorkStation = true;
+							GM->EmployeeList[j]->StartPosition = GM->WorkstationList[i]->StationLocation;
+							GM->EmployeeList[j]->WorkstationPositionRef = i;
+							break;
+						}
 					}
 				}
 			}
 		}
+	}
+}
+
+
+void AWorkstation::TestFunction()
+{
+	int32 employeeSize = GM->EmployeeList.Num();
+	int32 workstationSize = GM->WorkstationList.Num();
+	FVector AStationLocation = this->GetActorLocation();
+	FVector testing = FVector(0, 0, 0);
+
+	for (int i = 0; i < workstationSize; i++)
+	{
+			if (GM->WorkstationList[i]->IsA(AProgrammerStation::StaticClass()))
+			{
+				if (GM->WorkstationList[i]->HasEmployee == false)
+				{
+					for (int j = 0; j < employeeSize; j++)
+					{
+						if (GM->EmployeeList[j]->EmployeeRole == "Programmer" && GM->EmployeeList[j]->HasWorkStation == false)
+						{
+							GM->WorkstationList[i]->HasEmployee = true;
+							GM->EmployeeList[j]->HasWorkStation = true;
+							GM->EmployeeList[j]->StartPosition = GM->WorkstationList[i]->StationLocation;
+							GM->EmployeeList[j]->WorkstationPositionRef = i;
+							break;
+						}
+					}
+				}
+			}
+
+			else if (GM->WorkstationList[i]->IsA(AArtistStation::StaticClass()))
+			{
+				if (GM->WorkstationList[i]->HasEmployee == false)
+				{
+					for (int j = 0; j < employeeSize; j++)
+					{
+						if (GM->EmployeeList[j]->IsA(AArtist::StaticClass()) && GM->EmployeeList[j]->HasWorkStation == false)
+						{
+							GM->WorkstationList[i]->HasEmployee = true;
+							GM->EmployeeList[j]->HasWorkStation = true;
+							GM->EmployeeList[j]->StartPosition = GM->WorkstationList[i]->StationLocation;
+							GM->EmployeeList[j]->WorkstationPositionRef = i;
+							break;
+						}
+					}
+				}
+			}
 	}
 }
 

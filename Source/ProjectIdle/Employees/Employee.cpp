@@ -5,7 +5,7 @@
 #include "AIModule\Classes\DetourCrowdAIController.h"
 #include "ProjectIdle/EmployeeAIC.h"
 #include "ProjectIdle/GameManager.h"
-#include "ProjectIdle\DataTable.h"
+//#include "ProjectIdle\DataTable.h"
 #include "ProjectIdle/Workstation.h"
 #include "ProjectIdle/GameHUD.h"
 #include "EWorkProgressWidget.h"
@@ -29,7 +29,6 @@ AEmployee::AEmployee()
 void AEmployee::BeginPlay()
 {
 	Super::BeginPlay();
-	AI = Cast<AEmployeeAIC>(GetController());
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0)->GetHUD());
 
@@ -37,12 +36,14 @@ void AEmployee::BeginPlay()
 	GM->EmployeeList.Add(this);
 	this->SpawnDefaultController();
 	AI = Cast<AEmployeeAIC>(GetController());
-	UDataTable
+	//UDataTable
 	//Find better way maybe, enum? 
-	if (EmployeeRole == "Artist") {
+	if (EmployeeRole == "Artist")
+	{
 		GM->NumOfArtists++;
 	}
-	else if (EmployeeRole == "Programmer") {
+	else if (EmployeeRole == "Programmer")
+	{
 		GM->NumOfProgrammers++;
 	}
 
@@ -61,9 +62,12 @@ void AEmployee::BeginPlay()
 		EmployeeSheetWidget->Employee = this;
 	}
 	
-
-	
+	//Temp solution will fix
+	//For active station
     GM->WorkStation->UpdateWorkstationPosition();
+	//On spawn
+	GM->WorkStation->TestFunction();
+
 	UE_LOG(LogActor, Warning, TEXT("%s"), *StartPosition.ToString())
 	//int32 number = WorkstationPositionRef;
 
