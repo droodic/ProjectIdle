@@ -38,6 +38,8 @@ public:
 		FVector StationVector;
 
 	UPROPERTY() bool HasEmployee;
+
+	UPROPERTY() bool IsObjectDisable;
 	UPROPERTY(EditAnywhere, Category = "Disable") bool DisableObject;
 
 	class UGameManager* GM;
@@ -55,4 +57,5 @@ public:
 	UFUNCTION() void UpdateWorkstationPosition();
 	UFUNCTION() void DisableStation(bool Disable);
 	UFUNCTION() int WorkstationActiveLenght();
+	//UFUNCTION() void TestFunction();
 };

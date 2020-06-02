@@ -28,7 +28,6 @@ AEmployee::AEmployee()
 void AEmployee::BeginPlay()
 {
 	Super::BeginPlay();
-	AI = Cast<AEmployeeAIC>(GetController());
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0)->GetHUD());
 
@@ -36,6 +35,7 @@ void AEmployee::BeginPlay()
 	GM->EmployeeList.Add(this);
 	this->SpawnDefaultController();
 	AI = Cast<AEmployeeAIC>(GetController());
+	//UDataTable
 
 	switch (EmployeeRole)
 	{
@@ -70,9 +70,11 @@ void AEmployee::BeginPlay()
 		EmployeeSheetWidget->Employee = this;
 	}
 	
-
-	
+	//Temp solution will fix
+	//For active station
     GM->WorkStation->UpdateWorkstationPosition();
+
+
 	UE_LOG(LogActor, Warning, TEXT("%s"), *StartPosition.ToString())
 	//int32 number = WorkstationPositionRef;
 

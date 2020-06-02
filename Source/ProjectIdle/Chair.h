@@ -17,13 +17,11 @@ public:
 	// Sets default values for this actor's properties
 	AChair();
 
-	UPROPERTY()
-	FVector ChairLocation;
 	class UGameManager* GM;
-	UPROPERTY()
-		USceneComponent* Root;
-	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* Mesh;
+
+	UPROPERTY() FVector ChairLocation;
+	UPROPERTY() USceneComponent* Root;
+	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* Mesh;
 
 
 protected:

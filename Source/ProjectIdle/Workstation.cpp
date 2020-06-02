@@ -30,9 +30,9 @@ AWorkstation::AWorkstation()
 void AWorkstation::BeginPlay()
 {
 	Super::BeginPlay();
-
-	GM = GetWorld()->GetGameInstance<UGameManager>();
+	IsObjectDisable = DisableObject;
 	DisableStation(DisableObject);
+	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->WorkstationList.Add(this);
 	GM->WorkStation = this;
 	HasEmployee = false;
@@ -54,66 +54,70 @@ void AWorkstation::BeginPlay()
 		StationLocation = StationLocation = DeskMesh->GetSocketLocation("TransformSocket").operator-(zero);
 	}*/
 	
-
-
-	int32 workstationSize = WorkstationActiveLenght();
-	FString mouseY = FString::FromInt(workstationSize);
-	UE_LOG(LogActor, Warning, TEXT("%s"), *mouseY)
+	//int32 workstationSize = WorkstationActiveLenght();
+	//FString mouseY = FString::FromInt(workstationSize);
+	//UE_LOG(LogActor, Warning, TEXT("%s"), *mouseY)
 }
 
 // Called every frame
 void AWorkstation::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	DisableStation(DisableObject);
 }
 
 void AWorkstation::UpdateWorkstationPosition()
 {
 	int32 employeeSize = GM->EmployeeList.Num();
+	int32 activeWorkstation = WorkstationActiveLenght();
 	int32 workstationSize = GM->WorkstationList.Num();
 	FVector AStationLocation = this->GetActorLocation();
-	FVector testing = FVector(0, 0, 0);
 
-	for (int i = 0; i < workstationSize; i++)
-	{
-		if (GM->WorkstationList[i]->IsA(AProgrammerStation::StaticClass()))
+		for (int i = 0; i < workstationSize; i++)
 		{
-			if (GM->WorkstationList[i]->HasEmployee == false && !GM->WorkstationList[i]->DisableObject)
+			if (!GM->WorkstationList[i]->DisableObject)
 			{
-				FVector current = GM->WorkstationList[i]->StationLocation;
-				for (int j = 0; j < employeeSize; j++)
+				if (GM->WorkstationList[i]->IsA(AProgrammerStation::StaticClass()))
 				{
-					if (GM->EmployeeList[j]->IsA(AProgrammer::StaticClass()) && GM->EmployeeList[j]->HasWorkStation == false)
+					if (GM->WorkstationList[i]->HasEmployee == false)
 					{
-						GM->WorkstationList[i]->HasEmployee = true;
-						GM->EmployeeList[j]->HasWorkStation = true;
-						GM->EmployeeList[j]->StartPosition = GM->WorkstationList[i]->StationLocation;
-						GM->EmployeeList[j]->WorkstationPositionRef = i;
-						break;
+						for (int j = 0; j < employeeSize; j++)
+						{
+							if (GM->EmployeeList[j]->IsA(AProgrammer::StaticClass()) && GM->EmployeeList[j]->HasWorkStation == false)
+							{
+
+								GM->WorkstationList[i]->HasEmployee = true;
+								GM->EmployeeList[j]->HasWorkStation = true;
+								GM->EmployeeList[j]->StartPosition = GM->WorkstationList[i]->StationLocation;
+								GM->EmployeeList[j]->WorkstationPositionRef = i;
+								break;
+							}
+						}
+					}
+				}
+
+				else if (GM->WorkstationList[i]->IsA(AArtistStation::StaticClass()))
+				{
+					if (GM->WorkstationList[i]->HasEmployee == false)
+					{
+						for (int j = 0; j < employeeSize; j++)
+						{
+							if (GM->EmployeeList[j]->IsA(AArtist::StaticClass()) && GM->EmployeeList[j]->HasWorkStation == false)
+							{
+								GM->WorkstationList[i]->HasEmployee = true;
+								GM->EmployeeList[j]->HasWorkStation = true;
+								GM->EmployeeList[j]->StartPosition = GM->WorkstationList[i]->StationLocation;
+								GM->EmployeeList[j]->WorkstationPositionRef = i;
+								break;
+							}
+						}
 					}
 				}
 			}
 		}
-
-		else if (GM->WorkstationList[i]->IsA(AArtistStation::StaticClass()))
-		{
-			if (GM->WorkstationList[i]->HasEmployee == false && !GM->WorkstationList[i]->DisableObject)
-			{
-				for (int j = 0; j < employeeSize; j++)
-				{
-					if (GM->EmployeeList[j]->IsA(AArtist::StaticClass()) && GM->EmployeeList[j]->HasWorkStation == false)
-					{
-						GM->WorkstationList[i]->HasEmployee = true;
-						GM->EmployeeList[j]->HasWorkStation = true;
-						GM->EmployeeList[j]->StartPosition = GM->WorkstationList[i]->StationLocation;
-						GM->EmployeeList[j]->WorkstationPositionRef = i;
-					    break;
-					}
-				}
-			}
-		}
-	}
 }
+
+
 
 void AWorkstation::DisableStation(bool Disable)
 {
@@ -121,13 +125,13 @@ void AWorkstation::DisableStation(bool Disable)
 	{
 		this->SetActorHiddenInGame(true);
 		this->SetActorEnableCollision(false);
-		//Turn off if active
 	    this->SetActorTickEnabled(true);
 	}
 	else
 	{
 		this->SetActorHiddenInGame(false);
 		this->SetActorEnableCollision(true);
+		////Turn off if active
 		this->SetActorTickEnabled(false);
 	}
 }
@@ -139,7 +143,7 @@ int AWorkstation::WorkstationActiveLenght()
 
 	for (int i = 0; i < length; i++)
 	{
-		if (!GM->WorkstationList[i]->DisableObject)
+		if (!GM->WorkstationList[i]->IsObjectDisable)
 		{
 			count++;
 		}
