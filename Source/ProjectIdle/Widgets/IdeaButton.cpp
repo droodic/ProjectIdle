@@ -2,6 +2,9 @@
 
 
 #include "IdeaButton.h"
+#include "ProjectIdle/Idea.h"
+#include "Components/Image.h"
+#include "Components/TextBlock.h"
 
 UIdeaButton::UIdeaButton(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -10,7 +13,7 @@ UIdeaButton::UIdeaButton(const FObjectInitializer& ObjectInitializer) : Super(Ob
 
 void UIdeaButton::NativeConstruct() 
 {
-
+    Super::NativeConstruct(); 
 }
 
 /*

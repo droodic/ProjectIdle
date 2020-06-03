@@ -23,7 +23,7 @@ public:
 
 	FVector OfficeLocation;
 	UGameManager* GM;
-
+	bool CanReturn = false;
 	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void MoveToMeeting();
 	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void BackFromMeeting();
 

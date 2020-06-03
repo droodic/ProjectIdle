@@ -30,7 +30,7 @@ void AMeetingDepartment::BeginPlay()
 	GM->MeetingDepartment = this;
 	//temp assign, need to change class name , maybe move functions to gm
 	UWorld* world = GetWorld();
-	if (UserWidget != nullptr) 
+	if (UserWidget != nullptr)
 	{
 		MeetingWidget = CreateWidget<UMeetingDepWidget>(UGameplayStatics::GetPlayerController(this, 0), UserWidget);
 	}
@@ -91,10 +91,9 @@ void AMeetingDepartment::MoveToMeeting()
 	int32 chairSize = GM->MeetingChairList.Num();
 	int32 employeeSize = GM->EmployeeList.Num();
 	int32 LoopUntil;
-
 	FString sizeString = FString::FromInt(employeeSize);
-	UE_LOG(LogActor, Warning, TEXT("%s"), *sizeString)
 
+	CanReturn = false;
 	bool MoreEmployeeThanChair = false;
 
 	if (chairSize > employeeSize)
@@ -134,32 +133,76 @@ void AMeetingDepartment::MoveToMeeting()
 
 void AMeetingDepartment::BackFromMeeting()
 {
-	int32 employeeSize = GM->EmployeeList.Num();
-    
+	//int32 employeeSize = GM->EmployeeList.Num();
+
 	//Call a second time in case, they had no workstation on hire
 	//GM->WorkStation->TestFunction();
+	auto Counter = GM->EmployeeList.Num();
 
-	for (int i = 0; i < employeeSize; i++)
-	{
-		GM->EmployeeList[i]->MoveEmployee(GM->EmployeeList[i]->StartPosition);
-		//GM->EmployeeList[i]->SetActorRotation(UKismetMathLibrary::FindLookAtRotation(GM->EmployeeList[i]->GetActorLocation(), GM->EmployeeList[i]->StartPosition));
-		//GM->EmployeeList[i]->
-
-		//Assign workload test - move to own function/clean up later, also needs to be called when are at their workstation not before
-		if (GM->EmployeeList[i]->EmployeeRole == ERole::Artist)
-		{
-			GM->EmployeeList[i]->AssignedWorkload = CurrentIdea->ArtistWorkload / GM->NumOfArtists;
-			GM->EmployeeList[i]->CurrentWorkload = GM->EmployeeList[i]->AssignedWorkload;
-			GM->EmployeeList[i]->BeginWork();
+	if (!CanReturn) {
+		for (auto Emp : GM->EmployeeList) {
+			if (Emp->AI->IsMoving) {
+				GEngine->AddOnScreenDebugMessage(999, 5.f, FColor::Green, "Employee moving, breaking");
+				break;
+			}
+			else {
+				GEngine->AddOnScreenDebugMessage(998, 5.f, FColor::Green, "Employee in chair, counter down");
+				Counter--;
+			}
 		}
-		else if (GM->EmployeeList[i]->EmployeeRole == ERole::Programmer)
-		{
-			GM->EmployeeList[i]->AssignedWorkload = CurrentIdea->ProgrammerWorkload / GM->NumOfProgrammers;
-			GM->EmployeeList[i]->CurrentWorkload = GM->EmployeeList[i]->AssignedWorkload;
-			GM->EmployeeList[i]->BeginWork();
+		if (Counter == 0) {
+			GEngine->AddOnScreenDebugMessage(997, 5.f, FColor::Green, "CanReturn");
+			CanReturn = true;
 		}
+	}
 
+	if (CanReturn) {
+		for (auto Emp : GM->EmployeeList) {
+
+			Emp->MoveEmployee(Emp->StartPosition);
+			//GM->EmployeeList[i]->SetActorRotation(UKismetMathLibrary::FindLookAtRotation(GM->EmployeeList[i]->GetActorLocation(), GM->EmployeeList[i]->StartPosition));
+			//GM->EmployeeList[i]->
+
+			//Assign workload test - move to own function/clean up later, also needs to be called when are at their workstation not before
+			if (Emp->EmployeeRole == ERole::Artist)
+			{
+				Emp->AssignedWorkload = CurrentIdea->ArtistWorkload / GM->NumOfArtists;
+				Emp->CurrentWorkload = Emp->AssignedWorkload;
+				Emp->BeginWork();
+			}
+			else if (Emp->EmployeeRole == ERole::Programmer)
+			{
+				Emp->AssignedWorkload = CurrentIdea->ProgrammerWorkload / GM->NumOfProgrammers;
+				Emp->CurrentWorkload = Emp->AssignedWorkload;
+				Emp->BeginWork();
+			}
+		}
 	}
 
 
+
+	//for (int i = 0; i < employeeSize; i++)
+	//{
+	//	if (!GM->EmployeeList[i]->AI->IsMoving) {
+	//		GM->EmployeeList[i]->MoveEmployee(GM->EmployeeList[i]->StartPosition);
+	//		//GM->EmployeeList[i]->SetActorRotation(UKismetMathLibrary::FindLookAtRotation(GM->EmployeeList[i]->GetActorLocation(), GM->EmployeeList[i]->StartPosition));
+	//		//GM->EmployeeList[i]->
+
+	//		//Assign workload test - move to own function/clean up later, also needs to be called when are at their workstation not before
+	//		if (GM->EmployeeList[i]->EmployeeRole == ERole::Artist)
+	//		{
+	//			GM->EmployeeList[i]->AssignedWorkload = CurrentIdea->ArtistWorkload / GM->NumOfArtists;
+	//			GM->EmployeeList[i]->CurrentWorkload = GM->EmployeeList[i]->AssignedWorkload;
+	//			GM->EmployeeList[i]->BeginWork();
+	//		}
+	//		else if (GM->EmployeeList[i]->EmployeeRole == ERole::Programmer)
+	//		{
+	//			GM->EmployeeList[i]->AssignedWorkload = CurrentIdea->ProgrammerWorkload / GM->NumOfProgrammers;
+	//			GM->EmployeeList[i]->CurrentWorkload = GM->EmployeeList[i]->AssignedWorkload;
+	//			GM->EmployeeList[i]->BeginWork();
+	//		}
+	//	}
+	//	
+
+	//}
 }
