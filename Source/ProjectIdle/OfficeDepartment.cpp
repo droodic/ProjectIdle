@@ -72,6 +72,8 @@ void AOfficeDepartment::GetDepartmentUIValues()
 {
 	TProgSalary = 0.f;
 	TArtistSalary = 0.f;
+	AvgProgMorale = 0.f;
+	AvgArtistMorale = 0.f;
 
 	for (auto Employee : GM->EmployeeList) {
 		if (Cast<AProgrammer>(Employee) != nullptr) {

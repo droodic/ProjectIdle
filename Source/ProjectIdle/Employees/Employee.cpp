@@ -124,7 +124,7 @@ void AEmployee::Tick(float DeltaTime)
 	//add a if enabled condition or smth
 
 	if (HasWorkload && CurrentWorkload > 0 && !AI->IsMoving) {
-		WorkloadProgress(DeltaTime * (Performance / 2));
+		WorkloadProgress(DeltaTime * (Performance / 2) + (Morale / 5));
 	}
 
 }
