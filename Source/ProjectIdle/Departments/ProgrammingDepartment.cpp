@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "ProjectIdle\GameManager.h"
+#include "ProjectIdle/GameManager.h"
 #include "ProgrammingDepartment.h"
 
 AProgrammingDepartment::AProgrammingDepartment() {

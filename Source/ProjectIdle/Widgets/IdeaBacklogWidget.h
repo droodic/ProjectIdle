@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint\UserWidget.h"
+#include "Blueprint/UserWidget.h"
 #include "IdeaBacklogWidget.generated.h"
 
 /**

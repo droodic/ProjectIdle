@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ProjectIdle\Workstation.h"
+#include "ProjectIdle/Workstation.h"
 #include "ProgrammerStation.generated.h"
 
 /**
