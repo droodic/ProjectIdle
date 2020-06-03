@@ -86,10 +86,7 @@ void AOfficeDepartment::GetDepartmentUIValues()
 
 	AvgProgMorale = AvgProgMorale / GM->NumOfProgrammers;
 	AvgArtistMorale = AvgArtistMorale / GM->NumOfArtists;
-
-
 }
-
 
 void AOfficeDepartment::GenerateIdea()
 {
@@ -110,6 +107,10 @@ void AOfficeDepartment::CallMeeting()
 	*/
 }
 
+void AOfficeDepartment::PublishGame()
+{
+	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, "YOU PUBLISHED A GAME!");
+}
 
 void AOfficeDepartment::Tick(float DeltaTime)
 {
@@ -136,8 +137,6 @@ void AOfficeDepartment::Tick(float DeltaTime)
 			Index++;
 		}
 	}
-
-
 }
 
 void AOfficeDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
@@ -185,7 +184,6 @@ void AOfficeDepartment::HireEmployee(TArray<TSubclassOf<AEmployee>> SpawnEmploye
 			World->SpawnActor<AEmployee>(SpawnEmployee[Position], SpawnLocation, SpawnRotation, SpawnParameters);
 			
 		}
-
 	}
 }
 
@@ -220,7 +218,6 @@ void AOfficeDepartment::GenerateActor(TArray<TSubclassOf<AActor>> Spawn, int Pos
 			World->SpawnActor<AActor>(Spawn[Position], SpawnLocation, SpawnRotation, SpawnParameters);
 			GetDepartmentUIValues();
 		}
-
 	}
 }
 
