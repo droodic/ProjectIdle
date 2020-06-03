@@ -22,6 +22,8 @@ AEmployee::AEmployee()
 	WorkProgressBar->AttachTo(RootComponent);
 	WorkProgressBar->SetVisibility(false);
 	WorkProgressBar->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+
+
 }
 
 // Called when the game starts or when spawned
@@ -36,6 +38,9 @@ void AEmployee::BeginPlay()
 	this->SpawnDefaultController();
 	AI = Cast<AEmployeeAIC>(GetController());
 	//UDataTable
+	if (!DefaultEmployee) {
+		Performance = UKismetMathLibrary::RandomFloatInRange(1.f, 6.f); //make editable constants, cieling value can go higher with upgrades
+	}
 
 	switch (EmployeeRole)
 	{
@@ -76,7 +81,7 @@ void AEmployee::BeginPlay()
 
 
 	UE_LOG(LogActor, Warning, TEXT("%s"), *StartPosition.ToString())
-	MoveEmployee(StartPosition);
+		MoveEmployee(StartPosition);
 	IsDepartmentWorking();
 	//CurrentWorkload = 10.f;
 	//BeginWork();

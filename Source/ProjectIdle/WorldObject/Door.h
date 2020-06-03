@@ -19,7 +19,8 @@ public:
 
 	UPROPERTY() FVector DoorLocation;
 	UPROPERTY() USceneComponent* Root;
-	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* Mesh;
+	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* DoorMesh;
+	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* DoorFrameMesh;
 
 protected:
 	// Called when the game starts or when spawned
