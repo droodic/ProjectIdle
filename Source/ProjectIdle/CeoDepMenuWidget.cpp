@@ -57,32 +57,36 @@ void UCeoDepMenuWidget::CallHiring()
 void UCeoDepMenuWidget::ActiveWorkstation(int Number)
 {
 	int32 length = GM->WorkstationList.Num();
-
-	for (int i = 0; i < length; i++)
+	int32 employeeSize = GM->EmployeeList.Num();
+	
+	if (length == employeeSize)
 	{
-		if (Number == 0)
+		for (int i = 0; i < length; i++)
 		{
-			if (GM->WorkstationList[i]->DisableObject && GM->WorkstationList[i]->IsA(AProgrammerStation::StaticClass()))
+			if (Number == 0)
 			{
-				//GM->WorkstationList[i]->IsObjectDisable = false;
-				//GM->WorkstationList[i]->DisableStation(false);
-				GM->WorkstationList[i]->DisableObject = false;
-				//To leave the function once one if found.
-				return;
+				if (GM->WorkstationList[i]->DisableObject && GM->WorkstationList[i]->IsA(AProgrammerStation::StaticClass()))
+				{
+					//GM->WorkstationList[i]->IsObjectDisable = false;
+					//GM->WorkstationList[i]->DisableStation(false);
+					GM->WorkstationList[i]->DisableObject = false;
+					//To leave the function once one if found.
+					return;
+				}
 			}
-		}
-		if (Number == 1)
-		{
-			if (GM->WorkstationList[i]->DisableObject && GM->WorkstationList[i]->IsA(AArtistStation::StaticClass()))
+			if (Number == 1)
 			{
-				//GM->WorkstationList[i]->IsObjectDisable = false;
-				//GM->WorkstationList[i]->DisableStation(false);
-				GM->WorkstationList[i]->DisableObject = false;
-				//To leave the function once one if found.
-				return;
+				if (GM->WorkstationList[i]->DisableObject && GM->WorkstationList[i]->IsA(AArtistStation::StaticClass()))
+				{
+					//GM->WorkstationList[i]->IsObjectDisable = false;
+					//GM->WorkstationList[i]->DisableStation(false);
+					GM->WorkstationList[i]->DisableObject = false;
+					//To leave the function once one if found.
+					return;
+				}
 			}
-		}
 
+		}
 	}
 }
 
