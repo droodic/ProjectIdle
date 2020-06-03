@@ -65,6 +65,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool HasWorkload;
 	UPROPERTY(BlueprintReadWrite) bool IsMoving = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsWorking;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool DefaultEmployee;
 
 	//bool IsMoving;
 	//Managers

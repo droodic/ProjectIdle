@@ -21,7 +21,7 @@ void AGameHUD::BeginPlay()
 			MoneyWidget->AddToViewport();
 		}
 	}
-	if (EmployeeSheetClass)
+	if (EmployeeSheetClass != nullptr)
 	{
 		EmpSheetWidget = CreateWidget<UEmployeeSheetWidget>(UGameplayStatics::GetPlayerController(this, 0), EmployeeSheetClass);
 	}
@@ -34,7 +34,7 @@ void AGameHUD::BeginPlay()
 
 void AGameHUD::ShowEmployeeSheet(class AEmployee* employee)
 {
-	if (!EmpSheetWidget->IsInViewport())
+	if (!EmpSheetWidget->IsInViewport() && EmpSheetWidget != nullptr)
 	{
 		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Showing Employee Sheet"));
 
