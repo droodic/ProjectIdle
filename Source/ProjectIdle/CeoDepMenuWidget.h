@@ -20,7 +20,9 @@ public:
 	class UGameManager* GM;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UScrollBox* IdeaScrollBox;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UIdeaButton* IdeaButton;
+	class UIdeaButton* IdeaButton;
+	TArray<class UIdeaButton*> IdeaButtonList;
+	//UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UIdeaButton* IdeaButton;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_Prog_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_Artist_Btn;
@@ -30,10 +32,14 @@ public:
 	
 public:
 	virtual void NativeConstruct() override;
+	void GetIdea(class Idea* idea);
 
 private:
 	UFUNCTION() void CallHiring();
 	UFUNCTION() void CallProgrammerSpawn();
 	UFUNCTION() void CallArtistSpawn();
 	UFUNCTION() void ActiveWorkstation(int Number);
+
+	void AddValuesToButton(class UIdeaButton* button, class Idea* idea);
+
 };

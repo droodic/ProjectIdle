@@ -3,12 +3,15 @@
 
 #include "CeoDepMenuWidget.h"
 #include "Components/Button.h"
+#include "ProjectIdle/Idea.h"
 #include "ProjectIdle/GameManager.h"
 #include "OfficeDepartment.h"
 #include "ProjectIdle/Workstation.h"
 #include "Workstations/ArtistStation.h"
 #include "Workstations/ProgrammerStation.h"
 #include "Engine.h"
+#include "Widgets/IdeaButton.h"
+#include "Blueprint/UserWidget.h"
 
 void UCeoDepMenuWidget::NativeConstruct()
 {
@@ -18,7 +21,7 @@ void UCeoDepMenuWidget::NativeConstruct()
 
 	if (!Hire_Prog_Btn->OnClicked.IsBound())
 	{
-	    Hire_Prog_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::CallProgrammerSpawn);
+		Hire_Prog_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::CallProgrammerSpawn);
 	}
 	if (!Hire_Artist_Btn->OnClicked.IsBound())
 	{
@@ -72,6 +75,43 @@ void UCeoDepMenuWidget::ActiveWorkstation(int Number)
 				return;
 			}
 		}
-		
+
+	}
+}
+
+void UCeoDepMenuWidget::GetIdea(Idea* idea)
+{
+	GEngine->AddOnScreenDebugMessage(3, 5.f, FColor::Green, "Get Idea Called from CEO Widget");
+
+	//IdeaButton = CreateWidget(this, TSubclassOf<UUserWidget>UIdeaButton, TEXT("IdeaButton"));
+
+	if (IdeaButton)
+	{
+		AddValuesToButton(IdeaButton, idea);
+		IdeaScrollBox->AddChild(IdeaButton);
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(4, 5.f, FColor::Red, "IdeaButton == nullptr");
+	}
+
+}
+
+void UCeoDepMenuWidget::AddValuesToButton(UIdeaButton* button, Idea* idea)
+{
+	GEngine->AddOnScreenDebugMessage(4, 5.f, FColor::Green, "Values Added to button");
+
+	button->GameCover_I->SetColorAndOpacity(idea->CoverColor);
+
+	button->GameTitle_T->SetText(FText::FromString(idea->IdeaName));
+	button->GameDescription_T->SetText(FText::FromString(idea->IdeaDescription));
+	button->Genre_T->SetText(Idea::GenreToText(idea->Genre));
+	button->SuccessChance_T->SetText(FText::AsPercent(idea->SuccessChance / 100.f));
+
+	button->Weight_T->SetText((idea->ProgrammerWorkload > idea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
+
+	if (idea->ProgrammerWorkload == idea->ArtistWorkload)
+	{
+		button->Weight_T->SetText(FText::FromString("All"));
 	}
 }

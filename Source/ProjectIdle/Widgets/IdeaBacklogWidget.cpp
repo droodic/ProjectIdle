@@ -10,8 +10,7 @@
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Kismet/KismetMathLibrary.h"
-
-
+#include "IdeaButton.h"
 
 void UIdeaBacklogWidget::DisplayNewIdea() {
 
@@ -57,7 +56,7 @@ void UIdeaBacklogWidget::NativeConstruct() {
 void UIdeaBacklogWidget::GetIdea(Idea* idea)
 {
 	newIdea = idea;
-	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, FString::FromInt(OfficeDepartment->Index -1));
+	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, FString::FromInt(OfficeDepartment->Index));
 
 	if (OfficeDepartment->Index == 0)
 	{
@@ -113,6 +112,23 @@ void UIdeaBacklogWidget::GetIdea(Idea* idea)
 		{
 			T_Weight_3->SetText(FText::FromString("All"));
 		}
+	}
+}
+
+void UIdeaBacklogWidget::AddValueToButton(UIdeaButton* button, Idea* idea)
+{
+	button->GameCover_I->SetColorAndOpacity(idea->CoverColor);
+
+	button->GameTitle_T->SetText(FText::FromString(idea->IdeaName));
+	button->GameDescription_T->SetText(FText::FromString(idea->IdeaDescription));
+	button->Genre_T->SetText(Idea::GenreToText(idea->Genre));
+	button->SuccessChance_T->SetText(FText::AsPercent(idea->SuccessChance / 100.f));
+
+	button->Weight_T->SetText((idea->ProgrammerWorkload > idea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
+
+	if (idea->ProgrammerWorkload == idea->ArtistWorkload)
+	{
+		button->Weight_T->SetText(FText::FromString("All"));
 	}
 }
 

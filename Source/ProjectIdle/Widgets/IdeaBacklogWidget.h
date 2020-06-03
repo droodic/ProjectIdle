@@ -78,6 +78,5 @@ private:
 	UFUNCTION() void CallMeeting();
 	
 	void SendIdea();
-
-public:
+	void AddValueToButton(class UIdeaButton* button, class Idea* idea);
 };

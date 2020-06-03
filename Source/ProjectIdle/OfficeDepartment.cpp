@@ -46,7 +46,7 @@ void AOfficeDepartment::BeginPlay()
 		OfficeDepMenuWidget->OfficeDepartment = this;
 		//OfficeDepMenuWidget->AddToRoot();
 	}
-	
+
 	//GetDepartmentUIValues(); //call this on click to see ui in wbp
 }
 
@@ -131,13 +131,16 @@ void AOfficeDepartment::Tick(float DeltaTime)
 
 			IdeaList.Insert(newIdea, Index);
 			//TEST*** make method / optimize
+			OfficeDepMenuWidget->GetIdea(newIdea);
 			BacklogWidget->GetIdea(newIdea);
 			BacklogWidget->DisplayNewIdea();
-
+			//OfficeDepMenuWidget->IdeaScrollBox->AddChild()
 			Index++;
 		}
 	}
 }
+
+
 
 void AOfficeDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
 {
@@ -182,7 +185,7 @@ void AOfficeDepartment::HireEmployee(TArray<TSubclassOf<AEmployee>> SpawnEmploye
 			FVector SpawnLocation = FVector(0, 0, 270);
 			FRotator SpawnRotation = FRotator::ZeroRotator;
 			World->SpawnActor<AEmployee>(SpawnEmployee[Position], SpawnLocation, SpawnRotation, SpawnParameters);
-			
+
 		}
 	}
 }
