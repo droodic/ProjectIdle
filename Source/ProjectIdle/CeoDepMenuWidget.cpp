@@ -89,19 +89,20 @@ void UCeoDepMenuWidget::ActiveWorkstation(int Number)
 void UCeoDepMenuWidget::GetIdea(Idea* idea)
 {
 	GEngine->AddOnScreenDebugMessage(3, 5.f, FColor::Green, "Get Idea Called from CEO Widget");
-
-	//IdeaButton = CreateWidget(this, TSubclassOf<UUserWidget>UIdeaButton, TEXT("IdeaButton"));
-
-	if (IdeaButton)
+/*
+	IdeaButtonList.Add(Cast<UIdeaButton>(CreateWidget(this, IdeaButtonWidgetClass, TEXT("IdeaButton"))));
+	
+	if (IdeaButtonList.Last())
 	{
-		AddValuesToButton(IdeaButton, idea);
-		IdeaScrollBox->AddChild(IdeaButton);
+		AddValuesToButton(IdeaButtonList.Last(), idea);
+		IdeaScrollBox->AddChild(IdeaButtonList.Last());
 	}
 	else
 	{
 		GEngine->AddOnScreenDebugMessage(4, 5.f, FColor::Red, "IdeaButton == nullptr");
 	}
-
+*/
+	
 }
 
 void UCeoDepMenuWidget::AddValuesToButton(UIdeaButton* button, Idea* idea)

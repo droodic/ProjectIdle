@@ -20,8 +20,10 @@ public:
 	class UGameManager* GM;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UScrollBox* IdeaScrollBox;
-	class UIdeaButton* IdeaButton;
+	
+	UPROPERTY(EditAnywhere) TSubclassOf<UUserWidget> IdeaButtonWidgetClass;
 	TArray<class UIdeaButton*> IdeaButtonList;
+	
 	//UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UIdeaButton* IdeaButton;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_Prog_Btn;

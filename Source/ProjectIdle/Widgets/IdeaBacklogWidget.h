@@ -27,7 +27,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Back_Btn;
 	//UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Test;
 
-	UPROPERTY(EditAnywhere) class UButton* IdeaButtonObject;
+	UPROPERTY(EditAnywhere) TSubclassOf<UUserWidget> IdeaButtonWidgetClass;
 	
 #pragma region IdeaButton1
 	
