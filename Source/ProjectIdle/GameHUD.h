@@ -38,7 +38,7 @@ public:
 
 private:
 	UMoneyWidget* MoneyWidget;
-	UEmployeeSheetWidget* EmpSheetWidget;
+	UPROPERTY() UEmployeeSheetWidget* EmpSheetWidget;
 	//UWorkstationUpgradeWidget* WorkstationWidget;
 
 public:
