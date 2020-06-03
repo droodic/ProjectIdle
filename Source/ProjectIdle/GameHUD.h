@@ -45,6 +45,6 @@ public:
 	void ShowEmployeeSheet(class AEmployee* employee);
 	void RefreshEmployeeSheet(class AEmployee* employee);
 	//void ShowStationUpgrade(class AWorkstation* station);
-
+	void CloseEmployeeSheet();
 	void ShowWidget(UUserWidget* Widgetc, TSubclassOf<UUserWidget> WidgetClass);
 };

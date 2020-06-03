@@ -231,6 +231,18 @@ void AEmployee::Promote()
 void AEmployee::Fire()
 {
 	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Red, "The employee is Fired!");
+	if (this->EmployeeRole == ERole::Programmer)
+	{
+		GM->NumOfProgrammers--;
+	}
+	if (this->EmployeeRole == ERole::Artist)
+	{
+		GM->NumOfArtists--;
+	}
+	GM->EmployeeList.Remove(this);
+	GM->WorkstationList[this->WorkstationPositionRef]->HasEmployee = false;
+	UI->CloseEmployeeSheet();
+	this->Destroy();
 }
 
 void AEmployee::GoMeeting()
