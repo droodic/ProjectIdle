@@ -25,6 +25,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite) class AOfficeDepartment* OfficeDepartment;
 	UPROPERTY(BlueprintReadWrite) class AMeetingDepartment* MeetingDepartment;
+	UPROPERTY(BlueprintReadWrite) class AProgrammingDepartment* ProgrammingDepartment;
+	UPROPERTY(BlueprintReadWrite) class AArtistDepartment* ArtistDepartment;
+
 	UPROPERTY(BlueprintReadWrite) class AWorkstation* WorkStation;
 	UPROPERTY(BlueprintReadWrite) class ADoor* Door;
 
