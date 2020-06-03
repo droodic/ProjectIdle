@@ -21,7 +21,9 @@ enum class EPosition : uint8
 	Intern				   UMETA(DisplayName = "Intern"),
 	Junior				   UMETA(DisplayName = "Junior"),
 	Programmer			   UMETA(DisplayName = "Programmer"),
+	Artist			       UMETA(DisplayName = "Artist"),
 	SeniorProgrammer	   UMETA(DisplayName = "Senior"),
+	SeniorArtist 	       UMETA(DisplayName = "Senior"),
 	Supervisor             UMETA(DisplayName = "Supervisor")
 };
 
@@ -42,6 +44,12 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere) float Morale = 1;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere) float Performance;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere) float Salary = 200;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere) float CostEmployeePromote = 5000;
+	UPROPERTY() float PromoteToRegular = 20000;
+	UPROPERTY() float PromoteToSenior = 50000;
+
+
+
 	//UPROPERTY(EditAnywhere) FString EmployeeRole;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector MeetingLocation;
 

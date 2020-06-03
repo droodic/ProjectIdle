@@ -60,7 +60,7 @@ void AGameHUD::RefreshEmployeeSheet(AEmployee* employee)
 {
 	EmpSheetWidget->EmployeePosition = employee->Position;
 	EmpSheetWidget->Salary = employee->Salary;
-	EmpSheetWidget->Morale = employee->Morale;
+	EmpSheetWidget->Morale = (int)employee->Morale;
 }
 
 void AGameHUD::ShowWidget(UUserWidget* Widgetc, TSubclassOf<UUserWidget> WidgetClass)

@@ -205,25 +205,75 @@ void AEmployee::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AEmployee::Promote()
 {
 	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, "Promote button called");
-
-	switch (Position)
+	float AddMorale = FMath::FRandRange(1, 10);
+	
+	if (GM->Money >= CostEmployeePromote)
 	{
-	case EPosition::Intern:
-		Position = EPosition::Junior;
-		Salary += 200;
-		break;
-	case EPosition::Junior:
-		Position = EPosition::Programmer;
-		Salary += 200;
-		break;
-	case EPosition::Programmer:
-		Position = EPosition::SeniorProgrammer;
-		Salary += 200;
-		break;
-	case EPosition::SeniorProgrammer:
-		Salary += 100;
-		break;
+		if (this->EmployeeRole == ERole::Programmer)
+		{
+			//float AddMorale = FMath::FRandRange(1, 10);
+			GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, FString::Printf(TEXT("Number: x: %f"), AddMorale));
+			switch (Position)
+			{
+			case EPosition::Intern:
+				Position = EPosition::Junior;
+				Salary += 200;
+				Morale += AddMorale;
+				GM->Money -= CostEmployeePromote;
+				break;
+			case EPosition::Junior:
+				Position = EPosition::Programmer;
+				Salary += 200;
+				Morale += AddMorale;
+				CostEmployeePromote = PromoteToRegular;
+				GM->Money -= CostEmployeePromote;
+				break;
+			case EPosition::Programmer:
+				Position = EPosition::SeniorProgrammer;
+				Salary += 200;
+				Morale += AddMorale;
+				CostEmployeePromote = PromoteToSenior;
+				GM->Money -= CostEmployeePromote;
+				break;
+			case EPosition::SeniorProgrammer:
+				Salary += 100;
+				Morale += AddMorale;
+				break;
+			}
+		}
+
+		if (this->EmployeeRole == ERole::Artist)
+		{
+			switch (Position)
+			{
+			case EPosition::Intern:
+				Position = EPosition::Junior;
+				Salary += 200;
+				Morale += AddMorale;
+				GM->Money -= CostEmployeePromote;
+				break;
+			case EPosition::Junior:
+				Position = EPosition::Artist;
+				Salary += 200;
+				Morale += AddMorale;
+				CostEmployeePromote = PromoteToRegular;
+				GM->Money -= CostEmployeePromote;
+				break;
+			case EPosition::Artist:
+				Position = EPosition::SeniorArtist;
+				Salary += 200;
+				Morale += AddMorale;
+				CostEmployeePromote = PromoteToSenior;
+				GM->Money -= CostEmployeePromote;
+				break;
+			case EPosition::SeniorArtist:
+				Salary += 100;
+				Morale += AddMorale;
+				break;
+			}
+		}
 	}
+
 
 	UI->RefreshEmployeeSheet(this);
 }
