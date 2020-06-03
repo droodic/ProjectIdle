@@ -31,14 +31,21 @@ void UCeoDepMenuWidget::NativeConstruct()
 
 void UCeoDepMenuWidget::CallProgrammerSpawn()
 {
-	ActiveWorkstation(0);
-	OfficeDepartment->GenerateActor(OfficeDepartment->SpawnActors, 0);
+	if (GM->Money >= 10000) {
+		GM->Money -= 10000;
+		ActiveWorkstation(0);
+		OfficeDepartment->GenerateActor(OfficeDepartment->SpawnActors, 0);
+	}
+
 }
 
 void UCeoDepMenuWidget::CallArtistSpawn()
 {
-	ActiveWorkstation(1);
-	OfficeDepartment->GenerateActor(OfficeDepartment->SpawnActors, 1);
+	if (GM->Money >= 10000) {
+		GM->Money -= 10000;
+		ActiveWorkstation(1);
+		OfficeDepartment->GenerateActor(OfficeDepartment->SpawnActors, 1);
+	}
 }
 
 //Delegate
