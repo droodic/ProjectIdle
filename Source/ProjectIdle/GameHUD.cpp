@@ -99,16 +99,7 @@ void AGameHUD::DrawHUD()
 //}
 
 
-
-//void AGameHUD::ShowStationUpgrade(class AWorkstation* station)
-//{
-//	if (!WorkstationWidget->IsInViewport())
-//	{
-//		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Showing upgrade"));
-//		WorkstationWidget->AddToViewport();
-//	}
-//	else if (WorkstationWidget->IsInViewport())
-//	{
-//		WorkstationWidget->RemoveFromViewport();
-//	}
-//}
+void AGameHUD::CloseEmployeeSheet()
+{
+	EmpSheetWidget->RemoveFromViewport();
+}
