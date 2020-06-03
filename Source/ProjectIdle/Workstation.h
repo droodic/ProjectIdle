@@ -3,8 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-//#include "Employees/Employee.h"
+//#include "Employees/Employee.h
+#include "GameFramework/Character.h"
 #include "GameFramework/Actor.h"
+#include "Components/WidgetComponent.h"
 #include "Workstation.generated.h"
 
 enum class EType : int16
@@ -43,8 +45,12 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Disable") bool DisableObject;
 
 	class UGameManager* GM;
-
+	APlayerCameraManager* Camera;
     EType type;
+
+	UPROPERTY(EditAnywhere, Category = "Widgets") TSubclassOf<UUserWidget> UserWidget;
+
+	UPROPERTY() class UWorkstationUpgradeWidget* UpgradeWidget;
 
 
 protected:
@@ -54,6 +60,8 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	void NotifyActorOnClicked(FKey ButtonPressed = EKeys::RightMouseButton) override;
+
 	UFUNCTION() void UpdateWorkstationPosition();
 	UFUNCTION() void DisableStation(bool Disable);
 	UFUNCTION() int WorkstationActiveLenght();

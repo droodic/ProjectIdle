@@ -25,6 +25,11 @@ void AGameHUD::BeginPlay()
 	{
 		EmpSheetWidget = CreateWidget<UEmployeeSheetWidget>(UGameplayStatics::GetPlayerController(this, 0), EmployeeSheetClass);
 	}
+
+	//if (WorkstationClass)
+	//{
+	//	WorkstationWidget = CreateWidget<UWorkstationUpgradeWidget>(UGameplayStatics::GetPlayerController(this, 0), WorkstationClass);
+	//}
 }
 
 void AGameHUD::ShowEmployeeSheet(class AEmployee* employee)
@@ -90,5 +95,20 @@ void AGameHUD::DrawHUD()
 //	if (MoneyWidget)
 //	{
 //		MoneyWidget->UpdateMoney(Value);
+//	}
+//}
+
+
+
+//void AGameHUD::ShowStationUpgrade(class AWorkstation* station)
+//{
+//	if (!WorkstationWidget->IsInViewport())
+//	{
+//		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Showing upgrade"));
+//		WorkstationWidget->AddToViewport();
+//	}
+//	else if (WorkstationWidget->IsInViewport())
+//	{
+//		WorkstationWidget->RemoveFromViewport();
 //	}
 //}

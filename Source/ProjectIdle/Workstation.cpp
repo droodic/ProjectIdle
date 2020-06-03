@@ -6,6 +6,7 @@
 #include "Employees/Artist.h"
 #include "Employees/Programmer.h"
 #include "Workstations/ArtistStation.h"
+#include "ProjectIdle/Widgets/WorkstationUpgradeWidget.h"
 #include "Workstations/ProgrammerStation.h"
 #include "Engine.h"
 
@@ -37,6 +38,11 @@ void AWorkstation::BeginPlay()
 	GM->WorkStation = this;
 	HasEmployee = false;
 	StationLocation = ChairMesh->GetComponentLocation();
+
+	if (UserWidget != nullptr)
+	{
+		UpgradeWidget = CreateWidget<UWorkstationUpgradeWidget>(UGameplayStatics::GetPlayerController(this, 0), UserWidget);
+	}
 	
 	//FVector zero = FVector(200, 0, 0);
 	//StationVector = this->GetActorLocation();
@@ -149,4 +155,17 @@ int AWorkstation::WorkstationActiveLenght()
 		}
 	}
 	return count;
+}
+
+void AWorkstation::NotifyActorOnClicked(FKey ButtonPressed)
+{
+	if (!UpgradeWidget->IsInViewport())
+	{
+		UpgradeWidget->AddToViewport();
+	}
+	else
+	{
+		UpgradeWidget->RemoveFromViewport();
+	}
+
 }
