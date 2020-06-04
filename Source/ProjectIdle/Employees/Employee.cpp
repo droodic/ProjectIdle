@@ -124,7 +124,7 @@ void AEmployee::Tick(float DeltaTime)
 	//add a if enabled condition or smth
 
 	if (HasWorkload && CurrentWorkload > 0 && !AI->IsMoving) {
-		WorkloadProgress(DeltaTime * (Performance / 2) + (Morale / 5));
+		WorkloadProgress(DeltaTime * ((Performance / 2) + (Morale / 5)));
 	}
 
 }
@@ -227,7 +227,7 @@ void AEmployee::Promote()
 				}
 
 				
-				GM->Money -= CostEmployeePromote;
+				GM->Money -= 5000;
 				break;
 			case EPosition::Junior:
 				Position = EPosition::Programmer;
@@ -247,15 +247,12 @@ void AEmployee::Promote()
 				Position = EPosition::SeniorProgrammer;
 				Salary += 200;
 				if (Morale < 10) {
-
 					Morale += AddMorale;
 					if (Morale >= 10) {
 						Morale = 10;
 					}
 				}
-
-				CostEmployeePromote = PromoteToSenior;
-				GM->Money -= CostEmployeePromote;
+				GM->Money -= PromoteToSenior;
 				break;
 			case EPosition::SeniorProgrammer:
 				Salary += 100;
@@ -266,8 +263,7 @@ void AEmployee::Promote()
 						Morale = 10;
 					}
 				}
-				CostEmployeePromote = PromoteToSenior;
-				GM->Money -= CostEmployeePromote;
+				GM->Money -= PromoteToSenior;
 				break;
 			}
 		}
@@ -285,8 +281,7 @@ void AEmployee::Promote()
 						Morale = 10;
 					}
 				}
-
-				GM->Money -= CostEmployeePromote;
+				GM->Money -= 5000;
 				break;
 			case EPosition::Junior:
 				Position = EPosition::Artist;
@@ -297,8 +292,7 @@ void AEmployee::Promote()
 						Morale = 10;
 					}
 				}
-				CostEmployeePromote = PromoteToRegular;
-				GM->Money -= CostEmployeePromote;
+				GM->Money -= PromoteToRegular;
 				break;
 			case EPosition::Artist:
 				Position = EPosition::SeniorArtist;
@@ -309,8 +303,7 @@ void AEmployee::Promote()
 						Morale = 10;
 					}
 				}
-				CostEmployeePromote = PromoteToSenior;
-				GM->Money -= CostEmployeePromote;
+				GM->Money -= PromoteToSenior;
 				break;
 			case EPosition::SeniorArtist:
 				Salary += 100;
@@ -320,8 +313,7 @@ void AEmployee::Promote()
 						Morale = 10;
 					}
 				}
-				CostEmployeePromote = PromoteToSenior;
-				GM->Money -= CostEmployeePromote;
+				GM->Money -= PromoteToSenior;
 				break;
 			}
 		}
