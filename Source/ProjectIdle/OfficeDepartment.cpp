@@ -126,17 +126,15 @@ void AOfficeDepartment::Tick(float DeltaTime)
 			ideasGenerated++;
 
 			auto randomNumber = UKismetMathLibrary::RandomIntegerInRange(0, 100);
+			
 			//auto newIdea = new Idea(GenerateIdeaValues());
 			auto newIdea = new Idea("GAME " + FString::FromInt(randomNumber), "Game description of game " + FString::FromInt(randomNumber), Idea::GetRandomGenre(), FLinearColor::MakeRandomColor(), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(75.f, 150.f), UKismetMathLibrary::RandomFloatInRange(75.f, 150.f));
-
-			//if (Index > 2) { Index = 0; }
 
 			IdeaList.Insert(newIdea, Index);
 			//TEST*** make method / optimize
 			OfficeDepMenuWidget->GetIdea(newIdea);
-			//BacklogWidget->GetIdea(newIdea);
 			BacklogWidget->DisplayNewIdea(newIdea);
-			//OfficeDepMenuWidget->IdeaScrollBox->AddChild()
+			
 			Index++;
 		}
 	}

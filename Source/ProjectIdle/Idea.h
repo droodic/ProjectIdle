@@ -39,7 +39,7 @@ public:
 public:
 	Idea(float chance, float pWorkload, float aWorkload);
 
-	Idea(FString name, FString description,/*FString MainWeight,*/ EGenre genre, FLinearColor CoverColor, float chance, float programmerWorkload, float artistWorkload);
+	Idea(FString name, FString description, EGenre genre, FLinearColor CoverColor, float chance, float programmerWorkload, float artistWorkload);
 
 public:
 	static EGenre GetRandomGenre();
