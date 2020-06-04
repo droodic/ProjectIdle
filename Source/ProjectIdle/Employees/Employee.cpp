@@ -205,7 +205,7 @@ void AEmployee::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AEmployee::Promote()
 {
 	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, "Promote button called");
-	float AddMorale = FMath::FRandRange(1, 10);
+	float AddMorale = FMath::FRandRange(0.25f, 1.f);
 	
 	if (GM->Money >= CostEmployeePromote)
 	{
@@ -218,26 +218,56 @@ void AEmployee::Promote()
 			case EPosition::Intern:
 				Position = EPosition::Junior;
 				Salary += 200;
-				Morale += AddMorale;
+				if (Morale < 10) {
+
+					Morale += AddMorale;
+					if (Morale >= 10) {
+						Morale = 10;
+					}
+				}
+
+				
 				GM->Money -= CostEmployeePromote;
 				break;
 			case EPosition::Junior:
 				Position = EPosition::Programmer;
 				Salary += 200;
-				Morale += AddMorale;
+				if (Morale < 10) {
+
+					Morale += AddMorale;
+					if (Morale >= 10) {
+						Morale = 10;
+					}
+				}
+
 				CostEmployeePromote = PromoteToRegular;
 				GM->Money -= CostEmployeePromote;
 				break;
 			case EPosition::Programmer:
 				Position = EPosition::SeniorProgrammer;
 				Salary += 200;
-				Morale += AddMorale;
+				if (Morale < 10) {
+
+					Morale += AddMorale;
+					if (Morale >= 10) {
+						Morale = 10;
+					}
+				}
+
 				CostEmployeePromote = PromoteToSenior;
 				GM->Money -= CostEmployeePromote;
 				break;
 			case EPosition::SeniorProgrammer:
 				Salary += 100;
-				Morale += AddMorale;
+				if (Morale < 10) {
+
+					Morale += AddMorale;
+					if (Morale >= 10) {
+						Morale = 10;
+					}
+				}
+				CostEmployeePromote = PromoteToSenior;
+				GM->Money -= CostEmployeePromote;
 				break;
 			}
 		}
@@ -249,26 +279,49 @@ void AEmployee::Promote()
 			case EPosition::Intern:
 				Position = EPosition::Junior;
 				Salary += 200;
-				Morale += AddMorale;
+				if (Morale < 10) {
+					Morale += AddMorale;
+					if (Morale >= 10) {
+						Morale = 10;
+					}
+				}
+
 				GM->Money -= CostEmployeePromote;
 				break;
 			case EPosition::Junior:
 				Position = EPosition::Artist;
 				Salary += 200;
-				Morale += AddMorale;
+				if (Morale < 10) {
+					Morale += AddMorale;
+					if (Morale >= 10) {
+						Morale = 10;
+					}
+				}
 				CostEmployeePromote = PromoteToRegular;
 				GM->Money -= CostEmployeePromote;
 				break;
 			case EPosition::Artist:
 				Position = EPosition::SeniorArtist;
 				Salary += 200;
-				Morale += AddMorale;
+				if (Morale < 10) {
+					Morale += AddMorale;
+					if (Morale >= 10) {
+						Morale = 10;
+					}
+				}
 				CostEmployeePromote = PromoteToSenior;
 				GM->Money -= CostEmployeePromote;
 				break;
 			case EPosition::SeniorArtist:
 				Salary += 100;
-				Morale += AddMorale;
+				if (Morale < 10) {
+					Morale += AddMorale;
+					if (Morale >= 10) {
+						Morale = 10;
+					}
+				}
+				CostEmployeePromote = PromoteToSenior;
+				GM->Money -= CostEmployeePromote;
 				break;
 			}
 		}

@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "ProjectIdle/GameManager.h"
 #include "ProgrammingDepartment.h"
+#include "ProjectIdle/GameManager.h"
 
 AProgrammingDepartment::AProgrammingDepartment() {
 	DepartmentCapacity = 3;
