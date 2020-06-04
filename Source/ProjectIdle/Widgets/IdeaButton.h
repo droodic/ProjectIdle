@@ -17,6 +17,8 @@ class PROJECTIDLE_API UIdeaButton : public UUserWidget
 public:
 	UIdeaButton(const FObjectInitializer& ObjectInitializer);
 
+	class UIdeaBacklogWidget* BacklogWidget;
+
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* IdeaButton;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UGridPanel* GridPanel;
@@ -28,10 +30,12 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* Genre_T;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* SuccessChance_T;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* Weight_T;
-
-
+	
 public:
 	virtual void NativeConstruct() override;
+
+private:
+	UFUNCTION() void CallIdeaButton();
 //	static UIdeaButton* IdeaButtonConstructor(FLinearColor coverColor /*Change UImage in the future*/,FString gameTitle, FString gameDescription, FText genre, float successChance, FString mainWeight);
 //	static UIdeaButton* IdeaButtonConstructor(class Idea* idea);
 

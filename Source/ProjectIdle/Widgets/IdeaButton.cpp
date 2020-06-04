@@ -2,9 +2,9 @@
 
 
 #include "IdeaButton.h"
-#include "ProjectIdle/Idea.h"
-#include "Components/Image.h"
-#include "Components/TextBlock.h"
+#include "Engine.h"
+#include "IdeaBacklogWidget.h"
+#include "Components/Button.h"
 
 UIdeaButton::UIdeaButton(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -14,6 +14,20 @@ UIdeaButton::UIdeaButton(const FObjectInitializer& ObjectInitializer) : Super(Ob
 void UIdeaButton::NativeConstruct() 
 {
     Super::NativeConstruct(); 
+
+    if (IdeaButton->OnClicked.IsBound())
+    {
+        IdeaButton->OnClicked.AddDynamic(this, &UIdeaButton::CallIdeaButton);
+    }
+    GEngine->AddOnScreenDebugMessage(5, 3.f, FColor::Green, "Construct called");
+}
+
+void UIdeaButton::CallIdeaButton()
+{
+    GEngine->AddOnScreenDebugMessage(6, 5.f, FColor::Green, "Call Idea button");
+
+    BacklogWidget->ChosenIndex = 0;
+    BacklogWidget->CallMeetingBtn->SetIsEnabled(true);
 }
 
 /*

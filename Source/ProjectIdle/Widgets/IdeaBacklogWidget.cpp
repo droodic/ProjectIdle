@@ -149,6 +149,8 @@ void UIdeaBacklogWidget::AddValuesToButton(Idea* idea)
 	{
 		idea->IdeaButton->Weight_T->SetText(FText::FromString("All"));
 	}
+
+	idea->IdeaButton->BacklogWidget = this;
 }
 
 void UIdeaBacklogWidget::CallMeeting()
