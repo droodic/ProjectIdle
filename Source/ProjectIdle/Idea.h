@@ -34,6 +34,7 @@ public:
 	float ProgrammerWorkload;
 	float ArtistWorkload;
 
+	class UIdeaButton* IdeaButton;
 
 public:
 	Idea(float chance, float pWorkload, float aWorkload);

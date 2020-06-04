@@ -36,7 +36,6 @@ void UCeoDepMenuWidget::CallProgrammerSpawn()
 		ActiveWorkstation(0);
 		OfficeDepartment->GenerateActor(OfficeDepartment->SpawnActors, 0);
 	}
-
 }
 
 void UCeoDepMenuWidget::CallArtistSpawn()
@@ -86,22 +85,18 @@ void UCeoDepMenuWidget::ActiveWorkstation(int Number)
 					return;
 				}
 			}
-
 		}
 	}
 }
 
 void UCeoDepMenuWidget::GetIdea(Idea* idea)
 {
-	GEngine->AddOnScreenDebugMessage(3, 5.f, FColor::Green, "Get Idea Called from CEO Widget");
 	auto NewButton = Cast<UIdeaButton>(CreateWidget(this, IdeaButtonWidgetClass));
 
 	AddValuesToButton(NewButton, idea);
 	IdeaButtonList.Add(NewButton);
 	IdeaScrollBox->AddChild(NewButton);
-
 	
-
 	//if (NewButton != nullptr)
 	//{
 	//	AddValuesToButton(NewButton, idea);
@@ -111,7 +106,6 @@ void UCeoDepMenuWidget::GetIdea(Idea* idea)
 	//{
 	//	GEngine->AddOnScreenDebugMessage(4, 5.f, FColor::Red, "IdeaButton == nullptr");
 	//}
-
 	
 }
 
