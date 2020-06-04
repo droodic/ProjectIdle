@@ -19,6 +19,8 @@ public:
 
 	class UIdeaBacklogWidget* BacklogWidget;
 
+	int storedIndex;
+
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* IdeaButton;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UGridPanel* GridPanel;

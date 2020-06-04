@@ -26,7 +26,7 @@ void UIdeaButton::CallIdeaButton()
 {
     GEngine->AddOnScreenDebugMessage(6, 5.f, FColor::Green, "Call Idea button");
 
-    BacklogWidget->ChosenIndex = 0;
+    BacklogWidget->ChosenIndex = storedIndex;
     BacklogWidget->CallMeetingBtn->SetIsEnabled(true);
 }
 

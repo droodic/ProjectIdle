@@ -151,6 +151,8 @@ void UIdeaBacklogWidget::AddValuesToButton(Idea* idea)
 	}
 
 	idea->IdeaButton->BacklogWidget = this;
+
+	idea->IdeaButton->storedIndex = OfficeDepartment->Index;
 }
 
 void UIdeaBacklogWidget::CallMeeting()
