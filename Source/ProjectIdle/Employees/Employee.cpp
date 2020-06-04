@@ -189,7 +189,7 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		}
 		if (isOver == true) {
 
-			GM->Money += 10000; //Use algo later, and do real way of assgning money
+			GM->Money += UKismetMathLibrary::RandomIntegerInRange(15000, 25000); //Use algo later, and do real way of assgning money
 		}
 	}
 
