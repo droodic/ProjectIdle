@@ -9,7 +9,7 @@
 
 
 UGameManager::UGameManager() {
-	Money = 500000; //temp
+	Money = 20000; //temp
 }
 
 void UGameManager::Init()
