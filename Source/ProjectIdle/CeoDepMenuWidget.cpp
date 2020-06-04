@@ -58,8 +58,9 @@ void UCeoDepMenuWidget::ActiveWorkstation(int Number)
 {
 	int32 length = GM->WorkstationList.Num();
 	int32 employeeSize = GM->EmployeeList.Num();
+	int32 ActiveStation = GM->WorkStation->WorkstationActiveLenght();
 	
-	if (length == employeeSize)
+	if (ActiveStation <= employeeSize)
 	{
 		for (int i = 0; i < length; i++)
 		{

@@ -16,7 +16,7 @@
 
 AProjectIdleCharacter::AProjectIdleCharacter()
 {
-	TotalMoney = 1000;
+	//TotalMoney = 1000;
 
 	//MoneyText->SetText(FText::FromString("Money: " + FString::FromInt(Money)));
 
