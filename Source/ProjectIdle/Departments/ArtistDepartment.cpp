@@ -2,7 +2,7 @@
 
 
 #include "ArtistDepartment.h"
-#include "ProjectIdle\GameManager.h"
+#include "ProjectIdle/GameManager.h"
 
 AArtistDepartment::AArtistDepartment() {
 	DepartmentCapacity = 3;

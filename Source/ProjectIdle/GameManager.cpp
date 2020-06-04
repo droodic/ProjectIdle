@@ -2,8 +2,8 @@
 
 
 #include "MeetingDepartment.h"
-#include "Departments\ProgrammingDepartment.h"
-#include "Departments\ArtistDepartment.h"
+#include "Departments/ProgrammingDepartment.h"
+#include "Departments/ArtistDepartment.h"
 #include "GameManager.h"
 
 

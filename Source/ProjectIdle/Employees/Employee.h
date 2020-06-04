@@ -3,9 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework\Character.h"
-#include "ProjectIdle\EmployeeAIC.h"
-#include "Components\WidgetComponent.h"
+#include "GameFramework/Character.h"
+#include "ProjectIdle/EmployeeAIC.h"
+#include "Components/WidgetComponent.h"
 #include "Employee.generated.h"
 
 UENUM(Meta = (ScriptName = "Role"))

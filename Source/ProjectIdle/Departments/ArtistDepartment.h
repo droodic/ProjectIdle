@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ProjectIdle\Department.h"
+#include "ProjectIdle/Department.h"
 #include "ArtistDepartment.generated.h"
 
 /**

@@ -6,9 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Chair.h"
 #include "Workstation.h"
-
 #include "Department.h"
-
 #include "Employees/Employee.h"
 #include "MeetingDepartment.generated.h"
 

@@ -5,8 +5,8 @@
 #include "Idea.h"
 #include "Widgets/IdeaBacklogWidget.h" 
 #include "CeoDepMenuWidget.h"
-#include "Employees\Programmer.h"
-#include "Employees\Artist.h"
+#include "Employees/Programmer.h"
+#include "Employees/Artist.h"
 #include "Components/DecalComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameManager.h"
@@ -72,6 +72,8 @@ void AOfficeDepartment::GetDepartmentUIValues()
 {
 	TProgSalary = 0.f;
 	TArtistSalary = 0.f;
+	AvgProgMorale = 0.f;
+	AvgArtistMorale = 0.f;
 
 	for (auto Employee : GM->EmployeeList) {
 		if (Cast<AProgrammer>(Employee) != nullptr) {

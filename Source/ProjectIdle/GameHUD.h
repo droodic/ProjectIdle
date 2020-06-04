@@ -7,7 +7,6 @@
 #include "Components/WidgetComponent.h"
 #include "Widgets/MoneyWidget.h"
 #include "ProjectIdle/Widgets/EmployeeSheetWidget.h"
-//#include "ProjectIdle/Widgets/WorkstationUpgradeWidget.h"
 #include "GameHUD.generated.h"
 
 /**

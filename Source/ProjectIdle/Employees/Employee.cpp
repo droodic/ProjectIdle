@@ -2,14 +2,14 @@
 
 
 #include "Employee.h"
-#include "AIModule\Classes\DetourCrowdAIController.h"
+#include "AIModule/Classes/DetourCrowdAIController.h"
 #include "ProjectIdle/EmployeeAIC.h"
 #include "ProjectIdle/GameManager.h"
 #include "ProjectIdle/Workstation.h"
 #include "ProjectIdle/GameHUD.h"
 #include "EWorkProgressWidget.h"
-#include "Runtime\AIModule\Classes\Blueprint\AIBlueprintHelperLibrary.h"
-#include "Runtime\Engine\Classes\Kismet\KismetMathLibrary.h"
+#include "Runtime/AIModule/Classes/Blueprint/AIBlueprintHelperLibrary.h"
+#include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
 #include "Engine.h"
 
 // Sets default values
@@ -124,7 +124,7 @@ void AEmployee::Tick(float DeltaTime)
 	//add a if enabled condition or smth
 
 	if (HasWorkload && CurrentWorkload > 0 && !AI->IsMoving) {
-		WorkloadProgress(DeltaTime * (Performance / 2));
+		WorkloadProgress(DeltaTime * (Performance / 2) + (Morale / 5));
 	}
 
 }
