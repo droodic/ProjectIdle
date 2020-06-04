@@ -133,8 +133,8 @@ void AOfficeDepartment::Tick(float DeltaTime)
 
 			IdeaList.Insert(newIdea, Index);
 			//TEST*** make method / optimize
-			OfficeDepMenuWidget->GetIdea(newIdea);
-			//BacklogWidget->GetIdea(newIdea);
+			//OfficeDepMenuWidget->GetIdea(newIdea);
+			BacklogWidget->GetIdea(newIdea);
 			BacklogWidget->DisplayNewIdea(newIdea);
 			//OfficeDepMenuWidget->IdeaScrollBox->AddChild()
 			Index++;

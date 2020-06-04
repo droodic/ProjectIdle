@@ -23,11 +23,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* CallMeetingBtn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Back_Btn;
 
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UScrollBox* IdeaScrollBox;
+	//UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UScrollBox* IdeaScrollBox;
 
 	UPROPERTY(EditAnywhere) TSubclassOf<UUserWidget> IdeaButtonWidgetClass;
 
-	/*
+	
 		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* IdeaButton1;
 		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* IdeaButton2;
 		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* IdeaButton3;
@@ -68,17 +68,17 @@ public:
 		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_Weight_3;
 
 	#pragma endregion
-	*/
+	
 
 private:
 	TArray<class Idea*> IdeaList;
-	TArray<class UIdeaButton*> IdeaButtonList;
+	//TArray<class UIdeaButton*> IdeaButtonList;
 
 	int Index = 0;
 public:
 	virtual void NativeConstruct() override;
 	void DisplayNewIdea(class Idea* idea);
-	//void GetIdea(class Idea* idea);
+	void GetIdea(class Idea* idea);
 
 private:
 	UFUNCTION() void Back();

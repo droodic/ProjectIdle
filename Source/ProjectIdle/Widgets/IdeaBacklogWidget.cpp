@@ -17,16 +17,16 @@ void UIdeaBacklogWidget::DisplayNewIdea(Idea* idea) {
 	GEngine->AddOnScreenDebugMessage(5, 5.f, FColor::Red, "Displaying new idea");
 	//newIdea = idea;
 
-	idea->IdeaButton = Cast<UIdeaButton>(CreateWidget(this, IdeaButtonWidgetClass));
-	AddValuesToButton(idea);
+	//idea->IdeaButton = Cast<UIdeaButton>(CreateWidget(this, IdeaButtonWidgetClass));
+	//AddValuesToButton(idea);
 
-	IdeaButtonList.Add(idea->IdeaButton);
-	IdeaScrollBox->AddChild(idea->IdeaButton);
+	//IdeaButtonList.Add(idea->IdeaButton);
+	//IdeaScrollBox->AddChild(idea->IdeaButton);
 	
-	/*if (!idea->IdeaButton->IdeaButton->OnClicked.IsBound())
-	{
-		idea->IdeaButton->IdeaButton->OnClicked.AddDynamic(this, &UIdeaBacklogWidget::SetIdeaCallMeeting);
-	}*/
+	//if (!idea->IdeaButton->IdeaButton->OnClicked.IsBound())
+	//{
+	//	idea->IdeaButton->IdeaButton->OnClicked.AddDynamic(this, &UIdeaBacklogWidget::SetIdeaCallMeeting);
+	//}
 
 	/*auto NewButton = Cast<UIdeaButton>(CreateWidget(this, IdeaButtonWidgetClass));
 	AddValuesToButton(idea);
@@ -35,21 +35,21 @@ void UIdeaBacklogWidget::DisplayNewIdea(Idea* idea) {
 	IdeaScrollBox->AddChild(NewButton);
 	*/
 
-	//if (/*!IdeaButton1->IsVisible()*/OfficeDepartment->Index == 0)
-	//{
-	//	IdeaButton1->SetVisibility(ESlateVisibility::Visible);
-	//	IdeaButton1->SetRenderOpacity(1);
-	//}
-	//else if (/*!IdeaButton2->IsVisible()*/OfficeDepartment->Index == 1)
-	//{
-	//	IdeaButton2->SetVisibility(ESlateVisibility::Visible);
-	//	IdeaButton2->SetRenderOpacity(1);
-	//}
-	//else if (/*!IdeaButton3->IsVisible()*/OfficeDepartment->Index == 2)
-	//{
-	//	IdeaButton3->SetVisibility(ESlateVisibility::Visible);
-	//	IdeaButton3->SetRenderOpacity(1);
-	//}
+	if (!IdeaButton1->IsVisible() && OfficeDepartment->Index == 0)
+	{
+		IdeaButton1->SetVisibility(ESlateVisibility::Visible);
+		IdeaButton1->SetRenderOpacity(1);
+	}
+	else if (!IdeaButton2->IsVisible() && OfficeDepartment->Index == 1)
+	{
+		IdeaButton2->SetVisibility(ESlateVisibility::Visible);
+		IdeaButton2->SetRenderOpacity(1);
+	}
+	else if (!IdeaButton3->IsVisible() && OfficeDepartment->Index == 2)
+	{
+		IdeaButton3->SetVisibility(ESlateVisibility::Visible);
+		IdeaButton3->SetRenderOpacity(1);
+	}
 }
 
 void UIdeaBacklogWidget::Back()
@@ -72,9 +72,9 @@ void UIdeaBacklogWidget::NativeConstruct() {
 	}
 }
 
-/*void UIdeaBacklogWidget::GetIdea(Idea* idea)
+void UIdeaBacklogWidget::GetIdea(Idea* newIdea)
 {
-		/*GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, FString::FromInt(OfficeDepartment->Index));
+	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, FString::FromInt(OfficeDepartment->Index));
 
 	if (OfficeDepartment->Index == 0)
 	{
@@ -132,8 +132,8 @@ void UIdeaBacklogWidget::NativeConstruct() {
 		}
 	}
 }
-	*/
 
+/*
 void UIdeaBacklogWidget::AddValuesToButton(Idea* idea)
 {
 	idea->IdeaButton->GameCover_I->SetColorAndOpacity(idea->CoverColor);
@@ -149,7 +149,7 @@ void UIdeaBacklogWidget::AddValuesToButton(Idea* idea)
 	{
 		idea->IdeaButton->Weight_T->SetText(FText::FromString("All"));
 	}
-}
+}*/
 
 void UIdeaBacklogWidget::CallMeeting()
 {
@@ -159,14 +159,14 @@ void UIdeaBacklogWidget::CallMeeting()
 		GEngine->AddOnScreenDebugMessage(101, 5.f, FColor::Red, "populate GM");
 	}
 
-	for (size_t i = 0; i < OfficeDepartment->Index; i++)
-	{
-		IdeaButtonList[i]->IdeaButton->SetVisibility(ESlateVisibility::HitTestInvisible);
-		IdeaButtonList[i]->SetRenderOpacity(0.3);
-	}
+	//for (size_t i = 0; i < OfficeDepartment->Index; i++)
+	//{
+	//	IdeaButtonList[i]->IdeaButton->SetVisibility(ESlateVisibility::HitTestInvisible);
+	//	IdeaButtonList[i]->SetRenderOpacity(0.3);
+	//}
 
 	//Quick way to disable chosen idea button after calling meeting with it, need cleaner approach
-	/*if (OfficeDepartment->Index - 1 == 0) {
+	if (OfficeDepartment->Index - 1 == 0) {
 		IdeaButton1->SetVisibility(ESlateVisibility::HitTestInvisible);
 		IdeaButton1->SetRenderOpacity(0.3);
 	}
@@ -177,7 +177,7 @@ void UIdeaBacklogWidget::CallMeeting()
 	else if (OfficeDepartment->Index - 1 == 2) {
 		IdeaButton3->SetVisibility(ESlateVisibility::HitTestInvisible);
 		IdeaButton3->SetRenderOpacity(0.3);
-	}*/
+	}
 
 	GM->MeetingDepartment->MoveToMeeting();
 	SendIdea();
