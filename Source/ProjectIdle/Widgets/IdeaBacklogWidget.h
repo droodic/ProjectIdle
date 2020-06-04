@@ -7,7 +7,7 @@
 #include "IdeaBacklogWidget.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PROJECTIDLE_API UIdeaBacklogWidget : public UUserWidget
@@ -16,67 +16,75 @@ class PROJECTIDLE_API UIdeaBacklogWidget : public UUserWidget
 public:
 	class UGameManager* GM;
 	class AOfficeDepartment* OfficeDepartment;
-	class Idea* newIdea;
+	//class Idea* newIdea;
 
 	UPROPERTY(BlueprintReadWrite) int ChosenIndex;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* CallMeetingBtn;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* IdeaButton1;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* IdeaButton2;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* IdeaButton3;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Back_Btn;
-	//UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Test;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UScrollBox* IdeaScrollBox;
 
 	UPROPERTY(EditAnywhere) TSubclassOf<UUserWidget> IdeaButtonWidgetClass;
-	
-#pragma region IdeaButton1
-	
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UImage* I_GameCover;
 
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_GameTitle;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_GameDescription;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_Genre;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_SuccessChance;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_Weight;
+	/*
+		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* IdeaButton1;
+		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* IdeaButton2;
+		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* IdeaButton3;
+		//UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Test;
 
-#pragma endregion
+	#pragma region IdeaButton1
 
-#pragma region IdeaButton2
+		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UImage* I_GameCover;
 
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UImage* I_GameCover_2;
+		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_GameTitle;
+		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_GameDescription;
+		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_Genre;
+		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_SuccessChance;
+		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_Weight;
 
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_GameTitle_2;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_GameDescription_2;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_Genre_2;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_SuccessChance_2;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_Weight_2;
+	#pragma endregion
 
-#pragma endregion
+	#pragma region IdeaButton2
 
-#pragma region IdeaButton3
+		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UImage* I_GameCover_2;
 
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UImage* I_GameCover_3;
+		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_GameTitle_2;
+		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_GameDescription_2;
+		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_Genre_2;
+		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_SuccessChance_2;
+		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_Weight_2;
 
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_GameTitle_3;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_GameDescription_3;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_Genre_3;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_SuccessChance_3;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_Weight_3;
+	#pragma endregion
 
-#pragma endregion
+	#pragma region IdeaButton3
+
+		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UImage* I_GameCover_3;
+
+		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_GameTitle_3;
+		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_GameDescription_3;
+		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_Genre_3;
+		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_SuccessChance_3;
+		UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_Weight_3;
+
+	#pragma endregion
+	*/
 
 private:
 	TArray<class Idea*> IdeaList;
+	TArray<class UIdeaButton*> IdeaButtonList;
 
+	int Index = 0;
 public:
 	virtual void NativeConstruct() override;
-	void DisplayNewIdea();
-	void GetIdea(class Idea* idea);
+	void DisplayNewIdea(class Idea* idea);
+	//void GetIdea(class Idea* idea);
 
 private:
 	UFUNCTION() void Back();
 	UFUNCTION() void CallMeeting();
-	
+	//UFUNCTION() void SetIdeaCallMeeting();
+
 	void SendIdea();
-	void AddValueToButton(class UIdeaButton* button, class Idea* idea);
+	void AddValuesToButton(class Idea* idea);
 };
