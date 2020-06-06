@@ -36,6 +36,9 @@ public:
 public:
 	virtual void NativeConstruct() override;
 
+	void Selected();
+	void DeSelected();
+
 private:
-	UFUNCTION() void CallIdeaButton();
+	UFUNCTION() void ButtonClicked();
 };

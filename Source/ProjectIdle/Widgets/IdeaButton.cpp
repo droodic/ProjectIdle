@@ -17,15 +17,24 @@ void UIdeaButton::NativeConstruct()
 
     if (IdeaButton->OnClicked.IsBound())
     {
-        IdeaButton->OnClicked.AddDynamic(this, &UIdeaButton::CallIdeaButton);
+        IdeaButton->OnClicked.AddDynamic(this, &UIdeaButton::ButtonClicked);
     }
 }
 
-void UIdeaButton::CallIdeaButton()
+void UIdeaButton::ButtonClicked()
 {
     GEngine->AddOnScreenDebugMessage(6, 5.f, FColor::Green, "Call Idea button");
 
     BacklogWidget->ChosenIndex = storedIndex;
     BacklogWidget->CallMeetingBtn->SetIsEnabled(true);
-    IdeaButton->ColorAndOpacity = FLinearColor::MakeRandomColor();
+}
+
+void UIdeaButton::Selected()
+{
+
+}
+
+void UIdeaButton::DeSelected()
+{
+
 }

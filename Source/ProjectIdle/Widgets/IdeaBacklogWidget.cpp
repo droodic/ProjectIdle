@@ -158,15 +158,11 @@ void UIdeaBacklogWidget::CallMeeting()
 
 	for (size_t i = 0; i < OfficeDepartment->Index; i++)
 	{
-		GEngine->AddOnScreenDebugMessage(80, 5.f, FColor::Blue, "Chosen index: " + ChosenIndex);
-		GEngine->AddOnScreenDebugMessage(81, 5.f, FColor::Blue, "i: " + i);
 		if (i == ChosenIndex)
 		{
-			GEngine->AddOnScreenDebugMessage(i, 5.f, FColor::Blue, "TRUE");
 			IdeaList[i]->IdeaButton->IdeaButton->SetIsEnabled(false);
-			//IdeaButtonList[i]->IdeaButton->SetVisibility(ESlateVisibility::HitTestInvisible);
-			//IdeaButtonList[i]->SetRenderOpacity(0.3);
-			GEngine->AddOnScreenDebugMessage(++i, 5.f, FColor::Blue, "New Loop");
+			//IdeaList[i]->IdeaButton->IdeaButton->SetVisibility(ESlateVisibility::HitTestInvisible);
+			//IdeaList[i]->IdeaButton->SetRenderOpacity(0.3);
 		}
 	}
 			GEngine->AddOnScreenDebugMessage(82, 5.f, FColor::Blue, "End of For");
