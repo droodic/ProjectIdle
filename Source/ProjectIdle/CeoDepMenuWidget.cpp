@@ -96,17 +96,6 @@ void UCeoDepMenuWidget::GetIdea(Idea* idea)
 	AddValuesToButton(NewButton, idea);
 	IdeaButtonList.Add(NewButton);
 	IdeaScrollBox->AddChild(NewButton);
-	
-	//if (NewButton != nullptr)
-	//{
-	//	AddValuesToButton(NewButton, idea);
-	//	IdeaScrollBox->AddChild(NewButton);
-	//}
-	//else
-	//{
-	//	GEngine->AddOnScreenDebugMessage(4, 5.f, FColor::Red, "IdeaButton == nullptr");
-	//}
-	
 }
 
 void UCeoDepMenuWidget::AddValuesToButton(UIdeaButton* button, Idea* idea)

@@ -38,7 +38,4 @@ public:
 
 private:
 	UFUNCTION() void CallIdeaButton();
-//	static UIdeaButton* IdeaButtonConstructor(FLinearColor coverColor /*Change UImage in the future*/,FString gameTitle, FString gameDescription, FText genre, float successChance, FString mainWeight);
-//	static UIdeaButton* IdeaButtonConstructor(class Idea* idea);
-
 };

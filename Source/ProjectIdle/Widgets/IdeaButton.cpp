@@ -19,7 +19,6 @@ void UIdeaButton::NativeConstruct()
     {
         IdeaButton->OnClicked.AddDynamic(this, &UIdeaButton::CallIdeaButton);
     }
-    GEngine->AddOnScreenDebugMessage(5, 3.f, FColor::Green, "Construct called");
 }
 
 void UIdeaButton::CallIdeaButton()
@@ -28,36 +27,5 @@ void UIdeaButton::CallIdeaButton()
 
     BacklogWidget->ChosenIndex = storedIndex;
     BacklogWidget->CallMeetingBtn->SetIsEnabled(true);
+    IdeaButton->ColorAndOpacity = FLinearColor::MakeRandomColor();
 }
-
-/*
-UIdeaButton* UIdeaButton::IdeaButtonConstructor(FLinearColor coverColor, FString gameTitle, FString gameDescription, FText genre, float successChance, FString mainWeight)
-{
-    UIdeaButton* ideaButton;
-
-    ideaButton->GameCover_I->SetColorAndOpacity(coverColor);
-    
-    ideaButton->GameTitle_T->SetText(FText::FromString(gameTitle));
-    ideaButton->GameDescription_T->SetText(FText::FromString(gameDescription));
-    ideaButton->Genre_T->SetText(genre);
-    ideaButton->SuccessChance_T->SetText(FText::AsPercent(successChance / 100.f));
-    ideaButton->Weight_T->SetText(FText::FromString(mainWeight));
-
-    return ideaButton;
-}
-
-UIdeaButton* UIdeaButton::IdeaButtonConstructor(Idea* idea)
-{
-    UIdeaButton* ideaButton;
-
-    ideaButton->GameCover_I->SetColorAndOpacity(idea->CoverColor);
-    
-    ideaButton->GameTitle_T->SetText(FText::FromString(idea->IdeaName));
-    ideaButton->GameDescription_T->SetText(FText::FromString(idea->IdeaDescription));
-    ideaButton->Genre_T->SetText(Idea::GenreToText(idea->Genre));
-    ideaButton->SuccessChance_T->SetText(FText::AsPercent(idea->SuccessChance / 100.f));
-    ideaButton->Weight_T->SetText(FText::FromString(idea->MainWeight));
-
-    return ideaButton;
-}
-*/
