@@ -15,7 +15,7 @@ void UIdeaButton::NativeConstruct()
 {
     Super::NativeConstruct(); 
 
-    if (IdeaButton->OnClicked.IsBound())
+    if (!IdeaButton->OnClicked.IsBound())
     {
         IdeaButton->OnClicked.AddDynamic(this, &UIdeaButton::ButtonClicked);
     }

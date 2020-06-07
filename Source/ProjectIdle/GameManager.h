@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "WorldObject/Door.h"
 #include "GameManager.generated.h"
 
 /**
