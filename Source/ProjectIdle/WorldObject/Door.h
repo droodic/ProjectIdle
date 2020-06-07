@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/BoxComponent.h"
 #include "GameFramework/Actor.h"
 #include "Door.generated.h"
 
@@ -14,6 +15,9 @@ class PROJECTIDLE_API ADoor : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ADoor();
+
+	UPROPERTY(VisibleAnywhere)
+		UBoxComponent* CollisionBox;
 
 	class UGameManager* GM;
 
@@ -29,5 +33,5 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 };

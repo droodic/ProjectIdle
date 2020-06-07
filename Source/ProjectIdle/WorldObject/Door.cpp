@@ -1,8 +1,10 @@
+#include "Door.h"
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "Door.h"
 #include "ProjectIdle/GameManager.h"
+#include "ProjectIdle/Employees/Employee.h"
 #include "Components/MeshComponent.h"
 
 // Sets default values
@@ -19,6 +21,11 @@ ADoor::ADoor()
 
 	DoorFrameMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FrameMesh"));
 	DoorFrameMesh->AttachToComponent(Root, FAttachmentTransformRules::KeepRelativeTransform);
+
+	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("RangeBox"));
+	CollisionBox->AttachTo(DoorMesh);
+
+
 }
 
 // Called when the game starts or when spawned
@@ -27,6 +34,7 @@ void ADoor::BeginPlay()
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->Door = this;
+
 	//DoorLocation = this->GetActorLocation();
 }
 
@@ -35,5 +43,17 @@ void ADoor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+//Fire Employee
+void ADoor::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	auto Emp = Cast<AEmployee>(OtherActor);
+
+	if (Emp != nullptr && Emp->IsFired)
+	{
+		Emp->FiredFinal();
+		//UI->ShowWidget(OfficeDepMenuWidget, UserWidgets[1]); 
+	}
 }
 

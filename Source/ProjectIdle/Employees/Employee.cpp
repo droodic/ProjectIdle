@@ -329,6 +329,11 @@ void AEmployee::Promote()
 void AEmployee::Fire()
 {
 	IsFired = true;
+	MoveEmployee(GM->Door->GetActorLocation());
+}
+
+void AEmployee::FiredFinal()
+{
 	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Red, "The employee is Fired!");
 	if (this->EmployeeRole == ERole::Programmer)
 	{
