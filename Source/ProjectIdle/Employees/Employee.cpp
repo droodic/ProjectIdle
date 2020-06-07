@@ -226,8 +226,9 @@ void AEmployee::Promote()
 					}
 				}
 
-				
+				CostEmployeePromote = PromoteToRegular;
 				GM->Money -= 5000;
+
 				break;
 			case EPosition::Junior:
 				Position = EPosition::Programmer;
@@ -239,9 +240,8 @@ void AEmployee::Promote()
 						Morale = 10;
 					}
 				}
-
-				CostEmployeePromote = PromoteToRegular;
 				GM->Money -= CostEmployeePromote;
+				CostEmployeePromote = PromoteToSenior;
 				break;
 			case EPosition::Programmer:
 				Position = EPosition::SeniorProgrammer;
@@ -252,7 +252,7 @@ void AEmployee::Promote()
 						Morale = 10;
 					}
 				}
-				GM->Money -= PromoteToSenior;
+				GM->Money -= CostEmployeePromote;
 				break;
 			case EPosition::SeniorProgrammer:
 				Salary += 100;
@@ -281,6 +281,7 @@ void AEmployee::Promote()
 						Morale = 10;
 					}
 				}
+				CostEmployeePromote = PromoteToRegular;
 				GM->Money -= 5000;
 				break;
 			case EPosition::Junior:
@@ -292,7 +293,9 @@ void AEmployee::Promote()
 						Morale = 10;
 					}
 				}
-				GM->Money -= PromoteToRegular;
+				GM->Money -= CostEmployeePromote;
+				CostEmployeePromote = PromoteToSenior;
+
 				break;
 			case EPosition::Artist:
 				Position = EPosition::SeniorArtist;
@@ -303,7 +306,7 @@ void AEmployee::Promote()
 						Morale = 10;
 					}
 				}
-				GM->Money -= PromoteToSenior;
+				GM->Money -= CostEmployeePromote;
 				break;
 			case EPosition::SeniorArtist:
 				Salary += 100;
