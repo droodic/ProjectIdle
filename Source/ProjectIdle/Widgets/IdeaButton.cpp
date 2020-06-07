@@ -17,15 +17,29 @@ void UIdeaButton::NativeConstruct()
 
     if (IdeaButton->OnClicked.IsBound())
     {
-        IdeaButton->OnClicked.AddDynamic(this, &UIdeaButton::CallIdeaButton);
+        IdeaButton->OnClicked.AddDynamic(this, &UIdeaButton::ButtonClicked);
     }
 }
 
-void UIdeaButton::CallIdeaButton()
+void UIdeaButton::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
-    GEngine->AddOnScreenDebugMessage(6, 5.f, FColor::Green, "Call Idea button");
+    Super::NativeTick(MyGeometry, InDeltaTime);
+    
+    if (IdeaButton)
+    {
+        if (IdeaButton->HasUserFocus(UGameplayStatics::GetPlayerController(GetWorld(), 0)))
+        {
+            IdeaButton->SetBackgroundColor(SelectedColor);
+        }
+        else
+        {
+            IdeaButton->SetBackgroundColor(FLinearColor::White);
+        }
+    }
+}
 
+void UIdeaButton::ButtonClicked()
+{
     BacklogWidget->ChosenIndex = storedIndex;
     BacklogWidget->CallMeetingBtn->SetIsEnabled(true);
-    IdeaButton->ColorAndOpacity = FLinearColor::MakeRandomColor();
 }

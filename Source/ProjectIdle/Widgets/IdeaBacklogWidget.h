@@ -29,13 +29,11 @@ public:
 
 private:
 	TArray<class Idea*> IdeaList;
-	//TArray<class UIdeaButton*> IdeaButtonList;
 
 	int Index = 0;
 public:
 	virtual void NativeConstruct() override;
 	void DisplayNewIdea(class Idea* idea);
-	//void GetIdea(class Idea* idea);
 
 private:
 	UFUNCTION() void Back();

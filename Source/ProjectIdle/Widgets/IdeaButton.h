@@ -7,13 +7,13 @@
 #include "IdeaButton.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PROJECTIDLE_API UIdeaButton : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
 public:
 	UIdeaButton(const FObjectInitializer& ObjectInitializer);
 
@@ -32,10 +32,16 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* Genre_T;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* SuccessChance_T;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* Weight_T;
-	
+
+	UPROPERTY(EditAnywhere) struct FLinearColor SelectedColor;
+
 public:
 	virtual void NativeConstruct() override;
 
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
+
 private:
-	UFUNCTION() void CallIdeaButton();
+	//virtual void Tick(float DeltaTime) override;
+	
+	UFUNCTION() void ButtonClicked();
 };
