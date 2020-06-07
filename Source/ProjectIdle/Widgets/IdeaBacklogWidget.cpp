@@ -15,20 +15,12 @@
 void UIdeaBacklogWidget::DisplayNewIdea(Idea* idea) {
 
 	GEngine->AddOnScreenDebugMessage(5, 5.f, FColor::Red, "Displaying new idea");
-	//newIdea = idea;
 
 	idea->IdeaButton = Cast<UIdeaButton>(CreateWidget(this, IdeaButtonWidgetClass));
 	AddValuesToButton(idea);
 
 	IdeaList.Add(idea);
 	IdeaScrollBox->AddChild(idea->IdeaButton);
-
-	/*auto NewButton = Cast<UIdeaButton>(CreateWidget(this, IdeaButtonWidgetClass));
-	AddValuesToButton(idea);
-	idea->IdeaButton = NewButton;
-	IdeaButtonList.Add(NewButton);
-	IdeaScrollBox->AddChild(NewButton);
-	*/
 
 	//if (/*!IdeaButton1->IsVisible()*/OfficeDepartment->Index == 0)
 	//{
@@ -161,11 +153,8 @@ void UIdeaBacklogWidget::CallMeeting()
 		if (i == ChosenIndex)
 		{
 			IdeaList[i]->IdeaButton->IdeaButton->SetIsEnabled(false);
-			//IdeaList[i]->IdeaButton->IdeaButton->SetVisibility(ESlateVisibility::HitTestInvisible);
-			//IdeaList[i]->IdeaButton->SetRenderOpacity(0.3);
 		}
 	}
-			GEngine->AddOnScreenDebugMessage(82, 5.f, FColor::Blue, "End of For");
 
 	CallMeetingBtn->SetIsEnabled(false);
 
@@ -186,12 +175,6 @@ void UIdeaBacklogWidget::CallMeeting()
 	GM->MeetingDepartment->MoveToMeeting();
 	SendIdea();
 }
-
-/*UFUNCTION() void UIdeaBacklogWidget::SetIdeaCallMeeting()
-{
-	ChosenIndex = 0;
-	CallMeetingBtn->SetIsEnabled(true);
-}*/
 
 //Called by CallMeeting
 void UIdeaBacklogWidget::SendIdea() {

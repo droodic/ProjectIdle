@@ -21,20 +21,25 @@ void UIdeaButton::NativeConstruct()
     }
 }
 
+void UIdeaButton::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+    Super::NativeTick(MyGeometry, InDeltaTime);
+    
+    if (IdeaButton)
+    {
+        if (IdeaButton->HasUserFocus(UGameplayStatics::GetPlayerController(GetWorld(), 0)))
+        {
+            IdeaButton->SetBackgroundColor(SelectedColor);
+        }
+        else
+        {
+            IdeaButton->SetBackgroundColor(FLinearColor::White);
+        }
+    }
+}
+
 void UIdeaButton::ButtonClicked()
 {
-    GEngine->AddOnScreenDebugMessage(6, 5.f, FColor::Green, "Call Idea button");
-
     BacklogWidget->ChosenIndex = storedIndex;
     BacklogWidget->CallMeetingBtn->SetIsEnabled(true);
-}
-
-void UIdeaButton::Selected()
-{
-
-}
-
-void UIdeaButton::DeSelected()
-{
-
 }
