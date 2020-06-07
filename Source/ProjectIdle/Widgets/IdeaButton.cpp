@@ -19,6 +19,13 @@ void UIdeaButton::NativeConstruct()
     {
         IdeaButton->OnClicked.AddDynamic(this, &UIdeaButton::ButtonClicked);
     }
+
+}
+
+void UIdeaButton::ButtonClicked()
+{
+    BacklogWidget->ChosenIndex = storedIndex;
+    BacklogWidget->CallMeetingBtn->SetIsEnabled(true);
 }
 
 void UIdeaButton::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
@@ -38,8 +45,4 @@ void UIdeaButton::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
     }
 }
 
-void UIdeaButton::ButtonClicked()
-{
-    BacklogWidget->ChosenIndex = storedIndex;
-    BacklogWidget->CallMeetingBtn->SetIsEnabled(true);
-}
+
