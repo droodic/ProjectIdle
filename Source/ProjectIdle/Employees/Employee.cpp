@@ -225,7 +225,6 @@ void AEmployee::Promote()
 						Morale = 10;
 					}
 				}
-
 				
 				GM->Money -= 5000;
 				break;
@@ -325,6 +324,7 @@ void AEmployee::Promote()
 
 void AEmployee::Fire()
 {
+	IsFired = true;
 	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Red, "The employee is Fired!");
 	if (this->EmployeeRole == ERole::Programmer)
 	{

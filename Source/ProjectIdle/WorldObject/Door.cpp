@@ -26,7 +26,8 @@ void ADoor::BeginPlay()
 {
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
-	DoorLocation = this->GetActorLocation();
+	GM->Door = this;
+	//DoorLocation = this->GetActorLocation();
 }
 
 // Called every frame

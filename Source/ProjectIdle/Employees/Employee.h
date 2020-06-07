@@ -70,8 +70,9 @@ public:
 	UPROPERTY() FVector StartPosition;
 	APlayerCameraManager* Camera;
 	UPROPERTY() bool HasWorkStation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsFired = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool HasWorkload;
-	UPROPERTY(BlueprintReadWrite) bool IsMoving = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsMoving = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsWorking;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool DefaultEmployee;
 
