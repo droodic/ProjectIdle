@@ -209,7 +209,6 @@ void AEmployee::NotifyActorEndOverlap(AActor* OtherActor)
 			UI->EmpSheetWidget->RemoveFromViewport();
 		}
 	}
-
 }
 
 void AEmployee::Promote()
@@ -339,6 +338,19 @@ void AEmployee::Promote()
 void AEmployee::Fire()
 {
 	IsFired = true;
+	//Redistr workload
+	if (CurrentWorkload > 0) {
+		for(auto DepartmentEmp : GM->EmployeeList) {
+			if (DepartmentEmp->Role == Role) {
+				DepartmentEmp->CurrentWorkload += CurrentWorkload;
+				DepartmentEmp->AssignedWorkload += CurrentWorkload;
+				//CurrentWorkload = 0;
+				WorkProgressBar->SetVisibility(false);
+				IsWorking = false;
+			}
+		}
+	}
+
 	MoveEmployee(GM->Door->GetActorLocation());
 }
 
@@ -366,7 +378,7 @@ void AEmployee::MoveEmployee(FVector Destination)
 		auto LookAtRotator = FRotator(UKismetMathLibrary::MakeRotator(0, 0, UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Destination).Yaw));
 		UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
 		SetActorRotation(LookAtRotator);
-		AI->MoveToLocation(Destination);
+		AI->MoveToLocation(Destination );
 		AI->IsMoving = true;
 		//Make all this moving stuff, lookat, IsMoving, into 1 function
 	}
