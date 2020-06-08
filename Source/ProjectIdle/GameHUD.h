@@ -37,10 +37,10 @@ public:
 
 private:
 	UMoneyWidget* MoneyWidget;
-	UPROPERTY() UEmployeeSheetWidget* EmpSheetWidget;
 	//UWorkstationUpgradeWidget* WorkstationWidget;
 
 public:
+	UPROPERTY() UEmployeeSheetWidget* EmpSheetWidget;
 	void ShowEmployeeSheet(class AEmployee* employee);
 	void RefreshEmployeeSheet(class AEmployee* employee);
 	//void ShowStationUpgrade(class AWorkstation* station);

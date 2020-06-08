@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Components/BoxComponent.h"
 #include "ProjectIdle/EmployeeAIC.h"
 #include "Components/WidgetComponent.h"
 #include "Employee.generated.h"
@@ -38,19 +39,14 @@ public:
 
 	UPROPERTY(EditAnywhere) ERole EmployeeRole = ERole::Programmer;
 	UPROPERTY(EditAnywhere) EPosition Position = EPosition::Intern;
-
 	UPROPERTY(BlueprintReadWrite, EditAnywhere) FText EmployeeName;
-
 	UPROPERTY(BlueprintReadWrite, EditAnywhere) float Morale = 1;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere) float Performance;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere) float Salary = 200;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere) float CostEmployeePromote = 5000;
+	
 	UPROPERTY() float PromoteToRegular = 20000;
 	UPROPERTY() float PromoteToSenior = 50000;
-
-
-
-	//UPROPERTY(EditAnywhere) FString EmployeeRole;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector MeetingLocation;
 
 	UPROPERTY() int WorkstationPositionRef;
@@ -75,6 +71,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsMoving = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsWorking;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool DefaultEmployee;
+	bool CanInspect = false;
 
 	//bool IsMoving;
 	//Managers
@@ -86,25 +83,23 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) class UAnimationAsset* WorkAnim;
 	bool HasAnimated = false;
 
+	UPROPERTY(VisibleAnywhere)
+		UBoxComponent* CollisionBox;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
 public:	
-
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite) AEmployeeAIC* AI; //custom Cpp AIC ref, unused for now
-	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void GoMeeting();
-	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void MoveEmployee(FVector Destination);
-	//UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void ReturnPositionAfterMeeting(FVector Destination);
-	void BeginWork();
-
-	// Called every frame
-
 	void NotifyActorOnClicked(FKey ButtonPressed = EKeys::RightMouseButton) override;
 	virtual void Tick(float DeltaTime) override;
-	// Called to bind functionality to inputf
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
+
+public:
+	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void MoveEmployee(FVector Destination);
+	void BeginWork();
 	void WorkloadProgress(float Multiplier);
 	void Promote();
 	void Fire();
