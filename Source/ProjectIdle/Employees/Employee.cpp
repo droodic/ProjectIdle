@@ -10,6 +10,7 @@
 #include "EWorkProgressWidget.h"
 #include "Runtime/AIModule/Classes/Blueprint/AIBlueprintHelperLibrary.h"
 #include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
+#include "ProjectIdle/ProjectIdleCharacter.h"
 #include "Engine.h"
 
 // Sets default values
@@ -23,7 +24,9 @@ AEmployee::AEmployee()
 	WorkProgressBar->SetVisibility(false);
 	WorkProgressBar->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 
-
+	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("RangeBox"));
+	CollisionBox->AttachTo(RootComponent);
+	CollisionBox->SetBoxExtent(FVector(350, 350, 350));
 }
 
 // Called when the game starts or when spawned
@@ -52,13 +55,6 @@ void AEmployee::BeginPlay()
 		break;
 	}
 
-	////Find better way maybe, enum? 
-	//if (EmployeeRole == ERole::Artist) {
-	//	GM->NumOfArtists++;
-	//}
-	//else if (EmployeeRole == ERole::Programmer) {
-	//	GM->NumOfProgrammers++;
-	//}
 
 	StartPosition = this->GetActorLocation();
 	HasWorkStation = false;
@@ -75,16 +71,11 @@ void AEmployee::BeginPlay()
 		EmployeeSheetWidget->Employee = this;
 	}
 
-	//Temp solution will fix
-	//For active station
+
 	GM->WorkStation->UpdateWorkstationPosition();
-
-
-	UE_LOG(LogActor, Warning, TEXT("%s"), *StartPosition.ToString())
-		MoveEmployee(StartPosition);
+	MoveEmployee(StartPosition);
 	IsDepartmentWorking();
-	//CurrentWorkload = 10.f;
-	//BeginWork();
+
 }
 
 void AEmployee::IsDepartmentWorking() {
@@ -106,7 +97,7 @@ void AEmployee::BeginWork() {
 
 void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 {
-	if (UI != nullptr) {
+	if (UI != nullptr && CanInspect) {
 
 		UI->ShowEmployeeSheet(this);
 	}
@@ -200,6 +191,25 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 void AEmployee::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
+
+void AEmployee::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr) {
+		CanInspect = true;
+	}
+}
+
+void AEmployee::NotifyActorEndOverlap(AActor* OtherActor)
+{
+	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr) {
+		CanInspect = false;
+		if (UI->EmpSheetWidget->IsInViewport())
+		{
+			UI->EmpSheetWidget->RemoveFromViewport();
+		}
+	}
+
 }
 
 void AEmployee::Promote()
@@ -329,6 +339,11 @@ void AEmployee::Promote()
 void AEmployee::Fire()
 {
 	IsFired = true;
+	MoveEmployee(GM->Door->GetActorLocation());
+}
+
+void AEmployee::FiredFinal()
+{
 	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Red, "The employee is Fired!");
 	if (this->EmployeeRole == ERole::Programmer)
 	{
@@ -342,12 +357,6 @@ void AEmployee::Fire()
 	GM->WorkstationList[this->WorkstationPositionRef]->HasEmployee = false;
 	UI->CloseEmployeeSheet();
 	this->Destroy();
-}
-
-void AEmployee::GoMeeting()
-{
-	//delete?
-	//yeah
 }
 
 void AEmployee::MoveEmployee(FVector Destination)
