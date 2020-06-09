@@ -18,11 +18,13 @@ class PROJECTIDLE_API UGameManager : public UGameInstance
 public:
 	UGameManager();
 	UPROPERTY(BlueprintReadWrite) TArray<class AEmployee*> EmployeeList;
+	UPROPERTY(BlueprintReadWrite) TArray<class ADepartment*> DepartmentList;
 	UPROPERTY(BlueprintReadWrite) int NumOfProgrammers;
 	UPROPERTY(BlueprintReadWrite) int NumOfArtists;
 	UPROPERTY(BlueprintReadWrite) int Money;
 	UPROPERTY(BlueprintReadWrite) TArray<class AChair*> MeetingChairList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AWorkstation*> WorkstationList;
+
 
 	UPROPERTY(BlueprintReadWrite) class AOfficeDepartment* OfficeDepartment;
 	UPROPERTY(BlueprintReadWrite) class AMeetingDepartment* MeetingDepartment;

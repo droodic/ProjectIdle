@@ -21,10 +21,12 @@ enum class EPosition : uint8
 {
 	Intern				   UMETA(DisplayName = "Intern"),
 	Junior				   UMETA(DisplayName = "Junior"),
-	Programmer			   UMETA(DisplayName = "Programmer"),
-	Artist			       UMETA(DisplayName = "Artist"),
-	SeniorProgrammer	   UMETA(DisplayName = "Senior"),
-	SeniorArtist 	       UMETA(DisplayName = "Senior"),
+	Regular				   UMETA(DisplayName = "Regular"),
+	Senior			       UMETA(DisplayName = "Senior"),
+	//Programmer			   UMETA(DisplayName = "Programmer"),
+	//Artist			       UMETA(DisplayName = "Artist"),
+	//SeniorProgrammer	   UMETA(DisplayName = "Senior"),
+	//SeniorArtist 	       UMETA(DisplayName = "Senior"),
 	Supervisor             UMETA(DisplayName = "Supervisor")
 };
 
@@ -37,14 +39,14 @@ public:
 	// Sets default values for this character's properties
 	AEmployee();
 
-	UPROPERTY(EditAnywhere) ERole EmployeeRole = ERole::Programmer;
+	UPROPERTY(EditAnywhere) ERole EmployeeRole;
 	UPROPERTY(EditAnywhere) EPosition Position = EPosition::Intern;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere) FText EmployeeName;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere) float Morale = 1;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere) float Performance;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere) float Salary = 200;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere) float CostEmployeePromote = 5000;
-	
+
 	UPROPERTY() float PromoteToRegular = 20000;
 	UPROPERTY() float PromoteToSenior = 50000;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector MeetingLocation;
@@ -88,8 +90,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
-public:	
+
+public:
 	void NotifyActorOnClicked(FKey ButtonPressed = EKeys::RightMouseButton) override;
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

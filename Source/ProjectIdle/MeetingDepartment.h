@@ -26,6 +26,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void MoveToMeeting();
 	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void BackFromMeeting();
 
+	UPROPERTY(BlueprintReadWrite) TArray<class AEmployee*> EmployeesAtMeetingList;
 	UPROPERTY(EditAnywhere, Category = "Widgets")TSubclassOf<UUserWidget> UserWidget;
 	UPROPERTY() class UMeetingDepWidget* MeetingWidget;
 	

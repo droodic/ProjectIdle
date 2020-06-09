@@ -6,6 +6,7 @@
 #include "Components/BoxComponent.h"
 #include "ProjectIdleCharacter.h"
 #include "GameFramework/Actor.h"
+#include "Employees/Supervisor.h"
 #include "Department.generated.h"
 
 UCLASS()
@@ -24,6 +25,11 @@ public:
 		UBoxComponent* CollisionBox;
 
 	ADepartment();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool HasSupervisor = false;
+	ERole DepRole;
+	class UGameManager* GM;
+	ASupervisor* SupervisorRef;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

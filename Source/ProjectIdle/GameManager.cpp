@@ -3,6 +3,7 @@
 
 #include "GameManager.h"
 #include "MeetingDepartment.h"
+#include "Department.h"
 #include "Departments/ProgrammingDepartment.h"
 #include "Departments/ArtistDepartment.h"
 

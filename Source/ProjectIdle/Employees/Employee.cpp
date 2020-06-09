@@ -42,7 +42,9 @@ void AEmployee::BeginPlay()
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0)->GetHUD());
 
 	Camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
-	GM->EmployeeList.Add(this);
+	if (Position != EPosition::Supervisor) {
+		GM->EmployeeList.Add(this);
+	}
 	this->SpawnDefaultController();
 	AI = Cast<AEmployeeAIC>(GetController());
 	//UDataTable
@@ -76,8 +78,9 @@ void AEmployee::BeginPlay()
 		EmployeeSheetWidget->Employee = this;
 	}
 
-
-	GM->WorkStation->UpdateWorkstationPosition();
+	if (!Cast<ASupervisor>(this)) {
+		GM->WorkStation->UpdateWorkstationPosition();
+	}
 	MoveEmployee(StartPosition);
 	IsDepartmentWorking();
 
@@ -86,6 +89,7 @@ void AEmployee::BeginPlay()
 void AEmployee::IsDepartmentWorking() {
 	for (auto Employee : GM->EmployeeList) {
 		if (Employee->EmployeeRole == EmployeeRole && Employee->CurrentWorkload > 5.f) {
+			Employee->AssignedWorkload /= 2;
 			this->AssignedWorkload = Employee->AssignedWorkload;
 			this->CurrentWorkload = Employee->CurrentWorkload / 2;
 			Employee->CurrentWorkload /= 2;
@@ -176,16 +180,16 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		//go back to regular animation ?
 		IsWorking = false;
 		bool isOver = true;
-		for (auto AnEmployee : GM->EmployeeList) 
+		for (auto AnEmployee : GM->EmployeeList)
 		{
-			if (AnEmployee->HasWorkload == true) 
+			if (AnEmployee->HasWorkload == true)
 			{
 				isOver = false;
 			}
 		}
-		if (isOver == true) 
+		if (isOver == true)
 		{
-			//UIdeaButton::IsInProduction = false;
+			UIdeaButton::IsInProduction = false;
 			GM->OfficeDepartment->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartment->CurrentIdea);
 			//GM->Money += UKismetMathLibrary::RandomIntegerInRange(15000, 25000); //Use algo later, and do real way of assgning money
 		}
@@ -219,125 +223,69 @@ void AEmployee::NotifyActorEndOverlap(AActor* OtherActor)
 void AEmployee::Promote()
 {
 	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, "Promote button called");
-	float AddMorale = FMath::FRandRange(0.25f, 1.f);
-	
+	float AddMorale = FMath::FRandRange(.5f, 1.f);
+
 	if (GM->Money >= CostEmployeePromote)
 	{
-		if (this->EmployeeRole == ERole::Programmer)
+
+		//float AddMorale = FMath::FRandRange(1, 10);
+		GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, FString::Printf(TEXT("Number: x: %f"), AddMorale));
+		switch (Position)
 		{
-			//float AddMorale = FMath::FRandRange(1, 10);
-			GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, FString::Printf(TEXT("Number: x: %f"), AddMorale));
-			switch (Position)
-			{
-			case EPosition::Intern:
-				Position = EPosition::Junior;
-				Salary += 200;
-				if (Morale < 10) {
-
-					Morale += AddMorale;
-					if (Morale >= 10) {
-						Morale = 10;
-					}
+		case EPosition::Intern:
+			Position = EPosition::Junior;
+			Salary += 200;
+			if (Morale < 10) {
+				Morale += AddMorale + 0.5f;
+				if (Morale >= 10) {
+					Morale = 10;
 				}
-
-				CostEmployeePromote = PromoteToRegular;
-				GM->Money -= 5000;
-
-				break;
-			case EPosition::Junior:
-				Position = EPosition::Programmer;
-				Salary += 200;
-				if (Morale < 10) {
-
-					Morale += AddMorale;
-					if (Morale >= 10) {
-						Morale = 10;
-					}
-				}
-				GM->Money -= CostEmployeePromote;
-				CostEmployeePromote = PromoteToSenior;
-				break;
-			case EPosition::Programmer:
-				Position = EPosition::SeniorProgrammer;
-				Salary += 200;
-				if (Morale < 10) {
-					Morale += AddMorale;
-					if (Morale >= 10) {
-						Morale = 10;
-					}
-				}
-				GM->Money -= CostEmployeePromote;
-				break;
-			case EPosition::SeniorProgrammer:
-				Salary += 100;
-				if (Morale < 10) {
-
-					Morale += AddMorale;
-					if (Morale >= 10) {
-						Morale = 10;
-					}
-				}
-				GM->Money -= PromoteToSenior;
-				break;
 			}
+
+			CostEmployeePromote = PromoteToRegular;
+			GM->Money -= CostEmployeePromote;
+
+			break;
+		case EPosition::Junior:
+			Position = EPosition::Regular;
+			Salary += 200;
+			if (Morale < 10) {
+
+				Morale += AddMorale + 2.f;
+				if (Morale >= 10) {
+					Morale = 10;
+				}
+			}
+			GM->Money -= CostEmployeePromote;
+			CostEmployeePromote = PromoteToSenior;
+			break;
+		case EPosition::Regular:
+			Position = EPosition::Senior;
+			Salary += 200;
+			if (Morale < 10) {
+				Morale += AddMorale + 3.5f;
+				if (Morale >= 10) {
+					Morale = 10;
+				}
+			}
+			GM->Money -= CostEmployeePromote;
+			break;
+			//case EPosition::SeniorProgrammer:
+			//	Salary += 100;
+			//	if (Morale < 10) {
+
+			//		Morale += AddMorale;
+			//		if (Morale >= 10) {
+			//			Morale = 10;
+			//		}
+			//	}
+			//	GM->Money -= PromoteToSenior;
+			//	break;
+			//}
 		}
 
-		if (this->EmployeeRole == ERole::Artist)
-		{
-			switch (Position)
-			{
-			case EPosition::Intern:
-				Position = EPosition::Junior;
-				Salary += 200;
-				if (Morale < 10) {
-					Morale += AddMorale;
-					if (Morale >= 10) {
-						Morale = 10;
-					}
-				}
-				CostEmployeePromote = PromoteToRegular;
-				GM->Money -= 5000;
-				break;
-			case EPosition::Junior:
-				Position = EPosition::Artist;
-				Salary += 200;
-				if (Morale < 10) {
-					Morale += AddMorale;
-					if (Morale >= 10) {
-						Morale = 10;
-					}
-				}
-				GM->Money -= CostEmployeePromote;
-				CostEmployeePromote = PromoteToSenior;
-
-				break;
-			case EPosition::Artist:
-				Position = EPosition::SeniorArtist;
-				Salary += 200;
-				if (Morale < 10) {
-					Morale += AddMorale;
-					if (Morale >= 10) {
-						Morale = 10;
-					}
-				}
-				GM->Money -= CostEmployeePromote;
-				break;
-			case EPosition::SeniorArtist:
-				Salary += 100;
-				if (Morale < 10) {
-					Morale += AddMorale;
-					if (Morale >= 10) {
-						Morale = 10;
-					}
-				}
-				GM->Money -= PromoteToSenior;
-				break;
-			}
-		}
+		UI->RefreshEmployeeSheet(this);
 	}
-
-
-	UI->RefreshEmployeeSheet(this);
 }
 
 void AEmployee::Fire()
@@ -345,8 +293,8 @@ void AEmployee::Fire()
 	IsFired = true;
 	//Redistr workload
 	if (CurrentWorkload > 0) {
-		for(auto DepartmentEmp : GM->EmployeeList) {
-			if (DepartmentEmp->Role == Role) {
+		for (auto DepartmentEmp : GM->EmployeeList) {
+			if (DepartmentEmp->EmployeeRole == EmployeeRole) {
 				DepartmentEmp->CurrentWorkload += CurrentWorkload;
 				DepartmentEmp->AssignedWorkload += CurrentWorkload;
 				//CurrentWorkload = 0;
@@ -383,7 +331,7 @@ void AEmployee::MoveEmployee(FVector Destination)
 		auto LookAtRotator = FRotator(UKismetMathLibrary::MakeRotator(0, 0, UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Destination).Yaw));
 		UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
 		SetActorRotation(LookAtRotator);
-		AI->MoveToLocation(Destination );
+		AI->MoveToLocation(Destination);
 		AI->IsMoving = true;
 		//Make all this moving stuff, lookat, IsMoving, into 1 function
 	}

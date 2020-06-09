@@ -2,6 +2,7 @@
 
 
 #include "Department.h"
+#include "GameManager.h"
 
 // Sets default values
 ADepartment::ADepartment()
@@ -18,7 +19,7 @@ ADepartment::ADepartment()
 void ADepartment::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	//GM = GetWorld()->GetGameInstance<UGameManager>();
 }
 
 

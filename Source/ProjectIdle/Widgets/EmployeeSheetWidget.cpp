@@ -62,16 +62,10 @@ FText UEmployeeSheetWidget::PositionToText(EPosition position)
 	case EPosition::Junior:
 		text = FText::FromString("Junior");
 		break;
-	case EPosition::Programmer:
-		text = FText::FromString("Programmer");
+	case EPosition::Regular:
+		text = FText::FromString("Regular");
 		break;
-	case EPosition::SeniorProgrammer:
-		text = FText::FromString("Senior");
-		break;
-	case EPosition::Artist:
-		text = FText::FromString("Artist");
-		break;
-	case EPosition::SeniorArtist:
+	case EPosition::Senior:
 		text = FText::FromString("Senior");
 		break;
 	}

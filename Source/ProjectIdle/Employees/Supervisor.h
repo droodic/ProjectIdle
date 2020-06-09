@@ -12,7 +12,11 @@ class PROJECTIDLE_API ASupervisor : public AEmployee
 	GENERATED_BODY()
 
 public:
+	//class UGameManager* GM;
 	// Sets default values for this character's properties
 	ASupervisor(ERole Department);
 	ASupervisor();
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 };

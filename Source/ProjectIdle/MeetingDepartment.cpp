@@ -6,8 +6,10 @@
 #include "Components/WidgetComponent.h"
 #include "ProjectIdle/GameManager.h"
 #include "ProjectIdle/Idea.h"
+#include "ProjectIdle/Departments/ProgrammingDepartment.h"
 #include "ProjectIdle/OfficeDepartment.h"
 #include "Widgets/MeetingDepWidget.h"
+#include "Department.h"
 #include "Employees/Artist.h"
 #include "Employees/Programmer.h"
 #include "EngineUtils.h"
@@ -28,6 +30,7 @@ void AMeetingDepartment::BeginPlay()
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->MeetingDepartment = this;
+	//GM->DepartmentList.Add(this);
 	//temp assign, need to change class name , maybe move functions to gm
 	UWorld* world = GetWorld();
 	if (UserWidget != nullptr)
@@ -88,59 +91,78 @@ void AMeetingDepartment::Tick(float DeltaTime)
 
 void AMeetingDepartment::MoveToMeeting()
 {
-	int32 chairSize = GM->MeetingChairList.Num();
-	int32 employeeSize = GM->EmployeeList.Num();
-	int32 LoopUntil;
-	FString sizeString = FString::FromInt(employeeSize);
+	auto ChairIndex = 0;
+	auto Index = 0;
+	for (auto Dep : GM->DepartmentList) {
+		GEngine->AddOnScreenDebugMessage(Index++, 3.f, FColor::Red, "Loop through Deplist", true);
 
-	CanReturn = false;
-	bool MoreEmployeeThanChair = false;
-
-	if (chairSize > employeeSize)
-	{
-		LoopUntil = employeeSize;
-	}
-	else if (employeeSize > chairSize)
-	{
-		//If there too many employee
-		MoreEmployeeThanChair = true;
-		LoopUntil = employeeSize;
-	}
-	else
-	{
-		LoopUntil = chairSize;
-	}
-
-	for (int i = 0; i < LoopUntil; i++)
-	{
-		if (MoreEmployeeThanChair)
-		{
-			if (i < chairSize)
-			{
-				GM->EmployeeList[i]->MoveEmployee(GM->MeetingChairList[i]->GetActorLocation());
-			}
-			else
-			{
-				GM->EmployeeList[i]->MoveEmployee(OfficeLocation);
+		if (Dep->HasSupervisor) {
+			Dep->SupervisorRef->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
+			EmployeesAtMeetingList.Add(Dep->SupervisorRef);
+			GEngine->AddOnScreenDebugMessage(Index++, 5.f, FColor::Red, "Supervisor found");
+			//break;
+		}
+		else if (!Dep->HasSupervisor){
+			for (auto Emp : GM->EmployeeList) {
+				if (Dep->DepRole == Emp->EmployeeRole) {
+					EmployeesAtMeetingList.Add(Emp);
+					Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
+					GEngine->AddOnScreenDebugMessage(Index++, 5.f, FColor::Red, "No supp- Sending employee");
+				}
 			}
 		}
-		else
-		{
-			GM->EmployeeList[i]->MoveEmployee(GM->MeetingChairList[i]->GetActorLocation());
-		}
 	}
+
+
+	//int32 chairSize = GM->MeetingChairList.Num();
+	//int32 employeeSize = GM->EmployeeList.Num();
+	//int32 LoopUntil;
+	//FString sizeString = FString::FromInt(employeeSize);
+
+	//CanReturn = false;
+	//bool MoreEmployeeThanChair = false;
+
+	//if (chairSize > employeeSize)
+	//{
+	//	LoopUntil = employeeSize;
+	//}
+	//else if (employeeSize > chairSize)
+	//{
+	//	//If there too many employee
+	//	MoreEmployeeThanChair = true;
+	//	LoopUntil = employeeSize;
+	//}
+	//else
+	//{
+	//	LoopUntil = chairSize;
+	//}
+
+	//for (int i = 0; i < LoopUntil; i++)
+	//{
+	//	if (MoreEmployeeThanChair)
+	//	{
+	//		if (i < chairSize)
+	//		{
+	//			GM->EmployeeList[i]->MoveEmployee(GM->MeetingChairList[i]->GetActorLocation());
+	//		}
+	//		else
+	//		{
+	//			GM->EmployeeList[i]->MoveEmployee(OfficeLocation);
+	//		}
+	//	}
+	//	else
+	//	{
+	//		GM->EmployeeList[i]->MoveEmployee(GM->MeetingChairList[i]->GetActorLocation());
+	//	}
+	//}
 }
 
 void AMeetingDepartment::BackFromMeeting()
 {
-	//int32 employeeSize = GM->EmployeeList.Num();
-
-	//Call a second time in case, they had no workstation on hire
-	//GM->WorkStation->TestFunction();
-	auto Counter = GM->EmployeeList.Num();
+	auto Counter = EmployeesAtMeetingList.Num();
 
 	if (!CanReturn) {
-		for (auto Emp : GM->EmployeeList) {
+		for (auto Emp : EmployeesAtMeetingList) {
 			if (Emp->AI->IsMoving) {
 				GEngine->AddOnScreenDebugMessage(999, 5.f, FColor::Green, "Employee moving, breaking");
 				break;
@@ -157,24 +179,28 @@ void AMeetingDepartment::BackFromMeeting()
 	}
 
 	if (CanReturn) {
-		for (auto Emp : GM->EmployeeList) {
+		for (auto Emp : EmployeesAtMeetingList) {
 
 			Emp->MoveEmployee(Emp->StartPosition);
-			//GM->EmployeeList[i]->SetActorRotation(UKismetMathLibrary::FindLookAtRotation(GM->EmployeeList[i]->GetActorLocation(), GM->EmployeeList[i]->StartPosition));
-			//GM->EmployeeList[i]->
 
 			//Assign workload test - move to own function/clean up later, also needs to be called when are at their workstation not before
-			if (Emp->EmployeeRole == ERole::Artist)
-			{
-				Emp->AssignedWorkload = CurrentIdea->ArtistWorkload / GM->NumOfArtists;
-				Emp->CurrentWorkload = Emp->AssignedWorkload;
-				Emp->BeginWork();
-			}
-			else if (Emp->EmployeeRole == ERole::Programmer)
-			{
-				Emp->AssignedWorkload = CurrentIdea->ProgrammerWorkload / GM->NumOfProgrammers;
-				Emp->CurrentWorkload = Emp->AssignedWorkload;
-				Emp->BeginWork();
+
+		}
+
+		for (auto Emp : GM->EmployeeList) {
+			if (Emp->Position != EPosition::Supervisor) {
+				if (Emp->EmployeeRole == ERole::Artist)
+				{
+					Emp->AssignedWorkload = CurrentIdea->ArtistWorkload / GM->NumOfArtists;
+					Emp->CurrentWorkload = Emp->AssignedWorkload;
+					Emp->BeginWork();
+				}
+				else if (Emp->EmployeeRole == ERole::Programmer)
+				{
+					Emp->AssignedWorkload = CurrentIdea->ProgrammerWorkload / GM->NumOfProgrammers;
+					Emp->CurrentWorkload = Emp->AssignedWorkload;
+					Emp->BeginWork();
+				}
 			}
 		}
 	}
@@ -182,28 +208,4 @@ void AMeetingDepartment::BackFromMeeting()
 	auto backlogWidget = GM->OfficeDepartment->BacklogWidget;
 	backlogWidget->IdeaScrollBox->RemoveChild(Cast<UWidget>(CurrentIdea->IdeaButton));
 	GM->OfficeDepartment->ideasGenerated--;
-
-	/*for (int i = 0; i < employeeSize; i++)
-	{
-		if (!GM->EmployeeList[i]->AI->IsMoving) {
-			GM->EmployeeList[i]->MoveEmployee(GM->EmployeeList[i]->StartPosition);
-			//GM->EmployeeList[i]->SetActorRotation(UKismetMathLibrary::FindLookAtRotation(GM->EmployeeList[i]->GetActorLocation(), GM->EmployeeList[i]->StartPosition));
-			//GM->EmployeeList[i]->
-
-			//Assign workload test - move to own function/clean up later, also needs to be called when are at their workstation not before
-			if (GM->EmployeeList[i]->EmployeeRole == ERole::Artist)
-			{
-				GM->EmployeeList[i]->AssignedWorkload = CurrentIdea->ArtistWorkload / GM->NumOfArtists;
-				GM->EmployeeList[i]->CurrentWorkload = GM->EmployeeList[i]->AssignedWorkload;
-				GM->EmployeeList[i]->BeginWork();
-			}
-			else if (GM->EmployeeList[i]->EmployeeRole == ERole::Programmer)
-			{
-				GM->EmployeeList[i]->AssignedWorkload = CurrentIdea->ProgrammerWorkload / GM->NumOfProgrammers;
-				GM->EmployeeList[i]->CurrentWorkload = GM->EmployeeList[i]->AssignedWorkload;
-				GM->EmployeeList[i]->BeginWork();
-			}
-		}
-		
-	}*/
 }
