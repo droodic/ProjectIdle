@@ -18,6 +18,7 @@ public:
 	UIdeaButton(const FObjectInitializer& ObjectInitializer);
 
 	class UIdeaBacklogWidget* BacklogWidget;
+	class AOfficeDepartment* OfficeDepartment;
 
 	int storedIndex;
 
@@ -35,13 +36,16 @@ public:
 
 	UPROPERTY(EditAnywhere) struct FLinearColor SelectedColor;
 
+	bool IsFinished = false;
+	bool IsPublished = false;
+
+	bool static IsInProduction;
+
 public:
 	virtual void NativeConstruct() override;
 
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
 
 private:
-	//virtual void Tick(float DeltaTime) override;
-	
 	UFUNCTION() void ButtonClicked();
 };

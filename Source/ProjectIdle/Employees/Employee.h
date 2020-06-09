@@ -78,7 +78,6 @@ public:
 	class AGameHUD* UI;
 	class UGameManager* GM;
 
-
 	//Animation
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) class UAnimationAsset* WorkAnim;
 	bool HasAnimated = false;

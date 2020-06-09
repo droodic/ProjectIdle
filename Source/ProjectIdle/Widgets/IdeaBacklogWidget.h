@@ -16,7 +16,6 @@ class PROJECTIDLE_API UIdeaBacklogWidget : public UUserWidget
 public:
 	class UGameManager* GM;
 	class AOfficeDepartment* OfficeDepartment;
-	//class Idea* newIdea;
 
 	UPROPERTY(BlueprintReadWrite) int ChosenIndex;
 
@@ -27,10 +26,6 @@ public:
 
 	UPROPERTY(EditAnywhere) TSubclassOf<UUserWidget> IdeaButtonWidgetClass;
 
-private:
-	TArray<class Idea*> IdeaList;
-
-	int Index = 0;
 public:
 	virtual void NativeConstruct() override;
 	void DisplayNewIdea(class Idea* idea);
