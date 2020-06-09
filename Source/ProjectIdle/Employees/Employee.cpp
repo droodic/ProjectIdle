@@ -78,8 +78,9 @@ void AEmployee::BeginPlay()
 		EmployeeSheetWidget->Employee = this;
 	}
 
-
-	GM->WorkStation->UpdateWorkstationPosition();
+	if (!Cast<ASupervisor>(this)) {
+		GM->WorkStation->UpdateWorkstationPosition();
+	}
 	MoveEmployee(StartPosition);
 	IsDepartmentWorking();
 
@@ -179,14 +180,14 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		//go back to regular animation ?
 		IsWorking = false;
 		bool isOver = true;
-		for (auto AnEmployee : GM->EmployeeList) 
+		for (auto AnEmployee : GM->EmployeeList)
 		{
-			if (AnEmployee->HasWorkload == true) 
+			if (AnEmployee->HasWorkload == true)
 			{
 				isOver = false;
 			}
 		}
-		if (isOver == true) 
+		if (isOver == true)
 		{
 			//UIdeaButton::IsInProduction = false;
 			GM->OfficeDepartment->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartment->CurrentIdea);
