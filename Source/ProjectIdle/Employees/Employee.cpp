@@ -223,125 +223,69 @@ void AEmployee::NotifyActorEndOverlap(AActor* OtherActor)
 void AEmployee::Promote()
 {
 	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, "Promote button called");
-	float AddMorale = FMath::FRandRange(0.25f, 1.f);
+	float AddMorale = FMath::FRandRange(.5f, 1.f);
 
 	if (GM->Money >= CostEmployeePromote)
 	{
-		if (this->EmployeeRole == ERole::Programmer)
+
+		//float AddMorale = FMath::FRandRange(1, 10);
+		GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, FString::Printf(TEXT("Number: x: %f"), AddMorale));
+		switch (Position)
 		{
-			//float AddMorale = FMath::FRandRange(1, 10);
-			GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, FString::Printf(TEXT("Number: x: %f"), AddMorale));
-			switch (Position)
-			{
-			case EPosition::Intern:
-				Position = EPosition::Junior;
-				Salary += 200;
-				if (Morale < 10) {
-
-					Morale += AddMorale;
-					if (Morale >= 10) {
-						Morale = 10;
-					}
+		case EPosition::Intern:
+			Position = EPosition::Junior;
+			Salary += 200;
+			if (Morale < 10) {
+				Morale += AddMorale + 0.5f;
+				if (Morale >= 10) {
+					Morale = 10;
 				}
-
-				CostEmployeePromote = PromoteToRegular;
-				GM->Money -= 5000;
-
-				break;
-			case EPosition::Junior:
-				Position = EPosition::Programmer;
-				Salary += 200;
-				if (Morale < 10) {
-
-					Morale += AddMorale;
-					if (Morale >= 10) {
-						Morale = 10;
-					}
-				}
-				GM->Money -= CostEmployeePromote;
-				CostEmployeePromote = PromoteToSenior;
-				break;
-			case EPosition::Programmer:
-				Position = EPosition::SeniorProgrammer;
-				Salary += 200;
-				if (Morale < 10) {
-					Morale += AddMorale;
-					if (Morale >= 10) {
-						Morale = 10;
-					}
-				}
-				GM->Money -= CostEmployeePromote;
-				break;
-			case EPosition::SeniorProgrammer:
-				Salary += 100;
-				if (Morale < 10) {
-
-					Morale += AddMorale;
-					if (Morale >= 10) {
-						Morale = 10;
-					}
-				}
-				GM->Money -= PromoteToSenior;
-				break;
 			}
+
+			CostEmployeePromote = PromoteToRegular;
+			GM->Money -= CostEmployeePromote;
+
+			break;
+		case EPosition::Junior:
+			Position = EPosition::Regular;
+			Salary += 200;
+			if (Morale < 10) {
+
+				Morale += AddMorale + 2.f;
+				if (Morale >= 10) {
+					Morale = 10;
+				}
+			}
+			GM->Money -= CostEmployeePromote;
+			CostEmployeePromote = PromoteToSenior;
+			break;
+		case EPosition::Regular:
+			Position = EPosition::Senior;
+			Salary += 200;
+			if (Morale < 10) {
+				Morale += AddMorale + 3.5f;
+				if (Morale >= 10) {
+					Morale = 10;
+				}
+			}
+			GM->Money -= CostEmployeePromote;
+			break;
+			//case EPosition::SeniorProgrammer:
+			//	Salary += 100;
+			//	if (Morale < 10) {
+
+			//		Morale += AddMorale;
+			//		if (Morale >= 10) {
+			//			Morale = 10;
+			//		}
+			//	}
+			//	GM->Money -= PromoteToSenior;
+			//	break;
+			//}
 		}
 
-		if (this->EmployeeRole == ERole::Artist)
-		{
-			switch (Position)
-			{
-			case EPosition::Intern:
-				Position = EPosition::Junior;
-				Salary += 200;
-				if (Morale < 10) {
-					Morale += AddMorale;
-					if (Morale >= 10) {
-						Morale = 10;
-					}
-				}
-				CostEmployeePromote = PromoteToRegular;
-				GM->Money -= 5000;
-				break;
-			case EPosition::Junior:
-				Position = EPosition::Artist;
-				Salary += 200;
-				if (Morale < 10) {
-					Morale += AddMorale;
-					if (Morale >= 10) {
-						Morale = 10;
-					}
-				}
-				GM->Money -= CostEmployeePromote;
-				CostEmployeePromote = PromoteToSenior;
-
-				break;
-			case EPosition::Artist:
-				Position = EPosition::SeniorArtist;
-				Salary += 200;
-				if (Morale < 10) {
-					Morale += AddMorale;
-					if (Morale >= 10) {
-						Morale = 10;
-					}
-				}
-				GM->Money -= CostEmployeePromote;
-				break;
-			case EPosition::SeniorArtist:
-				Salary += 100;
-				if (Morale < 10) {
-					Morale += AddMorale;
-					if (Morale >= 10) {
-						Morale = 10;
-					}
-				}
-				GM->Money -= PromoteToSenior;
-				break;
-			}
-		}
+		UI->RefreshEmployeeSheet(this);
 	}
-
-
-	UI->RefreshEmployeeSheet(this);
 }
 
 void AEmployee::Fire()
