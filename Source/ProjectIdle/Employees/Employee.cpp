@@ -3,15 +3,20 @@
 
 #include "Employee.h"
 #include "AIModule/Classes/DetourCrowdAIController.h"
+#include "Engine.h"
+#include "EWorkProgressWidget.h"
+#include "ProjectIdle/Idea.h"
 #include "ProjectIdle/EmployeeAIC.h"
 #include "ProjectIdle/GameManager.h"
 #include "ProjectIdle/Workstation.h"
 #include "ProjectIdle/GameHUD.h"
-#include "EWorkProgressWidget.h"
+#include "ProjectIdle/OfficeDepartment.h"
+#include "ProjectIdle/MeetingDepartment.h"
+#include "ProjectIdle/CeoDepMenuWidget.h"
+#include "ProjectIdle/ProjectIdleCharacter.h"
+#include "ProjectIdle/Widgets/IdeaButton.h"
 #include "Runtime/AIModule/Classes/Blueprint/AIBlueprintHelperLibrary.h"
 #include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
-#include "ProjectIdle/ProjectIdleCharacter.h"
-#include "Engine.h"
 
 // Sets default values
 AEmployee::AEmployee()
@@ -171,20 +176,20 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		//go back to regular animation ?
 		IsWorking = false;
 		bool isOver = true;
-		for (auto AnEmployee : GM->EmployeeList) {
-			if (AnEmployee->HasWorkload == true) {
+		for (auto AnEmployee : GM->EmployeeList) 
+		{
+			if (AnEmployee->HasWorkload == true) 
+			{
 				isOver = false;
-
 			}
-
 		}
-		if (isOver == true) {
-
-			GM->Money += UKismetMathLibrary::RandomIntegerInRange(15000, 25000); //Use algo later, and do real way of assgning money
+		if (isOver == true) 
+		{
+			//UIdeaButton::IsInProduction = false;
+			GM->OfficeDepartment->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartment->CurrentIdea);
+			//GM->Money += UKismetMathLibrary::RandomIntegerInRange(15000, 25000); //Use algo later, and do real way of assgning money
 		}
 	}
-
-
 }
 
 // Called to bind functionality to input
@@ -209,7 +214,6 @@ void AEmployee::NotifyActorEndOverlap(AActor* OtherActor)
 			UI->EmpSheetWidget->RemoveFromViewport();
 		}
 	}
-
 }
 
 void AEmployee::Promote()
@@ -339,6 +343,19 @@ void AEmployee::Promote()
 void AEmployee::Fire()
 {
 	IsFired = true;
+	//Redistr workload
+	if (CurrentWorkload > 0) {
+		for(auto DepartmentEmp : GM->EmployeeList) {
+			if (DepartmentEmp->Role == Role) {
+				DepartmentEmp->CurrentWorkload += CurrentWorkload;
+				DepartmentEmp->AssignedWorkload += CurrentWorkload;
+				//CurrentWorkload = 0;
+				WorkProgressBar->SetVisibility(false);
+				IsWorking = false;
+			}
+		}
+	}
+
 	MoveEmployee(GM->Door->GetActorLocation());
 }
 
@@ -366,7 +383,7 @@ void AEmployee::MoveEmployee(FVector Destination)
 		auto LookAtRotator = FRotator(UKismetMathLibrary::MakeRotator(0, 0, UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Destination).Yaw));
 		UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
 		SetActorRotation(LookAtRotator);
-		AI->MoveToLocation(Destination);
+		AI->MoveToLocation(Destination );
 		AI->IsMoving = true;
 		//Make all this moving stuff, lookat, IsMoving, into 1 function
 	}

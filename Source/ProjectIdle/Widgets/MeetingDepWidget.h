@@ -15,6 +15,7 @@ class PROJECTIDLE_API UMeetingDepWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
+
 #pragma region ChosenIdea
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UImage* I_GameCover;
