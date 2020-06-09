@@ -26,11 +26,11 @@ AWorkstation::AWorkstation()
 	ChairMesh->SetupAttachment(RootComponent);
 	KeyboardMesh->SetupAttachment(RootComponent);
 
-	auto Mesh = ConstructorHelpers::FObjectFinder<UStaticMesh>(TEXT("/Content/Assets/Mesh/Chair.Chair"));
-	if (Mesh.Object)
-	{
-		UpgradeMonitor = Mesh.Object;
-	}
+	//auto Mesh = ConstructorHelpers::FObjectFinder<UStaticMesh>(TEXT("/Content/Assets/Mesh/Chair.Chair"));
+	//if (Mesh.Object)
+	//{
+	//	UpgradeMonitor = Mesh.Object;
+	//}
 	
 
 }
