@@ -11,5 +11,7 @@ AProgrammingDepartment::AProgrammingDepartment() {
 void AProgrammingDepartment::BeginPlay() {
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
+	DepRole = ERole::Programmer;
 	GM->ProgrammingDepartment = this;
+	GM->DepartmentList.Add(this);
 }

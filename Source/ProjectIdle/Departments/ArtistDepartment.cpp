@@ -11,6 +11,8 @@ AArtistDepartment::AArtistDepartment() {
 void AArtistDepartment::BeginPlay() {
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
+	DepRole = ERole::Artist;
 	GM->ArtistDepartment = this;
+	GM->DepartmentList.Add(this);
 }
 

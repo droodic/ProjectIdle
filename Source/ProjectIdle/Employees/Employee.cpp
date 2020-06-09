@@ -37,7 +37,9 @@ void AEmployee::BeginPlay()
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0)->GetHUD());
 
 	Camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
-	GM->EmployeeList.Add(this);
+	if (Position != EPosition::Supervisor) {
+		GM->EmployeeList.Add(this);
+	}
 	this->SpawnDefaultController();
 	AI = Cast<AEmployeeAIC>(GetController());
 	//UDataTable
@@ -81,6 +83,7 @@ void AEmployee::BeginPlay()
 void AEmployee::IsDepartmentWorking() {
 	for (auto Employee : GM->EmployeeList) {
 		if (Employee->EmployeeRole == EmployeeRole && Employee->CurrentWorkload > 5.f) {
+			Employee->AssignedWorkload /= 2;
 			this->AssignedWorkload = Employee->AssignedWorkload;
 			this->CurrentWorkload = Employee->CurrentWorkload / 2;
 			Employee->CurrentWorkload /= 2;
@@ -215,7 +218,7 @@ void AEmployee::Promote()
 {
 	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, "Promote button called");
 	float AddMorale = FMath::FRandRange(0.25f, 1.f);
-	
+
 	if (GM->Money >= CostEmployeePromote)
 	{
 		if (this->EmployeeRole == ERole::Programmer)
@@ -340,8 +343,8 @@ void AEmployee::Fire()
 	IsFired = true;
 	//Redistr workload
 	if (CurrentWorkload > 0) {
-		for(auto DepartmentEmp : GM->EmployeeList) {
-			if (DepartmentEmp->Role == Role) {
+		for (auto DepartmentEmp : GM->EmployeeList) {
+			if (DepartmentEmp->EmployeeRole == EmployeeRole) {
 				DepartmentEmp->CurrentWorkload += CurrentWorkload;
 				DepartmentEmp->AssignedWorkload += CurrentWorkload;
 				//CurrentWorkload = 0;
@@ -378,7 +381,7 @@ void AEmployee::MoveEmployee(FVector Destination)
 		auto LookAtRotator = FRotator(UKismetMathLibrary::MakeRotator(0, 0, UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Destination).Yaw));
 		UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
 		SetActorRotation(LookAtRotator);
-		AI->MoveToLocation(Destination );
+		AI->MoveToLocation(Destination);
 		AI->IsMoving = true;
 		//Make all this moving stuff, lookat, IsMoving, into 1 function
 	}

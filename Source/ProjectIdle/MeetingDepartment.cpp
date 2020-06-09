@@ -6,8 +6,10 @@
 #include "Components/WidgetComponent.h"
 #include "ProjectIdle/GameManager.h"
 #include "ProjectIdle/Idea.h"
+#include "ProjectIdle/Departments/ProgrammingDepartment.h"
 #include "ProjectIdle/OfficeDepartment.h"
 #include "Widgets/MeetingDepWidget.h"
+#include "Department.h"
 #include "Employees/Artist.h"
 #include "Employees/Programmer.h"
 #include "EngineUtils.h"
@@ -28,6 +30,7 @@ void AMeetingDepartment::BeginPlay()
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->MeetingDepartment = this;
+	//GM->DepartmentList.Add(this);
 	//temp assign, need to change class name , maybe move functions to gm
 	UWorld* world = GetWorld();
 	if (UserWidget != nullptr)
@@ -88,47 +91,68 @@ void AMeetingDepartment::Tick(float DeltaTime)
 
 void AMeetingDepartment::MoveToMeeting()
 {
-	int32 chairSize = GM->MeetingChairList.Num();
-	int32 employeeSize = GM->EmployeeList.Num();
-	int32 LoopUntil;
-	FString sizeString = FString::FromInt(employeeSize);
+	auto ChairIndex = 0;
+	auto Index = 0;
+	for (auto Dep : GM->DepartmentList) {
+		GEngine->AddOnScreenDebugMessage(Index++, 3.f, FColor::Red, "Loop through Deplist", true);
 
-	CanReturn = false;
-	bool MoreEmployeeThanChair = false;
-
-	if (chairSize > employeeSize)
-	{
-		LoopUntil = employeeSize;
-	}
-	else if (employeeSize > chairSize)
-	{
-		//If there too many employee
-		MoreEmployeeThanChair = true;
-		LoopUntil = employeeSize;
-	}
-	else
-	{
-		LoopUntil = chairSize;
-	}
-
-	for (int i = 0; i < LoopUntil; i++)
-	{
-		if (MoreEmployeeThanChair)
-		{
-			if (i < chairSize)
-			{
-				GM->EmployeeList[i]->MoveEmployee(GM->MeetingChairList[i]->GetActorLocation());
-			}
-			else
-			{
-				GM->EmployeeList[i]->MoveEmployee(OfficeLocation);
+		if (Dep->HasSupervisor) {
+			Dep->SupervisorRef->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
+			GEngine->AddOnScreenDebugMessage(Index++, 5.f, FColor::Red, "Supervisor found");
+			//break;
+		}
+		else if (!Dep->HasSupervisor){
+			for (auto Emp : GM->EmployeeList) {
+				if (Dep->DepRole == Emp->EmployeeRole) {
+					Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
+					GEngine->AddOnScreenDebugMessage(Index++, 5.f, FColor::Red, "No supp- Sending employee");
+				}
 			}
 		}
-		else
-		{
-			GM->EmployeeList[i]->MoveEmployee(GM->MeetingChairList[i]->GetActorLocation());
-		}
 	}
+
+
+	//int32 chairSize = GM->MeetingChairList.Num();
+	//int32 employeeSize = GM->EmployeeList.Num();
+	//int32 LoopUntil;
+	//FString sizeString = FString::FromInt(employeeSize);
+
+	//CanReturn = false;
+	//bool MoreEmployeeThanChair = false;
+
+	//if (chairSize > employeeSize)
+	//{
+	//	LoopUntil = employeeSize;
+	//}
+	//else if (employeeSize > chairSize)
+	//{
+	//	//If there too many employee
+	//	MoreEmployeeThanChair = true;
+	//	LoopUntil = employeeSize;
+	//}
+	//else
+	//{
+	//	LoopUntil = chairSize;
+	//}
+
+	//for (int i = 0; i < LoopUntil; i++)
+	//{
+	//	if (MoreEmployeeThanChair)
+	//	{
+	//		if (i < chairSize)
+	//		{
+	//			GM->EmployeeList[i]->MoveEmployee(GM->MeetingChairList[i]->GetActorLocation());
+	//		}
+	//		else
+	//		{
+	//			GM->EmployeeList[i]->MoveEmployee(OfficeLocation);
+	//		}
+	//	}
+	//	else
+	//	{
+	//		GM->EmployeeList[i]->MoveEmployee(GM->MeetingChairList[i]->GetActorLocation());
+	//	}
+	//}
 }
 
 void AMeetingDepartment::BackFromMeeting()

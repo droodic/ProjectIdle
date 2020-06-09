@@ -7,6 +7,7 @@
 #include "CeoDepMenuWidget.h"
 #include "Employees/Programmer.h"
 #include "Employees/Artist.h"
+#include "Department.h"
 #include "Components/DecalComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameManager.h"
@@ -33,6 +34,7 @@ void AOfficeDepartment::BeginPlay()
 {
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>(); //unused
+	//GM->DepartmentList.Add(this);
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
 
 	if (UserWidgets[0] != nullptr)
