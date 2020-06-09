@@ -2,7 +2,6 @@
 
 
 #include "EmployeeSheetWidget.h"
-#include "ProjectIdle/Employees/Employee.h"
 
 void UEmployeeSheetWidget::NativeConstruct()
 {

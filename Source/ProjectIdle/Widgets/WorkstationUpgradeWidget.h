@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Runtime/UMG/Public/UMG.h"
 #include "Blueprint/UserWidget.h"
 #include "ProjectIdle/Workstation.h"
 #include "WorkstationUpgradeWidget.generated.h"
@@ -17,6 +18,10 @@ class PROJECTIDLE_API UWorkstationUpgradeWidget : public UUserWidget
 
 public:
 	class AWorkstation* Station;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* UpgradeMonitor_Btn;
+
+	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void Monitor();
 
 private:
 	virtual void NativeConstruct() override;

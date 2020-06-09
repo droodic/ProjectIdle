@@ -8,6 +8,7 @@
 #include "Workstations/ArtistStation.h"
 #include "ProjectIdle/Widgets/WorkstationUpgradeWidget.h"
 #include "Workstations/ProgrammerStation.h"
+#include "UObject/ConstructorHelpers.h"
 #include "Engine.h"
 
 // Sets default values
@@ -24,6 +25,13 @@ AWorkstation::AWorkstation()
 	ComputerMesh->SetupAttachment(RootComponent);
 	ChairMesh->SetupAttachment(RootComponent);
 	KeyboardMesh->SetupAttachment(RootComponent);
+
+	//auto Mesh = ConstructorHelpers::FObjectFinder<UStaticMesh>(TEXT("/Content/Assets/Mesh/Chair.Chair"));
+	//if (Mesh.Object)
+	//{
+	//	UpgradeMonitor = Mesh.Object;
+	//}
+	
 
 }
 
@@ -44,6 +52,9 @@ void AWorkstation::BeginPlay()
 		UpgradeWidget = CreateWidget<UWorkstationUpgradeWidget>(UGameplayStatics::GetPlayerController(this, 0), UserWidget);
 	}
 	
+
+
+
 	//FVector zero = FVector(200, 0, 0);
 	//StationVector = this->GetActorLocation();
 	//FRotator rotation = this->GetActorRotation();
@@ -162,10 +173,16 @@ void AWorkstation::NotifyActorOnClicked(FKey ButtonPressed)
 	if (!UpgradeWidget->IsInViewport())
 	{
 		UpgradeWidget->AddToViewport();
+		UpgradeMesh();
 	}
 	else
 	{
 		UpgradeWidget->RemoveFromViewport();
 	}
 
+}
+
+void AWorkstation::UpgradeMesh()
+{
+	DeskMesh->SetStaticMesh(Cast<UStaticMesh>(UpgradeMonitor));
 }
