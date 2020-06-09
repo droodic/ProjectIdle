@@ -37,6 +37,4 @@ public:
 	UPROPERTY(BlueprintReadWrite) int EmployeeNameIndex;
 
 	virtual void Init();
-
-
 };

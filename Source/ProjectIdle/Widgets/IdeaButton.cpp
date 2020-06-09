@@ -5,6 +5,8 @@
 #include "Engine.h"
 #include "IdeaBacklogWidget.h"
 #include "Components/Button.h"
+#include "ProjectIdle/OfficeDepartment.h"
+#include "ProjectIdle/CeoDepMenuWidget.h"
 
 UIdeaButton::UIdeaButton(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -19,13 +21,24 @@ void UIdeaButton::NativeConstruct()
     {
         IdeaButton->OnClicked.AddDynamic(this, &UIdeaButton::ButtonClicked);
     }
-
 }
 
 void UIdeaButton::ButtonClicked()
 {
-    BacklogWidget->ChosenIndex = storedIndex;
-    BacklogWidget->CallMeetingBtn->SetIsEnabled(true);
+    if (IsFinished && !IsPublished)
+    {
+        OfficeDepartment->OfficeDepMenuWidget->PublishGame_Btn->SetIsEnabled(true);
+        OfficeDepartment->OfficeDepMenuWidget->ChosenIndex = storedIndex;
+    }
+    else if (IsPublished) 
+    {
+        GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, "The game is published");
+    }
+    else /*if (!IsInProduction)*/
+    {
+        BacklogWidget->ChosenIndex = storedIndex;
+        BacklogWidget->CallMeetingBtn->SetIsEnabled(true);
+    }
 }
 
 void UIdeaButton::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)

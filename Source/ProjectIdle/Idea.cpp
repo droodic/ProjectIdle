@@ -75,7 +75,7 @@ FText Idea::GenreToText(EGenre genre)
 		text = FText::FromString("Puzzle");
 		break;
 	case EGenre::ADVENTURE:
-		text = FText::FromString("Advencture");
+		text = FText::FromString("Adventure");
 		break;
 	case EGenre::HORROR:
 		text = FText::FromString("Horror");

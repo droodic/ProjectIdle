@@ -3,7 +3,6 @@
 
 #include "OfficeDepartment.h"
 #include "Idea.h"
-#include "Widgets/IdeaBacklogWidget.h" 
 #include "CeoDepMenuWidget.h"
 #include "Employees/Programmer.h"
 #include "Employees/Artist.h"
@@ -14,9 +13,14 @@
 #include "GameHUD.h"
 #include "Workstation.h"
 #include "Engine/World.h"
+#include "Widgets/IdeaButton.h" 
+#include "Widgets/IdeaBacklogWidget.h" 
+#include "Components/DecalComponent.h"
+#include "Components/WidgetComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
-AOfficeDepartment::AOfficeDepartment() {
+AOfficeDepartment::AOfficeDepartment()
+{
 	ComputerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ComputerMesh"));
 	ChairMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ChairMesh"));
 
@@ -33,8 +37,8 @@ Idea AOfficeDepartment::GenerateIdeaValues()
 void AOfficeDepartment::BeginPlay()
 {
 	Super::BeginPlay();
-	GM = GetWorld()->GetGameInstance<UGameManager>(); //unused
-	//GM->DepartmentList.Add(this);
+	GM = GetWorld()->GetGameInstance<UGameManager>();
+	GM->OfficeDepartment = this;
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
 
 	if (UserWidgets[0] != nullptr)
@@ -92,6 +96,7 @@ void AOfficeDepartment::GetDepartmentUIValues()
 	AvgArtistMorale = AvgArtistMorale / GM->NumOfArtists;
 }
 
+
 void AOfficeDepartment::GenerateIdea()
 {
 	IsGenerating = true;
@@ -113,7 +118,8 @@ void AOfficeDepartment::CallMeeting()
 
 void AOfficeDepartment::PublishGame()
 {
-	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, "YOU PUBLISHED A GAME!");
+	FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->IsPublished = true;
+	GM->Money += UKismetMathLibrary::RandomIntegerInRange(15000, 25000); //Use algo later, and do real way of assgning money
 }
 
 void AOfficeDepartment::Tick(float DeltaTime)
@@ -127,22 +133,17 @@ void AOfficeDepartment::Tick(float DeltaTime)
 			CurrIdeaProgress = 0;
 			ideasGenerated++;
 
-			auto randomNumber = UKismetMathLibrary::RandomIntegerInRange(0, 100);
-			
 			//auto newIdea = new Idea(GenerateIdeaValues());
+			auto randomNumber = UKismetMathLibrary::RandomIntegerInRange(0, 100);
 			auto newIdea = new Idea("GAME " + FString::FromInt(randomNumber), "Game description of game " + FString::FromInt(randomNumber), Idea::GetRandomGenre(), FLinearColor::MakeRandomColor(), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(75.f, 150.f), UKismetMathLibrary::RandomFloatInRange(75.f, 150.f));
 
 			IdeaList.Insert(newIdea, Index);
-			//TEST*** make method / optimize
-			OfficeDepMenuWidget->GetIdea(newIdea);
-			BacklogWidget->DisplayNewIdea(newIdea);
+			BacklogWidget->DisplayNewIdea(IdeaList[Index]);
 			
 			Index++;
 		}
 	}
 }
-
-
 
 void AOfficeDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
 {
@@ -225,6 +226,3 @@ void AOfficeDepartment::GenerateActor(TArray<TSubclassOf<AActor>> Spawn, int Pos
 		}
 	}
 }
-
-
-

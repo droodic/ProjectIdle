@@ -2,16 +2,16 @@
 
 
 #include "CeoDepMenuWidget.h"
-#include "Components/Button.h"
-#include "ProjectIdle/Idea.h"
-#include "ProjectIdle/GameManager.h"
+#include "Idea.h"
+#include "GameManager.h"
 #include "OfficeDepartment.h"
-#include "ProjectIdle/Workstation.h"
+#include "Workstation.h"
+#include "Engine.h"
+#include "Blueprint/UserWidget.h"
+#include "Widgets/IdeaButton.h"
+#include "Components/Button.h"
 #include "Workstations/ArtistStation.h"
 #include "Workstations/ProgrammerStation.h"
-#include "Engine.h"
-#include "Widgets/IdeaButton.h"
-#include "Blueprint/UserWidget.h"
 
 void UCeoDepMenuWidget::NativeConstruct()
 {
@@ -27,6 +27,10 @@ void UCeoDepMenuWidget::NativeConstruct()
 	{
 		Hire_Artist_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::CallArtistSpawn);
 	}
+	if (!PublishGame_Btn->OnClicked.IsBound())
+	{
+		PublishGame_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::PublishGame);
+	}
 }
 
 void UCeoDepMenuWidget::CallProgrammerSpawn()
@@ -34,7 +38,6 @@ void UCeoDepMenuWidget::CallProgrammerSpawn()
 	int32 length = GM->WorkstationList.Num();
 	int32 numberOfProgrammerStation = 0;
 	int32 numberOfArtistStation = 0;
-
 
 	for (int i = 0; i < length; i++)
 	{
@@ -61,7 +64,6 @@ void UCeoDepMenuWidget::CallArtistSpawn()
 	int32 numberOfProgrammerStation = 0;
 	int32 numberOfArtistStation = 0;
 
-
 	for (int i = 0; i < length; i++)
 	{
 		if (GM->WorkstationList[i]->IsA(AArtistStation::StaticClass()))
@@ -69,7 +71,6 @@ void UCeoDepMenuWidget::CallArtistSpawn()
 			numberOfArtistStation++;
 		}
 	}
-
 	if (numberOfArtistStation > GM->NumOfArtists)
 	{
 		if (GM->Money >= 10000)
@@ -93,13 +94,10 @@ void UCeoDepMenuWidget::ActiveWorkstation(int Number)
 	int32 employeeSize = GM->EmployeeList.Num();
 	int32 ActiveStation = GM->WorkStation->WorkstationActiveLenght();
 
-
-
 	for (int i = 0; i < length; i++)
 	{
 		if (Number == 0)
 		{
-
 			if (GM->WorkstationList[i]->DisableObject && GM->WorkstationList[i]->IsA(AProgrammerStation::StaticClass()))
 			{
 				//GM->WorkstationList[i]->IsObjectDisable = false;
@@ -124,30 +122,43 @@ void UCeoDepMenuWidget::ActiveWorkstation(int Number)
 	}
 }
 
-void UCeoDepMenuWidget::GetIdea(Idea* idea)
+void UCeoDepMenuWidget::PublishGame()
 {
-	auto NewButton = Cast<UIdeaButton>(CreateWidget(this, IdeaButtonWidgetClass));
-
-	AddValuesToButton(NewButton, idea);
-	IdeaButtonList.Add(NewButton);
-	IdeaScrollBox->AddChild(NewButton);
+	PublishGame_Btn->SetIsEnabled(false);
+	OfficeDepartment->PublishGame();
 }
 
-void UCeoDepMenuWidget::AddValuesToButton(UIdeaButton* button, Idea* idea)
+void UCeoDepMenuWidget::GetFinishedIdea(Idea* idea)
 {
-	GEngine->AddOnScreenDebugMessage(4, 5.f, FColor::Green, "Values Added to button");
+	idea->IdeaButton = Cast<UIdeaButton>(CreateWidget(this, IdeaButtonWidgetClass));
+	OfficeDepartment->FinishedIdeaList.Insert(idea, Index);
+	AddValuesToButton(OfficeDepartment->FinishedIdeaList[Index]);
+	
+	IdeaScrollBox->AddChild(OfficeDepartment->FinishedIdeaList[Index]->IdeaButton);
 
-	button->GameCover_I->SetColorAndOpacity(idea->CoverColor);
+	Index++;
+}
 
-	button->GameTitle_T->SetText(FText::FromString(idea->IdeaName));
-	button->GameDescription_T->SetText(FText::FromString(idea->IdeaDescription));
-	button->Genre_T->SetText(Idea::GenreToText(idea->Genre));
-	button->SuccessChance_T->SetText(FText::AsPercent(idea->SuccessChance / 100.f));
+void UCeoDepMenuWidget::AddValuesToButton(Idea* idea)
+{
+	idea->IdeaButton->GameCover_I->SetColorAndOpacity(idea->CoverColor);
 
-	button->Weight_T->SetText((idea->ProgrammerWorkload > idea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
+	idea->IdeaButton->GameTitle_T->SetText(FText::FromString(idea->IdeaName));
+	idea->IdeaButton->GameDescription_T->SetText(FText::FromString(idea->IdeaDescription));
+	idea->IdeaButton->Genre_T->SetText(Idea::GenreToText(idea->Genre));
+	idea->IdeaButton->SuccessChance_T->SetText(FText::AsPercent(idea->SuccessChance / 100.f));
+
+	idea->IdeaButton->Weight_T->SetText((idea->ProgrammerWorkload > idea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
 
 	if (idea->ProgrammerWorkload == idea->ArtistWorkload)
 	{
-		button->Weight_T->SetText(FText::FromString("All"));
+		idea->IdeaButton->Weight_T->SetText(FText::FromString("All"));
 	}
+
+	idea->IdeaButton->BacklogWidget = OfficeDepartment->BacklogWidget;
+	idea->IdeaButton->OfficeDepartment = OfficeDepartment;
+
+	idea->IdeaButton->storedIndex = Index;
+	idea->IdeaButton->IsFinished = true;
+	GEngine->AddOnScreenDebugMessage(101, 5.f, FColor::Red, FString::FromInt(OfficeDepartment->Index));
 }

@@ -23,6 +23,7 @@ public:
 	class AGameHUD* UI;
 
 	int Index = 0;
+
 	UPROPERTY(BlueprintReadWrite) float TProgSalary = 0.f;
 	UPROPERTY(BlueprintReadWrite) float TArtistSalary = 0.f;
 	UPROPERTY(BlueprintReadWrite) float AvgProgMorale = 0.f;
@@ -68,7 +69,6 @@ public:
 	void Back();
 	UFUNCTION(BlueprintCallable) void GetDepartmentUIValues();
 	//int GetArtistSalary();
-
 
 protected:
 	virtual void BeginPlay() override;

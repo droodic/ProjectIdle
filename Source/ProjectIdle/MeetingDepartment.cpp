@@ -14,6 +14,7 @@
 #include "Employees/Programmer.h"
 #include "EngineUtils.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "ProjectIdle/Widgets/IdeaBacklogWidget.h"
 
 // Sets default values
 AMeetingDepartment::AMeetingDepartment()
@@ -22,7 +23,6 @@ AMeetingDepartment::AMeetingDepartment()
 	PrimaryActorTick.bCanEverTick = true;
 	OfficeLocation = FVector(-720.0, 900, 200);
 }
-
 
 // Called when the game starts or when spawned
 void AMeetingDepartment::BeginPlay()
@@ -37,13 +37,12 @@ void AMeetingDepartment::BeginPlay()
 	{
 		MeetingWidget = CreateWidget<UMeetingDepWidget>(UGameplayStatics::GetPlayerController(this, 0), UserWidget);
 	}
-
-	//TakeIdea();
 }
 
 void AMeetingDepartment::TakeIdea(Idea* SentIdea)
 {
 	CurrentIdea = SentIdea;
+	
 	if (MeetingWidget != nullptr && UserWidget != nullptr && SentIdea != nullptr) {
 		MeetingWidget->I_GameCover->SetColorAndOpacity(SentIdea->CoverColor);
 		MeetingWidget->T_GameTitle->SetText(FText::FromString(SentIdea->IdeaName));
@@ -51,6 +50,7 @@ void AMeetingDepartment::TakeIdea(Idea* SentIdea)
 		MeetingWidget->T_GameDescription->SetText(FText::FromString(SentIdea->IdeaDescription));
 		MeetingWidget->T_SuccessChance->SetText(FText::AsPercent(SentIdea->SuccessChance / 100.f));
 		MeetingWidget->T_Weight->SetText((SentIdea->ProgrammerWorkload > SentIdea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
+		
 		if (SentIdea->ProgrammerWorkload == SentIdea->ArtistWorkload)
 		{
 			MeetingWidget->T_Weight->SetText(FText::FromString("All"));
@@ -202,31 +202,32 @@ void AMeetingDepartment::BackFromMeeting()
 			}
 		}
 	}
+	
+	auto backlogWidget = GM->OfficeDepartment->BacklogWidget;
+	backlogWidget->IdeaScrollBox->RemoveChild(Cast<UWidget>(CurrentIdea->IdeaButton));
+	GM->OfficeDepartment->ideasGenerated--;
 
+	/*for (int i = 0; i < employeeSize; i++)
+	{
+		if (!GM->EmployeeList[i]->AI->IsMoving) {
+			GM->EmployeeList[i]->MoveEmployee(GM->EmployeeList[i]->StartPosition);
+			//GM->EmployeeList[i]->SetActorRotation(UKismetMathLibrary::FindLookAtRotation(GM->EmployeeList[i]->GetActorLocation(), GM->EmployeeList[i]->StartPosition));
+			//GM->EmployeeList[i]->
 
-
-	//for (int i = 0; i < employeeSize; i++)
-	//{
-	//	if (!GM->EmployeeList[i]->AI->IsMoving) {
-	//		GM->EmployeeList[i]->MoveEmployee(GM->EmployeeList[i]->StartPosition);
-	//		//GM->EmployeeList[i]->SetActorRotation(UKismetMathLibrary::FindLookAtRotation(GM->EmployeeList[i]->GetActorLocation(), GM->EmployeeList[i]->StartPosition));
-	//		//GM->EmployeeList[i]->
-
-	//		//Assign workload test - move to own function/clean up later, also needs to be called when are at their workstation not before
-	//		if (GM->EmployeeList[i]->EmployeeRole == ERole::Artist)
-	//		{
-	//			GM->EmployeeList[i]->AssignedWorkload = CurrentIdea->ArtistWorkload / GM->NumOfArtists;
-	//			GM->EmployeeList[i]->CurrentWorkload = GM->EmployeeList[i]->AssignedWorkload;
-	//			GM->EmployeeList[i]->BeginWork();
-	//		}
-	//		else if (GM->EmployeeList[i]->EmployeeRole == ERole::Programmer)
-	//		{
-	//			GM->EmployeeList[i]->AssignedWorkload = CurrentIdea->ProgrammerWorkload / GM->NumOfProgrammers;
-	//			GM->EmployeeList[i]->CurrentWorkload = GM->EmployeeList[i]->AssignedWorkload;
-	//			GM->EmployeeList[i]->BeginWork();
-	//		}
-	//	}
-	//	
-
-	//}
+			//Assign workload test - move to own function/clean up later, also needs to be called when are at their workstation not before
+			if (GM->EmployeeList[i]->EmployeeRole == ERole::Artist)
+			{
+				GM->EmployeeList[i]->AssignedWorkload = CurrentIdea->ArtistWorkload / GM->NumOfArtists;
+				GM->EmployeeList[i]->CurrentWorkload = GM->EmployeeList[i]->AssignedWorkload;
+				GM->EmployeeList[i]->BeginWork();
+			}
+			else if (GM->EmployeeList[i]->EmployeeRole == ERole::Programmer)
+			{
+				GM->EmployeeList[i]->AssignedWorkload = CurrentIdea->ProgrammerWorkload / GM->NumOfProgrammers;
+				GM->EmployeeList[i]->CurrentWorkload = GM->EmployeeList[i]->AssignedWorkload;
+				GM->EmployeeList[i]->BeginWork();
+			}
+		}
+		
+	}*/
 }
