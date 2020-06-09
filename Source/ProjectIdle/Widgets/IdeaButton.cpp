@@ -13,49 +13,56 @@ UIdeaButton::UIdeaButton(const FObjectInitializer& ObjectInitializer) : Super(Ob
 
 }
 
-void UIdeaButton::NativeConstruct() 
+void UIdeaButton::NativeConstruct()
 {
-    Super::NativeConstruct(); 
+	Super::NativeConstruct();
 
-    if (!IdeaButton->OnClicked.IsBound())
-    {
-        IdeaButton->OnClicked.AddDynamic(this, &UIdeaButton::ButtonClicked);
-    }
+	if (!IdeaButton->OnClicked.IsBound())
+	{
+		IdeaButton->OnClicked.AddDynamic(this, &UIdeaButton::ButtonClicked);
+	}
 }
 
 void UIdeaButton::ButtonClicked()
 {
-    if (IsFinished && !IsPublished)
-    {
-        OfficeDepartment->OfficeDepMenuWidget->PublishGame_Btn->SetIsEnabled(true);
-        OfficeDepartment->OfficeDepMenuWidget->ChosenIndex = storedIndex;
-    }
-    else if (IsPublished) 
-    {
-        GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, "The game is published");
-    }
-    else /*if (!IsInProduction)*/
-    {
-        BacklogWidget->ChosenIndex = storedIndex;
-        BacklogWidget->CallMeetingBtn->SetIsEnabled(true);
-    }
+	if (IsFinished && !IsPublished)
+	{
+		OfficeDepartment->OfficeDepMenuWidget->PublishGame_Btn->SetIsEnabled(true);
+		OfficeDepartment->OfficeDepMenuWidget->ChosenIndex = storedIndex;
+		IdeaButton->SetBackgroundColor(PublishedColor);
+	}
+	else if (IsPublished)
+	{
+		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, "The game is published");
+		OfficeDepartment->OfficeDepMenuWidget->PublishGame_Btn->SetIsEnabled(false);
+	}
+	else if (!IsInProduction)
+	{
+		BacklogWidget->ChosenIndex = storedIndex;
+		BacklogWidget->CallMeetingBtn->SetIsEnabled(true);
+	}
 }
 
 void UIdeaButton::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
-    Super::NativeTick(MyGeometry, InDeltaTime);
-    
-    if (IdeaButton)
-    {
-        if (IdeaButton->HasUserFocus(UGameplayStatics::GetPlayerController(GetWorld(), 0)))
-        {
-            IdeaButton->SetBackgroundColor(SelectedColor);
-        }
-        else
-        {
-            IdeaButton->SetBackgroundColor(FLinearColor::White);
-        }
-    }
+	Super::NativeTick(MyGeometry, InDeltaTime);
+
+	if (IdeaButton)
+	{
+		if (IdeaButton->HasUserFocus(UGameplayStatics::GetPlayerController(GetWorld(), 0)))
+		{
+			IdeaButton->SetBackgroundColor(SelectedColor);
+		}
+		else
+		{
+			if (IsPublished)
+			{
+				IdeaButton->SetBackgroundColor(PublishedColor);
+			}
+			else
+			{
+				IdeaButton->SetBackgroundColor(FLinearColor::White);
+			}
+		}
+	}
 }
-
-

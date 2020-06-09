@@ -24,7 +24,6 @@ public:
 	UPROPERTY(EditAnywhere) TSubclassOf<UUserWidget> IdeaButtonWidgetClass;
 	
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* PublishGame_Btn;
-
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_Prog_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_Artist_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* Total_Artist_Btn;
@@ -32,6 +31,7 @@ public:
 
 	int Index = 0;
 	int ChosenIndex;
+
 public:
 	virtual void NativeConstruct() override;
 	void GetFinishedIdea(class Idea* idea);
@@ -44,5 +44,4 @@ private:
 	UFUNCTION() void PublishGame();
 	
 	void AddValuesToButton(class Idea* idea);
-
 };

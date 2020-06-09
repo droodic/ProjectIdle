@@ -19,24 +19,7 @@ void UIdeaBacklogWidget::DisplayNewIdea(Idea* idea) {
 	idea->IdeaButton = Cast<UIdeaButton>(CreateWidget(this, IdeaButtonWidgetClass));
 	AddValuesToButton(idea);
 
-	//IdeaList.Add(idea);
 	IdeaScrollBox->AddChild(idea->IdeaButton);
-
-	//if (/*!IdeaButton1->IsVisible()*/OfficeDepartment->Index == 0)
-	//{
-	//	IdeaButton1->SetVisibility(ESlateVisibility::Visible);
-	//	IdeaButton1->SetRenderOpacity(1);
-	//}
-	//else if (/*!IdeaButton2->IsVisible()*/OfficeDepartment->Index == 1)
-	//{
-	//	IdeaButton2->SetVisibility(ESlateVisibility::Visible);
-	//	IdeaButton2->SetRenderOpacity(1);
-	//}
-	//else if (/*!IdeaButton3->IsVisible()*/OfficeDepartment->Index == 2)
-	//{
-	//	IdeaButton3->SetVisibility(ESlateVisibility::Visible);
-	//	IdeaButton3->SetRenderOpacity(1);
-	//}
 }
 
 void UIdeaBacklogWidget::Back()
@@ -58,68 +41,6 @@ void UIdeaBacklogWidget::NativeConstruct() {
 	}
 }
 
-/*void UIdeaBacklogWidget::GetIdea(Idea* idea)
-{
-		/*GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, FString::FromInt(OfficeDepartment->Index));
-
-	if (OfficeDepartment->Index == 0)
-	{
-		I_GameCover->SetColorAndOpacity(newIdea->CoverColor);
-
-		T_GameTitle->SetText(FText::FromString(newIdea->IdeaName));
-		T_GameDescription->SetText(FText::FromString(newIdea->IdeaDescription));
-
-		T_Genre->SetText(Idea::GenreToText(newIdea->Genre));
-
-		T_SuccessChance->SetText(FText::AsPercent(newIdea->SuccessChance / 100.f));
-
-		T_Weight->SetText((newIdea->ProgrammerWorkload > newIdea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
-
-		if (newIdea->ProgrammerWorkload == newIdea->ArtistWorkload)
-		{
-			T_Weight->SetText(FText::FromString("All"));
-		}
-	}
-	else if (OfficeDepartment->Index == 1)
-	{
-		I_GameCover_2->SetColorAndOpacity(newIdea->CoverColor);
-
-		T_GameTitle_2->SetText(FText::FromString(newIdea->IdeaName));
-		T_GameDescription_2->SetText(FText::FromString(newIdea->IdeaDescription));
-
-		T_Genre_2->SetText(Idea::GenreToText(newIdea->Genre));
-
-		T_SuccessChance_2->SetText(FText::AsPercent(newIdea->SuccessChance / 100.f));
-
-		T_Weight_2->SetText((newIdea->ProgrammerWorkload > newIdea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
-
-		if (newIdea->ProgrammerWorkload == newIdea->ArtistWorkload)
-		{
-			T_Weight_2->SetText(FText::FromString("All"));
-		}
-	}
-	else if (OfficeDepartment->Index == 2)
-	{
-		I_GameCover_3->SetColorAndOpacity(newIdea->CoverColor);
-
-
-		T_GameTitle_3->SetText(FText::FromString(newIdea->IdeaName));
-		T_GameDescription_3->SetText(FText::FromString(newIdea->IdeaDescription));
-
-		T_Genre_3->SetText(Idea::GenreToText(newIdea->Genre));
-
-		T_SuccessChance_3->SetText(FText::AsPercent(newIdea->SuccessChance / 100.f));
-
-		T_Weight_3->SetText((newIdea->ProgrammerWorkload > newIdea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
-
-		if (newIdea->ProgrammerWorkload == newIdea->ArtistWorkload)
-		{
-			T_Weight_3->SetText(FText::FromString("All"));
-		}
-	}
-}
-	*/
-
 void UIdeaBacklogWidget::AddValuesToButton(Idea* idea)
 {
 	idea->IdeaButton->GameCover_I->SetColorAndOpacity(idea->CoverColor);
@@ -140,7 +61,6 @@ void UIdeaBacklogWidget::AddValuesToButton(Idea* idea)
 	idea->IdeaButton->OfficeDepartment = OfficeDepartment;
 
 	idea->IdeaButton->storedIndex = OfficeDepartment->Index;
-	GEngine->AddOnScreenDebugMessage(101, 5.f, FColor::Red, FString::FromInt(OfficeDepartment->Index));
 }
 
 void UIdeaBacklogWidget::CallMeeting()
@@ -151,30 +71,10 @@ void UIdeaBacklogWidget::CallMeeting()
 		GEngine->AddOnScreenDebugMessage(101, 5.f, FColor::Red, "populate GM");
 	}
 
-	for (size_t i = 0; i < OfficeDepartment->Index; i++)
-	{
-		if (i == ChosenIndex)
-		{
-			OfficeDepartment->IdeaList[i]->IdeaButton->IdeaButton->SetIsEnabled(false);
-			//UIdeaButton::IsInProduction = true;
-		}
-	}
+	OfficeDepartment->IdeaList[ChosenIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
+	UIdeaButton::IsInProduction = true;
 
 	CallMeetingBtn->SetIsEnabled(false);
-
-	//Quick way to disable chosen idea button after calling meeting with it, need cleaner approach
-	/*if (OfficeDepartment->Index - 1 == 0) {
-		IdeaButton1->SetVisibility(ESlateVisibility::HitTestInvisible);
-		IdeaButton1->SetRenderOpacity(0.3);
-	}
-	else if (OfficeDepartment->Index - 1 == 1) {
-		IdeaButton2->SetVisibility(ESlateVisibility::HitTestInvisible);
-		IdeaButton2->SetRenderOpacity(0.3);
-	}
-	else if (OfficeDepartment->Index - 1 == 2) {
-		IdeaButton3->SetVisibility(ESlateVisibility::HitTestInvisible);
-		IdeaButton3->SetRenderOpacity(0.3);
-	}*/
 
 	GM->MeetingDepartment->MoveToMeeting();
 	SendIdea();
@@ -189,7 +89,8 @@ void UIdeaBacklogWidget::SendIdea() {
 	}
 	else if (GM->MeetingDepartment != nullptr) {
 		auto tIdea = OfficeDepartment->IdeaList[ChosenIndex];
-		if (tIdea != nullptr) {
+		if (tIdea != nullptr)
+		{
 			GEngine->AddOnScreenDebugMessage(1036, 5.f, FColor::Red, "tIdea work");
 			GM->MeetingDepartment->TakeIdea(tIdea);
 		}

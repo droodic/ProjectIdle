@@ -189,7 +189,7 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		}
 		if (isOver == true)
 		{
-			//UIdeaButton::IsInProduction = false;
+			UIdeaButton::IsInProduction = false;
 			GM->OfficeDepartment->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartment->CurrentIdea);
 			//GM->Money += UKismetMathLibrary::RandomIntegerInRange(15000, 25000); //Use algo later, and do real way of assgning money
 		}

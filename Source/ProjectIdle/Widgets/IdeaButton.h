@@ -22,6 +22,9 @@ public:
 
 	int storedIndex;
 
+	bool IsFinished = false;
+	bool IsPublished = false;
+
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* IdeaButton;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UGridPanel* GridPanel;
@@ -35,9 +38,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* Weight_T;
 
 	UPROPERTY(EditAnywhere) struct FLinearColor SelectedColor;
-
-	bool IsFinished = false;
-	bool IsPublished = false;
+	UPROPERTY(EditAnywhere) struct FLinearColor PublishedColor;
 
 	bool static IsInProduction;
 
@@ -49,3 +50,5 @@ public:
 private:
 	UFUNCTION() void ButtonClicked();
 };
+
+bool UIdeaButton::IsInProduction = false;

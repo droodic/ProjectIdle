@@ -160,5 +160,4 @@ void UCeoDepMenuWidget::AddValuesToButton(Idea* idea)
 
 	idea->IdeaButton->storedIndex = Index;
 	idea->IdeaButton->IsFinished = true;
-	GEngine->AddOnScreenDebugMessage(101, 5.f, FColor::Red, FString::FromInt(OfficeDepartment->Index));
 }
