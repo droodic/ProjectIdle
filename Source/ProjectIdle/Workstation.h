@@ -33,8 +33,10 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* KeyboardMesh;
 
-	UPROPERTY(VisibleAnywhere) UStaticMesh* UpgradeMonitor;
-	UPROPERTY(VisibleAnywhere) TArray<UStaticMeshComponent*> MeshA;
+	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeMonitor;
+	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeKeyboard;
+	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeChair;
+	//UPROPERTY(VisibleAnywhere) TArray<UStaticMeshComponent*> MeshA;
 
 	UPROPERTY()
 	FVector StationLocation;
@@ -68,6 +70,6 @@ public:
 	UFUNCTION() void UpdateWorkstationPosition();
 	UFUNCTION() void DisableStation(bool Disable);
 	UFUNCTION() int WorkstationActiveLenght();
-	UFUNCTION() void UpgradeMesh();
+	UFUNCTION() void UpgradeMesh(int Index);
 	//UFUNCTION() void TestFunction();
 };
