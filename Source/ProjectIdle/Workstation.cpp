@@ -6,9 +6,7 @@
 #include "Employees/Artist.h"
 #include "Employees/Programmer.h"
 #include "Workstations/ArtistStation.h"
-#include "ProjectIdle/Widgets/WorkstationUpgradeWidget.h"
 #include "Workstations/ProgrammerStation.h"
-#include "UObject/ConstructorHelpers.h"
 #include "Engine.h"
 
 // Sets default values
@@ -22,17 +20,17 @@ AWorkstation::AWorkstation()
 	KeyboardMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("KeyboardMesh"));
 	RootComponent = DeskMesh;
 
+	UpgradeMonitor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeMonitor"));
+	UpgradeKeyboard = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeKeyBoard"));
+	UpgradeChair = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeChair"));
+
+	UpgradeMonitor->SetupAttachment(RootComponent);
+	UpgradeKeyboard->SetupAttachment(RootComponent);
 	ComputerMesh->SetupAttachment(RootComponent);
 	ChairMesh->SetupAttachment(RootComponent);
 	KeyboardMesh->SetupAttachment(RootComponent);
 
-	//auto Mesh = ConstructorHelpers::FObjectFinder<UStaticMesh>(TEXT("/Content/Assets/Mesh/Chair.Chair"));
-	//if (Mesh.Object)
-	//{
-	//	UpgradeMonitor = Mesh.Object;
-	//}
 	
-
 }
 
 // Called when the game starts or when spawned
@@ -52,7 +50,10 @@ void AWorkstation::BeginPlay()
 		UpgradeWidget = CreateWidget<UWorkstationUpgradeWidget>(UGameplayStatics::GetPlayerController(this, 0), UserWidget);
 	}
 	
-
+	if (Upgrade)
+	{
+		
+	}
 
 
 	//FVector zero = FVector(200, 0, 0);
@@ -173,7 +174,7 @@ void AWorkstation::NotifyActorOnClicked(FKey ButtonPressed)
 	if (!UpgradeWidget->IsInViewport())
 	{
 		UpgradeWidget->AddToViewport();
-		UpgradeMesh();
+		UpgradeMesh(0);
 	}
 	else
 	{
@@ -182,7 +183,16 @@ void AWorkstation::NotifyActorOnClicked(FKey ButtonPressed)
 
 }
 
-void AWorkstation::UpgradeMesh()
+void AWorkstation::UpgradeMesh(int Index)
 {
-	DeskMesh->SetStaticMesh(Cast<UStaticMesh>(UpgradeMonitor));
+	if (Index == 0)
+	{
+		ComputerMesh->SetVisibility(false);
+		UpgradeMonitor->SetVisibility(true);
+	}
+	if (Index == 1)
+	{
+		KeyboardMesh->SetVisibility(false);
+		UpgradeKeyboard->SetVisibility(true);
+	}
 }
