@@ -221,7 +221,7 @@ void AEmployee::NotifyActorEndOverlap(AActor* OtherActor)
 void AEmployee::Promote()
 {
 	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, "Promote button called");
-	float AddMorale = FMath::FRandRange(.5f, 1.f);
+	float AddMorale = FMath::FRandRange(.25f, .75f);
 
 	if (GM->Money >= CostEmployeePromote)
 	{
@@ -249,7 +249,7 @@ void AEmployee::Promote()
 			Salary += 200;
 			if (Morale < 10) {
 
-				Morale += AddMorale + 2.f;
+				Morale += AddMorale + 1.f;
 				if (Morale >= 10) {
 					Morale = 10;
 				}
@@ -261,7 +261,7 @@ void AEmployee::Promote()
 			Position = EPosition::Senior;
 			Salary += 200;
 			if (Morale < 10) {
-				Morale += AddMorale + 3.5f;
+				Morale += AddMorale + 2.5f;
 				if (Morale >= 10) {
 					Morale = 10;
 				}
