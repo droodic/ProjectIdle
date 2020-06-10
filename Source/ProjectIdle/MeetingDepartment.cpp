@@ -203,9 +203,9 @@ void AMeetingDepartment::BackFromMeeting()
 				}
 			}
 		}
+
+		auto backlogWidget = GM->OfficeDepartment->BacklogWidget;
+		backlogWidget->IdeaScrollBox->RemoveChild(Cast<UWidget>(CurrentIdea->IdeaButton));
+		GM->OfficeDepartment->ideasGenerated--;
 	}
-	
-	auto backlogWidget = GM->OfficeDepartment->BacklogWidget;
-	backlogWidget->IdeaScrollBox->RemoveChild(Cast<UWidget>(CurrentIdea->IdeaButton));
-	GM->OfficeDepartment->ideasGenerated--;
 }

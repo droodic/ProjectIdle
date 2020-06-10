@@ -12,6 +12,4 @@ UGameManager::UGameManager() {
 void UGameManager::Init()
 {
 
-	
-
 }

@@ -5,8 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
 #include "Components/WidgetComponent.h"
-#include "Widgets/MoneyWidget.h"
-#include "ProjectIdle/Widgets/EmployeeSheetWidget.h"
 #include "GameHUD.generated.h"
 
 /**
@@ -35,12 +33,13 @@ public:
 
 	//class UCeoDepMenuWidget* OfficeDepMenuWidget;
 
+	class UMoneyWidget* MoneyWidget;
+
 private:
-	UMoneyWidget* MoneyWidget;
 	//UWorkstationUpgradeWidget* WorkstationWidget;
 
 public:
-	UPROPERTY() UEmployeeSheetWidget* EmpSheetWidget;
+	UPROPERTY() class UEmployeeSheetWidget* EmpSheetWidget;
 	void ShowEmployeeSheet(class AEmployee* employee);
 	void RefreshEmployeeSheet(class AEmployee* employee);
 	//void ShowStationUpgrade(class AWorkstation* station);

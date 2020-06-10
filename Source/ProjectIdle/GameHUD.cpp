@@ -2,6 +2,9 @@
 
 
 #include "GameHUD.h"
+#include "Engine.h"
+#include "Widgets/MoneyWidget.h"
+#include "Widgets/EmployeeSheetWidget.h"
 #include "Employees/Supervisor.h"
 
 AGameHUD::AGameHUD()

@@ -4,18 +4,18 @@
 #include "OfficeDepartment.h"
 #include "Idea.h"
 #include "CeoDepMenuWidget.h"
-#include "Employees/Employee.h"
-#include "Employees/Programmer.h"
-#include "Employees/Artist.h"
 #include "Department.h"
-#include "Components/DecalComponent.h"
-#include "Components/WidgetComponent.h"
 #include "GameManager.h"
 #include "GameHUD.h"
 #include "Workstation.h"
 #include "Engine/World.h"
+#include "Employees/Employee.h"
+#include "Employees/Artist.h"
+#include "Employees/Programmer.h"
 #include "Widgets/IdeaButton.h" 
 #include "Widgets/IdeaBacklogWidget.h" 
+#include "Widgets/MoneyWidget.h" 
+#include "Components/DecalComponent.h"
 #include "Components/DecalComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -120,7 +120,13 @@ void AOfficeDepartment::CallMeeting()
 void AOfficeDepartment::PublishGame()
 {
 	FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->IsPublished = true;
+
+	auto moneyGenerated = UKismetMathLibrary::RandomIntegerInRange(15000, 25000);
+	GM->Money = moneyGenerated;
 	GM->Money += UKismetMathLibrary::RandomIntegerInRange(15000, 25000); //Use algo later, and do real way of assgning money
+
+	UI->MoneyWidget->ShowANotification(FString::FromInt(moneyGenerated));
+
 }
 
 void AOfficeDepartment::Tick(float DeltaTime)
@@ -142,6 +148,8 @@ void AOfficeDepartment::Tick(float DeltaTime)
 			BacklogWidget->DisplayNewIdea(IdeaList[Index]);
 			
 			Index++;
+			
+			UI->MoneyWidget->ShowANotification("IDEA GENERATED!");
 		}
 	}
 }

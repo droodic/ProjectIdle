@@ -15,6 +15,8 @@
 #include "ProjectIdle/CeoDepMenuWidget.h"
 #include "ProjectIdle/ProjectIdleCharacter.h"
 #include "ProjectIdle/Widgets/IdeaButton.h"
+#include "ProjectIdle/Widgets/MoneyWidget.h"
+#include "ProjectIdle/Widgets/EmployeeSheetWidget.h"
 #include "Runtime/AIModule/Classes/Blueprint/AIBlueprintHelperLibrary.h"
 #include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
 
@@ -191,6 +193,8 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		{
 			UIdeaButton::IsInProduction = false;
 			GM->OfficeDepartment->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartment->CurrentIdea);
+
+			UI->MoneyWidget->ShowANotification("PRODUCTION OF A GAME FINISHED, WAITING FOR BEING PUBLISHED");
 			//GM->Money += UKismetMathLibrary::RandomIntegerInRange(15000, 25000); //Use algo later, and do real way of assgning money
 		}
 	}

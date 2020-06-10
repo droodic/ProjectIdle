@@ -18,11 +18,25 @@ class PROJECTIDLE_API UMoneyWidget : public UUserWidget
 public:
 	UMoneyWidget(const FObjectInitializer& ObjectInitializer);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+		class UTextBlock* TotalMoney;
 
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+		class UTextBlock* Notifications_T;
+
+	UPROPERTY(BlueprintReadWrite) 
+		FText NotificationText;
+
+private:
+	FTimerHandle TimerHandle;
+
+public:
 	virtual void NativeConstruct() override;
 
 	void UpdateMoney(int32 Value);
+	
+	void ShowANotification(FString notifationText, float time = 5.f);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-		class UTextBlock* TotalMoney;
+private:
+	void RemoveNotification();
 };
