@@ -16,6 +16,8 @@ public:
 	// Sets default values for this character's properties
 	ASupervisor(ERole Department);
 	ASupervisor();
+	void InitSupervisor(ERole Department);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
