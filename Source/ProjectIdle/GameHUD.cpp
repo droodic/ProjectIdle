@@ -2,6 +2,7 @@
 
 
 #include "GameHUD.h"
+#include "Employees/Supervisor.h"
 
 AGameHUD::AGameHUD()
 {
@@ -40,14 +41,26 @@ void AGameHUD::ShowEmployeeSheet(class AEmployee* employee)
 
 		EmpSheetWidget->EmployeeName_T->Text = employee->EmployeeName;
 		EmpSheetWidget->EmployeeRole_T->Text = EmpSheetWidget->RoleToText(employee->EmployeeRole);
-		
 		EmpSheetWidget->EmployeePosition = employee->Position;
 		EmpSheetWidget->Salary = employee->Salary;
 		EmpSheetWidget->Morale = employee->Morale;
-
 		EmpSheetWidget->Employee = employee;
-
 		EmpSheetWidget->Performance = employee->Performance;
+
+		if (employee->HasBeenEvaluated) {
+			EmpSheetWidget->Performance_Box->SetVisibility(ESlateVisibility::Visible);
+		}
+		else {
+			EmpSheetWidget->Performance_Box->SetVisibility(ESlateVisibility::Hidden);
+		}
+
+		if (Cast<ASupervisor>(employee) != nullptr) {
+			EmpSheetWidget->EvaluateBtn->SetVisibility(ESlateVisibility::Visible);
+		}
+		else {
+			EmpSheetWidget->EvaluateBtn->SetVisibility(ESlateVisibility::Hidden);
+		}
+
 		EmpSheetWidget->AddToViewport();
 	}
 	else if (EmpSheetWidget->IsInViewport()) 

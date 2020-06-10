@@ -47,10 +47,12 @@ void AEmployee::BeginPlay()
 		switch (EmployeeRole)
 		{
 		case ERole::Programmer:
-			GM->NumOfProgrammers++;
+			GM->NumOfProgrammers++; //remove later
+			GM->ProgrammingDepartment->EmpCount++;
 			break;
 		case ERole::Artist:
 			GM->NumOfArtists++;
+			GM->ArtistDepartment->EmpCount++;
 			break;
 		}
 	}
@@ -77,10 +79,10 @@ void AEmployee::BeginPlay()
 
 	if (!Cast<ASupervisor>(this)) {
 		GM->WorkStation->UpdateWorkstationPosition();
+		IsDepartmentWorking();
 	}
 
 	MoveEmployee(StartPosition);
-	IsDepartmentWorking();
 
 }
 
@@ -135,7 +137,7 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 	}
 
 	//remove isworking once ismoving is implement? && !AI->IsMoving
-	if (!IsWorking && WorkAnim != nullptr) {
+	if (!IsWorking && WorkAnimation != nullptr) {
 
 		//auto LookAtRotator = FRotator(UKismetMathLibrary::MakeRotator(0, 0, UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), GM->WorkstationList[WorkstationPositionRef]->ChairMesh->GetComponentRotation()).Yaw));
 		//UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
@@ -325,14 +327,14 @@ void AEmployee::FiredFinal()
 	this->Destroy();
 }
 
-void AEmployee::MoveEmployee(FVector Destination)
+void AEmployee::MoveEmployee(FVector Destination, float AcceptanceRadius)
 {
 	if (AI)
 	{
 		auto LookAtRotator = FRotator(UKismetMathLibrary::MakeRotator(0, 0, UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Destination).Yaw));
 		UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
 		SetActorRotation(LookAtRotator);
-		AI->MoveToLocation(Destination);
+		AI->MoveToLocation(Destination, AcceptanceRadius);
 		AI->IsMoving = true;
 		//Make all this moving stuff, lookat, IsMoving, into 1 function
 	}

@@ -15,14 +15,68 @@ ASupervisor::ASupervisor(ERole Department)
 	Salary = 100.f;
 	EmployeeRole = Department;
 	Position = EPosition::Supervisor;
-
 }
 
+void ASupervisor::EvaluateEmployee() {
+	auto Count = 0;
+	for (auto Departments : GM->DepartmentList) {
+		if (Departments->DepRole == EmployeeRole) {
+			Count = Departments->EmpCount;
+		}
+	}
+
+	for (auto DepartmentEmployee : GM->EmployeeList) {
+		if (DepartmentEmployee->EmployeeRole == EmployeeRole && !DepartmentEmployee->HasBeenEvaluated && !IsEvaluating && Cast<ASupervisor>(DepartmentEmployee) == nullptr && DepartmentEmployee->IsWorking) {
+			EmployeeToEval = DepartmentEmployee;
+			MoveEmployee(EmployeeToEval->GetActorLocation(), 75.f);
+			IsEvaluating = true;
+		}
+		else if (DepartmentEmployee->HasBeenEvaluated) {
+			Count--;
+			if (Count == 0) { //Scouting over
+				MoveEmployee(StartPosition);
+			}
+		}
+	}
+}
 
 void ASupervisor::BeginPlay()
 {
 	Super::BeginPlay();
 	StartPosition = FVector(0, 0, 0);
+
+}
+
+
+void ASupervisor::Tick(float DeltaTime)
+{
+	//Super::Tick(DeltaTime);
+	if (IsEvaluating && !AI->IsMoving) {
+		if (!IsWorking) {
+			WorkProgressBar->SetVisibility(true);
+			AssignedWorkload = 10.f;
+			CurrentWorkload = AssignedWorkload;
+			IsWorking = true;
+		}
+		//Implement progress bar calc here
+		if (WorkProgressBar != nullptr && IsWorking) {
+			WorkProgressBar->SetWorldRotation(Camera->GetCameraRotation());
+			WorkProgressBar->AddLocalRotation(FRotator(0, 180, 0));
+			CurrentWorkload -= DeltaTime * 0.50f;
+
+		}
+
+
+		if (CurrentWorkload <= 0) {
+			IsEvaluating = false;
+			IsWorking = false;
+			EmployeeToEval->HasBeenEvaluated = true;
+			//MoveEmployee(StartPosition);
+			EvaluateEmployee();
+			WorkProgressBar->SetVisibility(false);
+		}
+
+	}
 
 }
 
@@ -35,6 +89,7 @@ void ASupervisor::InitSupervisor(ERole Department) {
 		GM->ArtistDepartment->HasSupervisor = true;
 		GM->ArtistDepartment->SupervisorRef = this;
 	}
+	//EvaluateEmployee();
 }
 
 void ASupervisor::FiredFinal()

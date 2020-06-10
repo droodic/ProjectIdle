@@ -52,7 +52,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector MeetingLocation;
 
 	UPROPERTY() int WorkstationPositionRef;
-
 	//class AWorkstation* WorkstationRef;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UWidgetComponent* WorkProgressBar;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float AssignedWorkload;
@@ -73,7 +72,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsMoving = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsWorking;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool DefaultEmployee;
-	bool CanInspect = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool HasBeenEvaluated;
+	bool CanInspect = false; //Used for right click ui 
 
 	//bool IsMoving;
 	//Managers
@@ -81,7 +81,7 @@ public:
 	class UGameManager* GM;
 
 	//Animation
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) class UAnimationAsset* WorkAnim;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere) UAnimSequence* WorkAnimation;
 	bool HasAnimated = false;
 
 	UPROPERTY(VisibleAnywhere)
@@ -99,7 +99,7 @@ public:
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 
 public:
-	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void MoveEmployee(FVector Destination);
+	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void MoveEmployee(FVector Destination, float AcceptanceRadius = 0.f);
 	void BeginWork();
 	void WorkloadProgress(float Multiplier);
 	void Promote();

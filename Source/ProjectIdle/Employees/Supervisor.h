@@ -16,10 +16,17 @@ public:
 	// Sets default values for this character's properties
 	ASupervisor(ERole Department);
 	ASupervisor();
+
+	bool IsEvaluating;
+	AEmployee* EmployeeToEval;
+
 	void InitSupervisor(ERole Department);
+	void EvaluateEmployee();
 	virtual void FiredFinal() override;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
+
 };
