@@ -123,6 +123,7 @@ void AMeetingDepartment::MoveToMeeting()
 					if (Dep->DepRole == Emp->EmployeeRole) {
 						EmployeesAtMeetingList.Add(Emp);
 						Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
+						//Emp->MoveEmployee(FVector(0, 0, 0));
 						//GEngine->AddOnScreenDebugMessage(Index++, 5.f, FColor::Red, "No supp- Sending employee");
 					}
 				}
@@ -162,9 +163,9 @@ void AMeetingDepartment::BackFromMeeting()
 		for (auto Emp : EmployeesAtMeetingList) {
 
 			Emp->MoveEmployee(Emp->StartPosition);
-			EmployeesAtMeetingList.Remove(Emp);
 
 		}
+		EmployeesAtMeetingList.Empty();
 
 		for (auto Emp : GM->EmployeeList) {
 			if (Emp->Position != EPosition::Supervisor) {
