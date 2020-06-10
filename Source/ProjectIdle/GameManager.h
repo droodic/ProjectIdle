@@ -42,5 +42,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite) int EmployeeNameIndex;
 
+	bool IdeaInProduction = false;
+
 	virtual void Init();
 };

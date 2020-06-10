@@ -42,7 +42,7 @@ void AMeetingDepartment::BeginPlay()
 void AMeetingDepartment::TakeIdea(Idea* SentIdea)
 {
 	CurrentIdea = SentIdea;
-	
+
 	if (MeetingWidget != nullptr && UserWidget != nullptr && SentIdea != nullptr) {
 		MeetingWidget->I_GameCover->SetColorAndOpacity(SentIdea->CoverColor);
 		MeetingWidget->T_GameTitle->SetText(FText::FromString(SentIdea->IdeaName));
@@ -50,7 +50,7 @@ void AMeetingDepartment::TakeIdea(Idea* SentIdea)
 		MeetingWidget->T_GameDescription->SetText(FText::FromString(SentIdea->IdeaDescription));
 		MeetingWidget->T_SuccessChance->SetText(FText::AsPercent(SentIdea->SuccessChance / 100.f));
 		MeetingWidget->T_Weight->SetText((SentIdea->ProgrammerWorkload > SentIdea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
-		
+
 		if (SentIdea->ProgrammerWorkload == SentIdea->ArtistWorkload)
 		{
 			MeetingWidget->T_Weight->SetText(FText::FromString("All"));
@@ -93,68 +93,48 @@ void AMeetingDepartment::MoveToMeeting()
 {
 	auto ChairIndex = 0;
 	auto Index = 0;
+	auto LoopCount = 0;
+
+	auto ChairSize = GM->MeetingChairList.Num();
+	auto EmployeeSize = GM->EmployeeList.Num();
+	FString sizeString = FString::FromInt(EmployeeSize);
+	GEngine->AddOnScreenDebugMessage(Index++, 3.f, FColor::Red, sizeString, true);
+
+	bool MoreEmployeeThanChair = false;
+
+	if (EmployeeSize > ChairSize)
+	{
+		//If there too many employee
+		MoreEmployeeThanChair = true;
+	}
+
 	for (auto Dep : GM->DepartmentList) {
-		GEngine->AddOnScreenDebugMessage(Index++, 3.f, FColor::Red, "Loop through Deplist", true);
+		//GEngine->AddOnScreenDebugMessage(Index++, 3.f, FColor::Red, "Loop through Deplist", true);
 
 		if (Dep->HasSupervisor) {
 			Dep->SupervisorRef->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
 			EmployeesAtMeetingList.Add(Dep->SupervisorRef);
-			GEngine->AddOnScreenDebugMessage(Index++, 5.f, FColor::Red, "Supervisor found");
+			//GEngine->AddOnScreenDebugMessage(Index++, 5.f, FColor::Red, "Supervisor found");
 			//break;
 		}
-		else if (!Dep->HasSupervisor){
-			for (auto Emp : GM->EmployeeList) {
-				if (Dep->DepRole == Emp->EmployeeRole) {
-					EmployeesAtMeetingList.Add(Emp);
-					Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
-					GEngine->AddOnScreenDebugMessage(Index++, 5.f, FColor::Red, "No supp- Sending employee");
+		else if (!Dep->HasSupervisor) {
+			if (!MoreEmployeeThanChair) {
+				for (auto Emp : GM->EmployeeList) {
+					if (Dep->DepRole == Emp->EmployeeRole) {
+						EmployeesAtMeetingList.Add(Emp);
+						Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
+						//GEngine->AddOnScreenDebugMessage(Index++, 5.f, FColor::Red, "No supp- Sending employee");
+					}
 				}
+			}
+			else {
+				//Debug Message to prevent crash, implement later
 			}
 		}
 	}
 
 
-	//int32 chairSize = GM->MeetingChairList.Num();
-	//int32 employeeSize = GM->EmployeeList.Num();
-	//int32 LoopUntil;
-	//FString sizeString = FString::FromInt(employeeSize);
 
-	//CanReturn = false;
-	//bool MoreEmployeeThanChair = false;
-
-	//if (chairSize > employeeSize)
-	//{
-	//	LoopUntil = employeeSize;
-	//}
-	//else if (employeeSize > chairSize)
-	//{
-	//	//If there too many employee
-	//	MoreEmployeeThanChair = true;
-	//	LoopUntil = employeeSize;
-	//}
-	//else
-	//{
-	//	LoopUntil = chairSize;
-	//}
-
-	//for (int i = 0; i < LoopUntil; i++)
-	//{
-	//	if (MoreEmployeeThanChair)
-	//	{
-	//		if (i < chairSize)
-	//		{
-	//			GM->EmployeeList[i]->MoveEmployee(GM->MeetingChairList[i]->GetActorLocation());
-	//		}
-	//		else
-	//		{
-	//			GM->EmployeeList[i]->MoveEmployee(OfficeLocation);
-	//		}
-	//	}
-	//	else
-	//	{
-	//		GM->EmployeeList[i]->MoveEmployee(GM->MeetingChairList[i]->GetActorLocation());
-	//	}
-	//}
 }
 
 void AMeetingDepartment::BackFromMeeting()
@@ -182,8 +162,7 @@ void AMeetingDepartment::BackFromMeeting()
 		for (auto Emp : EmployeesAtMeetingList) {
 
 			Emp->MoveEmployee(Emp->StartPosition);
-
-			//Assign workload test - move to own function/clean up later, also needs to be called when are at their workstation not before
+			EmployeesAtMeetingList.Remove(Emp);
 
 		}
 
@@ -203,6 +182,7 @@ void AMeetingDepartment::BackFromMeeting()
 				}
 			}
 		}
+
 
 		auto backlogWidget = GM->OfficeDepartment->BacklogWidget;
 		backlogWidget->IdeaScrollBox->RemoveChild(Cast<UWidget>(CurrentIdea->IdeaButton));

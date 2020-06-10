@@ -191,7 +191,8 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		}
 		if (isOver == true)
 		{
-			UIdeaButton::IsInProduction = false;
+			//UIdeaButton::IsInProduction = false;
+			GM->IdeaInProduction = false;
 			GM->OfficeDepartment->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartment->CurrentIdea);
 
 			UI->MoneyWidget->ShowANotification("PRODUCTION OF A GAME FINISHED, WAITING FOR BEING PUBLISHED");

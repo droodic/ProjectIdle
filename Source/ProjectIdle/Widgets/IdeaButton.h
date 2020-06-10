@@ -40,7 +40,7 @@ public:
 	UPROPERTY(EditAnywhere) struct FLinearColor SelectedColor;
 	UPROPERTY(EditAnywhere) struct FLinearColor PublishedColor;
 
-	bool static IsInProduction;
+	//bool IsInProduction;
 
 public:
 	virtual void NativeConstruct() override;
@@ -51,4 +51,4 @@ private:
 	UFUNCTION() void ButtonClicked();
 };
 
-bool UIdeaButton::IsInProduction = false;
+//bool UIdeaButton::IsInProduction = false;
