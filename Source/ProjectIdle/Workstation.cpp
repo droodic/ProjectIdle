@@ -4,9 +4,11 @@
 #include "Workstation.h"
 #include "ProjectIdle/GameManager.h"
 #include "Employees/Artist.h"
+#include "ProjectIdle/GameHUD.h"
 #include "Employees/Programmer.h"
 #include "Workstations/ArtistStation.h"
 #include "Workstations/ProgrammerStation.h"
+#include "ProjectIdle/Widgets/WorkstationUpgradeWidget.h"
 #include "Engine.h"
 
 // Sets default values
@@ -22,7 +24,7 @@ AWorkstation::AWorkstation()
 
 	UpgradeMonitor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeMonitor"));
 	UpgradeKeyboard = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeKeyBoard"));
-	UpgradeChair = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeChair"));
+	//UpgradeChair = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeChair"));
 
 	UpgradeMonitor->SetupAttachment(RootComponent);
 	UpgradeKeyboard->SetupAttachment(RootComponent);
@@ -44,16 +46,24 @@ void AWorkstation::BeginPlay()
 	GM->WorkStation = this;
 	HasEmployee = false;
 	StationLocation = ChairMesh->GetComponentLocation();
+	
+	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0));
+
+	if (Upgrade)
+	{
+		Upgrade->Station = this;
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(2, 5, FColor::Red, "workstation");
+	}
 
 	if (UserWidget != nullptr)
 	{
 		UpgradeWidget = CreateWidget<UWorkstationUpgradeWidget>(UGameplayStatics::GetPlayerController(this, 0), UserWidget);
 	}
 	
-	if (Upgrade)
-	{
-		
-	}
+
 
 
 	//FVector zero = FVector(200, 0, 0);
@@ -175,12 +185,14 @@ void AWorkstation::NotifyActorOnClicked(FKey ButtonPressed)
 	{
 		UpgradeWidget->AddToViewport();
 		UpgradeMesh(0);
+		UpgradeMesh(1);
 	}
 	else
 	{
 		UpgradeWidget->RemoveFromViewport();
 	}
 
+	//UI->ShowStationUpgrade(this);
 }
 
 void AWorkstation::UpgradeMesh(int Index)

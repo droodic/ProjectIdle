@@ -28,8 +28,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 		TSubclassOf<UUserWidget> EmployeeSheetClass;
 
-	//UPROPERTY(EditDefaultsOnly, Category = "Widgets")
-	//	TSubclassOf<UUserWidget> WorkstationClass;
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
+		TSubclassOf<UUserWidget> WorkstationClass;
 
 	//class UCeoDepMenuWidget* OfficeDepMenuWidget;
 
@@ -42,7 +42,7 @@ public:
 	UPROPERTY() class UEmployeeSheetWidget* EmpSheetWidget;
 	void ShowEmployeeSheet(class AEmployee* employee);
 	void RefreshEmployeeSheet(class AEmployee* employee);
-	//void ShowStationUpgrade(class AWorkstation* station);
+	void ShowStationUpgrade(class AWorkstation* station);
 	void CloseEmployeeSheet();
 	void ShowWidget(UUserWidget* Widgetc, TSubclassOf<UUserWidget> WidgetClass);
 };
