@@ -17,7 +17,7 @@ class PROJECTIDLE_API ADepartment : public AActor
 public:	
 	// Sets default values for this actor's properties
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) int DepartmentCapacity;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) int EmpCount; //convert GM dep emp count to here eventually, for now unused
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* BaseMesh;
 

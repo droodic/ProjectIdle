@@ -25,7 +25,7 @@ void UIdeaBacklogWidget::DisplayNewIdea(Idea* idea) {
 void UIdeaBacklogWidget::Back()
 {
 	OfficeDepartment->Back();
-	CallMeetingBtn->SetIsEnabled(false);
+	//CallMeetingBtn->SetIsEnabled(false);
 }
 
 void UIdeaBacklogWidget::NativeConstruct() {

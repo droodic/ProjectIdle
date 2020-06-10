@@ -21,9 +21,11 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Promote_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Fire_Btn;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* EvaluateBtn;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* EmployeeName_T;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* EmployeeRole_T;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UHorizontalBox* Performance_Box;
 
 	UPROPERTY(BlueprintReadWrite) ERole EmployeeRole;
 	UPROPERTY(BlueprintReadWrite) EPosition EmployeePosition;
@@ -35,6 +37,7 @@ public:
 public:
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void Promote();
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void Fire();
+	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void EvaluateDepartment();
 
 	UFUNCTION(BlueprintCallable, Category = "Converters") FText RoleToText(enum ERole role);
 	UFUNCTION(BlueprintGetter, Category = "Converters") FText PositionToText(enum EPosition position);

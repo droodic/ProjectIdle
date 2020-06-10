@@ -73,6 +73,7 @@ void UCeoDepMenuWidget::CallProgrammerSupSpawn()
 		GM->Money -= 30000;
 		GM->ProgrammingDepartment->HasSupervisor = true;
 		OfficeDepartment->GenerateActor(2, ERole::Programmer);
+		Hire_ProgSup_Btn->SetIsEnabled(false);
 		//OfficeDepartment->GetDepartmentUIValues();
 	}
 }
@@ -83,6 +84,7 @@ void UCeoDepMenuWidget::CallArtistSupSpawn()
 		GM->Money -= 30000;
 		GM->ArtistDepartment->HasSupervisor = true;
 		OfficeDepartment->GenerateActor(2, ERole::Artist);
+		Hire_ArtistSup_Btn->SetIsEnabled(false);
 		//OfficeDepartment->GetDepartmentUIValues();
 	}
 }

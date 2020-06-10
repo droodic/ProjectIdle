@@ -2,6 +2,7 @@
 
 
 #include "EmployeeSheetWidget.h"
+#include "ProjectIdle/Employees/Supervisor.h"
 
 void UEmployeeSheetWidget::NativeConstruct()
 {
@@ -14,6 +15,10 @@ void UEmployeeSheetWidget::NativeConstruct()
 	if (!Fire_Btn->OnClicked.IsBound())
 	{
 		Fire_Btn->OnClicked.AddDynamic(this, &UEmployeeSheetWidget::Fire);
+	}
+	if (!EvaluateBtn->OnClicked.IsBound())
+	{
+		EvaluateBtn->OnClicked.AddDynamic(this, &UEmployeeSheetWidget::EvaluateDepartment);
 	}
 }
 
@@ -33,6 +38,14 @@ void UEmployeeSheetWidget::Fire()
 	}
 }
 
+void UEmployeeSheetWidget::EvaluateDepartment()
+{
+	if (Employee != nullptr)
+	{
+		Cast<ASupervisor>(Employee)->EvaluateEmployee();
+	}
+}
+
 FText UEmployeeSheetWidget::RoleToText(ERole role)
 {
 	FText text;
@@ -45,6 +58,7 @@ FText UEmployeeSheetWidget::RoleToText(ERole role)
 	case ERole::Artist:
 		text = FText::FromString("Artist");
 		break;
+		
 	}
 
 	return text;
@@ -67,6 +81,9 @@ FText UEmployeeSheetWidget::PositionToText(EPosition position)
 		break;
 	case EPosition::Senior:
 		text = FText::FromString("Senior");
+		break;
+	case EPosition::Supervisor:
+		text = FText::FromString("Supervisor");
 		break;
 	}
 

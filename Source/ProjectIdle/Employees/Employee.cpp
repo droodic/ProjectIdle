@@ -15,6 +15,8 @@
 #include "ProjectIdle/CeoDepMenuWidget.h"
 #include "ProjectIdle/ProjectIdleCharacter.h"
 #include "ProjectIdle/Widgets/IdeaButton.h"
+#include "ProjectIdle/Widgets/MoneyWidget.h"
+#include "ProjectIdle/Widgets/EmployeeSheetWidget.h"
 #include "Runtime/AIModule/Classes/Blueprint/AIBlueprintHelperLibrary.h"
 #include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
 
@@ -47,10 +49,12 @@ void AEmployee::BeginPlay()
 		switch (EmployeeRole)
 		{
 		case ERole::Programmer:
-			GM->NumOfProgrammers++;
+			GM->NumOfProgrammers++; //remove later
+			GM->ProgrammingDepartment->EmpCount++;
 			break;
 		case ERole::Artist:
 			GM->NumOfArtists++;
+			GM->ArtistDepartment->EmpCount++;
 			break;
 		}
 	}
@@ -77,10 +81,10 @@ void AEmployee::BeginPlay()
 
 	if (!Cast<ASupervisor>(this)) {
 		GM->WorkStation->UpdateWorkstationPosition();
+		IsDepartmentWorking();
 	}
 
 	MoveEmployee(StartPosition);
-	IsDepartmentWorking();
 
 }
 
@@ -135,7 +139,7 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 	}
 
 	//remove isworking once ismoving is implement? && !AI->IsMoving
-	if (!IsWorking && WorkAnim != nullptr) {
+	if (!IsWorking && WorkAnimation != nullptr) {
 
 		//auto LookAtRotator = FRotator(UKismetMathLibrary::MakeRotator(0, 0, UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), GM->WorkstationList[WorkstationPositionRef]->ChairMesh->GetComponentRotation()).Yaw));
 		//UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
@@ -189,6 +193,8 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		{
 			UIdeaButton::IsInProduction = false;
 			GM->OfficeDepartment->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartment->CurrentIdea);
+
+			UI->MoneyWidget->ShowANotification("PRODUCTION OF A GAME FINISHED, WAITING FOR BEING PUBLISHED");
 			//GM->Money += UKismetMathLibrary::RandomIntegerInRange(15000, 25000); //Use algo later, and do real way of assgning money
 		}
 	}
@@ -221,7 +227,7 @@ void AEmployee::NotifyActorEndOverlap(AActor* OtherActor)
 void AEmployee::Promote()
 {
 	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, "Promote button called");
-	float AddMorale = FMath::FRandRange(.5f, 1.f);
+	float AddMorale = FMath::FRandRange(.25f, .75f);
 
 	if (GM->Money >= CostEmployeePromote)
 	{
@@ -249,7 +255,7 @@ void AEmployee::Promote()
 			Salary += 200;
 			if (Morale < 10) {
 
-				Morale += AddMorale + 2.f;
+				Morale += AddMorale + 1.f;
 				if (Morale >= 10) {
 					Morale = 10;
 				}
@@ -261,7 +267,7 @@ void AEmployee::Promote()
 			Position = EPosition::Senior;
 			Salary += 200;
 			if (Morale < 10) {
-				Morale += AddMorale + 3.5f;
+				Morale += AddMorale + 2.5f;
 				if (Morale >= 10) {
 					Morale = 10;
 				}
@@ -308,28 +314,31 @@ void AEmployee::Fire()
 void AEmployee::FiredFinal()
 {
 	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Red, "The employee is Fired!");
-	if (this->EmployeeRole == ERole::Programmer)
-	{
-		GM->NumOfProgrammers--;
-	}
-	if (this->EmployeeRole == ERole::Artist)
-	{
-		GM->NumOfArtists--;
-	}
-	GM->EmployeeList.Remove(this);
+	if (Position != EPosition::Supervisor) {
+		if (this->EmployeeRole == ERole::Programmer)
+		{
+			GM->NumOfProgrammers--;
+		}
+		if (this->EmployeeRole == ERole::Artist)
+		{
+			GM->NumOfArtists--;
+		}
 	GM->WorkstationList[this->WorkstationPositionRef]->HasEmployee = false;
+	}
+
+	GM->EmployeeList.Remove(this);
 	UI->CloseEmployeeSheet();
 	this->Destroy();
 }
 
-void AEmployee::MoveEmployee(FVector Destination)
+void AEmployee::MoveEmployee(FVector Destination, float AcceptanceRadius)
 {
 	if (AI)
 	{
 		auto LookAtRotator = FRotator(UKismetMathLibrary::MakeRotator(0, 0, UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Destination).Yaw));
 		UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
 		SetActorRotation(LookAtRotator);
-		AI->MoveToLocation(Destination);
+		AI->MoveToLocation(Destination, AcceptanceRadius);
 		AI->IsMoving = true;
 		//Make all this moving stuff, lookat, IsMoving, into 1 function
 	}
