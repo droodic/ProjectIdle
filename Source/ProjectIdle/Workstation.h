@@ -3,9 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-//#include "Employees/Employee.h
 #include "GameFramework/Character.h"
 #include "GameFramework/Actor.h"
+#include "ProjectIdle/Widgets/WorkstationUpgradeWidget.h"
 #include "Components/WidgetComponent.h"
 #include "Workstation.generated.h"
 
@@ -48,6 +48,8 @@ public:
 
 	UPROPERTY() bool IsObjectDisable;
 	UPROPERTY(EditAnywhere, Category = "Disable") bool DisableObject;
+
+	class WorkstationUpgradeWidget* Upgrade;
 
 	class UGameManager* GM;
 	APlayerCameraManager* Camera;

@@ -6,9 +6,7 @@
 #include "Employees/Artist.h"
 #include "Employees/Programmer.h"
 #include "Workstations/ArtistStation.h"
-#include "ProjectIdle/Widgets/WorkstationUpgradeWidget.h"
 #include "Workstations/ProgrammerStation.h"
-#include "UObject/ConstructorHelpers.h"
 #include "Engine.h"
 
 // Sets default values
@@ -52,7 +50,10 @@ void AWorkstation::BeginPlay()
 		UpgradeWidget = CreateWidget<UWorkstationUpgradeWidget>(UGameplayStatics::GetPlayerController(this, 0), UserWidget);
 	}
 	
-
+	if (Upgrade)
+	{
+		
+	}
 
 
 	//FVector zero = FVector(200, 0, 0);
