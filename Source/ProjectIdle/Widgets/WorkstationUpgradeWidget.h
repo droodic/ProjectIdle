@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Runtime/UMG/Public/UMG.h"
 #include "Blueprint/UserWidget.h"
+#include "ProjectIdle/Workstation.h"
 #include "WorkstationUpgradeWidget.generated.h"
 
 /**
@@ -18,6 +19,7 @@ class PROJECTIDLE_API UWorkstationUpgradeWidget : public UUserWidget
 public:
 
 	class AWorkstation* Station;
+	class UGameManager* GM;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* UpgradeMonitor_Btn;
 

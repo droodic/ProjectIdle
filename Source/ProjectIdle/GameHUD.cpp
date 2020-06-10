@@ -26,10 +26,10 @@ void AGameHUD::BeginPlay()
 		EmpSheetWidget = CreateWidget<UEmployeeSheetWidget>(UGameplayStatics::GetPlayerController(this, 0), EmployeeSheetClass);
 	}
 
-	//if (WorkstationClass)
-	//{
-	//	WorkstationWidget = CreateWidget<UWorkstationUpgradeWidget>(UGameplayStatics::GetPlayerController(this, 0), WorkstationClass);
-	//}
+	if (WorkstationClass)
+	{
+		WorkstationWidget = CreateWidget<UWorkstationUpgradeWidget>(UGameplayStatics::GetPlayerController(this, 0), WorkstationClass);
+	}
 }
 
 void AGameHUD::ShowEmployeeSheet(class AEmployee* employee)
@@ -102,4 +102,16 @@ void AGameHUD::DrawHUD()
 void AGameHUD::CloseEmployeeSheet()
 {
 	EmpSheetWidget->RemoveFromViewport();
+}
+
+void AGameHUD::ShowStationUpgrade(class AWorkstation* station)
+{
+	if (!WorkstationWidget->IsInViewport())
+	{
+		WorkstationWidget->AddToViewport();
+	}
+	else
+	{
+		WorkstationWidget->RemoveFromViewport();
+	}
 }
