@@ -37,3 +37,17 @@ void ASupervisor::InitSupervisor(ERole Department) {
 	}
 }
 
+void ASupervisor::FiredFinal()
+{
+	Super::FiredFinal();
+	if (EmployeeRole == ERole::Programmer) {
+		GM->ProgrammingDepartment->HasSupervisor = false;
+		GM->ProgrammingDepartment->SupervisorRef = nullptr;
+	}
+	else if (EmployeeRole == ERole::Artist) {
+		GM->ArtistDepartment->HasSupervisor = false;
+		GM->ArtistDepartment->SupervisorRef = nullptr;
+	}
+}
+
+

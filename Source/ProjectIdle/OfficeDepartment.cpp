@@ -197,11 +197,9 @@ void AOfficeDepartment::HireEmployee(TArray<TSubclassOf<AEmployee>> SpawnEmploye
 //Future transition 
 void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 {
-
 	if (SpawnActors[Position])
 	{
 		UWorld* World = GetWorld();
-
 		if (World)
 		{
 			FVector SpawnLocation;
@@ -221,13 +219,11 @@ void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 				SpawnLocation = GM->WorkstationList[lastPosition]->GetActorLocation() - OffSet;
 				SpawnRotation = FRotator::ZeroRotator;
 			}
-
 			auto Emp = World->SpawnActor<AEmployee>(SpawnActors[Position], SpawnLocation, SpawnRotation, SpawnParameters);
 			Emp->EmployeeRole = EmpRole;
 			if (Cast<ASupervisor>(Emp) != nullptr) {
 				Cast<ASupervisor>(Emp)->InitSupervisor(EmpRole); //quick workaround annoying beginplay pedantics of spawning
 			}
-
 			GetDepartmentUIValues();
 		}
 	}
