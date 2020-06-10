@@ -49,20 +49,17 @@ void AWorkstation::BeginPlay()
 	
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0));
 
-	if (Upgrade)
-	{
-		Upgrade->Station = this;
-	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(2, 5, FColor::Red, "workstation");
-	}
+
+
 
 	if (UserWidget != nullptr)
 	{
 		UpgradeWidget = CreateWidget<UWorkstationUpgradeWidget>(UGameplayStatics::GetPlayerController(this, 0), UserWidget);
 	}
-	
+	if (UpgradeWidget)
+	{
+		UpgradeWidget->Station = this;
+	}
 
 
 
@@ -184,8 +181,8 @@ void AWorkstation::NotifyActorOnClicked(FKey ButtonPressed)
 	if (!UpgradeWidget->IsInViewport())
 	{
 		UpgradeWidget->AddToViewport();
-		UpgradeMesh(0);
-		UpgradeMesh(1);
+		//UpgradeMesh(0);
+		//UpgradeMesh(1);
 	}
 	else
 	{

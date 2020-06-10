@@ -48,7 +48,7 @@ public:
 	UPROPERTY() bool IsObjectDisable;
 	UPROPERTY(EditAnywhere, Category = "Disable") bool DisableObject;
 
-	class UWorkstationUpgradeWidget* Upgrade;
+	//class UWorkstationUpgradeWidget* Upgrade;
 	class UGameManager* GM;
 	APlayerCameraManager* Camera;
     EType type;
