@@ -4,6 +4,7 @@
 #include "OfficeDepartment.h"
 #include "Idea.h"
 #include "CeoDepMenuWidget.h"
+#include "Employees/Employee.h"
 #include "Employees/Programmer.h"
 #include "Employees/Artist.h"
 #include "Department.h"
@@ -82,11 +83,11 @@ void AOfficeDepartment::GetDepartmentUIValues()
 	AvgArtistMorale = 0.f;
 
 	for (auto Employee : GM->EmployeeList) {
-		if (Cast<AProgrammer>(Employee) != nullptr) {
+		if (Employee->EmployeeRole == ERole::Programmer) {
 			TProgSalary += Employee->Salary;
 			AvgProgMorale += Employee->Morale;
 		}
-		else if (Cast<AArtist>(Employee) != nullptr) {
+		else if (Employee->EmployeeRole == ERole::Artist){
 			TArtistSalary += Employee->Salary;
 			AvgArtistMorale += Employee->Morale;
 		}
@@ -187,17 +188,17 @@ void AOfficeDepartment::HireEmployee(TArray<TSubclassOf<AEmployee>> SpawnEmploye
 
 			FVector SpawnLocation = FVector(0, 0, 270);
 			FRotator SpawnRotation = FRotator::ZeroRotator;
-			World->SpawnActor<AEmployee>(SpawnEmployee[Position], SpawnLocation, SpawnRotation, SpawnParameters);
+			//World->SpawnActor<AEmployee>(SpawnEmployee[Position], SpawnLocation, SpawnRotation, SpawnParameters);
 
 		}
 	}
 }
 
 //Future transition 
-void AOfficeDepartment::GenerateActor(TArray<TSubclassOf<AActor>> Spawn, int Position)
+void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 {
 
-	if (Spawn[Position])
+	if (SpawnActors[Position])
 	{
 		UWorld* World = GetWorld();
 
@@ -208,7 +209,7 @@ void AOfficeDepartment::GenerateActor(TArray<TSubclassOf<AActor>> Spawn, int Pos
 			FActorSpawnParameters SpawnParameters;
 			SpawnParameters.Owner = this;
 			SpawnParameters.Instigator = GetInstigator();
-			if (Position == 0 || Position == 1)
+			if (Position == 0 || Position == 1 || Position == 2)
 			{
 				SpawnLocation = GM->Door->GetActorLocation();
 				SpawnRotation = FRotator::ZeroRotator;
@@ -221,7 +222,12 @@ void AOfficeDepartment::GenerateActor(TArray<TSubclassOf<AActor>> Spawn, int Pos
 				SpawnRotation = FRotator::ZeroRotator;
 			}
 
-			World->SpawnActor<AActor>(Spawn[Position], SpawnLocation, SpawnRotation, SpawnParameters);
+			auto Emp = World->SpawnActor<AEmployee>(SpawnActors[Position], SpawnLocation, SpawnRotation, SpawnParameters);
+			Emp->EmployeeRole = EmpRole;
+			if (Cast<ASupervisor>(Emp) != nullptr) {
+				Cast<ASupervisor>(Emp)->InitSupervisor(EmpRole); //quick workaround annoying beginplay pedantics of spawning
+			}
+
 			GetDepartmentUIValues();
 		}
 	}

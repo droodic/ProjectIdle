@@ -44,6 +44,15 @@ void AEmployee::BeginPlay()
 	Camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
 	if (Position != EPosition::Supervisor) {
 		GM->EmployeeList.Add(this);
+		switch (EmployeeRole)
+		{
+		case ERole::Programmer:
+			GM->NumOfProgrammers++;
+			break;
+		case ERole::Artist:
+			GM->NumOfArtists++;
+			break;
+		}
 	}
 	this->SpawnDefaultController();
 	AI = Cast<AEmployeeAIC>(GetController());
@@ -52,18 +61,6 @@ void AEmployee::BeginPlay()
 		Performance = UKismetMathLibrary::RandomFloatInRange(1.f, 6.f); //make editable constants, cieling value can go higher with upgrades
 	}
 
-	switch (EmployeeRole)
-	{
-	case ERole::Programmer:
-		GM->NumOfProgrammers++;
-		break;
-	case ERole::Artist:
-		GM->NumOfArtists++;
-		break;
-	}
-
-
-	StartPosition = this->GetActorLocation();
 	HasWorkStation = false;
 	FVector reset = FVector(0, 0, 278);
 	Camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
@@ -81,6 +78,7 @@ void AEmployee::BeginPlay()
 	if (!Cast<ASupervisor>(this)) {
 		GM->WorkStation->UpdateWorkstationPosition();
 	}
+
 	MoveEmployee(StartPosition);
 	IsDepartmentWorking();
 

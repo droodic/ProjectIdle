@@ -6,7 +6,6 @@
 
 ASupervisor::ASupervisor() {
 	Salary = 100.f;
-	EmployeeRole = ERole::Programmer;
 	Position = EPosition::Supervisor;
 }
 
@@ -23,12 +22,16 @@ ASupervisor::ASupervisor(ERole Department)
 void ASupervisor::BeginPlay()
 {
 	Super::BeginPlay();
+	StartPosition = FVector(0, 0, 0);
 
-	if (EmployeeRole == ERole::Programmer) {
+}
+
+void ASupervisor::InitSupervisor(ERole Department) {
+	if (Department == ERole::Programmer) {
 		GM->ProgrammingDepartment->HasSupervisor = true;
 		GM->ProgrammingDepartment->SupervisorRef = this;
 	}
-	else if (EmployeeRole == ERole::Artist) {
+	else if (Department == ERole::Artist) {
 		GM->ArtistDepartment->HasSupervisor = true;
 		GM->ArtistDepartment->SupervisorRef = this;
 	}
