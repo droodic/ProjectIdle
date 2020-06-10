@@ -25,6 +25,7 @@ void UIdeaButton::NativeConstruct()
 
 void UIdeaButton::ButtonClicked()
 {
+	auto GM = GetWorld()->GetGameInstance<UGameManager>();
 	if (IsFinished && !IsPublished)
 	{
 		OfficeDepartment->OfficeDepMenuWidget->PublishGame_Btn->SetIsEnabled(true);
@@ -36,7 +37,7 @@ void UIdeaButton::ButtonClicked()
 		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, "The game is published");
 		OfficeDepartment->OfficeDepMenuWidget->PublishGame_Btn->SetIsEnabled(false);
 	}
-	else if (!IsInProduction)
+	else if (!GM->IdeaInProduction)
 	{
 		BacklogWidget->ChosenIndex = storedIndex;
 		BacklogWidget->CallMeetingBtn->SetIsEnabled(true);

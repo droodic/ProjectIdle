@@ -72,8 +72,8 @@ void UIdeaBacklogWidget::CallMeeting()
 	}
 
 	OfficeDepartment->IdeaList[ChosenIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
-	UIdeaButton::IsInProduction = true;
-
+	//UIdeaButton::IsInProduction = true;
+	GM->IdeaInProduction = true;
 	CallMeetingBtn->SetIsEnabled(false);
 
 	GM->MeetingDepartment->MoveToMeeting();

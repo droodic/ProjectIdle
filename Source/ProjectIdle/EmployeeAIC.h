@@ -18,7 +18,7 @@ public:
 	AEmployeeAIC(const FObjectInitializer& ObjectInitializer);
 	class AEmployee* EmployeeRef;
 
-	UPROPERTY(BlueprintReadWrite) bool IsMoving = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsMoving = false;
 protected:
 	//	AEmployeeAIC(const FObjectInitializer& ObjectInitializer);
 	virtual void OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result) override;
