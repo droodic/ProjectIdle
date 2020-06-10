@@ -9,6 +9,7 @@
 #include "Department.h"
 #include "Departments/ProgrammingDepartment.h"
 #include "Departments/ArtistDepartment.h"
+#include "Widgets/WorkstationUpgradeWidget.h"
 #include "GameManager.generated.h"
 
 /**
@@ -37,6 +38,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite) class AWorkstation* WorkStation;
 	UPROPERTY(BlueprintReadWrite) class ADoor* Door;
+	UPROPERTY(BlueprintReadWrite) class UWorkstationUpgradeWidget* Upgrade;
 
 	UPROPERTY(BlueprintReadWrite) int EmployeeNameIndex;
 

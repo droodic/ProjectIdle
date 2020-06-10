@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/Actor.h"
-#include "ProjectIdle/Widgets/WorkstationUpgradeWidget.h"
 #include "Components/WidgetComponent.h"
 #include "Workstation.generated.h"
 
@@ -15,11 +14,11 @@ enum class EType : int16
 	ARTIST
 };
 
+
 UCLASS()
 class PROJECTIDLE_API AWorkstation : public AActor
 {
 	GENERATED_BODY()
-	
 public:	
 	// Sets default values for this actor's properties
 	AWorkstation();
@@ -35,7 +34,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeMonitor;
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeKeyboard;
-	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeChair;
+	//UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeChair;
 	//UPROPERTY(VisibleAnywhere) TArray<UStaticMeshComponent*> MeshA;
 
 	UPROPERTY()
@@ -49,11 +48,11 @@ public:
 	UPROPERTY() bool IsObjectDisable;
 	UPROPERTY(EditAnywhere, Category = "Disable") bool DisableObject;
 
-	class WorkstationUpgradeWidget* Upgrade;
-
+	class UWorkstationUpgradeWidget* Upgrade;
 	class UGameManager* GM;
 	APlayerCameraManager* Camera;
     EType type;
+	class AGameHUD* UI;
 
 	UPROPERTY(EditAnywhere, Category = "Widgets") TSubclassOf<UUserWidget> UserWidget;
 
