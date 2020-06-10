@@ -5,6 +5,10 @@
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
 #include "WorldObject/Door.h"
+#include "MeetingDepartment.h"
+#include "Department.h"
+#include "Departments/ProgrammingDepartment.h"
+#include "Departments/ArtistDepartment.h"
 #include "GameManager.generated.h"
 
 /**

@@ -2,15 +2,11 @@
 
 
 #include "GameManager.h"
-#include "MeetingDepartment.h"
-#include "Department.h"
-#include "Departments/ProgrammingDepartment.h"
-#include "Departments/ArtistDepartment.h"
 
 
 
 UGameManager::UGameManager() {
-	Money = 20000; //temp
+	Money = 180000; //temp
 }
 
 void UGameManager::Init()

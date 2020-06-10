@@ -27,6 +27,15 @@ void UCeoDepMenuWidget::NativeConstruct()
 	{
 		Hire_Artist_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::CallArtistSpawn);
 	}
+
+	if (!Hire_ProgSup_Btn->OnClicked.IsBound())
+	{
+		Hire_ProgSup_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::CallProgrammerSupSpawn);
+	}
+	if (!Hire_ArtistSup_Btn->OnClicked.IsBound())
+	{
+		Hire_ArtistSup_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::CallArtistSupSpawn);
+	}
 	if (!PublishGame_Btn->OnClicked.IsBound())
 	{
 		PublishGame_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::PublishGame);
@@ -49,12 +58,32 @@ void UCeoDepMenuWidget::CallProgrammerSpawn()
 
 	if (numberOfProgrammerStation > GM->NumOfProgrammers)
 	{
-		if (GM->Money >= 10000)
+		if (GM->Money >= 10000) //make money editable inspector constant that scales up , same for all dep & sup hire
 		{
 			GM->Money -= 10000;
 			ActiveWorkstation(0);
-			OfficeDepartment->GenerateActor(OfficeDepartment->SpawnActors, 0);
+			OfficeDepartment->GenerateActor(0, ERole::Programmer);
 		}
+	}
+}
+
+void UCeoDepMenuWidget::CallProgrammerSupSpawn()
+{
+	if (!GM->ProgrammingDepartment->HasSupervisor && GM->Money >= 30000) {
+		GM->Money -= 30000;
+		GM->ProgrammingDepartment->HasSupervisor = true;
+		OfficeDepartment->GenerateActor(2, ERole::Programmer);
+		//OfficeDepartment->GetDepartmentUIValues();
+	}
+}
+
+void UCeoDepMenuWidget::CallArtistSupSpawn()
+{
+	if (!GM->ArtistDepartment->HasSupervisor && GM->Money >= 30000) {
+		GM->Money -= 30000;
+		GM->ArtistDepartment->HasSupervisor = true;
+		OfficeDepartment->GenerateActor(2, ERole::Artist);
+		//OfficeDepartment->GetDepartmentUIValues();
 	}
 }
 
@@ -77,7 +106,7 @@ void UCeoDepMenuWidget::CallArtistSpawn()
 		{
 			GM->Money -= 10000;
 			ActiveWorkstation(1);
-			OfficeDepartment->GenerateActor(OfficeDepartment->SpawnActors, 1);
+			OfficeDepartment->GenerateActor(1, ERole::Artist);
 		}
 	}
 }
@@ -85,7 +114,7 @@ void UCeoDepMenuWidget::CallArtistSpawn()
 //Delegate
 void UCeoDepMenuWidget::CallHiring()
 {
-	OfficeDepartment->GenerateActor(OfficeDepartment->SpawnActors, 3);
+	OfficeDepartment->GenerateActor(3, ERole::Artist);
 }
 
 void UCeoDepMenuWidget::ActiveWorkstation(int Number)
@@ -133,7 +162,7 @@ void UCeoDepMenuWidget::GetFinishedIdea(Idea* idea)
 	idea->IdeaButton = Cast<UIdeaButton>(CreateWidget(this, IdeaButtonWidgetClass));
 	OfficeDepartment->FinishedIdeaList.Insert(idea, Index);
 	AddValuesToButton(OfficeDepartment->FinishedIdeaList[Index]);
-	
+
 	IdeaScrollBox->AddChild(OfficeDepartment->FinishedIdeaList[Index]->IdeaButton);
 
 	Index++;
