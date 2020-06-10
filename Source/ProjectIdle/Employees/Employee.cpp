@@ -308,16 +308,19 @@ void AEmployee::Fire()
 void AEmployee::FiredFinal()
 {
 	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Red, "The employee is Fired!");
-	if (this->EmployeeRole == ERole::Programmer)
-	{
-		GM->NumOfProgrammers--;
-	}
-	if (this->EmployeeRole == ERole::Artist)
-	{
-		GM->NumOfArtists--;
-	}
-	GM->EmployeeList.Remove(this);
+	if (Position != EPosition::Supervisor) {
+		if (this->EmployeeRole == ERole::Programmer)
+		{
+			GM->NumOfProgrammers--;
+		}
+		if (this->EmployeeRole == ERole::Artist)
+		{
+			GM->NumOfArtists--;
+		}
 	GM->WorkstationList[this->WorkstationPositionRef]->HasEmployee = false;
+	}
+
+	GM->EmployeeList.Remove(this);
 	UI->CloseEmployeeSheet();
 	this->Destroy();
 }

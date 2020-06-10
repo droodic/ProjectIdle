@@ -104,6 +104,6 @@ public:
 	void WorkloadProgress(float Multiplier);
 	void Promote();
 	void Fire();
-	void FiredFinal(); //Called by Door onOverlap
+	virtual void FiredFinal(); //Called by Door onOverlap
 	void IsDepartmentWorking();
 };

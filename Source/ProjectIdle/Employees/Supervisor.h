@@ -17,6 +17,7 @@ public:
 	ASupervisor(ERole Department);
 	ASupervisor();
 	void InitSupervisor(ERole Department);
+	virtual void FiredFinal() override;
 
 protected:
 	// Called when the game starts or when spawned
