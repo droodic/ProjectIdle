@@ -133,8 +133,8 @@ void AEmployee::Tick(float DeltaTime)
 
 void AEmployee::WorkloadProgress(float Multiplier) {
 
-	float SucessChance = GM->MeetingDepartment->CurrentIdea->SuccessChance; /// 100.0f;
-	float RateRolled = UKismetMathLibrary::RandomIntegerInRange(0, 100);
+	/*float SucessChance = GM->MeetingDepartment->CurrentIdea->SuccessChance; /// 100.0f;
+	float RateRolled = UKismetMathLibrary::RandomIntegerInRange(0, 100);*/
 	//FString SuccessString = FString::SanitizeFloat(SucessChance);
 	//UI->MoneyWidget->ShowANotification(SuccessString);
 
@@ -203,14 +203,16 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 			//UIdeaButton::IsInProduction = false;
 			GM->IdeaInProduction = false;
 			GM->OfficeDepartment->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartment->CurrentIdea);
-			if (SucessChance >= RateRolled)
-			{
-				UI->MoneyWidget->ShowANotification("PRODUCTION OF A GAME FINISHED, WAITING FOR BEING PUBLISHED");
-			}
-			else
-			{
-				UI->MoneyWidget->ShowANotification("Sorry failed");
-			}
+			UI->MoneyWidget->ShowANotification("PRODUCTION OF A GAME FINISHED, WAITING FOR BEING PUBLISHED");
+
+			//if (SucessChance >= RateRolled)
+			//{
+			//	UI->MoneyWidget->ShowANotification("PRODUCTION OF A GAME FINISHED, WAITING FOR BEING PUBLISHED");
+			//}
+			//else
+			//{
+			//	UI->MoneyWidget->ShowANotification("Sorry failed");
+			//}
 
 			//GM->Money += UKismetMathLibrary::RandomIntegerInRange(15000, 25000); //Use algo later, and do real way of assgning money
 		}
