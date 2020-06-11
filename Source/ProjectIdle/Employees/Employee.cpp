@@ -132,6 +132,15 @@ void AEmployee::Tick(float DeltaTime)
 }
 
 void AEmployee::WorkloadProgress(float Multiplier) {
+
+	/*float SucessChance = GM->MeetingDepartment->CurrentIdea->SuccessChance; /// 100.0f;
+	float RateRolled = UKismetMathLibrary::RandomIntegerInRange(0, 100);*/
+	//FString SuccessString = FString::SanitizeFloat(SucessChance);
+	//UI->MoneyWidget->ShowANotification(SuccessString);
+
+	//FString RateString = FString::SanitizeFloat(RateRolled);
+	//UI->MoneyWidget->ShowANotification(RateString);
+
 	//Test function - Workers reduce workloads, make function / use timer +event instead of tick
 	if (WorkProgressBar != nullptr) {
 		WorkProgressBar->SetWorldRotation(Camera->GetCameraRotation());
@@ -194,8 +203,17 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 			//UIdeaButton::IsInProduction = false;
 			GM->IdeaInProduction = false;
 			GM->OfficeDepartment->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartment->CurrentIdea);
-
 			UI->MoneyWidget->ShowANotification("PRODUCTION OF A GAME FINISHED, WAITING FOR BEING PUBLISHED");
+
+			//if (SucessChance >= RateRolled)
+			//{
+			//	UI->MoneyWidget->ShowANotification("PRODUCTION OF A GAME FINISHED, WAITING FOR BEING PUBLISHED");
+			//}
+			//else
+			//{
+			//	UI->MoneyWidget->ShowANotification("Sorry failed");
+			//}
+
 			//GM->Money += UKismetMathLibrary::RandomIntegerInRange(15000, 25000); //Use algo later, and do real way of assgning money
 		}
 	}

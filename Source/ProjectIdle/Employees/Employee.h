@@ -60,6 +60,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) class AEmployeeAIC* AI;
 	//UPROPERTY() float GivenWorkload;
 
+	class Idea* IdeaChance;
 	class UEmployeeSheetWidget* EmployeeSheetWidget;
 	//class AAIController* AI;
 	//int CurrentWorkload;
