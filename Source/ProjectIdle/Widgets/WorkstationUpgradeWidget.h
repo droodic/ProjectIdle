@@ -22,8 +22,12 @@ public:
 	class UGameManager* GM;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* UpgradeMonitor_Btn;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* UpgradeKeyboard_Btn;
+
 
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void Monitor();
+	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void Keyboard();
+
 
 private:
 	virtual void NativeConstruct() override;
