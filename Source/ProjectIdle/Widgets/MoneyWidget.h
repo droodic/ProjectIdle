@@ -22,13 +22,13 @@ public:
 		class UTextBlock* TotalMoney;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-		class UTextBlock* Notifications_T;
-
-	UPROPERTY(BlueprintReadWrite) 
-		FText NotificationText;
+		class UVerticalBox* NotificationVerticalBox;
+	
+	FText NotificationText;
 
 private:
 	FTimerHandle TimerHandle;
+	UWidgetTree* WidgeTree;
 
 public:
 	virtual void NativeConstruct() override;
