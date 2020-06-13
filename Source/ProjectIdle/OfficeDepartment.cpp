@@ -139,6 +139,8 @@ void AOfficeDepartment::PublishGame()
 		GM->Money += moneyGenerated;
 
 		UI->MoneyWidget->ShowANotification("$" + FString::FromInt(moneyGenerated) + ".00");
+
+		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->PublishedColor = FLinearColor::Red;
 	}
 
 }
