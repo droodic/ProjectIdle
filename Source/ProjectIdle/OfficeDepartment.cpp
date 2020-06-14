@@ -121,11 +121,27 @@ void AOfficeDepartment::PublishGame()
 {
 	FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->IsPublished = true;
 
-	auto moneyGenerated = UKismetMathLibrary::RandomIntegerInRange(15000, 25000);
-	//GM->Money = moneyGenerated;
-	GM->Money += UKismetMathLibrary::RandomIntegerInRange(15000, 25000); //Use algo later, and do real way of assgning money
+	float successChance = FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->SuccessChance;
+	float rateRolled = UKismetMathLibrary::RandomFloatInRange(0.f, 100.f);
 
-	UI->MoneyWidget->ShowANotification(FString::FromInt(moneyGenerated));
+	if (successChance >= rateRolled)
+	{
+		auto moneyGenerated = UKismetMathLibrary::RandomIntegerInRange(15000, 25000);
+		GM->Money += moneyGenerated;
+		//GM->Money += UKismetMathLibrary::RandomIntegerInRange(15000, 25000); //Use algo later, and do real way of assgning money
+
+		UI->MoneyWidget->ShowANotification("$" + FString::FromInt(moneyGenerated) + ".00");
+	}
+	else
+	{
+		UI->MoneyWidget->ShowANotification("SORRY, THE GAME WAS NOT A SUCCESS");
+		auto moneyGenerated = UKismetMathLibrary::RandomIntegerInRange(100, 1000);
+		GM->Money += moneyGenerated;
+
+		UI->MoneyWidget->ShowANotification("$" + FString::FromInt(moneyGenerated) + ".00");
+
+		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->PublishedColor = FLinearColor::Red;
+	}
 
 }
 

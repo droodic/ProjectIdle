@@ -16,20 +16,25 @@ void UWorkstationUpgradeWidget::NativeConstruct()
 
 		UpgradeMonitor_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::Monitor);
 	}
+
+	if (!UpgradeKeyboard_Btn->OnClicked.IsBound())
+	{
+		UpgradeKeyboard_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::Keyboard);
+	}
 }
 
 void UWorkstationUpgradeWidget::Monitor()
 {
-
 	if (Station)
 	{
-		
 		Station->UpgradeMesh(0);
+	}
+}
+
+void UWorkstationUpgradeWidget::Keyboard()
+{
+	if (Station)
+	{
 		Station->UpgradeMesh(1);
 	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(2, 5, FColor::Red, "workstation widget");
-	}
-
 }

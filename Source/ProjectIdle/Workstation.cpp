@@ -181,15 +181,11 @@ void AWorkstation::NotifyActorOnClicked(FKey ButtonPressed)
 	if (!UpgradeWidget->IsInViewport())
 	{
 		UpgradeWidget->AddToViewport();
-		//UpgradeMesh(0);
-		//UpgradeMesh(1);
 	}
 	else
 	{
 		UpgradeWidget->RemoveFromViewport();
 	}
-
-	//UI->ShowStationUpgrade(this);
 }
 
 void AWorkstation::UpgradeMesh(int Index)
@@ -204,4 +200,5 @@ void AWorkstation::UpgradeMesh(int Index)
 		KeyboardMesh->SetVisibility(false);
 		UpgradeKeyboard->SetVisibility(true);
 	}
+	UpgradeWidget->RemoveFromViewport();
 }
