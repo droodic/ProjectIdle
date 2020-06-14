@@ -60,13 +60,12 @@ void AEmployee::BeginPlay()
 	}
 	this->SpawnDefaultController();
 	AI = Cast<AEmployeeAIC>(GetController());
-	//UDataTable
 	if (!DefaultEmployee) {
 		Performance = UKismetMathLibrary::RandomFloatInRange(1.f, 6.f); //make editable constants, cieling value can go higher with upgrades
 	}
 
 	HasWorkStation = false;
-	FVector reset = FVector(0, 0, 278);
+	FVector reset = FVector(0, 0, 278);//?
 	Camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
 	if (WorkProgressBar != nullptr) {
 		auto WorkloadWidget = WorkProgressBar->GetUserWidgetObject();
@@ -76,7 +75,10 @@ void AEmployee::BeginPlay()
 	}
 
 	if (!Cast<ASupervisor>(this)) {
-		GM->WorkStation->UpdateWorkstationPosition();
+		//GM->WorkStation->UpdateWorkstationPosition();
+		for (auto Workstation : GM->WorkstationList) {
+			Workstation->UpdateWorkstationPosition();
+		}
 		IsDepartmentWorking();
 	}
 

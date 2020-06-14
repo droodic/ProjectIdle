@@ -13,5 +13,6 @@ UCLASS()
 class PROJECTIDLE_API AArtistStation : public AWorkstation
 {
 	GENERATED_BODY()
-	
+public:
+		AArtistStation();
 };

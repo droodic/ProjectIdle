@@ -3,3 +3,6 @@
 
 #include "ArtistStation.h"
 
+AArtistStation::AArtistStation() {
+	StationRole = ERole::Artist;
+}
