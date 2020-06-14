@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Employees/Employee.h"
 #include "CeoDepMenuWidget.generated.h"
 
 /**
@@ -44,7 +45,7 @@ private:
 	UFUNCTION() void CallProgrammerSupSpawn();
 	UFUNCTION() void CallArtistSpawn();
 	UFUNCTION() void CallArtistSupSpawn();
-	UFUNCTION() void ActiveWorkstation(int Number);
+	UFUNCTION() void ActivateWorkstation(ERole StationRole);
 	UFUNCTION() void PublishGame();
 	
 	void AddValuesToButton(class Idea* idea);

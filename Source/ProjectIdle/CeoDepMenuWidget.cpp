@@ -61,7 +61,7 @@ void UCeoDepMenuWidget::CallProgrammerSpawn()
 		if (GM->Money >= 10000) //make money editable inspector constant that scales up , same for all dep & sup hire
 		{
 			GM->Money -= 10000;
-			ActiveWorkstation(0);
+			ActivateWorkstation(ERole::Programmer);
 			OfficeDepartment->GenerateActor(0, ERole::Programmer);
 		}
 	}
@@ -107,7 +107,7 @@ void UCeoDepMenuWidget::CallArtistSpawn()
 		if (GM->Money >= 10000)
 		{
 			GM->Money -= 10000;
-			ActiveWorkstation(1);
+			ActivateWorkstation(ERole::Artist);
 			OfficeDepartment->GenerateActor(1, ERole::Artist);
 		}
 	}
@@ -119,36 +119,16 @@ void UCeoDepMenuWidget::CallHiring()
 	OfficeDepartment->GenerateActor(3, ERole::Artist);
 }
 
-void UCeoDepMenuWidget::ActiveWorkstation(int Number)
+void UCeoDepMenuWidget::ActivateWorkstation(ERole StationRole)
 {
-	int32 length = GM->WorkstationList.Num();
-	int32 employeeSize = GM->EmployeeList.Num();
-	//int32 ActiveStation = GM->WorkStation->WorkstationActiveLenght();
+	int Length = GM->WorkstationList.Num();
 
-	for (int i = 0; i < length; i++)
+	for (int i = 0; i < Length; i++)
 	{
-		if (Number == 0)
+		if (!GM->WorkstationList[i]->IsEnabled && GM->WorkstationList[i]->StationRole == StationRole)
 		{
-			if (GM->WorkstationList[i]->DisableObject && GM->WorkstationList[i]->IsA(AProgrammerStation::StaticClass()))
-			{
-				//GM->WorkstationList[i]->IsObjectDisable = false;
-				//GM->WorkstationList[i]->DisableStation(false);
-				GM->WorkstationList[i]->DisableObject = false;
-				//To leave the function once one if found.
-				return;
-			}
-		}
-		if (Number == 1)
-		{
-			if (GM->WorkstationList[i]->DisableObject && GM->WorkstationList[i]->IsA(AArtistStation::StaticClass()))
-			{
-				//GM->WorkstationList[i]->IsObjectDisable = false;
-				//GM->WorkstationList[i]->DisableStation(false);
-				GM->WorkstationList[i]->DisableObject = false;
-				//To leave the function once one if found.
-				return;
-			}
-
+			GM->WorkstationList[i]->EnableStation(true);
+			return;
 		}
 	}
 }
