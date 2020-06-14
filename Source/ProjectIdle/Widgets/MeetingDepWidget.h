@@ -28,4 +28,6 @@ public:
 
 #pragma endregion
 	
+private:
+	virtual void NativeConstruct() override;
 };

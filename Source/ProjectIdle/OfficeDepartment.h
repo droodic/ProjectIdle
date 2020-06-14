@@ -46,7 +46,6 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* ChairMesh;
 
-	UPROPERTY(EditAnywhere) TArray<TSubclassOf<class AEmployee>> SpawnWorker;
 	UPROPERTY(EditAnywhere) TArray<TSubclassOf<class AActor>> SpawnActors;
 
 
@@ -60,7 +59,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void GenerateIdea();
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void ViewBacklog();
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void CallMeeting();
-	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void HireEmployee(TArray<TSubclassOf<AEmployee>> SpawnEmployee, int Position);
+	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void HireEmployee(TArray<TSubclassOf<AEmployee>> SpawnEmployee, int Position);
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void PublishGame();
 	//For future use, will spawn any actor
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void GenerateActor(int Position, ERole EmpRole);
