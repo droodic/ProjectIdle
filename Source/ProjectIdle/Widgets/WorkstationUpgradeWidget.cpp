@@ -19,8 +19,7 @@ void UWorkstationUpgradeWidget::NativeConstruct()
 
 	if (!UpgradeKeyboard_Btn->OnClicked.IsBound())
 	{
-
-		UpgradeMonitor_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::Keyboard);
+		UpgradeKeyboard_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::Keyboard);
 	}
 }
 
