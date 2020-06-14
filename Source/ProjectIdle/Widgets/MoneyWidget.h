@@ -27,7 +27,6 @@ public:
 	FText NotificationText;
 
 private:
-	FTimerHandle TimerHandle;
 	UWidgetTree* WidgeTree;
 
 public:
