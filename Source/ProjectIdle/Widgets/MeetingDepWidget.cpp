@@ -3,3 +3,7 @@
 
 #include "MeetingDepWidget.h"
 
+void UMeetingDepWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+}

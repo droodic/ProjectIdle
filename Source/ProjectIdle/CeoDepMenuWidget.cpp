@@ -50,7 +50,7 @@ void UCeoDepMenuWidget::CallProgrammerSpawn()
 
 	for (int i = 0; i < length; i++)
 	{
-		if (GM->WorkstationList[i]->IsA(AProgrammerStation::StaticClass()))
+		if (GM->WorkstationList[i]->StationRole == ERole::Programmer)
 		{
 			numberOfProgrammerStation++;
 		}
@@ -65,6 +65,7 @@ void UCeoDepMenuWidget::CallProgrammerSpawn()
 			OfficeDepartment->GenerateActor(0, ERole::Programmer);
 		}
 	}
+
 }
 
 void UCeoDepMenuWidget::CallProgrammerSupSpawn()
@@ -97,7 +98,7 @@ void UCeoDepMenuWidget::CallArtistSpawn()
 
 	for (int i = 0; i < length; i++)
 	{
-		if (GM->WorkstationList[i]->IsA(AArtistStation::StaticClass()))
+		if (GM->WorkstationList[i]->StationRole == ERole::Artist)
 		{
 			numberOfArtistStation++;
 		}
