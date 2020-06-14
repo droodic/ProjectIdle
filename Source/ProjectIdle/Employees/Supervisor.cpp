@@ -62,10 +62,8 @@ void ASupervisor::Tick(float DeltaTime)
 		if (WorkProgressBar != nullptr && IsWorking) {
 			WorkProgressBar->SetWorldRotation(Camera->GetCameraRotation());
 			WorkProgressBar->AddLocalRotation(FRotator(0, 180, 0));
-			CurrentWorkload -= DeltaTime * 0.50f;
-
+			CurrentWorkload -= DeltaTime * 1.25f;
 		}
-
 
 		if (CurrentWorkload <= 0) {
 			IsEvaluating = false;

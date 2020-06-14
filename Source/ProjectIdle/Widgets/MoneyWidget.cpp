@@ -27,13 +27,12 @@ void UMoneyWidget::ShowANotification(FString notifationText, float time)
 	textBlock->Text = FText::FromString(notifationText);
 	textBlock->SetAutoWrapText(true);
 	NotificationVerticalBox->AddChildToVerticalBox(textBlock);
+
+	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UMoneyWidget::RemoveNotification, time, false);
 }
 
 void UMoneyWidget::RemoveNotification() 
 {
-	if (NotificationVerticalBox->HasAnyChildren())
-	{
-		NotificationVerticalBox->ClearChildren();
-	}
+	NotificationVerticalBox->RemoveChildAt(0);
 }

@@ -65,7 +65,7 @@ public:
 	//class AAIController* AI;
 	//int CurrentWorkload;
 
-	UPROPERTY() FVector StartPosition;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite) FVector StartPosition;
 	APlayerCameraManager* Camera;
 	UPROPERTY() bool HasWorkStation;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsFired = false;
@@ -80,6 +80,7 @@ public:
 	//Managers
 	class AGameHUD* UI;
 	class UGameManager* GM;
+	class AWorkstation* WorkstationRef;
 
 	//Animation
 	UPROPERTY(BlueprintReadWrite, EditAnywhere) UAnimSequence* WorkAnimation;

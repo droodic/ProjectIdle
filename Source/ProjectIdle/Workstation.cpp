@@ -4,8 +4,8 @@
 #include "Workstation.h"
 #include "ProjectIdle/GameManager.h"
 #include "Employees/Artist.h"
-#include "ProjectIdle/GameHUD.h"
 #include "Employees/Programmer.h"
+#include "ProjectIdle/GameHUD.h"
 #include "Workstations/ArtistStation.h"
 #include "Workstations/ProgrammerStation.h"
 #include "ProjectIdle/Widgets/WorkstationUpgradeWidget.h"
@@ -14,7 +14,7 @@
 // Sets default values
 AWorkstation::AWorkstation()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	DeskMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DeskMesh"));
 	ComputerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ComputerMesh"));
@@ -32,7 +32,7 @@ AWorkstation::AWorkstation()
 	ChairMesh->SetupAttachment(RootComponent);
 	KeyboardMesh->SetupAttachment(RootComponent);
 
-	
+	StationRole = ERole::Programmer;//Default to stop crashing
 }
 
 // Called when the game starts or when spawned
@@ -43,14 +43,10 @@ void AWorkstation::BeginPlay()
 	DisableStation(DisableObject);
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->WorkstationList.Add(this);
-	GM->WorkStation = this;
 	HasEmployee = false;
 	StationLocation = ChairMesh->GetComponentLocation();
-	
+
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0));
-
-
-
 
 	if (UserWidget != nullptr)
 	{
@@ -60,28 +56,6 @@ void AWorkstation::BeginPlay()
 	{
 		UpgradeWidget->Station = this;
 	}
-
-
-
-	//FVector zero = FVector(200, 0, 0);
-	//StationVector = this->GetActorLocation();
-	//FRotator rotation = this->GetActorRotation();
-
-	//StationLocation = DeskMesh->GetSocketLocation("TransformSocket");
-	//ChairMesh->Getforw
-	/*if (rotation.Yaw == 0 || rotation.Yaw == 360)
-	{
-		StationLocation = this->StationLocation = DeskMesh->GetSocketLocation("TransformSocket").operator+(zero);
-		
-	}
-	else
-	{
-		StationLocation = StationLocation = DeskMesh->GetSocketLocation("TransformSocket").operator-(zero);
-	}*/
-	
-	//int32 workstationSize = WorkstationActiveLenght();
-	//FString mouseY = FString::FromInt(workstationSize);
-	//UE_LOG(LogActor, Warning, TEXT("%s"), *mouseY)
 }
 
 // Called every frame
@@ -94,55 +68,18 @@ void AWorkstation::Tick(float DeltaTime)
 void AWorkstation::UpdateWorkstationPosition()
 {
 	int32 employeeSize = GM->EmployeeList.Num();
-	int32 activeWorkstation = WorkstationActiveLenght();
 	int32 workstationSize = GM->WorkstationList.Num();
 	FVector AStationLocation = this->GetActorLocation();
+	GEngine->AddOnScreenDebugMessage(12312542, 5, FColor::Green, "Update Station");
 
-		for (int i = 0; i < workstationSize; i++)
-		{
-			if (!GM->WorkstationList[i]->DisableObject)
-			{
-				if (GM->WorkstationList[i]->IsA(AProgrammerStation::StaticClass()))
-				{
-					if (GM->WorkstationList[i]->HasEmployee == false)
-					{
-						for (int j = 0; j < employeeSize; j++)
-						{
-							if (GM->EmployeeList[j]->IsA(AProgrammer::StaticClass()) && GM->EmployeeList[j]->HasWorkStation == false)
-							{
-
-								GM->WorkstationList[i]->HasEmployee = true;
-								GM->EmployeeList[j]->HasWorkStation = true;
-								GM->EmployeeList[j]->StartPosition = GM->WorkstationList[i]->StationLocation;
-								GM->EmployeeList[j]->WorkstationPositionRef = i;
-								break;
-							}
-						}
-					}
-				}
-
-				else if (GM->WorkstationList[i]->IsA(AArtistStation::StaticClass()))
-				{
-					if (GM->WorkstationList[i]->HasEmployee == false)
-					{
-						for (int j = 0; j < employeeSize; j++)
-						{
-							if (GM->EmployeeList[j]->IsA(AArtist::StaticClass()) && GM->EmployeeList[j]->HasWorkStation == false)
-							{
-								GM->WorkstationList[i]->HasEmployee = true;
-								GM->EmployeeList[j]->HasWorkStation = true;
-								GM->EmployeeList[j]->StartPosition = GM->WorkstationList[i]->StationLocation;
-								GM->EmployeeList[j]->WorkstationPositionRef = i;
-								break;
-							}
-						}
-					}
-				}
-			}
+	for (auto Employee : GM->EmployeeList) {
+		if (!Employee->HasWorkStation && Employee->EmployeeRole == StationRole && !DisableObject) {
+			Employee->WorkstationRef = this;
+			Employee->HasWorkStation = true;
+			Employee->StartPosition = StationLocation;
 		}
+	}
 }
-
-
 
 void AWorkstation::DisableStation(bool Disable)
 {
@@ -150,7 +87,7 @@ void AWorkstation::DisableStation(bool Disable)
 	{
 		this->SetActorHiddenInGame(true);
 		this->SetActorEnableCollision(false);
-	    this->SetActorTickEnabled(true);
+		this->SetActorTickEnabled(true);
 	}
 	else
 	{
@@ -161,20 +98,6 @@ void AWorkstation::DisableStation(bool Disable)
 	}
 }
 
-int AWorkstation::WorkstationActiveLenght()
-{
-	int count = 0;
-	int length = GM->WorkstationList.Num();
-
-	for (int i = 0; i < length; i++)
-	{
-		if (!GM->WorkstationList[i]->IsObjectDisable)
-		{
-			count++;
-		}
-	}
-	return count;
-}
 
 void AWorkstation::NotifyActorOnClicked(FKey ButtonPressed)
 {

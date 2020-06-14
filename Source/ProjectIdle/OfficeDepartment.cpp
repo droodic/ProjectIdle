@@ -142,7 +142,6 @@ void AOfficeDepartment::PublishGame()
 
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->PublishedColor = FLinearColor::Red;
 	}
-
 }
 
 void AOfficeDepartment::Tick(float DeltaTime)

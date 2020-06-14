@@ -60,13 +60,12 @@ void AEmployee::BeginPlay()
 	}
 	this->SpawnDefaultController();
 	AI = Cast<AEmployeeAIC>(GetController());
-	//UDataTable
 	if (!DefaultEmployee) {
 		Performance = UKismetMathLibrary::RandomFloatInRange(1.f, 6.f); //make editable constants, cieling value can go higher with upgrades
 	}
 
 	HasWorkStation = false;
-	FVector reset = FVector(0, 0, 278);
+	FVector reset = FVector(0, 0, 278);//?
 	Camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
 	if (WorkProgressBar != nullptr) {
 		auto WorkloadWidget = WorkProgressBar->GetUserWidgetObject();
@@ -74,13 +73,12 @@ void AEmployee::BeginPlay()
 		WidgetInstance->EmployeeRef = this;
 		WorkProgressBar->SetVisibility(false);
 	}
-	if (EmployeeSheetWidget)
-	{
-		EmployeeSheetWidget->Employee = this;
-	}
 
 	if (!Cast<ASupervisor>(this)) {
-		GM->WorkStation->UpdateWorkstationPosition();
+		//GM->WorkStation->UpdateWorkstationPosition();
+		for (auto Workstation : GM->WorkstationList) {
+			Workstation->UpdateWorkstationPosition();
+		}
 		IsDepartmentWorking();
 	}
 
@@ -126,7 +124,7 @@ void AEmployee::Tick(float DeltaTime)
 	//add a if enabled condition or smth
 
 	if (HasWorkload && CurrentWorkload > 0 && !AI->IsMoving) {
-		WorkloadProgress(DeltaTime * ((Performance / 2) + (Morale / 5)));
+		WorkloadProgress(DeltaTime * ((Performance / 2.5) + (Morale / 5)));
 	}
 
 }

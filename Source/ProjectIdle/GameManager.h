@@ -36,7 +36,7 @@ public:
 	UPROPERTY(BlueprintReadWrite) class AProgrammingDepartment* ProgrammingDepartment;
 	UPROPERTY(BlueprintReadWrite) class AArtistDepartment* ArtistDepartment;
 
-	UPROPERTY(BlueprintReadWrite) class AWorkstation* WorkStation;
+	//UPROPERTY(BlueprintReadWrite) class AWorkstation* WorkStation;
 	UPROPERTY(BlueprintReadWrite) class ADoor* Door;
 	UPROPERTY(BlueprintReadWrite) class UWorkstationUpgradeWidget* Upgrade;
 

@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/Actor.h"
 #include "Components/WidgetComponent.h"
+#include "ProjectIdle/Employees/Employee.h"
 #include "Workstation.generated.h"
 
 enum class EType : int16
@@ -34,8 +35,11 @@ public:
 
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeMonitor;
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeKeyboard;
+	
+	ERole StationRole;
 	//UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeChair;
 	//UPROPERTY(VisibleAnywhere) TArray<UStaticMeshComponent*> MeshA;
+
 
 	UPROPERTY()
 	FVector StationLocation;
@@ -47,6 +51,8 @@ public:
 
 	UPROPERTY() bool IsObjectDisable;
 	UPROPERTY(EditAnywhere, Category = "Disable") bool DisableObject;
+
+
 
 	//class UWorkstationUpgradeWidget* Upgrade;
 	class UGameManager* GM;
@@ -70,7 +76,7 @@ public:
 
 	UFUNCTION() void UpdateWorkstationPosition();
 	UFUNCTION() void DisableStation(bool Disable);
-	UFUNCTION() int WorkstationActiveLenght();
+	//UFUNCTION() int WorkstationActiveLenght();
 	UFUNCTION() void UpgradeMesh(int Index);
 	//UFUNCTION() void TestFunction();
 };

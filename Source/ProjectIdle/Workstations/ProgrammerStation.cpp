@@ -3,3 +3,6 @@
 
 #include "ProgrammerStation.h"
 
+AProgrammerStation::AProgrammerStation() {
+	StationRole = ERole::Programmer;
+}
