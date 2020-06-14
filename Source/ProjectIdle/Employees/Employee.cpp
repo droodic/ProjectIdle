@@ -74,10 +74,6 @@ void AEmployee::BeginPlay()
 		WidgetInstance->EmployeeRef = this;
 		WorkProgressBar->SetVisibility(false);
 	}
-	if (EmployeeSheetWidget)
-	{
-		EmployeeSheetWidget->Employee = this;
-	}
 
 	if (!Cast<ASupervisor>(this)) {
 		GM->WorkStation->UpdateWorkstationPosition();
@@ -126,7 +122,7 @@ void AEmployee::Tick(float DeltaTime)
 	//add a if enabled condition or smth
 
 	if (HasWorkload && CurrentWorkload > 0 && !AI->IsMoving) {
-		WorkloadProgress(DeltaTime * ((Performance / 2) + (Morale / 5)));
+		WorkloadProgress(DeltaTime * ((Performance / 2.5) + (Morale / 5)));
 	}
 
 }
