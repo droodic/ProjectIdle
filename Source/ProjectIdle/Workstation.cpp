@@ -39,8 +39,8 @@ AWorkstation::AWorkstation()
 void AWorkstation::BeginPlay()
 {
 	Super::BeginPlay();
-	IsObjectDisable = DisableObject;
-	DisableStation(DisableObject);
+	//IsObjectDisable = DisableObject;
+	EnableStation(IsEnabled);
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->WorkstationList.Add(this);
 	HasEmployee = false;
@@ -62,39 +62,44 @@ void AWorkstation::BeginPlay()
 void AWorkstation::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	DisableStation(DisableObject);
+	//DisableStation(DisableObject);
 }
 
 void AWorkstation::UpdateWorkstationPosition()
 {
-	int32 employeeSize = GM->EmployeeList.Num();
-	int32 workstationSize = GM->WorkstationList.Num();
-	FVector AStationLocation = this->GetActorLocation();
-	GEngine->AddOnScreenDebugMessage(12312542, 5, FColor::Green, "Update Station");
+	if (!HasEmployee) {
+		int32 employeeSize = GM->EmployeeList.Num();
+		int32 workstationSize = GM->WorkstationList.Num();
+		FVector AStationLocation = this->GetActorLocation();
+		GEngine->AddOnScreenDebugMessage(12312542, 5, FColor::Green, "Update Station");
 
-	for (auto Employee : GM->EmployeeList) {
-		if (!Employee->HasWorkStation && Employee->EmployeeRole == StationRole && !DisableObject) {
-			Employee->WorkstationRef = this;
-			Employee->HasWorkStation = true;
-			Employee->StartPosition = StationLocation;
+
+		for (auto Employee : GM->EmployeeList) {
+			if (!Employee->HasWorkStation && Employee->EmployeeRole == StationRole && IsEnabled) {
+				Employee->WorkstationRef = this;
+				Employee->HasWorkStation = true;
+				Employee->StartPosition = StationLocation;
+				HasEmployee = true;
+			}
 		}
 	}
 }
 
-void AWorkstation::DisableStation(bool Disable)
+void AWorkstation::EnableStation(bool Enable)
 {
-	if (Disable)
+	if (!Enable)
 	{
 		this->SetActorHiddenInGame(true);
 		this->SetActorEnableCollision(false);
 		this->SetActorTickEnabled(true);
+		IsEnabled = false;
 	}
 	else
 	{
 		this->SetActorHiddenInGame(false);
 		this->SetActorEnableCollision(true);
-		////Turn off if active
 		this->SetActorTickEnabled(false);
+		IsEnabled = true;
 	}
 }
 
@@ -125,3 +130,7 @@ void AWorkstation::UpgradeMesh(int Index)
 	}
 	UpgradeWidget->RemoveFromViewport();
 }
+
+//void AWorkStation::DoCompile() {
+//
+//}

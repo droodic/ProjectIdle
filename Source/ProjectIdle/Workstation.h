@@ -20,7 +20,7 @@ UCLASS()
 class PROJECTIDLE_API AWorkstation : public AActor
 {
 	GENERATED_BODY()
-public:	
+public:
 	// Sets default values for this actor's properties
 	AWorkstation();
 	UPROPERTY(VisibleAnywhere)
@@ -35,33 +35,32 @@ public:
 
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeMonitor;
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeKeyboard;
-	
+
 	ERole StationRole;
 	//UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeChair;
 	//UPROPERTY(VisibleAnywhere) TArray<UStaticMeshComponent*> MeshA;
 
 
 	UPROPERTY()
-	FVector StationLocation;
+		FVector StationLocation;
 
 	UPROPERTY()
 		FVector StationVector;
 
+	bool IsCompiling;
 	UPROPERTY() bool HasEmployee;
-
-	UPROPERTY() bool IsObjectDisable;
-	UPROPERTY(EditAnywhere, Category = "Disable") bool DisableObject;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsEnabled;
+	//UPROPERTY(EditAnywhere, Category = "Disable") bool DisableObject;
 
 
 
 	//class UWorkstationUpgradeWidget* Upgrade;
 	class UGameManager* GM;
 	APlayerCameraManager* Camera;
-    EType type;
 	class AGameHUD* UI;
+	//EType type;
 
 	UPROPERTY(EditAnywhere, Category = "Widgets") TSubclassOf<UUserWidget> UserWidget;
-
 	UPROPERTY() class UWorkstationUpgradeWidget* UpgradeWidget;
 
 
@@ -69,14 +68,15 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	void NotifyActorOnClicked(FKey ButtonPressed = EKeys::RightMouseButton) override;
 
 	UFUNCTION() void UpdateWorkstationPosition();
-	UFUNCTION() void DisableStation(bool Disable);
-	//UFUNCTION() int WorkstationActiveLenght();
+	UFUNCTION() void EnableStation(bool Enabled);
 	UFUNCTION() void UpgradeMesh(int Index);
+	//UFUNCTION() void DoCompile();
+	//UFUNCTION() int WorkstationActiveLenght();
 	//UFUNCTION() void TestFunction();
 };
