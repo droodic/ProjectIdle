@@ -32,6 +32,8 @@ public:
 	TArray<class Idea*> IdeaList;
 	TArray<class Idea*> FinishedIdeaList;
 	
+	UPROPERTY(BlueprintReadWrite) float AddedChance = 0;
+	UPROPERTY(BlueprintReadWrite) float successChance;
 	UPROPERTY(BlueprintReadWrite) int ideasGenerated;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float CurrIdeaProgress = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float MaxIdeaProgress = 100;
