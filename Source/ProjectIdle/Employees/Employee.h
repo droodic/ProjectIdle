@@ -89,6 +89,11 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		UBoxComponent* CollisionBox;
 
+	int CompileValueOriginal = 0;
+	int CompileValue = 0;
+	int NumCompile;
+	FTimerManager WorkTimer;
+	FTimerHandle TimerHandle;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -108,4 +113,5 @@ public:
 	void Fire();
 	virtual void FiredFinal(); //Called by Door onOverlap
 	void IsDepartmentWorking();
+	void WorkOnTask();
 };
