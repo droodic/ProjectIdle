@@ -121,9 +121,10 @@ void AOfficeDepartment::PublishGame()
 {
 	FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->IsPublished = true;
 
-	float successChance = FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->SuccessChance;
+	successChance = FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->SuccessChance + AddedChance;
 	float rateRolled = UKismetMathLibrary::RandomFloatInRange(0.f, 100.f);
-
+	UI->MoneyWidget->ShowANotification(FString::FromInt(AddedChance) + " AddedChance");
+	UI->MoneyWidget->ShowANotification(FString::FromInt(successChance) + " Chance");
 	if (successChance >= rateRolled)
 	{
 		auto moneyGenerated = UKismetMathLibrary::RandomIntegerInRange(15000, 25000);
@@ -197,25 +198,7 @@ void AOfficeDepartment::NotifyActorEndOverlap(AActor* OtherActor)
 	}
 }
 
-void AOfficeDepartment::HireEmployee(TArray<TSubclassOf<AEmployee>> SpawnEmployee, int Position)
-{
-	if (SpawnEmployee[Position])
-	{
-		UWorld* World = GetWorld();
 
-		if (World)
-		{
-			FActorSpawnParameters SpawnParameters;
-			SpawnParameters.Owner = this;
-			SpawnParameters.Instigator = GetInstigator();
-
-			FVector SpawnLocation = FVector(0, 0, 270);
-			FRotator SpawnRotation = FRotator::ZeroRotator;
-			//World->SpawnActor<AEmployee>(SpawnEmployee[Position], SpawnLocation, SpawnRotation, SpawnParameters);
-
-		}
-	}
-}
 
 //Future transition 
 void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
@@ -233,13 +216,6 @@ void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 			if (Position == 0 || Position == 1 || Position == 2)
 			{
 				SpawnLocation = GM->Door->GetActorLocation();
-				SpawnRotation = FRotator::ZeroRotator;
-			}
-			if (Position == 3)
-			{
-				FVector OffSet = FVector(0, -320, 0);
-				int lastPosition = GM->WorkstationList.Num() - 1;
-				SpawnLocation = GM->WorkstationList[lastPosition]->GetActorLocation() - OffSet;
 				SpawnRotation = FRotator::ZeroRotator;
 			}
 			auto Emp = World->SpawnActor<AEmployee>(SpawnActors[Position], SpawnLocation, SpawnRotation, SpawnParameters);

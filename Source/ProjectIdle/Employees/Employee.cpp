@@ -17,6 +17,7 @@
 #include "ProjectIdle/ProjectIdleCharacter.h"
 #include "ProjectIdle/Widgets/IdeaButton.h"
 #include "ProjectIdle/Widgets/MoneyWidget.h"
+#include "ProjectIdle/Widgets/MeetingDepWidget.h"
 #include "ProjectIdle/Widgets/EmployeeSheetWidget.h"
 #include "Runtime/AIModule/Classes/Blueprint/AIBlueprintHelperLibrary.h"
 #include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
@@ -145,8 +146,7 @@ void AEmployee::Tick(float DeltaTime)
 	//add a if enabled condition or smth
 
 	if (HasWorkload && CurrentWorkload > 0 && !AI->IsMoving && !WorkstationRef->IsCompiling) {
-		WorkloadProgress(DeltaTime * ((Performance / 2.5) + (Morale / 5)));
-		//WorkTimer.SetTimer(TimerHandle, this, &AEmployee::WorkloadProgress, .5f, true);
+		WorkloadProgress(DeltaTime * ((Performance / 2.5) + (Morale / 5) * GM->SpeedRate));
 	}
 
 }

@@ -32,6 +32,8 @@ public:
 	TArray<class Idea*> IdeaList;
 	TArray<class Idea*> FinishedIdeaList;
 	
+	UPROPERTY(BlueprintReadWrite) float AddedChance = 0;
+	UPROPERTY(BlueprintReadWrite) float successChance;
 	UPROPERTY(BlueprintReadWrite) int ideasGenerated;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float CurrIdeaProgress = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float MaxIdeaProgress = 100;
@@ -46,7 +48,6 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* ChairMesh;
 
-	UPROPERTY(EditAnywhere) TArray<TSubclassOf<class AEmployee>> SpawnWorker;
 	UPROPERTY(EditAnywhere) TArray<TSubclassOf<class AActor>> SpawnActors;
 
 
@@ -60,7 +61,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void GenerateIdea();
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void ViewBacklog();
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void CallMeeting();
-	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void HireEmployee(TArray<TSubclassOf<AEmployee>> SpawnEmployee, int Position);
+	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void HireEmployee(TArray<TSubclassOf<AEmployee>> SpawnEmployee, int Position);
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void PublishGame();
 	//For future use, will spawn any actor
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void GenerateActor(int Position, ERole EmpRole);

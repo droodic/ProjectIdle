@@ -41,7 +41,7 @@ public:
 	UPROPERTY(BlueprintReadWrite) class UWorkstationUpgradeWidget* Upgrade;
 
 	UPROPERTY(BlueprintReadWrite) int EmployeeNameIndex;
-
+	UPROPERTY() float SpeedRate = 1;
 	bool IdeaInProduction = false;
 
 	virtual void Init();
