@@ -9,6 +9,8 @@
 #include "Workstations/ArtistStation.h"
 #include "Workstations/ProgrammerStation.h"
 #include "ProjectIdle/Widgets/WorkstationUpgradeWidget.h"
+#include "ProjectIdle/Widgets/WorkstationCompileWidget.h"
+#include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
 #include "Engine.h"
 
 // Sets default values
@@ -22,6 +24,9 @@ AWorkstation::AWorkstation()
 	KeyboardMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("KeyboardMesh"));
 	RootComponent = DeskMesh;
 
+	StationRole = ERole::Programmer;//Default to stop crashing
+
+	
 	UpgradeMonitor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeMonitor"));
 	UpgradeKeyboard = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeKeyBoard"));
 	//UpgradeChair = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeChair"));
@@ -32,7 +37,11 @@ AWorkstation::AWorkstation()
 	ChairMesh->SetupAttachment(RootComponent);
 	KeyboardMesh->SetupAttachment(RootComponent);
 
-	StationRole = ERole::Programmer;//Default to stop crashing
+	CompileProgressBar = CreateDefaultSubobject<UWidgetComponent>(TEXT("WorkloadProgressBar")); //Maybe make Employee BP to set this up, because if later Employee classes emerge if we
+	CompileProgressBar->AttachTo(RootComponent);
+	CompileProgressBar->SetVisibility(false);
+	CompileProgressBar->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+
 }
 
 // Called when the game starts or when spawned
@@ -56,6 +65,15 @@ void AWorkstation::BeginPlay()
 	{
 		UpgradeWidget->Station = this;
 	}
+	Camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
+	if (CompileProgressBar != nullptr) {
+		auto WorkloadWidget = CompileProgressBar->GetUserWidgetObject();
+		auto WidgetInstance = Cast<UWorkstationCompileWidget>(WorkloadWidget);
+		WidgetInstance->WorkstationRef = this;
+		CompileProgressBar->SetVisibility(false);
+	}
+
+	//DoCompile();//test
 }
 
 // Called every frame
@@ -63,6 +81,23 @@ void AWorkstation::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	//DisableStation(DisableObject);
+
+	//Same as employee workload diminish, move to event/timer delegate function later
+	if (IsCompiling && IsEnabled) {
+		if (CompileProgressBar != nullptr) {
+			CompileProgressBar->SetWorldRotation(Camera->GetCameraRotation());
+			CompileProgressBar->AddLocalRotation(FRotator(0, 180, 0));
+		}
+		if (CurrentCompileLoad > 0) {
+			CurrentCompileLoad -= DeltaTime * 1.25f;
+			if (CurrentCompileLoad <= 0) {
+				CompileProgressBar->SetVisibility(false);
+				IsCompiling = false;
+				//send to employee that yolo etc
+			}
+		}
+
+	}
 }
 
 void AWorkstation::UpdateWorkstationPosition()
@@ -91,14 +126,14 @@ void AWorkstation::EnableStation(bool Enable)
 	{
 		this->SetActorHiddenInGame(true);
 		this->SetActorEnableCollision(false);
-		this->SetActorTickEnabled(true);
+		//this->SetActorTickEnabled(true);
 		IsEnabled = false;
 	}
 	else
 	{
 		this->SetActorHiddenInGame(false);
 		this->SetActorEnableCollision(true);
-		this->SetActorTickEnabled(false);
+		//this->SetActorTickEnabled(false);
 		IsEnabled = true;
 	}
 }
@@ -131,6 +166,12 @@ void AWorkstation::UpgradeMesh(int Index)
 	UpgradeWidget->RemoveFromViewport();
 }
 
-//void AWorkStation::DoCompile() {
-//
-//}
+void AWorkstation::DoCompile() {
+	IsCompiling = true;
+	CompileProgressBar->SetVisibility(true);
+
+	//Make function for generation of compile loads scaling with player progress, etc
+	AssignedCompileLoad = UKismetMathLibrary::RandomFloatInRange(50, 100);
+	CurrentCompileLoad = AssignedCompileLoad;
+
+}

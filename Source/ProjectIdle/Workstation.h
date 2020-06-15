@@ -23,6 +23,10 @@ class PROJECTIDLE_API AWorkstation : public AActor
 public:
 	// Sets default values for this actor's properties
 	AWorkstation();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite) float AssignedCompileLoad;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite) float CurrentCompileLoad;
+
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* DeskMesh;
 
@@ -37,9 +41,6 @@ public:
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeKeyboard;
 
 	ERole StationRole;
-	//UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeChair;
-	//UPROPERTY(VisibleAnywhere) TArray<UStaticMeshComponent*> MeshA;
-
 
 	UPROPERTY()
 		FVector StationLocation;
@@ -50,19 +51,15 @@ public:
 	bool IsCompiling;
 	UPROPERTY() bool HasEmployee;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsEnabled;
-	//UPROPERTY(EditAnywhere, Category = "Disable") bool DisableObject;
 
-
-
-	//class UWorkstationUpgradeWidget* Upgrade;
-	class UGameManager* GM;
 	APlayerCameraManager* Camera;
+	class UGameManager* GM;
 	class AGameHUD* UI;
 	//EType type;
 
 	UPROPERTY(EditAnywhere, Category = "Widgets") TSubclassOf<UUserWidget> UserWidget;
 	UPROPERTY() class UWorkstationUpgradeWidget* UpgradeWidget;
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UWidgetComponent* CompileProgressBar;
 
 protected:
 	// Called when the game starts or when spawned
@@ -76,7 +73,7 @@ public:
 	UFUNCTION() void UpdateWorkstationPosition();
 	UFUNCTION() void EnableStation(bool Enabled);
 	UFUNCTION() void UpgradeMesh(int Index);
-	//UFUNCTION() void DoCompile();
+	UFUNCTION() void DoCompile();
 	//UFUNCTION() int WorkstationActiveLenght();
 	//UFUNCTION() void TestFunction();
 };

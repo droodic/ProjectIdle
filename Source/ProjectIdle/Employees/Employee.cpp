@@ -4,6 +4,7 @@
 #include "Employee.h"
 #include "AIModule/Classes/DetourCrowdAIController.h"
 #include "Engine.h"
+#include "TimerManager.h"
 #include "EWorkProgressWidget.h"
 #include "ProjectIdle/Idea.h"
 #include "ProjectIdle/EmployeeAIC.h"
@@ -42,8 +43,9 @@ void AEmployee::BeginPlay()
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0)->GetHUD());
-
 	Camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
+	//WorkTimer = GetWorldTimerManager();
+
 	if (Position != EPosition::Supervisor) {
 		GM->EmployeeList.Add(this);
 		switch (EmployeeRole)
@@ -102,6 +104,11 @@ void AEmployee::IsDepartmentWorking() {
 
 void AEmployee::BeginWork() {
 	HasWorkload = true;
+	//GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AEmployee::WorkOnTask, .5f, true);
+}
+
+void AEmployee::WorkOnTask() {
+	//implement instead of tick way
 }
 
 void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
@@ -123,8 +130,9 @@ void AEmployee::Tick(float DeltaTime)
 
 	//add a if enabled condition or smth
 
-	if (HasWorkload && CurrentWorkload > 0 && !AI->IsMoving) {
+	if (HasWorkload && CurrentWorkload > 0 && !AI->IsMoving && !WorkstationRef->IsCompiling) {
 		WorkloadProgress(DeltaTime * ((Performance / 2.5) + (Morale / 5)));
+		//WorkTimer.SetTimer(TimerHandle, this, &AEmployee::WorkloadProgress, .5f, true);
 	}
 
 }
@@ -145,18 +153,22 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		WorkProgressBar->AddLocalRotation(FRotator(0, 180, 0));
 	}
 
-	//remove isworking once ismoving is implement? && !AI->IsMoving
 	if (!IsWorking && WorkAnimation != nullptr) {
 
-		//auto LookAtRotator = FRotator(UKismetMathLibrary::MakeRotator(0, 0, UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), GM->WorkstationList[WorkstationPositionRef]->ChairMesh->GetComponentRotation()).Yaw));
-		//UKismetMathLibrary::BreakRotator(LookAtRotator, LookAtRotator.Roll, LookAtRotator.Pitch, LookAtRotator.Yaw);
-		SetActorRotation(GM->WorkstationList[WorkstationPositionRef]->ChairMesh->GetComponentRotation());
-		//GetMesh()->PlayAnimation(WorkAnim, false);
+		SetActorRotation(WorkstationRef->ChairMesh->GetComponentRotation());
 		WorkProgressBar->SetVisibility(true);
 		IsWorking = true;
 	}
 
-	CurrentWorkload -= Multiplier;
+	auto Rand = UKismetMathLibrary::RandomIntegerInRange(0, 10);
+	if (Rand == 0) {
+		WorkstationRef->DoCompile();
+		
+	}
+	else{
+		CurrentWorkload -= Multiplier;
+	}
+
 	if (CurrentWorkload <= 0) {
 		//Self workload finished, check to see if others remain. If others in same department remain, go to them, and take 50% of their remainding workload if there's more than 10 seconds left of WL
 		//If none remain, give player money if idea was successful
@@ -176,7 +188,7 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 				if (AnEmployee->CurrentWorkload >= 5) {
 					AnEmployee->CurrentWorkload /= 2;
 					CurrentWorkload += AnEmployee->CurrentWorkload / 2;
-					GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Programmer workload finished, taking workload from another employee"));
+					GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Artist workload finished, taking workload from another employee"));
 					break;
 				}
 			}
@@ -340,7 +352,7 @@ void AEmployee::FiredFinal()
 		{
 			GM->NumOfArtists--;
 		}
-	GM->WorkstationList[this->WorkstationPositionRef]->HasEmployee = false;
+		GM->WorkstationList[this->WorkstationPositionRef]->HasEmployee = false;
 	}
 
 	GM->EmployeeList.Remove(this);
