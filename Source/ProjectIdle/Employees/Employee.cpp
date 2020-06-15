@@ -94,7 +94,7 @@ void AEmployee::IsDepartmentWorking() {
 		if (Employee->EmployeeRole == EmployeeRole && Employee->CurrentWorkload > 5.f) {
 			Employee->AssignedWorkload /= 2;
 			this->AssignedWorkload = Employee->AssignedWorkload;
-			this->CurrentWorkload = Employee->CurrentWorkload / 2;
+			this->CurrentWorkload = AssignedWorkload;//Employee->CurrentWorkload / 2;
 			Employee->CurrentWorkload /= 2;
 
 			//Recalc Compile values of employee which you are taking workload from
@@ -181,11 +181,11 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 			NumCompile = 3; //min 3 compile ? , Figure out better way of dividing number of compiles on new hire
 		}
 		CompileValueOriginal = (AssignedWorkload / NumCompile);
-		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "NumCompile:" + FString::FromInt(NumCompile));
-		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Compile value original:" + FString::FromInt(CompileValueOriginal));
 		CompileValue = CompileValueOriginal;
+		/*GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "NumCompile:" + FString::FromInt(NumCompile));
+		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Compile value original:" + FString::FromInt(CompileValueOriginal));
 		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Blue, "Current Workload:" + FString::FromInt(CurrentWorkload));
-		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Yellow, "Next Compile at : " + FString::FromInt(AssignedWorkload - CompileValueOriginal));
+		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Yellow, "Next Compile at : " + FString::FromInt(AssignedWorkload - CompileValueOriginal));*/
 
 		if (CurrentWorkload <= AssignedWorkload - CompileValueOriginal) {
 			//Under exact compile range, force compile
