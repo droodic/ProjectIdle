@@ -121,9 +121,10 @@ void AOfficeDepartment::PublishGame()
 {
 	FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->IsPublished = true;
 
-	float successChance = FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->SuccessChance;
+	successChance = FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->SuccessChance + AddedChance;
 	float rateRolled = UKismetMathLibrary::RandomFloatInRange(0.f, 100.f);
-
+	UI->MoneyWidget->ShowANotification(FString::FromInt(AddedChance) + " AddedChance");
+	UI->MoneyWidget->ShowANotification(FString::FromInt(successChance) + " Chance");
 	if (successChance >= rateRolled)
 	{
 		auto moneyGenerated = UKismetMathLibrary::RandomIntegerInRange(15000, 25000);
