@@ -94,7 +94,7 @@ void AEmployee::IsDepartmentWorking() {
 		if (Employee->EmployeeRole == EmployeeRole && Employee->CurrentWorkload > 5.f) {
 			Employee->AssignedWorkload /= 2;
 			this->AssignedWorkload = Employee->AssignedWorkload;
-			this->CurrentWorkload = Employee->CurrentWorkload / 2;
+			this->CurrentWorkload = AssignedWorkload;//Employee->CurrentWorkload / 2;
 			Employee->CurrentWorkload /= 2;
 
 			//Recalc Compile values of employee which you are taking workload from
@@ -110,11 +110,12 @@ void AEmployee::IsDepartmentWorking() {
 
 void AEmployee::BeginWork() {
 	//if compile phase in work
-	NumCompile = UKismetMathLibrary::RandomIntegerInRange(3, 9);
+	CompileValue = 0;
+	NumCompile = UKismetMathLibrary::RandomIntegerInRange(9, 12);
 	//make funciton to find self department and values, example get all department employees number
 	for (auto Dep : GM->DepartmentList) {
 		if (Dep->DepRole == EmployeeRole) {
-			NumCompile = floor(NumCompile / Dep->EmpCount);
+			NumCompile = ceil(NumCompile / Dep->EmpCount);
 		}
 	}
 
@@ -173,18 +174,31 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		WorkProgressBar->AddLocalRotation(FRotator(0, 180, 0));
 	}
 
-
-	//todo : all workstation have widget setup, scale with hired employee
-
 	if (CompileValue == 0) {
+		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Assigned workload:" + FString::FromInt(AssignedWorkload));
+
+		if (NumCompile == 1) {
+			NumCompile = 3; //min 3 compile ? , Figure out better way of dividing number of compiles on new hire
+		}
 		CompileValueOriginal = (AssignedWorkload / NumCompile);
 		CompileValue = CompileValueOriginal;
-		GEngine->AddOnScreenDebugMessage(60000, 5.f, FColor::Red, FString::FromInt(CompileValue));
+		/*GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "NumCompile:" + FString::FromInt(NumCompile));
+		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Compile value original:" + FString::FromInt(CompileValueOriginal));
+		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Blue, "Current Workload:" + FString::FromInt(CurrentWorkload));
+		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Yellow, "Next Compile at : " + FString::FromInt(AssignedWorkload - CompileValueOriginal));*/
+
+		if (CurrentWorkload <= AssignedWorkload - CompileValueOriginal) {
+			//Under exact compile range, force compile
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Forcing compile");
+			WorkstationRef->DoCompile();
+			CompileValue += CompileValueOriginal; //+1 to stop from 100% compiling at 0 workload
+			NumCompile--;
+		}
 	}
 	if (CompileValue != 0 && (int)CurrentWorkload == (int)(AssignedWorkload - CompileValue) && NumCompile > 0) {
-		GEngine->AddOnScreenDebugMessage(60001, 5.f, FColor::Red, "Compiling");
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Compiling");
 		WorkstationRef->DoCompile();
-		
+
 		CompileValue += CompileValueOriginal; //+1 to stop from 100% compiling at 0 workload
 		NumCompile--;
 	}
