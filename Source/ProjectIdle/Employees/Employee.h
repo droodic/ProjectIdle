@@ -89,7 +89,9 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		UBoxComponent* CollisionBox;
 
-
+	int CompileValueOriginal = 0;
+	int CompileValue = 0;
+	int NumCompile;
 	FTimerManager WorkTimer;
 	FTimerHandle TimerHandle;
 protected:

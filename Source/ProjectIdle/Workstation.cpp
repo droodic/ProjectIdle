@@ -89,7 +89,7 @@ void AWorkstation::Tick(float DeltaTime)
 			CompileProgressBar->AddLocalRotation(FRotator(0, 180, 0));
 		}
 		if (CurrentCompileLoad > 0) {
-			CurrentCompileLoad -= DeltaTime * 1.25f;
+			CurrentCompileLoad -= (DeltaTime * (2.5f + CompileModifier));
 			if (CurrentCompileLoad <= 0) {
 				CompileProgressBar->SetVisibility(false);
 				IsCompiling = false;
@@ -157,11 +157,13 @@ void AWorkstation::UpgradeMesh(int Index)
 	{
 		ComputerMesh->SetVisibility(false);
 		UpgradeMonitor->SetVisibility(true);
+		CompileModifier += 7;
 	}
 	if (Index == 1)
 	{
 		KeyboardMesh->SetVisibility(false);
 		UpgradeKeyboard->SetVisibility(true);
+		CompileModifier += 5;
 	}
 	UpgradeWidget->RemoveFromViewport();
 }

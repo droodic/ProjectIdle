@@ -95,6 +95,11 @@ void AEmployee::IsDepartmentWorking() {
 			this->AssignedWorkload = Employee->AssignedWorkload;
 			this->CurrentWorkload = Employee->CurrentWorkload / 2;
 			Employee->CurrentWorkload /= 2;
+
+			//Recalc Compile values of employee which you are taking workload from
+			Employee->NumCompile /= 2;
+			Employee->CompileValue = 0;//triggers recalc flag in tick
+
 			BeginWork();
 			GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Newly hired employee takes part in current department dev"));
 			break;
@@ -103,6 +108,15 @@ void AEmployee::IsDepartmentWorking() {
 }
 
 void AEmployee::BeginWork() {
+	//if compile phase in work
+	NumCompile = UKismetMathLibrary::RandomIntegerInRange(3, 9);
+	//make funciton to find self department and values, example get all department employees number
+	for (auto Dep : GM->DepartmentList) {
+		if (Dep->DepRole == EmployeeRole) {
+			NumCompile = floor(NumCompile / Dep->EmpCount);
+		}
+	}
+
 	HasWorkload = true;
 	//GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AEmployee::WorkOnTask, .5f, true);
 }
@@ -148,26 +162,36 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 	//UI->MoneyWidget->ShowANotification(RateString);
 
 	//Test function - Workers reduce workloads, make function / use timer +event instead of tick
-	if (WorkProgressBar != nullptr) {
-		WorkProgressBar->SetWorldRotation(Camera->GetCameraRotation());
-		WorkProgressBar->AddLocalRotation(FRotator(0, 180, 0));
-	}
-
 	if (!IsWorking && WorkAnimation != nullptr) {
 
 		SetActorRotation(WorkstationRef->ChairMesh->GetComponentRotation());
 		WorkProgressBar->SetVisibility(true);
 		IsWorking = true;
 	}
+	if (WorkProgressBar != nullptr) {
+		WorkProgressBar->SetWorldRotation(Camera->GetCameraRotation());
+		WorkProgressBar->AddLocalRotation(FRotator(0, 180, 0));
+	}
 
-	auto Rand = UKismetMathLibrary::RandomIntegerInRange(0, 10);
-	if (Rand == 0) {
+
+	//todo : all workstation have widget setup, scale with hired employee
+
+	if (CompileValue == 0) {
+		CompileValueOriginal = (AssignedWorkload / NumCompile);
+		CompileValue = CompileValueOriginal;
+		GEngine->AddOnScreenDebugMessage(60000, 5.f, FColor::Red, FString::FromInt(CompileValue));
+	}
+	if (CompileValue != 0 && (int)CurrentWorkload == (int)(AssignedWorkload - CompileValue) && NumCompile > 0) {
+		GEngine->AddOnScreenDebugMessage(60001, 5.f, FColor::Red, "Compiling");
 		WorkstationRef->DoCompile();
 		
+		CompileValue += CompileValueOriginal; //+1 to stop from 100% compiling at 0 workload
+		NumCompile--;
 	}
-	else{
+	else {
 		CurrentWorkload -= Multiplier;
 	}
+
 
 	if (CurrentWorkload <= 0) {
 		//Self workload finished, check to see if others remain. If others in same department remain, go to them, and take 50% of their remainding workload if there's more than 10 seconds left of WL
@@ -175,7 +199,7 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		for (auto AnEmployee : GM->EmployeeList) {
 			auto ThisEmployeeAI = Cast<AAIController>(GetController());
 			if (EmployeeRole == ERole::Programmer && AnEmployee->EmployeeRole == ERole::Programmer) {
-				if (AnEmployee->CurrentWorkload >= 5) {//change to editor editable constant 
+				if (AnEmployee->CurrentWorkload >= 15) {//change to editor editable constant 
 					AnEmployee->CurrentWorkload /= 2;
 					CurrentWorkload += AnEmployee->CurrentWorkload / 2;
 					GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Programmer workload finished, taking workload from another employee"));
@@ -185,7 +209,7 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 			}
 
 			else if (EmployeeRole == ERole::Artist && AnEmployee->EmployeeRole == ERole::Artist) {
-				if (AnEmployee->CurrentWorkload >= 5) {
+				if (AnEmployee->CurrentWorkload >= 15) {
 					AnEmployee->CurrentWorkload /= 2;
 					CurrentWorkload += AnEmployee->CurrentWorkload / 2;
 					GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Artist workload finished, taking workload from another employee"));
@@ -214,7 +238,7 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 			GM->IdeaInProduction = false;
 			GM->OfficeDepartment->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartment->CurrentIdea);
 			UI->MoneyWidget->ShowANotification("PRODUCTION OF A GAME FINISHED, WAITING FOR BEING PUBLISHED");
-
+			CompileValue = 0;
 			//if (SucessChance >= RateRolled)
 			//{
 			//	UI->MoneyWidget->ShowANotification("PRODUCTION OF A GAME FINISHED, WAITING FOR BEING PUBLISHED");

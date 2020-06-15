@@ -60,6 +60,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Widgets") TSubclassOf<UUserWidget> UserWidget;
 	UPROPERTY() class UWorkstationUpgradeWidget* UpgradeWidget;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UWidgetComponent* CompileProgressBar;
+	int CompileModifier = 0;
 
 protected:
 	// Called when the game starts or when spawned
