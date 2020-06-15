@@ -25,8 +25,6 @@ AWorkstation::AWorkstation()
 	RootComponent = DeskMesh;
 
 	StationRole = ERole::Programmer;//Default to stop crashing
-
-	
 	UpgradeMonitor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeMonitor"));
 	UpgradeKeyboard = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeKeyBoard"));
 	//UpgradeChair = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeChair"));
@@ -54,7 +52,6 @@ void AWorkstation::BeginPlay()
 	GM->WorkstationList.Add(this);
 	HasEmployee = false;
 	StationLocation = ChairMesh->GetComponentLocation();
-
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0));
 
 	if (UserWidget != nullptr)
@@ -65,6 +62,7 @@ void AWorkstation::BeginPlay()
 	{
 		UpgradeWidget->Station = this;
 	}
+
 	Camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
 	if (CompileProgressBar != nullptr) {
 		auto WorkloadWidget = CompileProgressBar->GetUserWidgetObject();
@@ -89,7 +87,7 @@ void AWorkstation::Tick(float DeltaTime)
 			CompileProgressBar->AddLocalRotation(FRotator(0, 180, 0));
 		}
 		if (CurrentCompileLoad > 0) {
-			CurrentCompileLoad -= (DeltaTime * (2.5f + CompileModifier));
+			CurrentCompileLoad -= (DeltaTime * (5.f + CompileModifier));
 			if (CurrentCompileLoad <= 0) {
 				CompileProgressBar->SetVisibility(false);
 				IsCompiling = false;
@@ -106,8 +104,6 @@ void AWorkstation::UpdateWorkstationPosition()
 		int32 employeeSize = GM->EmployeeList.Num();
 		int32 workstationSize = GM->WorkstationList.Num();
 		FVector AStationLocation = this->GetActorLocation();
-		GEngine->AddOnScreenDebugMessage(12312542, 5, FColor::Green, "Update Station");
-
 
 		for (auto Employee : GM->EmployeeList) {
 			if (!Employee->HasWorkStation && Employee->EmployeeRole == StationRole && IsEnabled) {
@@ -157,7 +153,7 @@ void AWorkstation::UpgradeMesh(int Index)
 	{
 		ComputerMesh->SetVisibility(false);
 		UpgradeMonitor->SetVisibility(true);
-		CompileModifier += 7;
+		CompileModifier += 10;
 	}
 	if (Index == 1)
 	{
