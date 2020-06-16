@@ -62,5 +62,5 @@ void UMeetingDepWidget::StartMeeting()
 		GM->MeetingDepartment->BackFromMeeting();
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Crunch time approach"));
 	}
-
+	//StartMeetingBtn->SetIsEnabled(false);
 }
