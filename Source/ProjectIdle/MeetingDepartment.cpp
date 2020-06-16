@@ -95,6 +95,7 @@ void AMeetingDepartment::MoveToMeeting()
 	auto Index = 0;
 	auto LoopCount = 0;
 
+
 	auto ChairSize = GM->MeetingChairList.Num();
 	auto EmployeeSize = GM->EmployeeList.Num();
 	FString sizeString = FString::FromInt(EmployeeSize);
@@ -134,7 +135,12 @@ void AMeetingDepartment::MoveToMeeting()
 		}
 	}
 
-
+	if (GM->MeetingWidget)
+	{
+		GM->MeetingWidget->Perfectionist_Btn->SetIsEnabled(true);
+		GM->MeetingWidget->CrunchTime_Btn->SetIsEnabled(true);
+		GM->MeetingWidget->Default_Btn->SetIsEnabled(true);
+	}
 
 }
 
@@ -184,6 +190,12 @@ void AMeetingDepartment::BackFromMeeting()
 			}
 		}
 
+		if (GM->MeetingWidget)
+		{
+			GM->MeetingWidget->Perfectionist_Btn->SetIsEnabled(false);
+			GM->MeetingWidget->CrunchTime_Btn->SetIsEnabled(false);
+			GM->MeetingWidget->Default_Btn->SetIsEnabled(false);
+		}
 
 		auto backlogWidget = GM->OfficeDepartment->BacklogWidget;
 		backlogWidget->IdeaScrollBox->RemoveChild(Cast<UWidget>(CurrentIdea->IdeaButton));

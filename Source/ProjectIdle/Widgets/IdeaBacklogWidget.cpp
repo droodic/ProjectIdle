@@ -7,6 +7,7 @@
 #include "ProjectIdle/GameManager.h"
 #include "ProjectIdle/MeetingDepartment.h"
 #include "ProjectIdle/OfficeDepartment.h"
+#include "MeetingDepWidget.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -75,7 +76,6 @@ void UIdeaBacklogWidget::CallMeeting()
 	//UIdeaButton::IsInProduction = true;
 	GM->IdeaInProduction = true;
 	CallMeetingBtn->SetIsEnabled(false);
-
 	GM->MeetingDepartment->MoveToMeeting();
 	SendIdea();
 }
