@@ -32,7 +32,6 @@ public:
 
 #pragma endregion
 	
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* Description_Txt;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Perfectionist_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* CrunchTime_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Default_Btn;
@@ -41,6 +40,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void PerfectionistMode();
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void CrunchTimeMode();
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void DefaultMode();
+
 
 
 private:

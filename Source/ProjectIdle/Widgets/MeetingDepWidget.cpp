@@ -13,6 +13,7 @@ void UMeetingDepWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
+	GM->MeetingWidget = this;
 
 	if (!Perfectionist_Btn->OnClicked.IsBound())
 	{
@@ -28,20 +29,23 @@ void UMeetingDepWidget::NativeConstruct()
 	{
 		Default_Btn->OnClicked.AddDynamic(this, &UMeetingDepWidget::DefaultMode);
 	}
+
+
 }
 
 void UMeetingDepWidget::PerfectionistMode()
 {
 	//GM->OfficeDepartment->AddedChance = 0;
-	GM->SpeedRate = 0.2;
+	GM->SpeedRate = 0.25;
 	GM->OfficeDepartment->AddedChance = 10.0f;
 	GM->MeetingDepartment->BackFromMeeting();
+
 }
 
 void UMeetingDepWidget::CrunchTimeMode()
 {
 	//GM->OfficeDepartment->AddedChance = 0;
-	GM->SpeedRate = 2;
+	GM->SpeedRate = 25;
 	GM->OfficeDepartment->AddedChance = -10.0f;
 	GM->MeetingDepartment->BackFromMeeting();
 }
