@@ -27,7 +27,6 @@ void UCeoDepMenuWidget::NativeConstruct()
 	{
 		Hire_Artist_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::CallArtistSpawn);
 	}
-
 	if (!Hire_ProgSup_Btn->OnClicked.IsBound())
 	{
 		Hire_ProgSup_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::CallProgrammerSupSpawn);
@@ -39,6 +38,10 @@ void UCeoDepMenuWidget::NativeConstruct()
 	if (!PublishGame_Btn->OnClicked.IsBound())
 	{
 		PublishGame_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::PublishGame);
+	}
+	if (!Return_Btn->OnClicked.IsBound())
+	{
+		Return_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::Return);
 	}
 }
 
@@ -138,6 +141,11 @@ void UCeoDepMenuWidget::PublishGame()
 {
 	PublishGame_Btn->SetIsEnabled(false);
 	OfficeDepartment->PublishGame();
+}
+
+void UCeoDepMenuWidget::Return()
+{
+	OfficeDepartment->Return();
 }
 
 void UCeoDepMenuWidget::GetFinishedIdea(Idea* idea)

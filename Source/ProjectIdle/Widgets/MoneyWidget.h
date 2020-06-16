@@ -18,13 +18,8 @@ class PROJECTIDLE_API UMoneyWidget : public UUserWidget
 public:
 	UMoneyWidget(const FObjectInitializer& ObjectInitializer);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
-		class UTextBlock* TotalMoney;
-
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-		class UVerticalBox* NotificationVerticalBox;
-	
-	FText NotificationText;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* TotalMoney;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UVerticalBox* NotificationVerticalBox;
 
 private:
 	UWidgetTree* WidgeTree;

@@ -29,6 +29,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_Artist_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_ProgSup_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_ArtistSup_Btn;
+	UPROPERTY(meta = (BindWidget)) class UButton* Return_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* Total_Artist_Btn;
 	UPROPERTY() FString Worker;
 
@@ -47,6 +48,6 @@ private:
 	UFUNCTION() void CallArtistSupSpawn();
 	UFUNCTION() void ActivateWorkstation(ERole StationRole);
 	UFUNCTION() void PublishGame();
-	
+	UFUNCTION() void Return();
 	void AddValuesToButton(class Idea* idea);
 };

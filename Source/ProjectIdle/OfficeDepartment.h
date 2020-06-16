@@ -17,12 +17,11 @@ class PROJECTIDLE_API AOfficeDepartment : public ADepartment
 public:
 	AOfficeDepartment();
 
-	bool IsGenerating;
-
 	class UGameManager* GM;
 	class AGameHUD* UI;
 
-	int Index = 0;
+	bool IsGenerating;
+
 
 	UPROPERTY(BlueprintReadWrite) float TProgSalary = 0.f;
 	UPROPERTY(BlueprintReadWrite) float TArtistSalary = 0.f;
@@ -32,16 +31,19 @@ public:
 	TArray<class Idea*> IdeaList;
 	TArray<class Idea*> FinishedIdeaList;
 	
+	int Index = 0;
+	UPROPERTY(BlueprintReadWrite) int ideasGenerated;
+
 	UPROPERTY(BlueprintReadWrite) float AddedChance = 0;
 	UPROPERTY(BlueprintReadWrite) float successChance;
-	UPROPERTY(BlueprintReadWrite) int ideasGenerated;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float CurrIdeaProgress = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float MaxIdeaProgress = 100;
 
 	UPROPERTY(EditAnywhere, Category = "Widgets") TArray<TSubclassOf<UUserWidget>> UserWidgets;
 
-	UPROPERTY() class UCeoDepMenuWidget* OfficeDepMenuWidget; //added in gamehud, get ref from gamehud instead
+	UPROPERTY() class UCeoDepMenuWidget* OfficeDepMenuWidget; 
 	UPROPERTY() class UIdeaBacklogWidget* BacklogWidget;
+	UPROPERTY() class UShopWidget* ShopWidget;
 
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* ComputerMesh;
@@ -49,7 +51,6 @@ public:
 		UStaticMeshComponent* ChairMesh;
 
 	UPROPERTY(EditAnywhere) TArray<TSubclassOf<class AActor>> SpawnActors;
-
 
 	FORCEINLINE class UDecalComponent* GetCursorToWorld() { return CursorToWorld; }
 
@@ -60,6 +61,7 @@ public:
 public:
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void GenerateIdea();
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void ViewBacklog();
+	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void ViewShop();
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void CallMeeting();
 	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void HireEmployee(TArray<TSubclassOf<AEmployee>> SpawnEmployee, int Position);
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void PublishGame();
@@ -68,10 +70,11 @@ public:
 	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void GenerateActor(AActor* SpawnEmployee, int Position, ERole EmpRole);
 	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void HireProgrammer();
 	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void HireArtist();
-
-	void Back();
 	UFUNCTION(BlueprintCallable) void GetDepartmentUIValues();
-	//int GetArtistSalary();
+
+	void Return();
+	void BacklogReturn();
+	void ShopReturn();
 
 protected:
 	virtual void BeginPlay() override;
