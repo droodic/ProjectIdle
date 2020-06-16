@@ -91,11 +91,6 @@ void AMeetingDepartment::Tick(float DeltaTime)
 
 void AMeetingDepartment::MoveToMeeting()
 {
-
-	GM->MeetingWidget->Perfectionist_Btn->SetIsEnabled(true);
-	GM->MeetingWidget->CrunchTime_Btn->SetIsEnabled(true);
-	GM->MeetingWidget->Default_Btn->SetIsEnabled(true);
-
 	auto ChairIndex = 0;
 	auto Index = 0;
 	auto LoopCount = 0;
@@ -138,6 +133,13 @@ void AMeetingDepartment::MoveToMeeting()
 				//Debug Message to prevent crash, implement later
 			}
 		}
+	}
+
+	if (GM->MeetingWidget)
+	{
+		GM->MeetingWidget->Perfectionist_Btn->SetIsEnabled(true);
+		GM->MeetingWidget->CrunchTime_Btn->SetIsEnabled(true);
+		GM->MeetingWidget->Default_Btn->SetIsEnabled(true);
 	}
 
 }
@@ -188,9 +190,12 @@ void AMeetingDepartment::BackFromMeeting()
 			}
 		}
 
-		GM->MeetingWidget->Perfectionist_Btn->SetIsEnabled(false);
-		GM->MeetingWidget->CrunchTime_Btn->SetIsEnabled(false);
-		GM->MeetingWidget->Default_Btn->SetIsEnabled(false);
+		if (GM->MeetingWidget)
+		{
+			GM->MeetingWidget->Perfectionist_Btn->SetIsEnabled(false);
+			GM->MeetingWidget->CrunchTime_Btn->SetIsEnabled(false);
+			GM->MeetingWidget->Default_Btn->SetIsEnabled(false);
+		}
 
 		auto backlogWidget = GM->OfficeDepartment->BacklogWidget;
 		backlogWidget->IdeaScrollBox->RemoveChild(Cast<UWidget>(CurrentIdea->IdeaButton));
