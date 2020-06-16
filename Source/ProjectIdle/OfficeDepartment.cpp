@@ -13,8 +13,9 @@
 #include "Employees/Artist.h"
 #include "Employees/Programmer.h"
 #include "Widgets/IdeaButton.h" 
-#include "Widgets/IdeaBacklogWidget.h" 
+#include "Widgets/ShopWidget.h" 
 #include "Widgets/MoneyWidget.h" 
+#include "Widgets/IdeaBacklogWidget.h" 
 #include "Components/DecalComponent.h"
 #include "Components/DecalComponent.h"
 #include "Components/WidgetComponent.h"
@@ -51,11 +52,17 @@ void AOfficeDepartment::BeginPlay()
 	{
 		OfficeDepMenuWidget = CreateWidget<UCeoDepMenuWidget>(UGameplayStatics::GetPlayerController(this, 0), UserWidgets[1]);
 		OfficeDepMenuWidget->OfficeDepartment = this;
-		//OfficeDepMenuWidget->AddToRoot();
 	}
-
+	if (UserWidgets[2] != nullptr)
+	{
+		ShopWidget = CreateWidget<UShopWidget>(UGameplayStatics::GetPlayerController(this, 0), UserWidgets[2]);
+		ShopWidget->OfficeDepartment = this;
+	}
+	
 	//GetDepartmentUIValues(); //call this on click to see ui in wbp
 }
+
+#pragma region Backlog & Shop Widgets
 
 void AOfficeDepartment::ViewBacklog()
 {
@@ -66,12 +73,40 @@ void AOfficeDepartment::ViewBacklog()
 	}
 }
 
-void AOfficeDepartment::Back()
+void AOfficeDepartment::ViewShop()
+{
+	if (ShopWidget != nullptr)
+	{
+		OfficeDepMenuWidget->RemoveFromViewport();
+		ShopWidget->AddToViewport();
+	}
+}
+
+void AOfficeDepartment::BacklogReturn()
 {
 	if (BacklogWidget != nullptr)
 	{
 		BacklogWidget->RemoveFromViewport();
 		OfficeDepMenuWidget->AddToViewport();
+	}
+}
+
+void AOfficeDepartment::ShopReturn()
+{
+	if (ShopWidget != nullptr)
+	{
+		ShopWidget->RemoveFromViewport();
+		OfficeDepMenuWidget->AddToViewport();
+	}
+}
+
+#pragma endregion
+
+void AOfficeDepartment::Return()
+{
+	if (OfficeDepMenuWidget != nullptr)
+	{
+		OfficeDepMenuWidget->RemoveFromViewport();
 	}
 }
 
@@ -195,10 +230,12 @@ void AOfficeDepartment::NotifyActorEndOverlap(AActor* OtherActor)
 		{
 			BacklogWidget->RemoveFromViewport();
 		}
+		else if (ShopWidget->IsInViewport())
+		{
+			ShopWidget->RemoveFromViewport();
+		}
 	}
 }
-
-
 
 //Future transition 
 void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)

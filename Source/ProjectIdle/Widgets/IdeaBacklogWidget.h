@@ -31,7 +31,7 @@ public:
 	void DisplayNewIdea(class Idea* idea);
 
 private:
-	UFUNCTION() void Back();
+	UFUNCTION() void Return();
 	UFUNCTION() void CallMeeting();
 
 	void SendIdea();

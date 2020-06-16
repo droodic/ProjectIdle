@@ -13,6 +13,19 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "IdeaButton.h"
 
+void UIdeaBacklogWidget::NativeConstruct() {
+	Super::NativeConstruct();
+
+	if (!Back_Btn->OnClicked.IsBound())
+	{
+		Back_Btn->OnClicked.AddDynamic(this, &UIdeaBacklogWidget::Return);
+	}
+	if (!CallMeetingBtn->OnClicked.IsBound())
+	{
+		CallMeetingBtn->OnClicked.AddDynamic(this, &UIdeaBacklogWidget::CallMeeting);
+	}
+}
+
 void UIdeaBacklogWidget::DisplayNewIdea(Idea* idea) {
 
 	GEngine->AddOnScreenDebugMessage(5, 5.f, FColor::Red, "Displaying new idea");
@@ -23,23 +36,10 @@ void UIdeaBacklogWidget::DisplayNewIdea(Idea* idea) {
 	IdeaScrollBox->AddChild(idea->IdeaButton);
 }
 
-void UIdeaBacklogWidget::Back()
+void UIdeaBacklogWidget::Return()
 {
-	OfficeDepartment->Back();
+	OfficeDepartment->BacklogReturn();
 	CallMeetingBtn->SetIsEnabled(false);
-}
-
-void UIdeaBacklogWidget::NativeConstruct() {
-	Super::NativeConstruct();
-
-	if (!Back_Btn->OnClicked.IsBound())
-	{
-		Back_Btn->OnClicked.AddDynamic(this, &UIdeaBacklogWidget::Back);
-	}
-	if (!CallMeetingBtn->OnClicked.IsBound())
-	{
-		CallMeetingBtn->OnClicked.AddDynamic(this, &UIdeaBacklogWidget::CallMeeting);
-	}
 }
 
 void UIdeaBacklogWidget::AddValuesToButton(Idea* idea)
