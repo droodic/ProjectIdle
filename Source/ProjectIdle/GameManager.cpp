@@ -2,6 +2,7 @@
 
 
 #include "GameManager.h"
+#include "MeetingDepartment.h"
 
 
 
