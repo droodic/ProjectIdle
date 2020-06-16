@@ -45,7 +45,7 @@ void UMeetingDepWidget::PerfectionistMode()
 void UMeetingDepWidget::CrunchTimeMode()
 {
 	//GM->OfficeDepartment->AddedChance = 0;
-	GM->SpeedRate = 25;
+	GM->SpeedRate = 1.25;
 	GM->OfficeDepartment->AddedChance = -10.0f;
 	GM->MeetingDepartment->BackFromMeeting();
 }
