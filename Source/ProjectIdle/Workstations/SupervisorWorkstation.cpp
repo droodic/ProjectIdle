@@ -3,7 +3,9 @@
 
 #include "SupervisorWorkstation.h"
 
+
 ASupervisorWorkstation::ASupervisorWorkstation()
 {
-	StationRole = ERole::Programmer;
+	//StationRole = ERole::Artist;
+	//StationOwnerPosition = EPosition::Supervisor;
 }

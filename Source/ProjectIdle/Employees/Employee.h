@@ -13,7 +13,8 @@ UENUM(Meta = (ScriptName = "Role"))
 enum class ERole : uint8
 {
 	Programmer             UMETA(DisplayName = "Programmer"),
-	Artist				   UMETA(DisplayName = "Artist")
+	Artist				   UMETA(DisplayName = "Artist"),
+
 };
 
 UENUM(Meta = (ScriptName = "Position"))
@@ -116,4 +117,5 @@ public:
 	virtual void FiredFinal(); //Called by Door onOverlap
 	void IsDepartmentWorking();
 	void WorkOnTask();
+	void AssignSupervisor();
 };

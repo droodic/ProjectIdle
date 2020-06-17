@@ -57,6 +57,10 @@ void UCeoDepMenuWidget::CallProgrammerSpawn()
 		{
 			numberOfProgrammerStation++;
 		}
+		if (GM->WorkstationList[i]->StationOwnerPosition == EPosition::Supervisor && GM->WorkstationList[i]->StationRole == ERole::Programmer)
+		{
+			numberOfProgrammerStation--;
+		}
 	}
 
 	if (numberOfProgrammerStation > GM->NumOfProgrammers)
@@ -64,7 +68,7 @@ void UCeoDepMenuWidget::CallProgrammerSpawn()
 		if (GM->Money >= 10000) //make money editable inspector constant that scales up , same for all dep & sup hire
 		{
 			GM->Money -= 10000;
-			ActivateWorkstation(ERole::Programmer);
+			ActivateWorkstation(ERole::Programmer, EPosition::Intern, false);
 			OfficeDepartment->GenerateActor(0, ERole::Programmer);
 		}
 	}
@@ -76,6 +80,7 @@ void UCeoDepMenuWidget::CallProgrammerSupSpawn()
 	if (!GM->ProgrammingDepartment->HasSupervisor && GM->Money >= 30000) {
 		GM->Money -= 30000;
 		GM->ProgrammingDepartment->HasSupervisor = true;
+		ActivateWorkstation(ERole::Programmer, EPosition::Supervisor, true);
 		OfficeDepartment->GenerateActor(2, ERole::Programmer);
 		Hire_ProgSup_Btn->SetIsEnabled(false);
 		//OfficeDepartment->GetDepartmentUIValues();
@@ -86,11 +91,14 @@ void UCeoDepMenuWidget::CallArtistSupSpawn()
 {
 	if (!GM->ArtistDepartment->HasSupervisor && GM->Money >= 30000) {
 		GM->Money -= 30000;
+		ActivateWorkstation(ERole::Artist, EPosition::Supervisor, true);
 		GM->ArtistDepartment->HasSupervisor = true;
+		ActivateWorkstation(ERole::Artist, EPosition::Supervisor, true);
 		OfficeDepartment->GenerateActor(2, ERole::Artist);
 		Hire_ArtistSup_Btn->SetIsEnabled(false);
 		//OfficeDepartment->GetDepartmentUIValues();
 	}
+
 }
 
 void UCeoDepMenuWidget::CallArtistSpawn()
@@ -105,13 +113,17 @@ void UCeoDepMenuWidget::CallArtistSpawn()
 		{
 			numberOfArtistStation++;
 		}
+		if (GM->WorkstationList[i]->StationOwnerPosition == EPosition::Supervisor && GM->WorkstationList[i]->StationRole == ERole::Artist)
+		{
+			numberOfArtistStation--;
+		}
 	}
 	if (numberOfArtistStation > GM->NumOfArtists)
 	{
 		if (GM->Money >= 10000)
 		{
 			GM->Money -= 10000;
-			ActivateWorkstation(ERole::Artist);
+			ActivateWorkstation(ERole::Artist, EPosition::Intern, false);
 			OfficeDepartment->GenerateActor(1, ERole::Artist);
 		}
 	}
@@ -123,16 +135,30 @@ void UCeoDepMenuWidget::CallHiring()
 	OfficeDepartment->GenerateActor(3, ERole::Artist);
 }
 
-void UCeoDepMenuWidget::ActivateWorkstation(ERole StationRole)
+void UCeoDepMenuWidget::ActivateWorkstation(ERole StationRole, EPosition OwnerPosition, bool IsSupervisor)
 {
 	int Length = GM->WorkstationList.Num();
 
-	for (int i = 0; i < Length; i++)
+	if (!IsSupervisor)
 	{
-		if (!GM->WorkstationList[i]->IsEnabled && GM->WorkstationList[i]->StationRole == StationRole)
+		for (int i = 0; i < Length; i++)
 		{
-			GM->WorkstationList[i]->EnableStation(true);
-			return;
+			if (!GM->WorkstationList[i]->IsEnabled && GM->WorkstationList[i]->StationRole == StationRole)
+			{
+				GM->WorkstationList[i]->EnableStation(true);
+				return;
+			}
+		}
+	}
+	else
+	{
+		for (int i = 0; i < Length; i++)
+		{
+			if (!GM->WorkstationList[i]->IsEnabled && GM->WorkstationList[i]->StationRole == StationRole && GM->WorkstationList[i]->StationOwnerPosition == OwnerPosition)
+			{
+				GM->WorkstationList[i]->EnableStation(true);
+				return;
+			}
 		}
 	}
 }

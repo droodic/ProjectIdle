@@ -40,7 +40,8 @@ public:
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeMonitor;
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeKeyboard;
 
-	ERole StationRole;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Role") ERole StationRole;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Role") EPosition StationOwnerPosition;
 
 	UPROPERTY()
 		FVector StationLocation;
@@ -72,6 +73,8 @@ public:
 	void NotifyActorOnClicked(FKey ButtonPressed = EKeys::RightMouseButton) override;
 
 	UFUNCTION() void UpdateWorkstationPosition();
+	UFUNCTION() void UpdateSupervisorWorkstationPosition();
+
 	UFUNCTION() void EnableStation(bool Enabled);
 	UFUNCTION() void UpgradeMesh(int Index);
 	UFUNCTION() void DoCompile();

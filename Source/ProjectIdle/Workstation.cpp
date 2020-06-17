@@ -6,6 +6,7 @@
 #include "Employees/Artist.h"
 #include "Employees/Programmer.h"
 #include "ProjectIdle/GameHUD.h"
+#include "ProjectIdle/Department.h"
 #include "Workstations/ArtistStation.h"
 #include "Workstations/ProgrammerStation.h"
 #include "ProjectIdle/Widgets/WorkstationUpgradeWidget.h"
@@ -172,4 +173,23 @@ void AWorkstation::DoCompile() {
 	AssignedCompileLoad = UKismetMathLibrary::RandomFloatInRange(50, 100);
 	CurrentCompileLoad = AssignedCompileLoad;
 
+}
+
+
+
+void AWorkstation::UpdateSupervisorWorkstationPosition()
+{
+	if (!HasEmployee) {
+		int32 employeeSize = GM->EmployeeList.Num();
+		int32 workstationSize = GM->WorkstationList.Num();
+		FVector AStationLocation = this->GetActorLocation();
+		
+			for (auto Department : GM->DepartmentList)
+			{
+					//Department->SupervisorRef->WorkstationRef = this;
+					//Department->SupervisorRef->HasWorkStation = true;
+					Department->SupervisorRef->StartPosition = StationLocation;
+					//HasEmployee = true;
+			}
+	}
 }

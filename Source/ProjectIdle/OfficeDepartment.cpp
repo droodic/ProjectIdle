@@ -259,6 +259,7 @@ void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 			Emp->EmployeeRole = EmpRole;
 			if (Cast<ASupervisor>(Emp) != nullptr) {
 				Cast<ASupervisor>(Emp)->InitSupervisor(EmpRole); //quick workaround annoying beginplay pedantics of spawning
+				Emp->AssignSupervisor();
 			}
 			GetDepartmentUIValues();
 		}

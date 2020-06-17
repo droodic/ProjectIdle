@@ -80,10 +80,12 @@ void ASupervisor::Tick(float DeltaTime)
 
 void ASupervisor::InitSupervisor(ERole Department) {
 	if (Department == ERole::Programmer) {
+		this->EmployeeRole = Department;
 		GM->ProgrammingDepartment->HasSupervisor = true;
 		GM->ProgrammingDepartment->SupervisorRef = this;
 	}
 	else if (Department == ERole::Artist) {
+		this->EmployeeRole = Department;
 		GM->ArtistDepartment->HasSupervisor = true;
 		GM->ArtistDepartment->SupervisorRef = this;
 	}
