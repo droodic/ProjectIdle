@@ -11,16 +11,42 @@ void UWorkstationUpgradeWidget::NativeConstruct()
 	Super::NativeConstruct();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 
-	if (!UpgradeMonitor_Btn->OnClicked.IsBound())
+	if (!Monitor_Btn->OnClicked.IsBound())
+	{
+		Monitor_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::ShowInventoryMonitor);
+	}
+
+	if (!Desk_Btn->OnClicked.IsBound())
+	{
+		Desk_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::ShowInventoryDesk);
+	}
+
+
+	if (!Chair_Btn->OnClicked.IsBound())
 	{
 
-		UpgradeMonitor_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::Monitor);
+		Chair_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::Monitor);
 	}
 
 	if (!UpgradeKeyboard_Btn->OnClicked.IsBound())
 	{
 		UpgradeKeyboard_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::Keyboard);
 	}
+}
+
+
+void UWorkstationUpgradeWidget::ShowInventory(ECategory ItemCategory) {
+
+}
+
+
+void UWorkstationUpgradeWidget::ShowInventoryMonitor() {
+	ShowInventory(ECategory::ComputerComponents);
+}
+
+
+void UWorkstationUpgradeWidget::ShowInventoryDesk() {
+
 }
 
 void UWorkstationUpgradeWidget::Monitor()
@@ -30,6 +56,8 @@ void UWorkstationUpgradeWidget::Monitor()
 		Station->UpgradeMesh(0);
 	}
 }
+
+
 
 void UWorkstationUpgradeWidget::Keyboard()
 {

@@ -34,12 +34,12 @@ void UShopWidget::Buy()
 	{
 		for (size_t i = 0; i < ItemButtons.Num(); i++)
 		{
-			ItemButtons[i]->Item->ItemName;
+			//ItemButtons[i]->Item->ItemName;
 			GameManager->Money -= ItemButtons[i]->Item->ItemPrice;
-
 			CheckoutItems_WB->RemoveChild(ItemButtons[i]);
-			ItemButtons.Remove(ItemButtons[i]);
+			GameManager->InventoryList.Add(ItemButtons[i]->Item);
 		}
+		ItemButtons.Empty();
 	}
 }
 
@@ -77,6 +77,7 @@ void UShopWidget::AddItemToCheckout(class AItem* itemButton)
 					TotalMoney_T->SetText(FText::AsCurrency(Total));
 
 					GEngine->AddOnScreenDebugMessage(103, 5.f, FColor::Green, "Item :" + NewItemButton->Item->ItemName + " ID: " + FString::FromInt(NewItemButton->Item->ItemPrice));
+					break;
 				}
 			}
 			else
