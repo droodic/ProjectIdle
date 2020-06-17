@@ -4,6 +4,8 @@
 #include "ItemButton.h"
 #include "Item.h"
 #include "Engine.h"
+#include "ProjectIdle/GameManager.h"
+#include "ProjectIdle/Widgets/ShopWidget.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
@@ -11,6 +13,8 @@
 void UItemButton::NativeConstruct()
 {
 	Super::NativeConstruct();
+
+	GameManager = GetWorld()->GetGameInstance<UGameManager>();
 
 	Item = BPItem.GetDefaultObject();
 
@@ -32,7 +36,32 @@ void UItemButton::NativeConstruct()
 	}
 }
 
+void UItemButton::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+	Super::NativeTick(MyGeometry, InDeltaTime);
+
+	if (Item_Btn)
+	{
+		if (Item_Btn->HasUserFocus(UGameplayStatics::GetPlayerController(GetWorld(), 0)))
+		{
+			Item_Btn->SetBackgroundColor(SelectedColor);
+		}
+		else
+		{
+			Item_Btn->SetBackgroundColor(FLinearColor::White);
+		}
+	}
+}
+
 void UItemButton::OnClicked()
 {
-	GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Blue, "Item :" + Item->ItemName + " ID: " + FString::FromInt(ItemID));
+	if (!InCheckout)
+	{
+		GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Blue, "Item :" + Item->ItemName + " ID: " + FString::FromInt(ItemID));
+		GameManager->ShopWidget->AddItemToCheckout(this->Item);
+	}
+	else
+	{
+		GameManager->ShopWidget->RemoveItemFromCheckout(Item->ItemID);
+	}
 }
