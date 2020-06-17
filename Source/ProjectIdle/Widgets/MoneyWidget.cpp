@@ -4,6 +4,7 @@
 #include "MoneyWidget.h"
 #include "Engine/World.h"
 #include "Components/TextBlock.h"
+#include "Math/Color.h"
 
 UMoneyWidget::UMoneyWidget(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {

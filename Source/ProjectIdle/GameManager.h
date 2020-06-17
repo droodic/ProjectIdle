@@ -40,8 +40,7 @@ public:
 	UPROPERTY(BlueprintReadWrite) class ADoor* Door;
 	UPROPERTY(BlueprintReadWrite) class UWorkstationUpgradeWidget* Upgrade;
 	UPROPERTY(BlueprintReadWrite) class UMeetingDepWidget* MeetingWidget;
-
-
+	UPROPERTY(BlueprintReadWrite) class UShopWidget* ShopWidget;
 
 	UPROPERTY(BlueprintReadWrite) int EmployeeNameIndex;
 	UPROPERTY(BlueprintReadWrite) float SpeedRate = 1;
