@@ -36,7 +36,13 @@ void UWorkstationUpgradeWidget::NativeConstruct()
 
 
 void UWorkstationUpgradeWidget::ShowInventory(ECategory ItemCategory) {
+	//Show computercomponents 
+	for (auto Item : GM->InventoryList) {
+		if (Item->ItemCategory == ECategory::ComputerComponents) {
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, "Item :" + Item->ItemName);
+		}
 
+	}
 }
 
 
@@ -46,7 +52,7 @@ void UWorkstationUpgradeWidget::ShowInventoryMonitor() {
 
 
 void UWorkstationUpgradeWidget::ShowInventoryDesk() {
-
+	ShowInventory(ECategory::DeskAndChairs);
 }
 
 void UWorkstationUpgradeWidget::Monitor()
