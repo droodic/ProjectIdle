@@ -137,9 +137,7 @@ void AMeetingDepartment::MoveToMeeting()
 
 	if (GM->MeetingWidget)
 	{
-		GM->MeetingWidget->Perfectionist_Btn->SetIsEnabled(true);
-		GM->MeetingWidget->CrunchTime_Btn->SetIsEnabled(true);
-		GM->MeetingWidget->Default_Btn->SetIsEnabled(true);
+		GM->MeetingWidget->StartMeetingBtn->SetIsEnabled(true);
 	}
 
 }
@@ -192,9 +190,7 @@ void AMeetingDepartment::BackFromMeeting()
 
 		if (GM->MeetingWidget)
 		{
-			GM->MeetingWidget->Perfectionist_Btn->SetIsEnabled(false);
-			GM->MeetingWidget->CrunchTime_Btn->SetIsEnabled(false);
-			GM->MeetingWidget->Default_Btn->SetIsEnabled(false);
+			GM->MeetingWidget->StartMeetingBtn->SetIsEnabled(false);
 		}
 
 		auto backlogWidget = GM->OfficeDepartment->BacklogWidget;

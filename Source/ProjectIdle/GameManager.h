@@ -44,7 +44,7 @@ public:
 
 
 	UPROPERTY(BlueprintReadWrite) int EmployeeNameIndex;
-	UPROPERTY() float SpeedRate = 1;
+	UPROPERTY(BlueprintReadWrite) float SpeedRate = 1;
 	bool IdeaInProduction = false;
 
 	virtual void Init();

@@ -18,9 +18,12 @@ public:
 
 	class UGameManager* GM;
 	class AGameHUD* UI;
+	//class AMeetingDepartment* MeetingDep;
 
 	//UPROPERTY() float SpeedRate = 1;
 #pragma region ChosenIdea
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UComboBoxString* ApproachComboBox;
+	UPROPERTY(BlueprintReadWrite) FString SelectedApproach = "Default";
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UImage* I_GameCover;
 
@@ -31,18 +34,18 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_Weight;
 
 #pragma endregion
-	
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* StartMeetingBtn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Perfectionist_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* CrunchTime_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Default_Btn;
 
 
-	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void PerfectionistMode();
-	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void CrunchTimeMode();
-	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void DefaultMode();
+	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void StartMeeting();
+
 
 
 
 private:
 	virtual void NativeConstruct() override;
+	
 };

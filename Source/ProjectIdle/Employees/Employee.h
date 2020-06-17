@@ -4,9 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "Components/BoxComponent.h"
-#include "ProjectIdle/EmployeeAIC.h"
-#include "Components/WidgetComponent.h"
 #include "Employee.generated.h"
 
 UENUM(Meta = (ScriptName = "Role"))
@@ -54,7 +51,7 @@ public:
 
 	UPROPERTY() int WorkstationPositionRef;
 	//class AWorkstation* WorkstationRef;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UWidgetComponent* WorkProgressBar;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) class UWidgetComponent* WorkProgressBar;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float AssignedWorkload;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float CurrentWorkload;
 
@@ -88,7 +85,7 @@ public:
 	bool HasAnimated = false;
 
 	UPROPERTY(VisibleAnywhere)
-		UBoxComponent* CollisionBox;
+		class UBoxComponent* CollisionBox;
 
 	int CompileValueOriginal = 0;
 	int CompileValue = 0;
