@@ -22,7 +22,7 @@ public:
 	class UGameManager* GM;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UScrollBox* InventoryScrollBox;
-	UPROPERTY(EditAnywhere) TSubclassOf<UUserWidget> ItemButtonWidgetClass;
+	UPROPERTY(EditAnywhere) TSubclassOf<UUserWidget> InventoryButtonWidgetClass;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Monitor_Btn; //change to respective categories
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Desk_Btn;

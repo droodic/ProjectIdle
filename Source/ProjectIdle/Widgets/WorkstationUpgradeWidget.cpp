@@ -3,7 +3,7 @@
 #include "WorkstationUpgradeWidget.h"
 #include "Engine.h"
 #include "ProjectIdle/Shop/Item.h"
-#include "ProjectIdle/Shop/ItemButton.h"
+#include "ProjectIdle/Widgets/InventoryButton.h"
 #include "ProjectIdle/GameManager.h"
 
 
@@ -50,11 +50,12 @@ void UWorkstationUpgradeWidget::ShowInventory(ECategory ItemCategory) {
 		if (Item->ItemCategory == ItemCategory) {
 
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, "Computer Component :" + Item->ItemName);
-			UItemButton* NewItemButton = CreateWidget<UItemButton>(this, ItemButtonWidgetClass);
+			UInventoryButton* NewItemButton = CreateWidget<UInventoryButton>(this, InventoryButtonWidgetClass);
+			NewItemButton->CurrentStation = Station;
 			NewItemButton->Item = Item;
 			NewItemButton->Item_I->SetBrushFromTexture(Item->ItemImage);
 			NewItemButton->ItemName_T->SetText(FText::FromString(Item->ItemName));
-			NewItemButton->ItemPrice_T->SetText(FText::AsCurrency(Item->ItemPrice));
+			//NewItemButton->ItemPrice_T->SetText(FText::AsCurrency(Item->ItemPrice));
 			InventoryScrollBox->AddChild(NewItemButton);
 		}
 
