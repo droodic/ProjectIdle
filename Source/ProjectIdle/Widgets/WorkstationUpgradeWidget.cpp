@@ -44,23 +44,25 @@ void UWorkstationUpgradeWidget::ShowInventory(ECategory ItemCategory) {
 	//InventoryScrollBox->AddChild(NewItemButton);
 
 	InventoryScrollBox->ClearChildren();
-	for (auto Item : GM->InventoryList) {
 
+	for (auto Item : GM->InventoryList) {
 		//Show computercomponents 
-		if (Item->ItemCategory == ECategory::ComputerComponents) {
+		if (Item->ItemCategory == ItemCategory) {
 
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, "Computer Component :" + Item->ItemName);
-
 			UItemButton* NewItemButton = CreateWidget<UItemButton>(this, ItemButtonWidgetClass);
 			NewItemButton->Item = Item;
 			NewItemButton->Item_I->SetBrushFromTexture(Item->ItemImage);
 			NewItemButton->ItemName_T->SetText(FText::FromString(Item->ItemName));
 			NewItemButton->ItemPrice_T->SetText(FText::AsCurrency(Item->ItemPrice));
-
 			InventoryScrollBox->AddChild(NewItemButton);
 		}
 
+
+
 	}
+
+
 
 
 }
