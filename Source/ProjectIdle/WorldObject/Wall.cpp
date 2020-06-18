@@ -46,5 +46,6 @@ void AWall::UpdateWallMaterial(UMaterial* NewMaterial)
 void AWall::UpdateWallMaterialTest()
 {
 	Mesh->SetMaterial(0, Material);
+	Mesh->SetMaterial(1, Material);
 }
 

@@ -37,6 +37,7 @@ public:
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* ItemMesh;
 	UPROPERTY(EditDefaultsOnly) class UMaterial* Material;
 
+	UPROPERTY(EditAnywhere) int ItemCompileRate; //If Monitor for now yolo
 	UPROPERTY(EditDefaultsOnly) int ItemID;
 	UPROPERTY(EditDefaultsOnly) int ItemPrice;
 	
