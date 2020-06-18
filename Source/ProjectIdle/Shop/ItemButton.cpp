@@ -10,6 +10,11 @@
 #include "Components/TextBlock.h"
 #include "Components/Image.h"
 
+UItemButton::UItemButton(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+{
+
+}
+
 void UItemButton::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -23,11 +28,8 @@ void UItemButton::NativeConstruct()
 		ItemID = Item->ItemID;
 	}
 
+	Item->ItemButton = this;
 
-	//ItemName_T->Text = FText::FromString(Item.GetDefaultObject()->ItemName);
-	//ItemPrice_T->Text = FText::AsCurrency(Item.GetDefaultObject()->ItemPrice);
-
-	//ItemID = Item.GetDefaultObject()->ItemID;
 
 	if (!Item_Btn->OnClicked.IsBound())
 	{
@@ -35,28 +37,10 @@ void UItemButton::NativeConstruct()
 	}
 }
 
-void UItemButton::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
-{
-	Super::NativeTick(MyGeometry, InDeltaTime);
-
-	if (Item_Btn)
-	{
-		if (Item_Btn->HasUserFocus(UGameplayStatics::GetPlayerController(GetWorld(), 0)))
-		{
-			Item_Btn->SetBackgroundColor(SelectedColor);
-		}
-		else
-		{
-			Item_Btn->SetBackgroundColor(FLinearColor::White);
-		}
-	}
-}
-
 void UItemButton::OnClicked()
 {
 	if (!InCheckout)
 	{
-		GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Blue, "Item :" + Item->ItemName + " ID: " + FString::FromInt(ItemID));
 		GameManager->ShopWidget->AddItemToCheckout(this->Item);
 		//GameManager->ShopWidget->CurrentItem = this->Item;
 		//GameManager->ShopWidget->Buy();

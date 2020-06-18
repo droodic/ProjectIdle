@@ -30,140 +30,151 @@ void UShopWidget::NativeConstruct()
 
 void UShopWidget::Buy()
 {
-	auto TotalCost = 0;
+	if (CheckList.Num() > 0)
+	{
+		if (GameManager->Money > Total)
+		{
+			for (size_t i = 0; i < CheckList.Num(); i++)
+			{
+				//GameManager->InventoryList.Add(ItemButtons[i]);
+			}
 
-	//Calculate TotalCost, nvm saw theres total already
-	//for (auto ItemButton : CheckoutItemBtnList) {
-	//	TotalCost += ItemButton->Item->ItemPrice;
-	//}
+			GameManager->Money -= Total;
 
-	if (GameManager->Money >= Total) {
-		for (auto ItemButton : CheckoutItemBtnList) {
-			GameManager->InventoryList.Add(ItemButton->Item);
-			GameManager->Money -= ItemButton->Item->ItemPrice; //Is this equal to Total? If not, remove from GM->Money the total outside of for, or fix Total
-			CheckoutItems_WB->RemoveChild(ItemButton);
+			CheckoutItems_WB->ClearChildren();
+			CheckList.Empty();
+
+			Total = 0;
+			CheckoutCount = 0;
+
+			TotalMoney_T->SetText(FText::AsCurrency(Total));
+			CheckoutCount_T->SetText(FText::FromString(FString::FromInt(CheckoutCount)));
+
+			Money_T->SetText(FText::AsCurrency(GameManager->Money));
 		}
+		else
+		{
+			NotEnoughMoney_T->SetText(FText::FromString("Not enough money."));
 
-		CheckoutCount = 0;
-		Money_T->SetText(FText::AsCurrency(GameManager->Money-=Total));
-		Total = 0;
-		TotalMoney_T->SetText(FText::AsCurrency(0));
-		CheckoutCount_T->SetText(FText::FromString(FString::FromInt(CheckoutCount)));
-		CheckoutItemBtnList.Empty();
+			GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UShopWidget::RemoveNotEnoughMoney, 5.f, false);
+		}
 	}
 }
 
-void UShopWidget::AddItemToCheckout(class AItem* Item)
+void UShopWidget::AddItemToCheckout(class AItem* item)
 {
-	GEngine->AddOnScreenDebugMessage(101, 5.f, FColor::Green, "Add Item Checkout called");
-	GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Blue, "Item :" + Item->ItemName + " ID: " + FString::FromInt(Item->ItemPrice));
+	bool isInCheckout = false;
 
-	if (CheckoutItemBtnList.Num() != 0)
+	if (CheckList.Num() > 0)
 	{
-		for (int i = 0; i < CheckoutItemBtnList.Num(); i++)
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "List is not empty");
+
+		for (size_t i = 0; i < CheckList.Num(); i++)
 		{
-			if (CheckoutItemBtnList[i]->ItemID != Item->ItemID)
+			if (CheckList[i]->ItemID == item->ItemID)
 			{
-				if (ItemButtonClass != nullptr)
-				{
-					auto NewItemButton = CreateWidget<UItemButton>(this, ItemButtonClass);
-					
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Is in checkout");
 
-					//NewItemButton->BPItem = itemButton->GetDefaultObject();
-					NewItemButton->Item = Item;
-					NewItemButton->Item_I->SetBrushFromTexture(NewItemButton->Item->ItemImage);
+				CheckList[i]->ItemCount++;
+				CheckList[i]->ItemCount_T->SetText(FText::FromString(FString::FromInt(CheckList[i]->ItemCount)));
 
-					NewItemButton->ItemName_T->SetText(FText::FromString(NewItemButton->Item->ItemName));
-					NewItemButton->ItemPrice_T->SetText(FText::AsCurrency(NewItemButton->Item->ItemPrice));
-
-					NewItemButton->InCheckout = true;
-
-					CheckoutItemBtnList.Add(NewItemButton);
-					CheckoutItems_WB->AddChildToWrapBox(NewItemButton);
-
-					CheckoutCount++;
-					CheckoutCount_T->SetText(FText::FromString(FString::FromInt(CheckoutCount)));
-
-					Total += NewItemButton->Item->ItemPrice;
-					TotalMoney_T->SetText(FText::AsCurrency(Total));
-
-					GEngine->AddOnScreenDebugMessage(103, 5.f, FColor::Green, "Item :" + NewItemButton->Item->ItemName + " ID: " + FString::FromInt(NewItemButton->Item->ItemPrice));
-					break;
-				}
-			}
-			else
-			{
-				//ItemButtons[i]->ItemCount_T->SetVisibility(ESlateVisibility::Visible);
-				CheckoutItemBtnList[i]->ItemCount++;
-				CheckoutItemBtnList[i]->ItemCount_T->SetText(FText::FromString(FString::FromInt(CheckoutItemBtnList[i]->ItemCount)));
-
-				Total += CheckoutItemBtnList[i]->Item->ItemPrice;
+				Total += CheckList[i]->Item->ItemPrice;
 				TotalMoney_T->SetText(FText::AsCurrency(Total));
+				
+				isInCheckout = true;
+
+				break;
 			}
+		}
+
+		if (!isInCheckout)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Is not in Checkout");
+
+			auto ItemButton = CreateWidget<UItemButton>(this, ItemButtonClass);
+
+			ItemButton->Item = item;
+			ItemButton->BPItem = item->ItemButton->BPItem;
+
+			ItemButton->ItemID = item->ItemID;
+
+			ItemButton->InCheckout = true;
+
+			Total += ItemButton->Item->ItemPrice;
+			TotalMoney_T->SetText(FText::AsCurrency(Total));
+
+			CheckList.Add(ItemButton);
+			CheckoutItems_WB->AddChildToWrapBox(ItemButton);
 		}
 	}
 	else
 	{
-		if (ItemButtonClass != nullptr)
-		{
-			UItemButton* NewItemButton = CreateWidget<UItemButton>(this, ItemButtonClass);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "List is empty");
 
-			NewItemButton->Item = Item;
-			NewItemButton->Item_I->SetBrushFromTexture(NewItemButton->Item->ItemImage);
-			NewItemButton->ItemName_T->SetText(FText::FromString(NewItemButton->Item->ItemName));
-			NewItemButton->ItemPrice_T->SetText(FText::AsCurrency(NewItemButton->Item->ItemPrice));
-			NewItemButton->InCheckout = true;
+		auto ItemButton = CreateWidget<UItemButton>(this, ItemButtonClass);
 
-			CheckoutItemBtnList.Add(NewItemButton);
-			CheckoutItems_WB->AddChildToWrapBox(NewItemButton);
-			CheckoutCount++;
-			CheckoutCount_T->SetText(FText::FromString(FString::FromInt(CheckoutCount)));
+		ItemButton->BPItem = item->ItemButton->BPItem;
+		ItemButton->Item = item;
 
-			Total += NewItemButton->Item->ItemPrice;
-			TotalMoney_T->SetText(FText::AsCurrency(Total));
+		ItemButton->ItemID = item->ItemID;
 
-		}
+		ItemButton->InCheckout = true;
+
+		Total += ItemButton->Item->ItemPrice;
+		TotalMoney_T->SetText(FText::AsCurrency(Total));
+
+		CheckList.Add(ItemButton);
+		CheckoutItems_WB->AddChildToWrapBox(ItemButton);
 	}
+
+	CheckoutCount++;
+	CheckoutCount_T->SetText(FText::FromString(FString::FromInt(CheckoutCount)));
 }
 
 void UShopWidget::RemoveItemFromCheckout(int itemID)
 {
-	for (int i = 0; i < CheckoutItemBtnList.Num(); i++)
+	for (size_t i = 0; i < CheckList.Num(); i++)
 	{
-		if (CheckoutItemBtnList[i]->ItemID == itemID)
+		if (CheckList[i]->ItemID == itemID)
 		{
-			if (CheckoutItemBtnList[i]->ItemCount == 1)
+			if (CheckList[i]->ItemCount == 1)
 			{
-				//ItemButtons[i]->ItemCount_T->SetVisibility(ESlateVisibility::Visible);
-				CheckoutItemBtnList[i]->ItemCount = 1;
-				CheckoutItemBtnList[i]->ItemCount_T->SetText(FText::FromString(" "));
+				CheckList[i]->ItemCount = 1;
+				CheckList[i]->ItemCount_T->SetText(FText::FromString(" "));
 
-				CheckoutItems_WB->RemoveChild(CheckoutItemBtnList[i]);
-				CheckoutItemBtnList.RemoveAt(i);
-
-				CheckoutCount--;
-				CheckoutCount_T->SetText(FText::FromString(FString::FromInt(CheckoutCount)));
-
-				Total -= CheckoutItemBtnList[i]->Item->ItemPrice;
+				Total -= CheckList[i]->Item->ItemPrice;
 				TotalMoney_T->SetText(FText::AsCurrency(Total));
+
+				CheckoutItems_WB->RemoveChild(CheckList[i]);
+				CheckList.RemoveAt(i);
 
 				GEngine->AddOnScreenDebugMessage(101, 5.f, FColor::Red, "Item Removed");
-			}
-			else if (CheckoutItemBtnList[i]->ItemCount > 1)
-			{
-				//ItemButtons[i]->ItemCount_T->SetVisibility(ESlateVisibility::Hidden);
-				CheckoutItemBtnList[i]->ItemCount--;
-				CheckoutItemBtnList[i]->ItemCount_T->SetText(FText::FromString(FString::FromInt(CheckoutItemBtnList[i]->ItemCount)));
 
-				Total -= CheckoutItemBtnList[i]->Item->ItemPrice;
+				break;
+			}
+			else if (CheckList[i]->ItemCount > 1)
+			{
+				CheckList[i]->ItemCount--;
+				CheckList[i]->ItemCount_T->SetText(FText::FromString(FString::FromInt(CheckList[i]->ItemCount)));
+
+				Total -= CheckList[i]->Item->ItemPrice;
 				TotalMoney_T->SetText(FText::AsCurrency(Total));
+
+				break;
 			}
 		}
 	}
+
+	CheckoutCount--;
+	CheckoutCount_T->SetText(FText::FromString(FString::FromInt(CheckoutCount)));
+}
+
+void UShopWidget::RemoveNotEnoughMoney()
+{
+	NotEnoughMoney_T->SetText(FText::FromString(""));
 }
 
 void UShopWidget::Return()
 {
 	OfficeDepartment->ShopReturn();
 }
-
