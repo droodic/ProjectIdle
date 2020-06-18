@@ -73,7 +73,6 @@ void UWorkstationUpgradeWidget::ShowInventoryMonitor() {
 	ShowInventory(ECategory::ComputerComponents);
 }
 
-
 void UWorkstationUpgradeWidget::ShowInventoryDesk() {
 	ShowInventory(ECategory::DeskAndChairs);
 }
