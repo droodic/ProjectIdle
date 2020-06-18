@@ -15,6 +15,8 @@ class PROJECTIDLE_API UItemButton : public UUserWidget
 	GENERATED_BODY()
 	
 public:
+	UItemButton(const FObjectInitializer& ObjectInitializer);
+
 	class UGameManager* GameManager;
 
 	UPROPERTY(meta = (BindWidget)) class UButton* Item_Btn;
@@ -26,8 +28,6 @@ public:
 
 	UPROPERTY(EditAnywhere) TSubclassOf<class AItem> BPItem;
 
-	UPROPERTY(EditAnywhere) struct FLinearColor SelectedColor;
-
 	class AItem* Item;
 
 	int ItemID;
@@ -36,7 +36,6 @@ public:
 
 private:
 	void NativeConstruct() override;
-	void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 	UFUNCTION() void OnClicked();
 };

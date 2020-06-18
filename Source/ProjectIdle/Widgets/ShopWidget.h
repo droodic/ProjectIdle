@@ -7,13 +7,13 @@
 #include "ShopWidget.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PROJECTIDLE_API UShopWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
 public:
 	class UGameManager* GameManager;
 	class AOfficeDepartment* OfficeDepartment;
@@ -29,12 +29,14 @@ public:
 
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* Money_T;
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* TotalMoney_T;
+	UPROPERTY(meta = (BindWidget)) class UTextBlock* NotEnoughMoney_T;
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* CheckoutCount_T;
 
 	UPROPERTY(EditAnywhere) TSubclassOf<class UUserWidget> ItemButtonClass;
 
 private:
-	TArray<class UItemButton*> ItemButtons;
+	TArray<class UItemButton*> CheckList;
+	FTimerHandle TimerHandle;
 
 	int CheckoutCount = 0;
 	int Total = 0;
@@ -43,9 +45,10 @@ public:
 	UFUNCTION() void Return();
 	UFUNCTION() void Buy();
 
-	void AddItemToCheckout(class AItem* itemButton);
+	void AddItemToCheckout(class AItem* item);
 	void RemoveItemFromCheckout(int ItemID);
 
 private:
 	void NativeConstruct() override;
+	void RemoveNotEnoughMoney();
 };

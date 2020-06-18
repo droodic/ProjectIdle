@@ -35,4 +35,5 @@ public:
 
 	UPROPERTY(EditDefaultsOnly) class UTexture2D* ItemImage;
 
+	class UItemButton* ItemButton;
 };
