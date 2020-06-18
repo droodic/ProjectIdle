@@ -32,11 +32,25 @@ void UShopWidget::Buy()
 {
 	if (CheckList.Num() > 0)
 	{
-		if (GameManager->Money > Total)
+		if (GameManager->Money >= Total)
 		{
 			for (size_t i = 0; i < CheckList.Num(); i++)
 			{
-				//GameManager->InventoryList.Add(ItemButtons[i]);
+				if (CheckList[i]->ItemCount > 1)
+				{
+					for (size_t j = 0; j < CheckList[i]->ItemCount; j++)
+					{
+						GameManager->InventoryList.Add(CheckList[i]->Item);
+
+						GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Red, FString::FromInt(j + 1) + " " + CheckList[i]->Item->ItemName + "Added");
+					}
+				}
+				else 
+				{
+					GameManager->InventoryList.Add(CheckList[i]->Item);
+
+					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "1 " + CheckList[i]->Item->ItemName + "Added");
+				}
 			}
 
 			GameManager->Money -= Total;
@@ -67,14 +81,10 @@ void UShopWidget::AddItemToCheckout(class AItem* item)
 
 	if (CheckList.Num() > 0)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "List is not empty");
-
 		for (size_t i = 0; i < CheckList.Num(); i++)
 		{
 			if (CheckList[i]->ItemID == item->ItemID)
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Is in checkout");
-
 				CheckList[i]->ItemCount++;
 				CheckList[i]->ItemCount_T->SetText(FText::FromString(FString::FromInt(CheckList[i]->ItemCount)));
 
@@ -89,8 +99,6 @@ void UShopWidget::AddItemToCheckout(class AItem* item)
 
 		if (!isInCheckout)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Is not in Checkout");
-
 			auto ItemButton = CreateWidget<UItemButton>(this, ItemButtonClass);
 
 			ItemButton->Item = item;
@@ -109,8 +117,6 @@ void UShopWidget::AddItemToCheckout(class AItem* item)
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "List is empty");
-
 		auto ItemButton = CreateWidget<UItemButton>(this, ItemButtonClass);
 
 		ItemButton->BPItem = item->ItemButton->BPItem;
@@ -147,8 +153,6 @@ void UShopWidget::RemoveItemFromCheckout(int itemID)
 
 				CheckoutItems_WB->RemoveChild(CheckList[i]);
 				CheckList.RemoveAt(i);
-
-				GEngine->AddOnScreenDebugMessage(101, 5.f, FColor::Red, "Item Removed");
 
 				break;
 			}
