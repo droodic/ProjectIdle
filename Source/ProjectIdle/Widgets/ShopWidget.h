@@ -17,7 +17,7 @@ class PROJECTIDLE_API UShopWidget : public UUserWidget
 public:
 	class UGameManager* GameManager;
 	class AOfficeDepartment* OfficeDepartment;
-
+	class AItem* ItemRef;
 	//AItem* CurrentItem;
 
 	UPROPERTY(meta = (BindWidget)) class UWrapBox* Tab1;
