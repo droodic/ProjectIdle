@@ -43,6 +43,8 @@ public:
 	UPROPERTY(BlueprintReadWrite) class UWorkstationUpgradeWidget* Upgrade;
 	UPROPERTY(BlueprintReadWrite) class UMeetingDepWidget* MeetingWidget;
 	UPROPERTY(BlueprintReadWrite) class UShopWidget* ShopWidget;
+	UPROPERTY(BlueprintReadWrite) class AWall* Wall;
+
 
 
 	UPROPERTY(BlueprintReadWrite) int EmployeeNameIndex;

@@ -67,6 +67,7 @@ void UShopWidget::AddItemToCheckout(class AItem* Item)
 				if (ItemButtonClass != nullptr)
 				{
 					auto NewItemButton = CreateWidget<UItemButton>(this, ItemButtonClass);
+					
 
 					//NewItemButton->BPItem = itemButton->GetDefaultObject();
 					NewItemButton->Item = Item;
