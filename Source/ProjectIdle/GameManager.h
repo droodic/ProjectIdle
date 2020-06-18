@@ -6,6 +6,7 @@
 #include "Engine/GameInstance.h"
 #include "WorldObject/Door.h"
 #include "MeetingDepartment.h"
+#include "Shop/Item.h"
 #include "Department.h"
 #include "Departments/ProgrammingDepartment.h"
 #include "Departments/ArtistDepartment.h"
@@ -22,6 +23,7 @@ class PROJECTIDLE_API UGameManager : public UGameInstance
 
 public:
 	UGameManager();
+	UPROPERTY(BlueprintReadWrite) TArray<class AItem*> InventoryList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AEmployee*> EmployeeList;
 	UPROPERTY(BlueprintReadWrite) TArray<class ADepartment*> DepartmentList;
 	UPROPERTY(BlueprintReadWrite) int NumOfProgrammers;
@@ -42,6 +44,7 @@ public:
 	UPROPERTY(BlueprintReadWrite) class UMeetingDepWidget* MeetingWidget;
 	UPROPERTY(BlueprintReadWrite) class UShopWidget* ShopWidget;
 	UPROPERTY(BlueprintReadWrite) class AWall* Wall;
+
 
 
 	UPROPERTY(BlueprintReadWrite) int EmployeeNameIndex;

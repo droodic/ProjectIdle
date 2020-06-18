@@ -2,6 +2,8 @@
 
 #include "WorkstationUpgradeWidget.h"
 #include "Engine.h"
+#include "ProjectIdle/Shop/Item.h"
+#include "ProjectIdle/Shop/ItemButton.h"
 #include "ProjectIdle/GameManager.h"
 
 
@@ -11,30 +13,82 @@ void UWorkstationUpgradeWidget::NativeConstruct()
 	Super::NativeConstruct();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 
-	if (!UpgradeMonitor_Btn->OnClicked.IsBound())
+	if (!Monitor_Btn->OnClicked.IsBound())
 	{
-
-		UpgradeMonitor_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::Monitor);
+		Monitor_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::ShowInventoryMonitor);
 	}
 
-	if (!UpgradeKeyboard_Btn->OnClicked.IsBound())
+	if (!Desk_Btn->OnClicked.IsBound())
 	{
-		UpgradeKeyboard_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::Keyboard);
+		Desk_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::ShowInventoryDesk);
 	}
+
+
+	if (!Chair_Btn->OnClicked.IsBound())
+	{
+
+		//Chair_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::Monitor);
+	}
+
+
 }
 
-void UWorkstationUpgradeWidget::Monitor()
-{
-	if (Station)
-	{
-		Station->UpgradeMesh(0);
+
+void UWorkstationUpgradeWidget::ShowInventory(ECategory ItemCategory) {
+
+	//UItemButton* NewItemButton = CreateWidget<UItemButton>(this, ItemButtonWidgetClass);
+	//NewItemButton->Item = Item;
+	//NewItemButton->Item_I->SetBrushFromTexture(NewItemButton->Item->ItemImage);
+	//NewItemButton->ItemName_T->SetText(FText::FromString(NewItemButton->Item->ItemName));
+	//NewItemButton->ItemPrice_T->SetText(FText::AsCurrency(NewItemButton->Item->ItemPrice));
+	//InventoryScrollBox->AddChild(NewItemButton);
+
+	InventoryScrollBox->ClearChildren();
+	for (auto Item : GM->InventoryList) {
+
+		//Show computercomponents 
+		if (Item->ItemCategory == ECategory::ComputerComponents) {
+
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, "Computer Component :" + Item->ItemName);
+
+			UItemButton* NewItemButton = CreateWidget<UItemButton>(this, ItemButtonWidgetClass);
+			NewItemButton->Item = Item;
+			NewItemButton->Item_I->SetBrushFromTexture(Item->ItemImage);
+			NewItemButton->ItemName_T->SetText(FText::FromString(Item->ItemName));
+			NewItemButton->ItemPrice_T->SetText(FText::AsCurrency(Item->ItemPrice));
+
+			InventoryScrollBox->AddChild(NewItemButton);
+		}
+
 	}
+
+
 }
 
-void UWorkstationUpgradeWidget::Keyboard()
-{
-	if (Station)
-	{
-		Station->UpgradeMesh(1);
-	}
+
+void UWorkstationUpgradeWidget::ShowInventoryMonitor() {
+	ShowInventory(ECategory::ComputerComponents);
 }
+
+
+void UWorkstationUpgradeWidget::ShowInventoryDesk() {
+	ShowInventory(ECategory::DeskAndChairs);
+}
+
+//void UWorkstationUpgradeWidget::Monitor()
+//{
+//	if (Station)
+//	{
+//		Station->UpgradeMesh(0);
+//	}
+//}
+//
+//
+//
+//void UWorkstationUpgradeWidget::Keyboard()
+//{
+//	if (Station)
+//	{
+//		Station->UpgradeMesh(1);
+//	}
+//}
