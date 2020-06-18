@@ -31,7 +31,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void UpdateWallMaterial(UMaterial* NewMaterial);
+	void UpdateWallMaterial(UMaterialInterface* NewMaterial);
 	void UpdateWallMaterialTest();
 
 

@@ -51,8 +51,7 @@ void UShopWidget::Buy()
 				{
 					if (CheckList[i]->Item->ItemCategory == ECategory::Materials)
 					{
-						//auto NewMaterial = CheckList[i]->Item->ItemMesh->GetMaterial;
-						GameManager->Wall->UpdateWallMaterialTest();
+						GameManager->Wall->UpdateWallMaterial(CheckList[i]->Item->Material->GetMaterial());
 						GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Red, "Noob");
 
 					}
