@@ -25,6 +25,10 @@ AWorkstation::AWorkstation()
 	KeyboardMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("KeyboardMesh"));
 	RootComponent = DeskMesh;
 
+	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("RangeBox"));
+	CollisionBox->AttachTo(RootComponent);
+	CollisionBox->SetBoxExtent(FVector(350, 350, 350));
+
 	StationRole = ERole::Programmer;//Default to stop crashing
 	UpgradeMonitor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeMonitor"));
 	UpgradeKeyboard = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeKeyBoard"));
@@ -138,7 +142,7 @@ void AWorkstation::EnableStation(bool Enable)
 
 void AWorkstation::NotifyActorOnClicked(FKey ButtonPressed)
 {
-	if (!UpgradeWidget->IsInViewport())
+	if (!UpgradeWidget->IsInViewport() && InRange)
 	{
 		UpgradeWidget->AddToViewport();
 		if (UpgradeWidget->InventoryScrollBox->GetChildrenCount() >= 1) {
@@ -181,6 +185,23 @@ void AWorkstation::UpgradeMesh(AItem* Item)
 	//	CompileModifier += 5;
 	//}
 	UpgradeWidget->RemoveFromViewport();
+}
+
+void AWorkstation::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr) {
+		InRange = true;
+	}
+}
+
+void AWorkstation::NotifyActorEndOverlap(AActor* OtherActor)
+{
+	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr) {
+		InRange = false;
+		if (UpgradeWidget->IsInViewport()) {
+			UpgradeWidget->RemoveFromViewport();
+		}
+	}
 }
 
 void AWorkstation::DoCompile() {

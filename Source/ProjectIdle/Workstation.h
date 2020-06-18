@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Components/BoxComponent.h"
 #include "GameFramework/Actor.h"
 #include "ProjectIdle/Shop/Item.h"
 #include "Components/WidgetComponent.h"
@@ -24,6 +25,11 @@ class PROJECTIDLE_API AWorkstation : public AActor
 public:
 	// Sets default values for this actor's properties
 	AWorkstation();
+
+	bool InRange;
+
+	UPROPERTY(VisibleAnywhere)
+		UBoxComponent* CollisionBox;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite) float AssignedCompileLoad;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite) float CurrentCompileLoad;
@@ -79,6 +85,8 @@ public:
 	UFUNCTION() void EnableStation(bool Enabled);
 	UFUNCTION() void DoCompile();
 	void UpgradeMesh(AItem* Item);
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 	//UFUNCTION() int WorkstationActiveLenght();
 	//UFUNCTION() void TestFunction();
 };
