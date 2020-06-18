@@ -38,9 +38,11 @@ void AWall::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AWall::UpdateWallMaterial(UMaterial* NewMaterial)
+void AWall::UpdateWallMaterial(UMaterialInterface* NewMaterial)
 {
 	Mesh->SetMaterial(0, NewMaterial);
+	Mesh->SetMaterial(1, NewMaterial);
+
 }
 
 void AWall::UpdateWallMaterialTest()
