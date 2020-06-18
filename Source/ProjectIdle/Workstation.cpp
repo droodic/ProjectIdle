@@ -25,6 +25,10 @@ AWorkstation::AWorkstation()
 	KeyboardMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("KeyboardMesh"));
 	RootComponent = DeskMesh;
 
+	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("RangeBox"));
+	CollisionBox->AttachTo(RootComponent);
+	CollisionBox->SetBoxExtent(FVector(350, 350, 350));
+
 	StationRole = ERole::Programmer;//Default to stop crashing
 	UpgradeMonitor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeMonitor"));
 	UpgradeKeyboard = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeKeyBoard"));
@@ -138,9 +142,12 @@ void AWorkstation::EnableStation(bool Enable)
 
 void AWorkstation::NotifyActorOnClicked(FKey ButtonPressed)
 {
-	if (!UpgradeWidget->IsInViewport())
+	if (!UpgradeWidget->IsInViewport() && InRange)
 	{
 		UpgradeWidget->AddToViewport();
+		if (UpgradeWidget->InventoryScrollBox->GetChildrenCount() >= 1) {
+			UpgradeWidget->InventoryScrollBox->ClearChildren();
+		}
 	}
 	else
 	{
@@ -148,21 +155,53 @@ void AWorkstation::NotifyActorOnClicked(FKey ButtonPressed)
 	}
 }
 
-void AWorkstation::UpgradeMesh(int Index)
+void AWorkstation::UpgradeMesh(AItem* Item)
 {
-	if (Index == 0)
-	{
-		ComputerMesh->SetVisibility(false);
-		UpgradeMonitor->SetVisibility(true);
-		CompileModifier += 10;
+	if (Item->ItemSubCategory == ESubCategory::Monitor) {
+		ComputerMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
+		UpgradeWidget->MonitorImage->SetBrushFromTexture(Item->ItemImage);
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Computermesh detect"));
 	}
-	if (Index == 1)
-	{
-		KeyboardMesh->SetVisibility(false);
-		UpgradeKeyboard->SetVisibility(true);
-		CompileModifier += 5;
+	else if (Item->ItemSubCategory == ESubCategory::Keyboard) {
+		KeyboardMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
+		UpgradeWidget->DeskAndChairImage->SetBrushFromTexture(Item->ItemImage);
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Keyboard detect"));
 	}
+	else if (Item->ItemSubCategory == ESubCategory::Chair) {
+		ChairMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Chair detect"));
+	}
+
+	//if (Index == 0)
+	//{
+	//	ComputerMesh->SetVisibility(false);
+	//	UpgradeMonitor->SetVisibility(true);
+	//	CompileModifier += 10;
+	//}
+	//if (Index == 1)
+	//{
+	//	KeyboardMesh->SetVisibility(false);
+	//	UpgradeKeyboard->SetVisibility(true);
+	//	CompileModifier += 5;
+	//}
 	UpgradeWidget->RemoveFromViewport();
+}
+
+void AWorkstation::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr) {
+		InRange = true;
+	}
+}
+
+void AWorkstation::NotifyActorEndOverlap(AActor* OtherActor)
+{
+	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr) {
+		InRange = false;
+		if (UpgradeWidget->IsInViewport()) {
+			UpgradeWidget->RemoveFromViewport();
+		}
+	}
 }
 
 void AWorkstation::DoCompile() {
@@ -183,13 +222,13 @@ void AWorkstation::UpdateSupervisorWorkstationPosition()
 		int32 employeeSize = GM->EmployeeList.Num();
 		int32 workstationSize = GM->WorkstationList.Num();
 		FVector AStationLocation = this->GetActorLocation();
-		
-			for (auto Department : GM->DepartmentList)
-			{
-					//Department->SupervisorRef->WorkstationRef = this;
-					//Department->SupervisorRef->HasWorkStation = true;
-					Department->SupervisorRef->StartPosition = StationLocation;
-					//HasEmployee = true;
-			}
+
+		for (auto Department : GM->DepartmentList)
+		{
+			//Department->SupervisorRef->WorkstationRef = this;
+			//Department->SupervisorRef->HasWorkStation = true;
+			Department->SupervisorRef->StartPosition = StationLocation;
+			//HasEmployee = true;
+		}
 	}
 }
