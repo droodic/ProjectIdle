@@ -7,6 +7,7 @@
 #include "ProjectIdle/Shop/ItemButton.h"
 #include "ProjectIdle/Shop/Item.h"
 #include "Components/Button.h"
+#include "ProjectIdle/WorldObject/Wall.h"
 #include "Components/TextBlock.h"
 
 void UShopWidget::NativeConstruct()
@@ -40,6 +41,7 @@ void UShopWidget::Buy()
 				{
 					for (size_t j = 0; j < CheckList[i]->ItemCount; j++)
 					{
+
 						GameManager->InventoryList.Add(CheckList[i]->Item);
 
 						GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Red, FString::FromInt(j + 1) + " " + CheckList[i]->Item->ItemName + "Added");
@@ -47,6 +49,13 @@ void UShopWidget::Buy()
 				}
 				else 
 				{
+					if (CheckList[i]->Item->ItemCategory == ECategory::Materials)
+					{
+						//auto NewMaterial = CheckList[i]->Item->ItemMesh->GetMaterial;
+						GameManager->Wall->UpdateWallMaterialTest();
+						GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Red, "Noob");
+
+					}
 					GameManager->InventoryList.Add(CheckList[i]->Item);
 
 					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "1 " + CheckList[i]->Item->ItemName + "Added");
