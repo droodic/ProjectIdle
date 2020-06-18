@@ -15,15 +15,14 @@ void UItemButton::NativeConstruct()
 	Super::NativeConstruct();
 
 	GameManager = GetWorld()->GetGameInstance<UGameManager>();
+	if (BPItem != nullptr) {
+		Item = BPItem.GetDefaultObject();
+		Item_I->SetBrushFromTexture(Item->ItemImage);
+		ItemName_T->SetText(FText::FromString(Item->ItemName));
+		ItemPrice_T->SetText(FText::AsCurrency(Item->ItemPrice));
+		ItemID = Item->ItemID;
+	}
 
-	Item = BPItem.GetDefaultObject();
-
-	Item_I->SetBrushFromTexture(Item->ItemImage);
-
-	ItemName_T->SetText(FText::FromString(Item->ItemName));
-	ItemPrice_T->SetText(FText::AsCurrency(Item->ItemPrice));
-
-	ItemID = Item->ItemID;
 
 	//ItemName_T->Text = FText::FromString(Item.GetDefaultObject()->ItemName);
 	//ItemPrice_T->Text = FText::AsCurrency(Item.GetDefaultObject()->ItemPrice);
@@ -58,7 +57,9 @@ void UItemButton::OnClicked()
 	if (!InCheckout)
 	{
 		GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Blue, "Item :" + Item->ItemName + " ID: " + FString::FromInt(ItemID));
-		GameManager->ShopWidget->AddItemToCheckout(this->Item);
+		//GameManager->ShopWidget->AddItemToCheckout(this);
+		GameManager->ShopWidget->CurrentItem = this->Item;
+		GameManager->ShopWidget->Buy();
 	}
 	else
 	{

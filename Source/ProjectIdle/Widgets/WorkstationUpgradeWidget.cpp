@@ -2,6 +2,8 @@
 
 #include "WorkstationUpgradeWidget.h"
 #include "Engine.h"
+#include "ProjectIdle/Shop/Item.h"
+#include "ProjectIdle/Shop/ItemButton.h"
 #include "ProjectIdle/GameManager.h"
 
 
@@ -25,24 +27,42 @@ void UWorkstationUpgradeWidget::NativeConstruct()
 	if (!Chair_Btn->OnClicked.IsBound())
 	{
 
-		Chair_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::Monitor);
+		//Chair_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::Monitor);
 	}
 
-	if (!UpgradeKeyboard_Btn->OnClicked.IsBound())
-	{
-		UpgradeKeyboard_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::Keyboard);
-	}
+
 }
 
 
 void UWorkstationUpgradeWidget::ShowInventory(ECategory ItemCategory) {
-	//Show computercomponents 
+
+	//UItemButton* NewItemButton = CreateWidget<UItemButton>(this, ItemButtonWidgetClass);
+	//NewItemButton->Item = Item;
+	//NewItemButton->Item_I->SetBrushFromTexture(NewItemButton->Item->ItemImage);
+	//NewItemButton->ItemName_T->SetText(FText::FromString(NewItemButton->Item->ItemName));
+	//NewItemButton->ItemPrice_T->SetText(FText::AsCurrency(NewItemButton->Item->ItemPrice));
+	//InventoryScrollBox->AddChild(NewItemButton);
+
+	InventoryScrollBox->ClearChildren();
 	for (auto Item : GM->InventoryList) {
+
+		//Show computercomponents 
 		if (Item->ItemCategory == ECategory::ComputerComponents) {
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, "Item :" + Item->ItemName);
+
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, "Computer Component :" + Item->ItemName);
+
+			UItemButton* NewItemButton = CreateWidget<UItemButton>(this, ItemButtonWidgetClass);
+			NewItemButton->Item = Item;
+			NewItemButton->Item_I->SetBrushFromTexture(Item->ItemImage);
+			NewItemButton->ItemName_T->SetText(FText::FromString(Item->ItemName));
+			NewItemButton->ItemPrice_T->SetText(FText::AsCurrency(Item->ItemPrice));
+
+			InventoryScrollBox->AddChild(NewItemButton);
 		}
 
 	}
+
+
 }
 
 
@@ -55,20 +75,20 @@ void UWorkstationUpgradeWidget::ShowInventoryDesk() {
 	ShowInventory(ECategory::DeskAndChairs);
 }
 
-void UWorkstationUpgradeWidget::Monitor()
-{
-	if (Station)
-	{
-		Station->UpgradeMesh(0);
-	}
-}
-
-
-
-void UWorkstationUpgradeWidget::Keyboard()
-{
-	if (Station)
-	{
-		Station->UpgradeMesh(1);
-	}
-}
+//void UWorkstationUpgradeWidget::Monitor()
+//{
+//	if (Station)
+//	{
+//		Station->UpgradeMesh(0);
+//	}
+//}
+//
+//
+//
+//void UWorkstationUpgradeWidget::Keyboard()
+//{
+//	if (Station)
+//	{
+//		Station->UpgradeMesh(1);
+//	}
+//}

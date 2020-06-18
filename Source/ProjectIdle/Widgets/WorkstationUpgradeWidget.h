@@ -21,9 +21,10 @@ public:
 	class AWorkstation* Station;
 	class UGameManager* GM;
 
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UScrollBox* InventoryScrollBox;
+	UPROPERTY(EditAnywhere) TSubclassOf<UUserWidget> ItemButtonWidgetClass;
 
-
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Monitor_Btn;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Monitor_Btn; //change to respective categories
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Desk_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Chair_Btn;
 
@@ -32,8 +33,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* UpgradeKeyboard_Btn;
 
 
-	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void Monitor();
-	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void Keyboard();
+	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void Monitor();
+	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void Keyboard();
 
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void ShowInventory(ECategory ItemCategory);
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void ShowInventoryMonitor();
