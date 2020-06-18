@@ -41,26 +41,29 @@ void UMeetingDepWidget::NativeConstruct()
 
 void UMeetingDepWidget::StartMeeting()
 {
-	if (SelectedApproach == "Default") {
-		GM->SpeedRate = 1;
-		GM->OfficeDepartment->AddedChance = 0.0f;
-		GM->MeetingDepartment->BackFromMeeting();
-		//T_SuccessChance->SetText(FText::AsPercent((GM->MeetingDepartment->CurrentIdea->SuccessChance / 100.f)));
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach"));
+	if (GM->IdeaInProduction) {
+		if (SelectedApproach == "Default") {
+			GM->SpeedRate = 1;
+			GM->OfficeDepartment->AddedChance = 0.0f;
+			GM->MeetingDepartment->BackFromMeeting();
+			//T_SuccessChance->SetText(FText::AsPercent((GM->MeetingDepartment->CurrentIdea->SuccessChance / 100.f)));
+			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach"));
+		}
+		//GM->OfficeDepartment->AddedChance = 0;
+		else if (SelectedApproach == "Perfectionist") {
+			GM->SpeedRate = 0.75;
+			GM->OfficeDepartment->AddedChance = 10.0f;
+			GM->MeetingDepartment->BackFromMeeting();
+			//T_SuccessChance->SetText(FText::AsPercent((GM->MeetingDepartment->CurrentIdea->SuccessChance + 10.0f / 100.f)));
+			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Perfectionist approach"));
+		}
+		else if (SelectedApproach == "Crunch Time") {
+			GM->SpeedRate = 1.25;
+			GM->OfficeDepartment->AddedChance = -10.0f;
+			GM->MeetingDepartment->BackFromMeeting();
+			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Crunch time approach"));
+		}
 	}
-	//GM->OfficeDepartment->AddedChance = 0;
-	else if (SelectedApproach == "Perfectionist") {
-		GM->SpeedRate = 0.75;
-		GM->OfficeDepartment->AddedChance = 10.0f;
-		GM->MeetingDepartment->BackFromMeeting();
-		//T_SuccessChance->SetText(FText::AsPercent((GM->MeetingDepartment->CurrentIdea->SuccessChance + 10.0f / 100.f)));
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Perfectionist approach"));
-	}
-	else if (SelectedApproach == "Crunch Time") {
-		GM->SpeedRate = 1.25;
-		GM->OfficeDepartment->AddedChance = -10.0f;
-		GM->MeetingDepartment->BackFromMeeting();
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Crunch time approach"));
-	}
+
 	//StartMeetingBtn->SetIsEnabled(false);
 }

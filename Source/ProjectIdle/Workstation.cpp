@@ -161,6 +161,7 @@ void AWorkstation::UpgradeMesh(AItem* Item)
 	if (Item->ItemSubCategory == ESubCategory::Monitor) {
 		ComputerMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
 		UpgradeWidget->MonitorImage->SetBrushFromTexture(Item->ItemImage);
+		CompileModifier = Item->ItemCompileRate;
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Computermesh detect"));
 	}
 	else if (Item->ItemSubCategory == ESubCategory::Keyboard) {
