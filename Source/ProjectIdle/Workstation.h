@@ -44,7 +44,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* KeyboardMesh;
 
-	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeMonitor;
+	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeMonitor; //remove
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeKeyboard;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Role") ERole StationRole;

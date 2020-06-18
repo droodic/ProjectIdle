@@ -24,11 +24,11 @@ void UWorkstationUpgradeWidget::NativeConstruct()
 	}
 
 
-	if (!Chair_Btn->OnClicked.IsBound())
-	{
+	//if (!Chair_Btn->OnClicked.IsBound())
+	//{
 
-		//Chair_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::Monitor);
-	}
+	//	//Chair_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::Monitor);
+	//}
 
 
 }
@@ -72,7 +72,6 @@ void UWorkstationUpgradeWidget::ShowInventory(ECategory ItemCategory) {
 void UWorkstationUpgradeWidget::ShowInventoryMonitor() {
 	ShowInventory(ECategory::ComputerComponents);
 }
-
 
 void UWorkstationUpgradeWidget::ShowInventoryDesk() {
 	ShowInventory(ECategory::DeskAndChairs);

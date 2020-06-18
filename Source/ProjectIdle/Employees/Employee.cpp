@@ -165,8 +165,8 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 
 	//Test function - Workers reduce workloads, make function / use timer +event instead of tick
 	if (!IsWorking && WorkAnimation != nullptr) {
-
-		SetActorRotation(WorkstationRef->ChairMesh->GetComponentRotation());
+		FRotator AdjustRotate = FRotator(0, 90, 0);
+		SetActorRotation(WorkstationRef->ChairMesh->GetComponentRotation() + AdjustRotate);
 		WorkProgressBar->SetVisibility(true);
 		IsWorking = true;
 	}

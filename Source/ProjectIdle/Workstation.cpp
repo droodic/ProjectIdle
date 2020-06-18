@@ -22,6 +22,7 @@ AWorkstation::AWorkstation()
 	DeskMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DeskMesh"));
 	ComputerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ComputerMesh"));
 	ChairMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ChairMesh"));
+	ChairMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	KeyboardMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("KeyboardMesh"));
 	RootComponent = DeskMesh;
 

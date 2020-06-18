@@ -252,7 +252,8 @@ void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 			SpawnParameters.Instigator = GetInstigator();
 			if (Position == 0 || Position == 1 || Position == 2)
 			{
-				SpawnLocation = GM->Door->GetActorLocation();
+				FVector NewVector = FVector(0, -50, 0);
+				SpawnLocation = GM->Door->GetActorLocation() + NewVector;
 				SpawnRotation = FRotator::ZeroRotator;
 			}
 			auto Emp = World->SpawnActor<AEmployee>(SpawnActors[Position], SpawnLocation, SpawnRotation, SpawnParameters);
