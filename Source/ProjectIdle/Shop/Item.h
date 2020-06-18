@@ -18,9 +18,10 @@ enum class ECategory : uint8
 UENUM(Meta = (ScriptName = "SubCategory"))
 enum class ESubCategory : uint8
 {
-	ComputerComponents             UMETA(DisplayName = "Monitor"),
-	DeskAndChairs				   UMETA(DisplayName = "Keyboard"),
-
+	Monitor            UMETA(DisplayName = "Monitor"),
+	Keyboard		   UMETA(DisplayName = "Keyboard"),
+	Desk			   UMETA(DisplayName = "Desk"),
+	Chair			   UMETA(DisplayName = "Chair")
 };
 
 
@@ -42,6 +43,7 @@ public:
 	UPROPERTY(EditDefaultsOnly) FString ItemName;
 
 	UPROPERTY(EditDefaultsOnly) ECategory ItemCategory;
+	UPROPERTY(EditDefaultsOnly) ESubCategory ItemSubCategory;
 
 	UPROPERTY(EditDefaultsOnly) class UTexture2D* ItemImage;
 
