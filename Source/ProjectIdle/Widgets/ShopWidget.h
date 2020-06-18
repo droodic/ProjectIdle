@@ -18,7 +18,7 @@ public:
 	class UGameManager* GameManager;
 	class AOfficeDepartment* OfficeDepartment;
 
-	AItem* CurrentItem;
+	//AItem* CurrentItem;
 
 	UPROPERTY(meta = (BindWidget)) class UWrapBox* Tab1;
 	UPROPERTY(meta = (BindWidget)) class UWrapBox* Tab2;
@@ -36,7 +36,7 @@ public:
 	UPROPERTY(EditAnywhere) TSubclassOf<class UUserWidget> ItemButtonClass;
 
 private:
-	TArray<class UItemButton*> ItemButtons;
+	TArray<class UItemButton*> CheckoutItemBtnList;
 
 	int CheckoutCount = 0;
 	int Total = 0;

@@ -58,7 +58,7 @@ void UItemButton::OnClicked()
 	{
 		GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Blue, "Item :" + Item->ItemName + " ID: " + FString::FromInt(ItemID));
 		GameManager->ShopWidget->AddItemToCheckout(this->Item);
-		GameManager->ShopWidget->CurrentItem = this->Item;
+		//GameManager->ShopWidget->CurrentItem = this->Item;
 		//GameManager->ShopWidget->Buy();
 	}
 	else
