@@ -30,40 +30,40 @@ void UShopWidget::NativeConstruct()
 
 void UShopWidget::Buy()
 {
-	//if (ItemButtons.Num() > 0)
-	//{
-	//	for (size_t i = 0; i < ItemButtons.Num(); i++)
-	//	{
-	//		//ItemButtons[i]->Item->ItemName;
-	//		//CheckoutItems_WB->RemoveChild(ItemButtons[i]);
+	if (ItemButtons.Num() > 0)
+	{
+		for (size_t i = 0; i < ItemButtons.Num(); i++)
+		{
+			ItemButtons[i]->Item->ItemName;
+			CheckoutItems_WB->RemoveChild(ItemButtons[i]);
 
-	//	}
-	//	ItemButtons.Empty();
-	//}
-
-	if (GameManager->Money >= CurrentItem->ItemPrice) {
-		GameManager->InventoryList.Add(CurrentItem);
-		GameManager->Money -= CurrentItem->ItemPrice;
+		}
+		ItemButtons.Empty();
 	}
+
+	//if (GameManager->Money >= CurrentItem->ItemPrice) {
+	//	GameManager->InventoryList.Add(CurrentItem);
+	//	GameManager->Money -= CurrentItem->ItemPrice;
+	//}
 }
 
-void UShopWidget::AddItemToCheckout(class UItemButton* ItemButton)
+void UShopWidget::AddItemToCheckout(class AItem* Item)
 {
 	GEngine->AddOnScreenDebugMessage(101, 5.f, FColor::Green, "Add Item Checkout called");
-	GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Blue, "Item :" + ItemButton->Item->ItemName + " ID: " + FString::FromInt(ItemButton->Item->ItemPrice));
+	GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Blue, "Item :" + Item->ItemName + " ID: " + FString::FromInt(Item->ItemPrice));
 
 	if (ItemButtons.Num() != 0)
 	{
-		/*for (size_t i = 0; i < ItemButtons.Num(); i++)
+		for (size_t i = 0; i < ItemButtons.Num(); i++)
 		{
-			if (ItemButtons[i]->ItemID != itemButton->ItemID)
+			if (ItemButtons[i]->ItemID != Item->ItemID)
 			{
 				if (ItemButtonClass != nullptr)
 				{
 					auto NewItemButton = CreateWidget<UItemButton>(this, ItemButtonClass);
 
 					//NewItemButton->BPItem = itemButton->GetDefaultObject();
-					NewItemButton->Item = itemButton;
+					NewItemButton->Item = Item;
 					NewItemButton->Item_I->SetBrushFromTexture(NewItemButton->Item->ItemImage);
 
 					NewItemButton->ItemName_T->SetText(FText::FromString(NewItemButton->Item->ItemName));
@@ -93,7 +93,7 @@ void UShopWidget::AddItemToCheckout(class UItemButton* ItemButton)
 				Total += ItemButtons[i]->Item->ItemPrice;
 				TotalMoney_T->SetText(FText::AsCurrency(Total));
 			}
-		}*/
+		}
 	}
 	else
 	{
@@ -101,7 +101,7 @@ void UShopWidget::AddItemToCheckout(class UItemButton* ItemButton)
 		{
 			UItemButton* NewItemButton = CreateWidget<UItemButton>(this, ItemButtonClass);
 
-			NewItemButton = ItemButton;
+			NewItemButton->Item = Item;
 			NewItemButton->Item_I->SetBrushFromTexture(NewItemButton->Item->ItemImage);
 			NewItemButton->ItemName_T->SetText(FText::FromString(NewItemButton->Item->ItemName));
 			NewItemButton->ItemPrice_T->SetText(FText::AsCurrency(NewItemButton->Item->ItemPrice));

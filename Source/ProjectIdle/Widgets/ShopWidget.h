@@ -45,7 +45,7 @@ public:
 	UFUNCTION() void Return();
 	UFUNCTION() void Buy();
 
-	void AddItemToCheckout(class UItemButton* ItemButton);
+	void AddItemToCheckout(class AItem* ItemButton);
 	void RemoveItemFromCheckout(int ItemID);
 
 private:
