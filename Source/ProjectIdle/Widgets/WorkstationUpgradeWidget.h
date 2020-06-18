@@ -27,10 +27,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Monitor_Btn; //change to respective categories
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Desk_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Chair_Btn;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UImage* MonitorImage;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UImage* DeskAndChairImage;
 
-
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* UpgradeMonitor_Btn;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* UpgradeKeyboard_Btn;
+	//UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* UpgradeMonitor_Btn;
+	//UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* UpgradeKeyboard_Btn;
 
 
 	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void Monitor();

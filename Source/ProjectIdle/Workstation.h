@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/Actor.h"
+#include "ProjectIdle/Shop/Item.h"
 #include "Components/WidgetComponent.h"
 #include "ProjectIdle/Employees/Employee.h"
 #include "Workstation.generated.h"
@@ -76,8 +77,8 @@ public:
 	UFUNCTION() void UpdateSupervisorWorkstationPosition();
 
 	UFUNCTION() void EnableStation(bool Enabled);
-	UFUNCTION() void UpgradeMesh(int Index);
 	UFUNCTION() void DoCompile();
+	void UpgradeMesh(AItem* Item);
 	//UFUNCTION() int WorkstationActiveLenght();
 	//UFUNCTION() void TestFunction();
 };

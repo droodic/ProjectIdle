@@ -27,5 +27,5 @@ void UInventoryButton::NativeConstruct()
 
 void UInventoryButton::OnClicked()
 {
-	CurrentStation->UpgradeMesh(0);
+	CurrentStation->UpgradeMesh(Item);
 }
