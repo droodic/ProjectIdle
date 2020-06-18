@@ -18,6 +18,8 @@ public:
 	class UGameManager* GameManager;
 	class AOfficeDepartment* OfficeDepartment;
 
+	//AItem* CurrentItem;
+
 	UPROPERTY(meta = (BindWidget)) class UWrapBox* Tab1;
 	UPROPERTY(meta = (BindWidget)) class UWrapBox* Tab2;
 	UPROPERTY(meta = (BindWidget)) class UWrapBox* Tab3;

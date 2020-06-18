@@ -16,6 +16,7 @@ AChair::AChair()
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->AttachToComponent(Root, FAttachmentTransformRules::KeepRelativeTransform);
+	
 }
 
 // Called when the game starts or when spawned

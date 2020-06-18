@@ -15,6 +15,16 @@ enum class ECategory : uint8
 	Materials					   UMETA(DisplayName = "Materials")
 };
 
+UENUM(Meta = (ScriptName = "SubCategory"))
+enum class ESubCategory : uint8
+{
+	ComputerComponents             UMETA(DisplayName = "Monitor"),
+	DeskAndChairs				   UMETA(DisplayName = "Keyboard"),
+
+};
+
+
+
 UCLASS()
 class PROJECTIDLE_API AItem : public AActor
 {
