@@ -28,6 +28,8 @@ void AWall::BeginPlay()
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->Wall = this;
+	//UpdateWallMaterialTest();
+	//UpdateWallMaterial(Material);
 }
 
 // Called every frame
@@ -39,5 +41,10 @@ void AWall::Tick(float DeltaTime)
 void AWall::UpdateWallMaterial(UMaterial* NewMaterial)
 {
 	Mesh->SetMaterial(0, NewMaterial);
+}
+
+void AWall::UpdateWallMaterialTest()
+{
+	Mesh->SetMaterial(0, Material);
 }
 
