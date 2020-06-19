@@ -40,7 +40,7 @@ void AWall::Tick(float DeltaTime)
 
 void AWall::UpdateWallMaterial(UMaterialInterface* NewMaterial)
 {
-	Mesh->SetMaterial(0, NewMaterial);
+	//Mesh->SetMaterial(0, NewMaterial);
 	Mesh->SetMaterial(1, NewMaterial);
 
 }
