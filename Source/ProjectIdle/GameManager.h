@@ -50,4 +50,6 @@ public:
 	bool IdeaInProduction = false;
 
 	virtual void Init();
+	UFUNCTION(BlueprintImplementableEvent) void SaveGameState();
+	UFUNCTION(BlueprintImplementableEvent) void LoadGameState();
 };

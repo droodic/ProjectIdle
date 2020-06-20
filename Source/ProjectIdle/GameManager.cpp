@@ -14,3 +14,8 @@ void UGameManager::Init()
 {
 
 }
+
+//void UGameManager::SaveGameState()
+//{
+// //return UFUNCTION(BlueprintCallable) void();
+//}
