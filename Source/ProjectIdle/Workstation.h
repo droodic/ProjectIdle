@@ -82,7 +82,7 @@ public:
 	UFUNCTION() void UpdateWorkstationPosition();
 	UFUNCTION() void UpdateSupervisorWorkstationPosition();
 
-	UFUNCTION() void EnableStation(bool Enabled);
+	UFUNCTION(BlueprintCallable) void EnableStation(bool Enabled);
 	UFUNCTION() void DoCompile();
 	void UpgradeMesh(AItem* Item);
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
