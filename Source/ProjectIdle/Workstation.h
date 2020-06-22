@@ -57,7 +57,7 @@ public:
 		FVector StationVector;
 
 	bool IsCompiling;
-	UPROPERTY() bool HasEmployee;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool HasEmployee;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsEnabled;
 
 	APlayerCameraManager* Camera;
