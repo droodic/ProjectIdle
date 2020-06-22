@@ -314,8 +314,8 @@ void AEmployee::Promote()
 				}
 			}
 
-			CostEmployeePromote = PromoteToRegular;
 			GM->Money -= CostEmployeePromote;
+			CostEmployeePromote = PromoteToRegular;
 
 			break;
 		case EPosition::Junior:
