@@ -54,5 +54,13 @@ public:
 	UFUNCTION(BlueprintImplementableEvent) void LoadGameState();
 
 	UFUNCTION(BlueprintCallable) void SaveGame();
-	UFUNCTION(BlueprintCallable) void LoadGame();
+	UFUNCTION(BlueprintCallable) void LoadGame(FString SaveFile);
+	UFUNCTION(BlueprintCallable) void PopulateSaveFiles();
+	void OnGameLoadedFixup(UWorld* World);
+	
+
+protected:
+	UPROPERTY(BlueprintReadOnly)
+	TArray<FString> SaveFileNames;
+	TArray<uint8> BinaryData;
 };

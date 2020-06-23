@@ -427,3 +427,11 @@ void AEmployee::AssignSupervisor()
 	MoveEmployee(StartPosition);
 }
 
+//void AEmployee::ActorSaveDataLoaded()
+//{
+//}
+//
+//void AEmployee::ActorSaveDataSaved()
+//{
+//}
+
