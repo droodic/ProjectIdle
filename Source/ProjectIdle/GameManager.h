@@ -52,4 +52,7 @@ public:
 	virtual void Init();
 	UFUNCTION(BlueprintImplementableEvent) void SaveGameState();
 	UFUNCTION(BlueprintImplementableEvent) void LoadGameState();
+
+	UFUNCTION(BlueprintCallable) void SaveGame();
+	UFUNCTION(BlueprintCallable) void LoadGame();
 };

@@ -37,11 +37,11 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* DeskMesh;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite)
 		UStaticMeshComponent* ComputerMesh;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite)
 		UStaticMeshComponent* ChairMesh;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite)
 		UStaticMeshComponent* KeyboardMesh;
 
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeMonitor; //remove
@@ -85,6 +85,7 @@ public:
 	UFUNCTION(BlueprintCallable) void EnableStation(bool Enabled);
 	UFUNCTION() void DoCompile();
 	void UpgradeMesh(AItem* Item);
+	UFUNCTION(BlueprintCallable) void UpgradeMeshFromSave(AWorkstation* SavedStation);
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 	//UFUNCTION() int WorkstationActiveLenght();

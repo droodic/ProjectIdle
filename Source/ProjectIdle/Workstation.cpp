@@ -189,6 +189,12 @@ void AWorkstation::UpgradeMesh(AItem* Item)
 	UpgradeWidget->RemoveFromViewport();
 }
 
+void AWorkstation::UpgradeMeshFromSave(AWorkstation* SavedStation) {
+	ComputerMesh->SetStaticMesh(SavedStation->ComputerMesh->GetStaticMesh());
+	KeyboardMesh->SetStaticMesh(SavedStation->KeyboardMesh->GetStaticMesh());
+	ChairMesh->SetStaticMesh(SavedStation->ChairMesh->GetStaticMesh());
+}
+
 void AWorkstation::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr) {
