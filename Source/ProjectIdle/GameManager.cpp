@@ -107,7 +107,6 @@ void UGameManager::LoadGame(FString SaveFile)
 	//UGameSave* SaveGameInstance = Cast<UGameSave>(UGameplayStatics::CreateSaveGameObject(UGameSave::StaticClass()));
 	//SaveGameInstance = Cast<UGameSave>(UGameplayStatics::LoadGameFromSlot("Default", 0));
 	//Money = SaveGameInstance->Saved_Money;
-
 	FString outPath = FPaths::ProjectSavedDir() + SaveFile;
 	GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Loading saveName : " + outPath);
 	if (!FFileHelper::LoadFileToArray(BinaryData, *outPath))
@@ -145,8 +144,7 @@ void UGameManager::LoadGame(FString SaveFile)
 	//if(M)
 
 	//UGameplayStatics::OpenLevel(GetWorld(), *GetWorld()->GetMapName());
-
-	GetWorld()->ServerTravel("?Restart", true);
+	//GetWorld()->ServerTravel("?Restart", true);
 	OnGameLoadedFixup(GetWorld());
 }
 
@@ -155,9 +153,8 @@ void UGameManager::OnGameLoadedFixup(UWorld* World) {
 	if (BinaryData.Num() == 0)
 	{
 		checkSlow(World->GetFirstPlayerController() != nullptr);
-	//	AMasteringCharacter* charPawn = Cast<AMasteringCharacter>(World->GetFirstPlayerController()->GetPawn());
-
 	//		FixupPlayer(World, charPawn);
+		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "NOT SPAWNING ");
 		return;
 	}
 
