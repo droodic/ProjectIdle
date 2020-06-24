@@ -22,7 +22,14 @@ void UWorkstationUpgradeWidget::NativeConstruct()
 	{
 		Desk_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::ShowInventoryDesk);
 	}
-
+	if (!Chair_Btn->OnClicked.IsBound())
+	{
+		Chair_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::ShowInventoryChair);
+	}
+	if (!Keyboard_Btn->OnClicked.IsBound())
+	{
+		Keyboard_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::ShowInventoryKeyboard);
+	}
 
 	//if (!Chair_Btn->OnClicked.IsBound())
 	//{
@@ -34,7 +41,7 @@ void UWorkstationUpgradeWidget::NativeConstruct()
 }
 
 
-void UWorkstationUpgradeWidget::ShowInventory(ECategory ItemCategory) {
+void UWorkstationUpgradeWidget::ShowInventory(ESubCategory ItemCategory) {
 
 	//UItemButton* NewItemButton = CreateWidget<UItemButton>(this, ItemButtonWidgetClass);
 	//NewItemButton->Item = Item;
@@ -47,7 +54,7 @@ void UWorkstationUpgradeWidget::ShowInventory(ECategory ItemCategory) {
 
 	for (auto Item : GM->InventoryList) {
 		//Show computercomponents 
-		if (Item->ItemCategory == ItemCategory) {
+		if (Item->ItemSubCategory == ItemCategory) {
 
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, "Computer Component :" + Item->ItemName);
 			UInventoryButton* NewItemButton = CreateWidget<UInventoryButton>(this, InventoryButtonWidgetClass);
@@ -70,13 +77,20 @@ void UWorkstationUpgradeWidget::ShowInventory(ECategory ItemCategory) {
 
 
 void UWorkstationUpgradeWidget::ShowInventoryMonitor() {
-	ShowInventory(ECategory::ComputerComponents);
+	ShowInventory(ESubCategory::Monitor);
 }
 
 void UWorkstationUpgradeWidget::ShowInventoryDesk() {
-	ShowInventory(ECategory::DeskAndChairs);
+	ShowInventory(ESubCategory::Desk);
 }
 
+void UWorkstationUpgradeWidget::ShowInventoryChair() {
+	ShowInventory(ESubCategory::Chair);
+}
+
+void UWorkstationUpgradeWidget::ShowInventoryKeyboard() {
+	ShowInventory(ESubCategory::Keyboard);
+}
 //void UWorkstationUpgradeWidget::Monitor()
 //{
 //	if (Station)

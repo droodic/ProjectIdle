@@ -167,15 +167,22 @@ void AWorkstation::UpgradeMesh(AItem* Item)
 		CompileModifier = Item->ItemCompileRate;
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Computermesh detect"));
 	}
+	else if (Item->ItemSubCategory == ESubCategory::Desk) {
+		ChairMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
+		UpgradeWidget->Desk_Img->SetBrushFromTexture(Item->ItemImage);
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Desk detect"));
+	}
 	else if (Item->ItemSubCategory == ESubCategory::Keyboard) {
 		KeyboardMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
-		UpgradeWidget->DeskAndChairImage->SetBrushFromTexture(Item->ItemImage);
+		UpgradeWidget->Keyboard_Img->SetBrushFromTexture(Item->ItemImage);
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Keyboard detect"));
 	}
 	else if (Item->ItemSubCategory == ESubCategory::Chair) {
 		ChairMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
+		UpgradeWidget->Chair_Img->SetBrushFromTexture(Item->ItemImage);
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Chair detect"));
 	}
+
 
 	//if (Index == 0)
 	//{
