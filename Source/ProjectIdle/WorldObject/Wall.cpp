@@ -6,6 +6,7 @@
 #include "Components/MeshComponent.h"
 #include "Components/StaticMeshComponent.h"
 
+
 // Sets default values
 AWall::AWall()
 {
@@ -26,10 +27,22 @@ AWall::AWall()
 void AWall::BeginPlay()
 {
 	Super::BeginPlay();
+	EnableObject(IsEnabled);
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->Wall = this;
-	//UpdateWallMaterialTest();
-	//UpdateWallMaterial(Material);
+	
+	if (this->Type == ObjectType::Wall)
+	{
+		GM->WallList.Add(this);
+	}
+	if (this->Type == ObjectType::Floor)
+	{
+		GM->FloorList.Add(this);
+	}
+
+
+	ActivateWallAndFloor();
+
 }
 
 // Called every frame
@@ -50,4 +63,31 @@ void AWall::UpdateWallMaterialTest()
 	Mesh->SetMaterial(0, Material);
 	Mesh->SetMaterial(1, Material);
 }
+
+void AWall::ActivateWallAndFloor()
+{
+	for (int i = 0; i < GM->WallList.Num(); i++)
+	{
+		GM->WallList[i]->SetActorHiddenInGame(false);
+	}
+}
+
+void AWall::EnableObject(bool Enable)
+{
+	if (!Enable)
+	{
+		this->SetActorHiddenInGame(true);
+		this->SetActorEnableCollision(false);
+		//this->SetActorTickEnabled(true);
+		IsEnabled = false;
+	}
+	else
+	{
+		this->SetActorHiddenInGame(false);
+		this->SetActorEnableCollision(true);
+		//this->SetActorTickEnabled(false);
+		IsEnabled = true;
+	}
+}
+
 

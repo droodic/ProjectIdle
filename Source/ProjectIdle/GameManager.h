@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
 #include "WorldObject/Door.h"
+#include "WorldObject/Wall.h"
 #include "MeetingDepartment.h"
 #include "Shop/Item.h"
 #include "Department.h"
@@ -26,6 +27,10 @@ public:
 	UPROPERTY(BlueprintReadWrite) TArray<class AItem*> InventoryList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AEmployee*> EmployeeList;
 	UPROPERTY(BlueprintReadWrite) TArray<class ADepartment*> DepartmentList;
+	UPROPERTY(BlueprintReadWrite) TArray<class AWall*> FloorList;
+	UPROPERTY(BlueprintReadWrite) TArray<class AWall*> WallList;
+
+
 	UPROPERTY(BlueprintReadWrite) int NumOfProgrammers;
 	UPROPERTY(BlueprintReadWrite) int NumOfArtists;
 	UPROPERTY(BlueprintReadWrite) int Money;

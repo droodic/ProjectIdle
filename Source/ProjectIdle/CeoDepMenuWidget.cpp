@@ -207,3 +207,15 @@ void UCeoDepMenuWidget::AddValuesToButton(Idea* idea)
 	idea->IdeaButton->storedIndex = Index;
 	idea->IdeaButton->IsFinished = true;
 }
+
+void UCeoDepMenuWidget::CreateDeparment()
+{
+	if (Selected == "Marketing")
+	{
+
+	}
+	if (Selected == "Test")
+	{
+
+	}
+}

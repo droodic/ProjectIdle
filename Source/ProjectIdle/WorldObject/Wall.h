@@ -6,6 +6,17 @@
 #include "GameFramework/Actor.h"
 #include "Wall.generated.h"
 
+
+
+UENUM(Meta = (ScriptName = "ObjectType"))
+enum class ObjectType : uint8
+{
+	Wall             UMETA(DisplayName = "Wall"),
+	Floor		     UMETA(DisplayName = "Floor"),
+
+};
+
+
 UCLASS()
 class PROJECTIDLE_API AWall : public AActor
 {
@@ -22,6 +33,8 @@ public:
 	UPROPERTY(EditAnywhere) UMaterial* Material;
 	UPROPERTY(EditAnywhere) UMaterial* UpgradeMaterial;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsEnabled;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "ObjectType") ObjectType Type;
 
 protected:
 	// Called when the game starts or when spawned
@@ -31,8 +44,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void UpdateWallMaterial(UMaterialInterface* NewMaterial);
-	void UpdateWallMaterialTest();
+	UFUNCTION() void UpdateWallMaterial(UMaterialInterface* NewMaterial);
+	UFUNCTION() void UpdateWallMaterialTest();
+	UFUNCTION() void ActivateWallAndFloor();
+	UFUNCTION() void EnableObject(bool Enabled);
+
 
 
 };

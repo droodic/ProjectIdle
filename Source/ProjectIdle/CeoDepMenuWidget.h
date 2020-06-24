@@ -33,6 +33,13 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* Total_Artist_Btn;
 	UPROPERTY() FString Worker;
 
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* CreateDep_Btn;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UComboBoxString* SelectComboBox;
+	UPROPERTY(BlueprintReadWrite) FString Selected = "Marketing";
+
+	
+
+
 	int Index = 0;
 	int ChosenIndex;
 
@@ -49,5 +56,7 @@ private:
 	UFUNCTION() void ActivateWorkstation(ERole StationRole, EPosition OwnerPosition, bool IsSupervisor);
 	UFUNCTION() void PublishGame();
 	UFUNCTION() void Return();
+	UFUNCTION() void CreateDeparment();
+
 	void AddValuesToButton(class Idea* idea);
 };
