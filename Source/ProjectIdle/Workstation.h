@@ -56,7 +56,7 @@ public:
 		FVector StationVector;
 
 	bool IsCompiling;
-	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool HasEmployee;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool HasEmployee;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool IsEnabled;
 
 	APlayerCameraManager* Camera;
@@ -78,7 +78,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	void NotifyActorOnClicked(FKey ButtonPressed = EKeys::RightMouseButton) override;
 
-	UFUNCTION() void UpdateWorkstationPosition();
+	UFUNCTION() void UpdateWorkstationPosition(AEmployee* EmployeeRef);
 	UFUNCTION() void UpdateSupervisorWorkstationPosition();
 
 	UFUNCTION(BlueprintCallable) void EnableStation(bool Enabled);

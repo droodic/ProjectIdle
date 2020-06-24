@@ -104,21 +104,24 @@ void AWorkstation::Tick(float DeltaTime)
 	}
 }
 
-void AWorkstation::UpdateWorkstationPosition()
+void AWorkstation::UpdateWorkstationPosition(AEmployee* EmployeeRef)
 {
 	if (!HasEmployee) {
-		int32 employeeSize = GM->EmployeeList.Num();
-		int32 workstationSize = GM->WorkstationList.Num();
-		FVector AStationLocation = this->GetActorLocation();
-
-		for (auto Employee : GM->EmployeeList) {
-			if (!Employee->HasWorkStation && Employee->EmployeeRole == StationRole && IsEnabled) {
-				Employee->WorkstationRef = this;
-				Employee->HasWorkStation = true;
-				Employee->StartPosition = StationLocation;
-				HasEmployee = true;
-			}
-		}
+		//int32 employeeSize = GM->EmployeeList.Num();
+		//int32 workstationSize = GM->WorkstationList.Num();
+		//FVector AStationLocation = this->GetActorLocation();
+		EmployeeRef->WorkstationRef = this;
+		EmployeeRef->HasWorkStation = true;
+		EmployeeRef->StartPosition = StationLocation;
+		HasEmployee = true;
+		//for (auto Employee : GM->EmployeeList) {
+		//	if (!Employee->HasWorkStation && Employee->EmployeeRole == StationRole && IsEnabled) {
+		//		Employee->WorkstationRef = this;
+		//		Employee->HasWorkStation = true;
+		//		Employee->StartPosition = StationLocation;
+		//		HasEmployee = true;
+		//	}
+		//}
 	}
 }
 
