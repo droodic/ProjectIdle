@@ -23,17 +23,23 @@ void UGameManager::PopulateSaveFiles() {
 	IFileManager::Get().FindFiles(SaveFileNames, *dir, *fileExt);
 }
 
-void UGameManager::SaveGame()
+void UGameManager::SaveGame(FString SaveFile)
 {
 	//Old approach
 	//UGameSave* SaveGameInstance = Cast<UGameSave>(UGameplayStatics::CreateSaveGameObject(UGameSave::StaticClass()));
 	//SaveGameInstance->Saved_Money = Money;
 	//UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("Default"), 0);
 
-	FGameSavedData SaveGameData;
-	SaveGameData.Timestamp = FDateTime::Now();
-	UWorld* World = GetWorld();
 	checkSlow(World != nullptr);
+	UWorld* World = GetWorld();
+	FGameSavedData SaveGameData;
+	FString outPath = FPaths::ProjectSavedDir() + SaveFile;//SaveGameData.Timestamp.ToString() + TEXT(".sav")
+
+	SaveGameData.Timestamp = FDateTime::Now();
+	FString mapName = World->GetMapName();
+	SaveGameData.MapName = *mapName;
+	mapName.Split("UEDPIE_0_", nullptr, &mapName);
+
 
 	//FString mapName = World->GetMapName();
 	//mapName.Split("_", nullptr, &mapName, ESearchCase::IgnoreCase, ESearchDir::FromEnd);
@@ -54,7 +60,7 @@ void UGameManager::SaveGame()
 		FMemoryWriter MemoryWriter(ActorRecord.MyData, true);
 		FSaveGameArchive Ar(MemoryWriter);
 		//AMasteringCharacter* Mast = Cast<AMasteringCharacter>(Actor);
-
+		ISaveableActorInterface::Execute_ActorSaved(Actor);
 		Actor->Serialize(Ar);
 
 		//if (Mast != nullptr)
@@ -80,7 +86,6 @@ void UGameManager::SaveGame()
 	FBufferArchive SaveData;
 	SaveGameData.SavedActors = SavedActors;
 	SaveData << SaveGameData;
-	FString outPath = FPaths::ProjectSavedDir() + "_Default"; //SaveGameData.Timestamp.ToString() + TEXT(".sav")
 	GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Savename : " + outPath);
 	FFileHelper::SaveArrayToFile(SaveData, *outPath);
 	SaveData.FlushCache();
@@ -107,7 +112,10 @@ void UGameManager::LoadGame(FString SaveFile)
 	//UGameSave* SaveGameInstance = Cast<UGameSave>(UGameplayStatics::CreateSaveGameObject(UGameSave::StaticClass()));
 	//SaveGameInstance = Cast<UGameSave>(UGameplayStatics::LoadGameFromSlot("Default", 0));
 	//Money = SaveGameInstance->Saved_Money;
+
+
 	FString outPath = FPaths::ProjectSavedDir() + SaveFile;
+
 	GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Loading saveName : " + outPath);
 	if (!FFileHelper::LoadFileToArray(BinaryData, *outPath))
 	{
@@ -131,21 +139,22 @@ void UGameManager::LoadGame(FString SaveFile)
 	//FVector playerSafeLoc = SaveGameData.PlayerSafeLocation;
 	//gameInst->SetPlayerSafeLocation(playerSafeLoc);
 
-	//FString mapName = SaveGameData.MapName.ToString();
+	FString mapName = SaveGameData.MapName.ToString();
+	FString currentMapName = GetWorld()->GetMapName();
+	currentMapName.Split("UEDPIE_0_", nullptr, &currentMapName);
 
-	//FString currentMapName = World->GetMapName();
-
-	//currentMapName.Split("UEDPIE_0_", nullptr, &currentMapName);
-
+	OnGameLoadedFixup(GetWorld());
 	//if (mapName == currentMapName)
 	//{
-	//	World->ServerTravel("?Restart", true);
+	//	GetWorld()->ServerTravel("?Restart", true);
 	//}
-	//if(M)
+	//else
+	//{
+	//	UGameplayStatics::OpenLevel(GetWorld(), *mapName);
+	//}
 
-	//UGameplayStatics::OpenLevel(GetWorld(), *GetWorld()->GetMapName());
-	//GetWorld()->ServerTravel("?Restart", true);
-	OnGameLoadedFixup(GetWorld());
+	//UGameplayStatics:
+	//UGameplayStatics::OpenLevel(GetWorld(), "TopDownExampleMap");
 }
 
 void UGameManager::OnGameLoadedFixup(UWorld* World) {

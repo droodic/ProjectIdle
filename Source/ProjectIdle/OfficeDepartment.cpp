@@ -59,6 +59,7 @@ void AOfficeDepartment::BeginPlay()
 		ShopWidget->OfficeDepartment = this;
 	}
 	
+	//GM->OnGameLoadedFixup(GetWorld());
 	//GetDepartmentUIValues(); //call this on click to see ui in wbp
 }
 

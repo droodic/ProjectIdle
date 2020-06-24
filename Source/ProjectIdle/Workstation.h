@@ -34,7 +34,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite) float AssignedCompileLoad;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite) float CurrentCompileLoad;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(SaveGame, VisibleAnywhere)
 		UStaticMeshComponent* DeskMesh;
 
 	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite)
@@ -47,8 +47,8 @@ public:
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeMonitor; //remove
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeKeyboard;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Role") ERole StationRole;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Role") EPosition StationOwnerPosition;
+	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere, Category = "Role") ERole StationRole;
+	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere, Category = "Role") EPosition StationOwnerPosition;
 
 	UPROPERTY()
 		FVector StationLocation;
@@ -57,8 +57,8 @@ public:
 		FVector StationVector;
 
 	bool IsCompiling;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool HasEmployee;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsEnabled;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool HasEmployee;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool IsEnabled;
 
 	APlayerCameraManager* Camera;
 	class UGameManager* GM;

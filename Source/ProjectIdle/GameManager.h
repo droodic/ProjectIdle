@@ -53,7 +53,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent) void SaveGameState();
 	UFUNCTION(BlueprintImplementableEvent) void LoadGameState();
 
-	UFUNCTION(BlueprintCallable) void SaveGame();
+	UFUNCTION(BlueprintCallable) void SaveGame(FString SaveFile);
 	UFUNCTION(BlueprintCallable) void LoadGame(FString SaveFile);
 	UFUNCTION(BlueprintCallable) void PopulateSaveFiles();
 	void OnGameLoadedFixup(UWorld* World);

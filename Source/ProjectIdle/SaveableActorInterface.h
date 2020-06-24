@@ -71,5 +71,7 @@ class ISaveableActorInterface
 
 public:
     UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Load-Save")
+        void ActorSaved();
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Load-Save")
         void ActorLoaded();
 };
