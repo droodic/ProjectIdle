@@ -198,7 +198,7 @@ void UCeoDepMenuWidget::AddValuesToButton(Idea* idea)
 	idea->IdeaButton->GameTitle_T->SetText(FText::FromString(idea->IdeaName));
 	idea->IdeaButton->GameDescription_T->SetText(FText::FromString(idea->IdeaDescription));
 	idea->IdeaButton->Genre_T->SetText(Idea::GenreToText(idea->Genre));
-	idea->IdeaButton->SuccessChance_T->SetText(FText::AsPercent(idea->SuccessChance / 100.f));
+	idea->IdeaButton->SuccessChance_T->SetText(FText::AsPercent((idea->SuccessChance + GM->OfficeDepartment->AddedChance) / 100.f));
 
 	idea->IdeaButton->Weight_T->SetText((idea->ProgrammerWorkload > idea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
 
