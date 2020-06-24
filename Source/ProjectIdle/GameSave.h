@@ -73,8 +73,10 @@ public:
 
 	UPROPERTY(EditAnywhere) FVector Saved_PlayerLocation;
 	UPROPERTY(EditAnywhere) int Saved_Money;
-	
+	UPROPERTY(EditAnywhere) TArray<class AItem*> InventoryList;
+	UPROPERTY(EditAnywhere) TArray<class AWorkstation*> WorkstationList;
 
 public:
 	// void SaveEmployeeRecords(FArchive Ar); Method 1
+	void ClearLists();
 };

@@ -3,6 +3,7 @@
 
 #include "GameManager.h"
 #include "GameSave.h"
+#include "OfficeDepartment.h"
 #include "MeetingDepartment.h"
 
 
@@ -26,9 +27,21 @@ void UGameManager::PopulateSaveFiles() {
 void UGameManager::SaveGame(FString SaveFile)
 {
 	//Old approach
-	//UGameSave* SaveGameInstance = Cast<UGameSave>(UGameplayStatics::CreateSaveGameObject(UGameSave::StaticClass()));
-	//SaveGameInstance->Saved_Money = Money;
-	//UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("Default"), 0);
+	UGameSave* SaveGameInstance = Cast<UGameSave>(UGameplayStatics::CreateSaveGameObject(UGameSave::StaticClass()));
+	SaveGameInstance->Saved_Money = Money;
+	//SaveGameInstance->ClearLists();
+	for (auto Item : InventoryList) {
+		SaveGameInstance->InventoryList.Add(Item);
+	}
+	for (auto Station : WorkstationList) {
+		if (Station->IsEnabled) {
+
+			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Station Saved ");
+			SaveGameInstance->WorkstationList.Add(Station);
+		}
+	}
+	//SaveGameInstance->Saved_PlayerLocation = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("Default"), 0);
 
 	checkSlow(World != nullptr);
 	UWorld* World = GetWorld();
@@ -110,10 +123,19 @@ void UGameManager::SaveGame(FString SaveFile)
 void UGameManager::LoadGame(FString SaveFile)
 {
 	//Old approach
-	//UGameSave* SaveGameInstance = Cast<UGameSave>(UGameplayStatics::CreateSaveGameObject(UGameSave::StaticClass()));
-	//SaveGameInstance = Cast<UGameSave>(UGameplayStatics::LoadGameFromSlot("Default", 0));
-	//Money = SaveGameInstance->Saved_Money;
-
+	UGameSave* SaveGameInstance = Cast<UGameSave>(UGameplayStatics::CreateSaveGameObject(UGameSave::StaticClass()));
+	SaveGameInstance = Cast<UGameSave>(UGameplayStatics::LoadGameFromSlot("Default", 0));
+	Money = SaveGameInstance->Saved_Money;
+	InventoryList.Empty();
+	WorkstationList.Empty();
+	for (auto Item : SaveGameInstance->InventoryList) {
+		InventoryList.Add(Item);
+	}
+	for (auto Station : SaveGameInstance->WorkstationList) {
+		WorkstationList.Add(Station);
+		Station->EnableStation(true);
+		Station->HasEmployee = false;
+	}
 
 	FString outPath = FPaths::ProjectSavedDir() + SaveFile;
 
@@ -164,7 +186,7 @@ void UGameManager::OnGameLoadedFixup(UWorld* World) {
 	if (BinaryData.Num() == 0)
 	{
 		checkSlow(World->GetFirstPlayerController() != nullptr);
-	//		FixupPlayer(World, charPawn);
+		//		FixupPlayer(World, charPawn);
 		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "NOT SPAWNING ");
 		return;
 	}
@@ -233,15 +255,25 @@ void UGameManager::OnGameLoadedFixup(UWorld* World) {
 		FVector SpawnPos = ActorRecord.MyTransform.GetLocation();
 		FRotator SpawnRot = ActorRecord.MyTransform.Rotator();
 		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+		SpawnParams.Name = ActorRecord.MyName;
+
+		FActorSpawnParameters SpawnParameters;
+
 		// if we were in a space when saved, we should be able to spawn there again when loaded, but we could also
 		// be overlapping an object that loaded, but will be subsequently destroyed below as it was there at level start
 		// but not there at save time
-		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		SpawnParams.Name = ActorRecord.MyName;
 		UClass* SpawnClass = FindObject<UClass>(ANY_PACKAGE, *ActorRecord.MyClass);
 		if (SpawnClass)
 		{
-			AActor* NewActor = GWorld->SpawnActor(SpawnClass, &SpawnPos, &SpawnRot, SpawnParams);
+
+			FVector SpawnLocation;
+			FRotator SpawnRotation;
+
+
+
+			//OfficeDepartment->GenerateActor(0, ERole::Programmer);
+			AActor* NewActor = OfficeDepartment->GenerateSavedActor(SpawnClass);//IFemployee, figure way to scale with other type actor like workstation?
 			FMemoryReader MemoryReader(ActorRecord.MyData, true);
 			FSaveGameArchive Ar(MemoryReader);
 			NewActor->Serialize(Ar);

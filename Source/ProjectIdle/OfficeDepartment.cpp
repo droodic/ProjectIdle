@@ -58,7 +58,7 @@ void AOfficeDepartment::BeginPlay()
 		ShopWidget = CreateWidget<UShopWidget>(UGameplayStatics::GetPlayerController(this, 0), UserWidgets[2]);
 		ShopWidget->OfficeDepartment = this;
 	}
-	
+
 	//GM->OnGameLoadedFixup(GetWorld());
 	//GetDepartmentUIValues(); //call this on click to see ui in wbp
 }
@@ -123,7 +123,7 @@ void AOfficeDepartment::GetDepartmentUIValues()
 			TProgSalary += Employee->Salary;
 			AvgProgMorale += Employee->Morale;
 		}
-		else if (Employee->EmployeeRole == ERole::Artist){
+		else if (Employee->EmployeeRole == ERole::Artist) {
 			TArtistSalary += Employee->Salary;
 			AvgArtistMorale += Employee->Morale;
 		}
@@ -198,9 +198,9 @@ void AOfficeDepartment::Tick(float DeltaTime)
 
 			IdeaList.Insert(newIdea, Index);
 			BacklogWidget->DisplayNewIdea(IdeaList[Index]);
-			
+
 			Index++;
-			
+
 			UI->MoneyWidget->ShowANotification("IDEA GENERATED!");
 		}
 	}
@@ -266,4 +266,30 @@ void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 			GetDepartmentUIValues();
 		}
 	}
+}
+
+AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
+{
+
+	UWorld* World = GetWorld();
+
+	FVector SpawnLocation;
+	FRotator SpawnRotation;
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.Owner = this;
+	SpawnParameters.Instigator = GetInstigator();
+
+	FVector NewVector = FVector(0, -50, 0);
+	SpawnLocation = GM->Door->GetActorLocation() + NewVector;
+	SpawnRotation = FRotator::ZeroRotator;
+
+	auto Emp = World->SpawnActor<AEmployee>(ClassRef, SpawnLocation, SpawnRotation, SpawnParameters);
+	if (Cast<ASupervisor>(Emp) != nullptr) {
+		Cast<ASupervisor>(Emp)->InitSupervisor(Emp->EmployeeRole); //quick workaround annoying beginplay pedantics of spawning
+		Emp->AssignSupervisor();
+	}
+	GetDepartmentUIValues();
+	return Emp;
+
+
 }

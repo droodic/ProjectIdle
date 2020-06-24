@@ -80,10 +80,14 @@ void AEmployee::BeginPlay()
 	if (!Cast<ASupervisor>(this)) {
 		//GM->WorkStation->UpdateWorkstationPosition();
 		for (auto Workstation : GM->WorkstationList) {
-			Workstation->UpdateWorkstationPosition();
+			if (Workstation->IsEnabled == true && !Workstation->HasEmployee) {
+				Workstation->UpdateWorkstationPosition();
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Assigning Workstation");
+				break;
+			}
 		}
 		IsDepartmentWorking();
-	    MoveEmployee(StartPosition);
+		MoveEmployee(StartPosition);
 	}
 
 

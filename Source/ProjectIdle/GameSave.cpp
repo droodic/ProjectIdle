@@ -9,6 +9,11 @@ UGameSave::UGameSave() {
 	Saved_PlayerLocation = FVector(0, 0, 0);
 }
 
+void UGameSave::ClearLists() {
+	InventoryList.Empty();
+	WorkstationList.Empty();
+}
+
 //Method 1
 //void UGameSave::SaveEmployeeRecords(FArchive Ar) {
 //	// make hero records, grab all the heroes' class and name and put them in the struct

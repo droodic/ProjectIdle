@@ -39,6 +39,7 @@ public:
 public:
 	virtual void NativeConstruct() override;
 	void GetFinishedIdea(class Idea* idea);
+	UFUNCTION() void ActivateWorkstation(ERole StationRole, EPosition OwnerPosition, bool IsSupervisor);
 
 private:
 	UFUNCTION() void CallHiring();
@@ -46,7 +47,6 @@ private:
 	UFUNCTION() void CallProgrammerSupSpawn();
 	UFUNCTION() void CallArtistSpawn();
 	UFUNCTION() void CallArtistSupSpawn();
-	UFUNCTION() void ActivateWorkstation(ERole StationRole, EPosition OwnerPosition, bool IsSupervisor);
 	UFUNCTION() void PublishGame();
 	UFUNCTION() void Return();
 	void AddValuesToButton(class Idea* idea);
