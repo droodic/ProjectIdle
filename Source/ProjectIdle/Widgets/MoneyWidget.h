@@ -29,6 +29,7 @@ public:
 
 	void UpdateMoney(int32 Value);
 	
+	void ShowANotification(FString notifationText, FLinearColor color, float time = 5.f);
 	void ShowANotification(FString notifationText, float time = 5.f);
 
 private:

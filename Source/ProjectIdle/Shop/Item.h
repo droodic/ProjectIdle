@@ -42,6 +42,7 @@ public:
 	UPROPERTY(EditDefaultsOnly) int ItemPrice;
 	
 	UPROPERTY(EditDefaultsOnly) FString ItemName;
+	UPROPERTY(EditDefaultsOnly) FString ItemDescription;
 
 	UPROPERTY(EditDefaultsOnly) ECategory ItemCategory;
 	UPROPERTY(EditDefaultsOnly) ESubCategory ItemSubCategory;

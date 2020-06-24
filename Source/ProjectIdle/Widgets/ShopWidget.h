@@ -25,6 +25,7 @@ public:
 	UPROPERTY(meta = (BindWidget)) class UWrapBox* Tab3;
 	UPROPERTY(meta = (BindWidget)) class UWrapBox* Tab4;
 	UPROPERTY(meta = (BindWidget)) class UWrapBox* CheckoutItems_WB;
+	UPROPERTY(meta = (BindWidget)) class UCanvasPanel* DescriptionPanel;
 
 	UPROPERTY(meta = (BindWidget)) class UButton* Buy_Btn;
 	UPROPERTY(meta = (BindWidget)) class UButton* ShopReturn_Btn;
@@ -33,6 +34,9 @@ public:
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* TotalMoney_T;
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* NotEnoughMoney_T;
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* CheckoutCount_T;
+	UPROPERTY(meta = (BindWidget)) class UTextBlock* Description_T;
+	UPROPERTY(meta = (BindWidget)) class UTextBlock* DescriptionStats_T;
+
 
 	UPROPERTY(EditAnywhere) TSubclassOf<class UUserWidget> ItemButtonClass;
 
