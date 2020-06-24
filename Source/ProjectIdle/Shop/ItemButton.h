@@ -21,9 +21,12 @@ public:
 
 	UPROPERTY(meta = (BindWidget)) class UButton* Item_Btn;
 	UPROPERTY(meta = (BindWidget)) class UImage* Item_I;
+	UPROPERTY(meta = (BindWidget)) class UImage* BoughtItem_I;
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* ItemName_T;
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* ItemPrice_T;
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* ItemCount_T;
+	UPROPERTY(meta = (BindWidget)) class UTextBlock* Bought_T;
+
 	UPROPERTY(EditAnywhere) TSubclassOf<class AItem> BPItem;
 
 	class AItem* Item;
@@ -33,7 +36,13 @@ public:
 	bool InCheckout = false;
 
 private:
+	bool Once = false;
+
+private:
+	void NativePreConstruct() override;
 	void NativeConstruct() override;
+	void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+	void NativeOnMouseLeave(const FPointerEvent& InMouseEvent);
 
 	UFUNCTION() void OnClicked();
 };

@@ -171,7 +171,7 @@ void AOfficeDepartment::PublishGame()
 	}
 	else
 	{
-		UI->MoneyWidget->ShowANotification("SORRY, THE GAME WAS NOT A SUCCESS");
+		UI->MoneyWidget->ShowANotification("SORRY, THE GAME WAS NOT A SUCCESS", FLinearColor::Red);
 		auto moneyGenerated = UKismetMathLibrary::RandomIntegerInRange(100, 1000);
 		GM->Money += moneyGenerated;
 
