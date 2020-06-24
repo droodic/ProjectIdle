@@ -66,6 +66,7 @@ public:
 	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void HireEmployee(TArray<TSubclassOf<AEmployee>> SpawnEmployee, int Position);
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void PublishGame();
 	//For future use, will spawn any actor
+	UFUNCTION(BlueprintCallable, Category = "CPP Functions") AActor* GenerateSavedActor(UClass* ClassRef);
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void GenerateActor(int Position, ERole EmpRole);
 	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void GenerateActor(AActor* SpawnEmployee, int Position, ERole EmpRole);
 	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void HireProgrammer();

@@ -42,6 +42,7 @@ AEmployee::AEmployee()
 void AEmployee::BeginPlay()
 {
 	Super::BeginPlay();
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Beginplay");
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0)->GetHUD());
 	Camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
@@ -77,13 +78,18 @@ void AEmployee::BeginPlay()
 		WorkProgressBar->SetVisibility(false);
 	}
 
-	if (!Cast<ASupervisor>(this)) {
+	if (Position != EPosition::Supervisor) {
 		//GM->WorkStation->UpdateWorkstationPosition();
 		for (auto Workstation : GM->WorkstationList) {
-			Workstation->UpdateWorkstationPosition();
+			if (Workstation->IsEnabled == true && !Workstation->HasEmployee && Workstation->StationRole == EmployeeRole) {
+				Workstation->UpdateWorkstationPosition(this);
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Assigning Workstation");
+				break;
+			}
+			GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, "Looping Workstation");
 		}
 		IsDepartmentWorking();
-	    MoveEmployee(StartPosition);
+		MoveEmployee(StartPosition);
 	}
 
 
@@ -426,4 +432,12 @@ void AEmployee::AssignSupervisor()
 	}
 	MoveEmployee(StartPosition);
 }
+
+//void AEmployee::ActorSaveDataLoaded()
+//{
+//}
+//
+//void AEmployee::ActorSaveDataSaved()
+//{
+//}
 

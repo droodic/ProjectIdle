@@ -41,7 +41,6 @@ void UShopWidget::Buy()
 				{
 					for (size_t j = 0; j < CheckList[i]->ItemCount; j++)
 					{
-
 						GameManager->InventoryList.Add(CheckList[i]->Item);
 
 						GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Red, FString::FromInt(j + 1) + " " + CheckList[i]->Item->ItemName + "Added");
@@ -53,6 +52,16 @@ void UShopWidget::Buy()
 					{
 						GameManager->Wall->UpdateWallMaterial(CheckList[i]->Item->Material->GetMaterial());
 						GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Red, "Noob");
+
+						for (size_t j = 0; j < Tab4->GetChildrenCount(); j++)
+						{
+							auto materialButton = Cast<UItemButton>(Tab4->GetChildAt(j));
+
+							if (CheckList[i]->ItemID == materialButton->ItemID)
+							{
+								materialButton->Bought_T->SetText(FText::FromString("Bought"));
+							}
+						}
 
 					}
 					GameManager->InventoryList.Add(CheckList[i]->Item);

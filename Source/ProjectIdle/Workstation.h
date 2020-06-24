@@ -34,21 +34,20 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite) float AssignedCompileLoad;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite) float CurrentCompileLoad;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(SaveGame, VisibleAnywhere)
 		UStaticMeshComponent* DeskMesh;
-
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite)
 		UStaticMeshComponent* ComputerMesh;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite)
 		UStaticMeshComponent* ChairMesh;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite)
 		UStaticMeshComponent* KeyboardMesh;
 
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeMonitor; //remove
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeKeyboard;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Role") ERole StationRole;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Role") EPosition StationOwnerPosition;
+	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere, Category = "Role") ERole StationRole;
+	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere, Category = "Role") EPosition StationOwnerPosition;
 
 	UPROPERTY()
 		FVector StationLocation;
@@ -57,8 +56,8 @@ public:
 		FVector StationVector;
 
 	bool IsCompiling;
-	UPROPERTY() bool HasEmployee;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsEnabled;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool HasEmployee;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool IsEnabled;
 
 	APlayerCameraManager* Camera;
 	class UGameManager* GM;
@@ -79,12 +78,13 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	void NotifyActorOnClicked(FKey ButtonPressed = EKeys::RightMouseButton) override;
 
-	UFUNCTION() void UpdateWorkstationPosition();
+	UFUNCTION() void UpdateWorkstationPosition(AEmployee* EmployeeRef);
 	UFUNCTION() void UpdateSupervisorWorkstationPosition();
 
-	UFUNCTION() void EnableStation(bool Enabled);
+	UFUNCTION(BlueprintCallable) void EnableStation(bool Enabled);
 	UFUNCTION() void DoCompile();
 	void UpgradeMesh(AItem* Item);
+	UFUNCTION(BlueprintCallable) void UpgradeMeshFromSave(AWorkstation* SavedStation);
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 	//UFUNCTION() int WorkstationActiveLenght();

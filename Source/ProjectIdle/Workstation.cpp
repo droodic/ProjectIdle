@@ -104,21 +104,24 @@ void AWorkstation::Tick(float DeltaTime)
 	}
 }
 
-void AWorkstation::UpdateWorkstationPosition()
+void AWorkstation::UpdateWorkstationPosition(AEmployee* EmployeeRef)
 {
 	if (!HasEmployee) {
-		int32 employeeSize = GM->EmployeeList.Num();
-		int32 workstationSize = GM->WorkstationList.Num();
-		FVector AStationLocation = this->GetActorLocation();
-
-		for (auto Employee : GM->EmployeeList) {
-			if (!Employee->HasWorkStation && Employee->EmployeeRole == StationRole && IsEnabled) {
-				Employee->WorkstationRef = this;
-				Employee->HasWorkStation = true;
-				Employee->StartPosition = StationLocation;
-				HasEmployee = true;
-			}
-		}
+		//int32 employeeSize = GM->EmployeeList.Num();
+		//int32 workstationSize = GM->WorkstationList.Num();
+		//FVector AStationLocation = this->GetActorLocation();
+		EmployeeRef->WorkstationRef = this;
+		EmployeeRef->HasWorkStation = true;
+		EmployeeRef->StartPosition = StationLocation;
+		HasEmployee = true;
+		//for (auto Employee : GM->EmployeeList) {
+		//	if (!Employee->HasWorkStation && Employee->EmployeeRole == StationRole && IsEnabled) {
+		//		Employee->WorkstationRef = this;
+		//		Employee->HasWorkStation = true;
+		//		Employee->StartPosition = StationLocation;
+		//		HasEmployee = true;
+		//	}
+		//}
 	}
 }
 
@@ -164,15 +167,22 @@ void AWorkstation::UpgradeMesh(AItem* Item)
 		CompileModifier = Item->ItemCompileRate;
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Computermesh detect"));
 	}
+	else if (Item->ItemSubCategory == ESubCategory::Desk) {
+		ChairMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
+		UpgradeWidget->Desk_Img->SetBrushFromTexture(Item->ItemImage);
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Desk detect"));
+	}
 	else if (Item->ItemSubCategory == ESubCategory::Keyboard) {
 		KeyboardMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
-		UpgradeWidget->DeskAndChairImage->SetBrushFromTexture(Item->ItemImage);
+		UpgradeWidget->Keyboard_Img->SetBrushFromTexture(Item->ItemImage);
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Keyboard detect"));
 	}
 	else if (Item->ItemSubCategory == ESubCategory::Chair) {
 		ChairMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
+		UpgradeWidget->Chair_Img->SetBrushFromTexture(Item->ItemImage);
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Chair detect"));
 	}
+
 
 	//if (Index == 0)
 	//{
@@ -187,6 +197,12 @@ void AWorkstation::UpgradeMesh(AItem* Item)
 	//	CompileModifier += 5;
 	//}
 	UpgradeWidget->RemoveFromViewport();
+}
+
+void AWorkstation::UpgradeMeshFromSave(AWorkstation* SavedStation) {
+	ComputerMesh->SetStaticMesh(SavedStation->ComputerMesh->GetStaticMesh());
+	KeyboardMesh->SetStaticMesh(SavedStation->KeyboardMesh->GetStaticMesh());
+	ChairMesh->SetStaticMesh(SavedStation->ChairMesh->GetStaticMesh());
 }
 
 void AWorkstation::NotifyActorBeginOverlap(AActor* OtherActor)

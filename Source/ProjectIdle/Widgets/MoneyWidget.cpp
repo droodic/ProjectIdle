@@ -4,7 +4,6 @@
 #include "MoneyWidget.h"
 #include "Engine/World.h"
 #include "Components/TextBlock.h"
-#include "Math/Color.h"
 
 UMoneyWidget::UMoneyWidget(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -21,10 +20,23 @@ void UMoneyWidget::UpdateMoney(int32 Value)
 	TotalMoney->SetText(FText::FromString("Money: " + FString::FromInt(Value)));
 }
 
-void UMoneyWidget::ShowANotification(FString notifationText, float time)
+void UMoneyWidget::ShowANotification(FString notifationText, FLinearColor color, float time)
 {
 	UTextBlock* textBlock = WidgetTree->ConstructWidget<UTextBlock>();
 	
+	textBlock->Text = FText::FromString(notifationText);
+	textBlock->SetAutoWrapText(true);
+	textBlock->SetShadowColorAndOpacity(FLinearColor(color.R, color.G, color.B, 1.0f));
+	NotificationVerticalBox->AddChildToVerticalBox(textBlock);
+
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UMoneyWidget::RemoveNotification, time, false);
+}
+
+void UMoneyWidget::ShowANotification(FString notifationText, float time)
+{
+	UTextBlock* textBlock = WidgetTree->ConstructWidget<UTextBlock>();
+
 	textBlock->Text = FText::FromString(notifationText);
 	textBlock->SetAutoWrapText(true);
 	NotificationVerticalBox->AddChildToVerticalBox(textBlock);

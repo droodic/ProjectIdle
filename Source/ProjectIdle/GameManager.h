@@ -55,4 +55,17 @@ public:
 	bool IdeaInProduction = false;
 
 	virtual void Init();
+	UFUNCTION(BlueprintImplementableEvent) void SaveGameState();
+	UFUNCTION(BlueprintImplementableEvent) void LoadGameState();
+
+	UFUNCTION(BlueprintCallable) void SaveGame(FString SaveFile);
+	UFUNCTION(BlueprintCallable) void LoadGame(FString SaveFile);
+	UFUNCTION(BlueprintCallable) void PopulateSaveFiles();
+	void OnGameLoadedFixup(UWorld* World);
+	
+
+protected:
+	UPROPERTY(BlueprintReadOnly)
+	TArray<FString> SaveFileNames;
+	TArray<uint8> BinaryData;
 };

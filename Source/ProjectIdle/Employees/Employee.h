@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ProjectIdle/SaveableActorInterface.h"
 #include "GameFramework/Character.h"
 #include "Employee.generated.h"
 
@@ -32,7 +33,7 @@ enum class EPosition : uint8
 };
 
 UCLASS()
-class PROJECTIDLE_API AEmployee : public ACharacter
+class PROJECTIDLE_API AEmployee : public ACharacter//, public USaveableActorInterface
 {
 	GENERATED_BODY()
 
@@ -40,23 +41,23 @@ public:
 	// Sets default values for this character's properties
 	AEmployee();
 
-	UPROPERTY(EditAnywhere) ERole EmployeeRole;
-	UPROPERTY(EditAnywhere) EPosition Position = EPosition::Intern;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere) FText EmployeeName;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere) float Morale = 1;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere) float Performance;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere) float Salary = 200;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere) float CostEmployeePromote = 5000;
+	UPROPERTY(SaveGame, EditAnywhere) ERole EmployeeRole;
+	UPROPERTY(SaveGame, EditAnywhere) EPosition Position = EPosition::Intern;
+	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere) FText EmployeeName;
+	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere) float Morale = 1;
+	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere) float Performance;
+	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere) float Salary = 200;
+	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere) float CostEmployeePromote = 5000;
 
 	UPROPERTY() float PromoteToRegular = 20000;
 	UPROPERTY() float PromoteToSenior = 50000;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector MeetingLocation;
 
-	UPROPERTY() int WorkstationPositionRef;
+	UPROPERTY(SaveGame) int WorkstationPositionRef;
 	//class AWorkstation* WorkstationRef;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) class UWidgetComponent* WorkProgressBar;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) float AssignedWorkload;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) float CurrentWorkload;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) float AssignedWorkload;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) float CurrentWorkload;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) class AEmployeeAIC* AI;
 	//UPROPERTY() float GivenWorkload;
@@ -66,15 +67,15 @@ public:
 	//class AAIController* AI;
 	//int CurrentWorkload;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite) FVector StartPosition;
+	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite) FVector StartPosition;
 	APlayerCameraManager* Camera;
-	UPROPERTY() bool HasWorkStation;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsFired = false;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool HasWorkload;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsMoving = false;
+	UPROPERTY(SaveGame) bool HasWorkStation;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool IsFired = false;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool HasWorkload;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool IsMoving = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsWorking;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool DefaultEmployee;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool HasBeenEvaluated;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool HasBeenEvaluated;
 	bool CanInspect = false; //Used for right click ui 
 
 	//bool IsMoving;
@@ -118,4 +119,10 @@ public:
 	void IsDepartmentWorking();
 	void WorkOnTask();
 	void AssignSupervisor();
+
+public:
+	//UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Saveable Actor")
+	//	 void ActorSaveDataLoaded();
+	//UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Saveable Actor")
+	//	 void ActorSaveDataSaved();
 };

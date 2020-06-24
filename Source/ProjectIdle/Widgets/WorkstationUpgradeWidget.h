@@ -26,9 +26,14 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Monitor_Btn; //change to respective categories
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Desk_Btn;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Chair_Btn;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Keyboard_Btn;
+
 	//UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Keyboard_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UImage* MonitorImage;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UImage* DeskAndChairImage;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UImage* Desk_Img;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UImage* Chair_Img;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UImage* Keyboard_Img;
 	//UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UImage* KeyboardImage;
 	//UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* UpgradeMonitor_Btn;
 	//UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* UpgradeKeyboard_Btn;
@@ -37,9 +42,11 @@ public:
 	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void Monitor();
 	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void Keyboard();
 
-	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void ShowInventory(ECategory ItemCategory);
+	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void ShowInventory(ESubCategory ItemCategory);
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void ShowInventoryMonitor();
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void ShowInventoryDesk();
+	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void ShowInventoryChair();
+	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void ShowInventoryKeyboard();
 
 
 private:
