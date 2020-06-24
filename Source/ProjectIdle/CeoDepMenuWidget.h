@@ -56,5 +56,7 @@ private:
 	UFUNCTION() void CallArtistSupSpawn();
 	UFUNCTION() void PublishGame();
 	UFUNCTION() void Return();
+	UFUNCTION() void CreateDepartment();
+
 	void AddValuesToButton(class Idea* idea);
 };

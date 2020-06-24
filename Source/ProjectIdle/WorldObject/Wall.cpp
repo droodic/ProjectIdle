@@ -6,6 +6,7 @@
 #include "Components/MeshComponent.h"
 #include "Components/StaticMeshComponent.h"
 
+
 // Sets default values
 AWall::AWall()
 {
@@ -26,16 +27,29 @@ AWall::AWall()
 void AWall::BeginPlay()
 {
 	Super::BeginPlay();
+	EnableObject(IsEnabled);
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->Wall = this;
-	//UpdateWallMaterialTest();
-	//UpdateWallMaterial(Material);
+	
+	if (this->Type == ObjectType::Wall)
+	{
+		GM->WallList.Add(this);
+	}
+	if (this->Type == ObjectType::Floor)
+	{
+		GM->FloorList.Add(this);
+	}
+
+
+	
+
 }
 
 // Called every frame
 void AWall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 }
 
 void AWall::UpdateWallMaterial(UMaterialInterface* NewMaterial)
@@ -50,4 +64,51 @@ void AWall::UpdateWallMaterialTest()
 	Mesh->SetMaterial(0, Material);
 	Mesh->SetMaterial(1, Material);
 }
+
+void AWall::ActivateWallAndFloor()
+{
+	for (int i = 0; i < GM->WallList.Num(); i++)
+	{
+		if (!GM->WallList[i]->IsEnabled)
+		{
+			GM->WallList[i]->EnableObject(true);
+		}
+	}
+
+	for (int i = 0; i < GM->FloorList.Num(); i++)
+	{
+		if (!GM->FloorList[i]->IsEnabled)
+		{
+			GM->FloorList[i]->EnableObject(true);
+		}
+	}
+}
+
+void AWall::EnableObject(bool Enable)
+{
+	if (!Enable)
+	{
+		this->SetActorHiddenInGame(true);
+		this->SetActorEnableCollision(false);
+		//IsEnabled = false;
+	}
+	else
+	{
+		this->SetActorHiddenInGame(false);
+		this->SetActorEnableCollision(true);
+		//IsEnabled = true;
+	}
+}
+
+void AWall::DeactivateWallAndFloor()
+{
+	for (int i = 0; i < GM->WallList.Num(); i++)
+	{
+		if (GM->WallList[i]->RemovableWall)
+		{
+			GM->WallList[i]->EnableObject(false);
+		}
+	}
+}
+
 
