@@ -36,7 +36,6 @@ public:
 
 	UPROPERTY(SaveGame, VisibleAnywhere)
 		UStaticMeshComponent* DeskMesh;
-
 	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite)
 		UStaticMeshComponent* ComputerMesh;
 	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite)

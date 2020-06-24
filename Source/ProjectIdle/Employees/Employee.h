@@ -50,11 +50,11 @@ public:
 	UPROPERTY() float PromoteToSenior = 50000;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector MeetingLocation;
 
-	UPROPERTY() int WorkstationPositionRef;
+	UPROPERTY(SaveGame) int WorkstationPositionRef;
 	//class AWorkstation* WorkstationRef;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) class UWidgetComponent* WorkProgressBar;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) float AssignedWorkload;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) float CurrentWorkload;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) float AssignedWorkload;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) float CurrentWorkload;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) class AEmployeeAIC* AI;
 	//UPROPERTY() float GivenWorkload;
@@ -64,15 +64,15 @@ public:
 	//class AAIController* AI;
 	//int CurrentWorkload;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite) FVector StartPosition;
+	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite) FVector StartPosition;
 	APlayerCameraManager* Camera;
-	UPROPERTY() bool HasWorkStation;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsFired = false;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool HasWorkload;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsMoving = false;
+	UPROPERTY(SaveGame) bool HasWorkStation;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool IsFired = false;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool HasWorkload;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool IsMoving = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsWorking;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool DefaultEmployee;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool HasBeenEvaluated;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool HasBeenEvaluated;
 	bool CanInspect = false; //Used for right click ui 
 
 	//bool IsMoving;

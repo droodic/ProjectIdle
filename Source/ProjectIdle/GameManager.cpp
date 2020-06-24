@@ -63,6 +63,7 @@ void UGameManager::SaveGame(FString SaveFile)
 		ISaveableActorInterface::Execute_ActorSaved(Actor);
 		Actor->Serialize(Ar);
 
+
 		//if (Mast != nullptr)
 		//{
 		//	UMasteringInventory* Inv = Mast->GetInventory();
@@ -144,10 +145,11 @@ void UGameManager::LoadGame(FString SaveFile)
 	currentMapName.Split("UEDPIE_0_", nullptr, &currentMapName);
 
 	OnGameLoadedFixup(GetWorld());
-	//if (mapName == currentMapName)
-	//{
-	//	GetWorld()->ServerTravel("?Restart", true);
-	//}
+	if (mapName == currentMapName)
+	{
+		//GetWorld()->ServerTravel("?Restart", true);
+		UGameplayStatics::OpenLevel(GetWorld(), *mapName);
+	}
 	//else
 	//{
 	//	UGameplayStatics::OpenLevel(GetWorld(), *mapName);
