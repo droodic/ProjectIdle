@@ -41,7 +41,7 @@ void AWall::BeginPlay()
 	}
 
 
-	ActivateWallAndFloor();
+	
 
 }
 
@@ -49,6 +49,7 @@ void AWall::BeginPlay()
 void AWall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 }
 
 void AWall::UpdateWallMaterial(UMaterialInterface* NewMaterial)
@@ -68,7 +69,18 @@ void AWall::ActivateWallAndFloor()
 {
 	for (int i = 0; i < GM->WallList.Num(); i++)
 	{
-		GM->WallList[i]->SetActorHiddenInGame(false);
+		if (!GM->WallList[i]->IsEnabled)
+		{
+			GM->WallList[i]->EnableObject(true);
+		}
+	}
+
+	for (int i = 0; i < GM->FloorList.Num(); i++)
+	{
+		if (!GM->FloorList[i]->IsEnabled)
+		{
+			GM->FloorList[i]->EnableObject(true);
+		}
 	}
 }
 
@@ -78,15 +90,24 @@ void AWall::EnableObject(bool Enable)
 	{
 		this->SetActorHiddenInGame(true);
 		this->SetActorEnableCollision(false);
-		//this->SetActorTickEnabled(true);
-		IsEnabled = false;
+		//IsEnabled = false;
 	}
 	else
 	{
 		this->SetActorHiddenInGame(false);
 		this->SetActorEnableCollision(true);
-		//this->SetActorTickEnabled(false);
-		IsEnabled = true;
+		//IsEnabled = true;
+	}
+}
+
+void AWall::DeactivateWallAndFloor()
+{
+	for (int i = 0; i < GM->WallList.Num(); i++)
+	{
+		if (GM->WallList[i]->RemovableWall)
+		{
+			GM->WallList[i]->EnableObject(false);
+		}
 	}
 }
 

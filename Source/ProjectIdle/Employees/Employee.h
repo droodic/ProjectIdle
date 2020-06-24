@@ -11,6 +11,9 @@ enum class ERole : uint8
 {
 	Programmer             UMETA(DisplayName = "Programmer"),
 	Artist				   UMETA(DisplayName = "Artist"),
+	Marketing			   UMETA(DisplayName = "Marketing"),
+	Test				   UMETA(DisplayName = "Test"),
+
 
 };
 

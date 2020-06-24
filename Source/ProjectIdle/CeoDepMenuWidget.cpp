@@ -12,6 +12,7 @@
 #include "Components/Button.h"
 #include "Workstations/ArtistStation.h"
 #include "Workstations/ProgrammerStation.h"
+#include "WorldObject/Wall.h"
 
 void UCeoDepMenuWidget::NativeConstruct()
 {
@@ -42,6 +43,11 @@ void UCeoDepMenuWidget::NativeConstruct()
 	if (!Return_Btn->OnClicked.IsBound())
 	{
 		Return_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::Return);
+	}
+
+	if (!CreateDep_Btn->OnClicked.IsBound())
+	{
+		CreateDep_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::CreateDepartment);
 	}
 }
 
@@ -208,11 +214,14 @@ void UCeoDepMenuWidget::AddValuesToButton(Idea* idea)
 	idea->IdeaButton->IsFinished = true;
 }
 
-void UCeoDepMenuWidget::CreateDeparment()
+void UCeoDepMenuWidget::CreateDepartment()
 {
 	if (Selected == "Marketing")
 	{
-
+		GM->Wall->DeactivateWallAndFloor();
+		GM->Wall->ActivateWallAndFloor();
+		ActivateWorkstation(ERole::Marketing, EPosition::Intern, false);
+		CreateDep_Btn->SetIsEnabled(false);
 	}
 	if (Selected == "Test")
 	{

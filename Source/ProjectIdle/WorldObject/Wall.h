@@ -33,8 +33,10 @@ public:
 	UPROPERTY(EditAnywhere) UMaterial* Material;
 	UPROPERTY(EditAnywhere) UMaterial* UpgradeMaterial;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsEnabled;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "IsEnabled") bool IsEnabled;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "ObjectType") ObjectType Type;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "IsEnabled") bool RemovableWall;
+
 
 protected:
 	// Called when the game starts or when spawned
@@ -47,6 +49,7 @@ public:
 	UFUNCTION() void UpdateWallMaterial(UMaterialInterface* NewMaterial);
 	UFUNCTION() void UpdateWallMaterialTest();
 	UFUNCTION() void ActivateWallAndFloor();
+	UFUNCTION() void DeactivateWallAndFloor();
 	UFUNCTION() void EnableObject(bool Enabled);
 
 
