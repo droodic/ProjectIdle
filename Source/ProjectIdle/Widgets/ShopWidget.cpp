@@ -54,8 +54,11 @@ void UShopWidget::Buy()
 				{
 					if (CheckList[i]->Item->ItemCategory == ECategory::Materials)
 					{
-						GameManager->Wall->UpdateWallMaterial(CheckList[i]->Item->Material->GetMaterial());
-						GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Red, "Noob");
+						for (int j = 0; j < GameManager->FloorList.Num(); j++)
+						{
+							GameManager->FloorList[j]->UpdateWallMaterial(CheckList[i]->Item->Material->GetMaterial());
+							GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Red, "Noob");
+						}
 
 						for (size_t j = 0; j < Tab4->GetChildrenCount(); j++)
 						{
