@@ -37,9 +37,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UComboBoxString* SelectComboBox;
 	UPROPERTY(BlueprintReadWrite) FString Selected = "Marketing";
 
-	
-
-
 	int Index = 0;
 	int ChosenIndex;
 
