@@ -3,6 +3,7 @@
 
 #include "OfficeDepartment.h"
 #include "Idea.h"
+#include "Shop/Item.h"
 #include "CeoDepMenuWidget.h"
 #include "Department.h"
 #include "GameManager.h"

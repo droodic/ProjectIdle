@@ -83,10 +83,10 @@ void AEmployee::BeginPlay()
 		for (auto Workstation : GM->WorkstationList) {
 			if (Workstation->IsEnabled == true && !Workstation->HasEmployee && Workstation->StationRole == EmployeeRole) {
 				Workstation->UpdateWorkstationPosition(this);
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Assigning Workstation");
+				//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Assigning Workstation");
 				break;
 			}
-			GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, "Looping Workstation");
+			//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, "Looping Workstation");
 		}
 		IsDepartmentWorking();
 		MoveEmployee(StartPosition);

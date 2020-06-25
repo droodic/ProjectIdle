@@ -3,6 +3,7 @@
 
 #include "Workstation.h"
 #include "ProjectIdle/GameManager.h"
+#include "ProjectIdle/OfficeDepartment.h"
 #include "Employees/Artist.h"
 #include "Employees/Programmer.h"
 #include "ProjectIdle/GameHUD.h"
@@ -165,11 +166,13 @@ void AWorkstation::UpgradeMesh(AItem* Item)
 		ComputerMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
 		UpgradeWidget->MonitorImage->SetBrushFromTexture(Item->ItemImage);
 		CompileModifier = Item->ItemCompileRate;
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Computermesh detect"));
+		ComputerMeshID = Item->ItemID;
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Computermesh detect, ID: " + FString::FromInt(ComputerMeshID)));
 	}
 	else if (Item->ItemSubCategory == ESubCategory::Desk) {
 		ChairMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
 		UpgradeWidget->Desk_Img->SetBrushFromTexture(Item->ItemImage);
+		DeskMeshID = Item->ItemID;
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Desk detect"));
 	}
 	else if (Item->ItemSubCategory == ESubCategory::Keyboard) {
@@ -182,27 +185,22 @@ void AWorkstation::UpgradeMesh(AItem* Item)
 		UpgradeWidget->Chair_Img->SetBrushFromTexture(Item->ItemImage);
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Chair detect"));
 	}
-
-
-	//if (Index == 0)
-	//{
-	//	ComputerMesh->SetVisibility(false);
-	//	UpgradeMonitor->SetVisibility(true);
-	//	CompileModifier += 10;
-	//}
-	//if (Index == 1)
-	//{
-	//	KeyboardMesh->SetVisibility(false);
-	//	UpgradeKeyboard->SetVisibility(true);
-	//	CompileModifier += 5;
-	//}
 	UpgradeWidget->RemoveFromViewport();
 }
 
-void AWorkstation::UpgradeMeshFromSave(AWorkstation* SavedStation) {
-	ComputerMesh->SetStaticMesh(SavedStation->ComputerMesh->GetStaticMesh());
-	KeyboardMesh->SetStaticMesh(SavedStation->KeyboardMesh->GetStaticMesh());
-	ChairMesh->SetStaticMesh(SavedStation->ChairMesh->GetStaticMesh());
+
+void AWorkstation::UpgradeMeshFromSave(FSaveMesh SaveMesh) {
+	//Find item in OfficeDepartment -> GameItemList
+	ComputerMeshID = SaveMesh.S_ComputerMeshID;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, "Monitor self checking for upgrades, MonitorID: " + FString::FromInt(ComputerMeshID));
+	for (auto Item : GM->OfficeDepartment->GameItemList) {
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Looping gameitemlist "));
+		if (Item.GetDefaultObject()->ItemID == ComputerMeshID) {
+			ComputerMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh->GetStaticMesh());
+			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Monitor UPDATED!"));
+		}
+	}
+	//ComputerMesh->SetMesh =
 }
 
 void AWorkstation::NotifyActorBeginOverlap(AActor* OtherActor)

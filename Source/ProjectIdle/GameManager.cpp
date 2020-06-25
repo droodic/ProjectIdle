@@ -35,11 +35,19 @@ void UGameManager::SaveGame(FString SaveFile)
 	}
 	for (auto Station : WorkstationList) {
 		if (Station->IsEnabled) {
-
-			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Station Saved ");
+			FSaveMesh SavedMesh;
+			SavedMesh.WorkstationIndex = Station->WorkstationIndex;
+			SavedMesh.S_ComputerMeshID = Station->ComputerMeshID;
+			//SavedMesh.S_ComputerMesh->SetStaticMesh(Station->ComputerMesh->GetStaticMesh());
+			SaveGameInstance->WorkstationMeshList.Add(SavedMesh);
+			//GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Station Saved, id: " + FString::FromInt(SavedMesh.S_ComputerMeshID));
+			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Station Saved, id: " + FString::FromInt(SavedMesh.WorkstationIndex));
 			SaveGameInstance->WorkstationList.Add(Station);
+			
 		}
 	}
+
+
 	//SaveGameInstance->Saved_PlayerLocation = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("Default"), 0);
 
@@ -135,6 +143,17 @@ void UGameManager::LoadGame(FString SaveFile)
 		WorkstationList.Add(Station);
 		Station->EnableStation(true);
 		Station->HasEmployee = false;
+
+		//Station->ComputerMesh->SetStaticMesh(Station->WorkstationSaveMesh[0]->GetStaticMesh());
+	}
+	for (auto SavedStation : SaveGameInstance->WorkstationMeshList) {
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "SavedStation ComputerID" + FString::FromInt(SavedStation.S_ComputerMeshID));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "SavedStation WorkstationID" + FString::FromInt(SavedStation.WorkstationIndex));
+		//if (Station->WorkstationIndex == SavedStation.WorkstationIndex) {
+		//	//function here to change mesh respectively to id given
+		//	Station->UpgradeMeshFromSave(SavedStation);
+		//	//Station->ComputerMeshID = SavedStation.S_ComputerMeshID;
+		//}
 	}
 
 	FString outPath = FPaths::ProjectSavedDir() + SaveFile;
