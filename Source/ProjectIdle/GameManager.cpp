@@ -186,11 +186,11 @@ void UGameManager::LoadGame(FString SaveFile)
 	currentMapName.Split("UEDPIE_0_", nullptr, &currentMapName);
 
 	OnGameLoadedFixup(GetWorld());
-	if (mapName == currentMapName)
-	{
-		//GetWorld()->ServerTravel("?Restart", true);
-		UGameplayStatics::OpenLevel(GetWorld(), *mapName);
-	}
+	//if (mapName == currentMapName)
+	//{
+	//	//GetWorld()->ServerTravel("?Restart", true);
+	//	UGameplayStatics::OpenLevel(GetWorld(), *mapName);
+	//}
 	//else
 	//{
 	//	UGameplayStatics::OpenLevel(GetWorld(), *mapName);
@@ -206,7 +206,6 @@ void UGameManager::OnGameLoadedFixup(UWorld* World) {
 	{
 		checkSlow(World->GetFirstPlayerController() != nullptr);
 		//		FixupPlayer(World, charPawn);
-		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "NOT SPAWNING ");
 		return;
 	}
 
@@ -295,9 +294,15 @@ void UGameManager::OnGameLoadedFixup(UWorld* World) {
 			AActor* NewActor = OfficeDepartment->GenerateSavedActor(SpawnClass);//IFemployee, figure way to scale with other type actor like workstation?
 			FMemoryReader MemoryReader(ActorRecord.MyData, true);
 			FSaveGameArchive Ar(MemoryReader);
-			NewActor->Serialize(Ar);
-			NewActor->SetActorTransform(ActorRecord.MyTransform);
-			ISaveableActorInterface::Execute_ActorLoaded(NewActor);
+			
+			if (NewActor != nullptr) {
+				NewActor->Serialize(Ar);
+				NewActor->SetActorTransform(ActorRecord.MyTransform);
+				ISaveableActorInterface::Execute_ActorLoaded(NewActor);
+			}
+			else {
+				GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Cannot Spawn Actor - Collision Problem");
+			}
 		}
 	}
 

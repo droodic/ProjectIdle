@@ -279,6 +279,7 @@ AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.Owner = this;
 	SpawnParameters.Instigator = GetInstigator();
+	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
 	FVector NewVector = FVector(0, -50, 0);
 	SpawnLocation = GM->Door->GetActorLocation() + NewVector;
