@@ -35,14 +35,14 @@ public:
 	int ItemCount = 1;
 	bool InCheckout = false;
 
-private:
-	bool Once = false;
+	static bool IsDescriptionOn;
 
 private:
 	void NativePreConstruct() override;
 	void NativeConstruct() override;
 	void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
-	void NativeOnMouseLeave(const FPointerEvent& InMouseEvent);
 
 	UFUNCTION() void OnClicked();
 };
+
+bool UItemButton::IsDescriptionOn = false;

@@ -21,10 +21,10 @@ enum class ESubCategory : uint8
 	Monitor            UMETA(DisplayName = "Monitor"),
 	Keyboard		   UMETA(DisplayName = "Keyboard"),
 	Desk			   UMETA(DisplayName = "Desk"),
-	Chair			   UMETA(DisplayName = "Chair")
+	Chair			   UMETA(DisplayName = "Chair"),
+	FloorMat		   UMETA(DisplayName = "Floor"),
+	WallMat			   UMETA(DisplayName = "Wall")
 };
-
-
 
 UCLASS()
 class PROJECTIDLE_API AItem : public AActor

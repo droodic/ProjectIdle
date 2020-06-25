@@ -47,20 +47,20 @@ void UItemButton::NativeConstruct()
 
 void UItemButton::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
-	if (IsHovered())
+	if (!IsDescriptionOn)
 	{
-		if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->IsInputKeyDown(EKeys::D))
+		if (Item->ItemButton->IsHovered())
 		{
-			if (!Once)
+			if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->WasInputKeyJustPressed(EKeys::D))
 			{
-				Once = true;
+				IsDescriptionOn = true;
 
 				GameManager->ShopWidget->DescriptionPanel->SetVisibility(ESlateVisibility::Visible);
 				GameManager->ShopWidget->Description_T->SetText(FText::FromString(Item->ItemDescription));
 
 				if (Item->ItemCompileRate > 0)
 				{
-					GameManager->ShopWidget->DescriptionStats_T->SetText(FText::FromString("Compile time increase: " + FString::FromInt(Item->ItemCompileRate) + "+"));
+					GameManager->ShopWidget->DescriptionStats_T->SetText(FText::FromString("Compile time descrease: " + FString::FromInt(Item->ItemCompileRate) + "%"));
 				}
 				else
 				{
@@ -69,6 +69,16 @@ void UItemButton::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 			}
 		}
 	}
+	/*else
+	{
+		if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->WasInputKeyJustPressed(EKeys::D))
+		{
+			GameManager->ShopWidget->DescriptionPanel->SetVisibility(ESlateVisibility::Hidden);
+			IsDescriptionOn = false;
+		}
+	}*/
+
+	GEngine->AddOnScreenDebugMessage(101, 5.f, FColor::White, (IsDescriptionOn) ? "True" : "False ");
 }
 
 void UItemButton::OnClicked()
@@ -102,12 +112,4 @@ void UItemButton::OnClicked()
 			}
 		}
 	}
-}
-
-void UItemButton::NativeOnMouseLeave(const FPointerEvent& InMouseEvent)
-{
-	Super::NativeOnMouseLeave(InMouseEvent);
-
-	GameManager->ShopWidget->DescriptionPanel->SetVisibility(ESlateVisibility::Hidden);
-	Once = false;
 }
