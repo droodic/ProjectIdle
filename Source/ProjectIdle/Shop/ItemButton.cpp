@@ -49,7 +49,7 @@ void UItemButton::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	if (!IsDescriptionOn)
 	{
-		if (Item->ItemButton->IsHovered())
+		if (IsHovered())
 		{
 			if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->WasInputKeyJustPressed(EKeys::D))
 			{
@@ -69,14 +69,6 @@ void UItemButton::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 			}
 		}
 	}
-	/*else
-	{
-		if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->WasInputKeyJustPressed(EKeys::D))
-		{
-			GameManager->ShopWidget->DescriptionPanel->SetVisibility(ESlateVisibility::Hidden);
-			IsDescriptionOn = false;
-		}
-	}*/
 
 	GEngine->AddOnScreenDebugMessage(101, 5.f, FColor::White, (IsDescriptionOn) ? "True" : "False ");
 }
