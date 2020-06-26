@@ -342,21 +342,8 @@ void UGameManager::OnGameLoadedFixup(UWorld* World) {
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "Enabling station " + FString::FromInt(Station->WorkstationIndex));
 
 			//Set Meshes, move to function in Workstation when works? 
-			for (auto Item : OfficeDepartment->GameItemList) {
-				if (Item.GetDefaultObject()->ItemID == Station->ComputerMeshID) {
-					Station->ComputerMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh->GetStaticMesh());
-					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "Replaced Mesh of ComputerStationID" + FString::FromInt(Station->WorkstationIndex));
-					//Station->UpgradeMeshFromSave();
-					break;
-				}
+			Station->UpgradeMeshFromSave();
 
-				//if (Item.GetDefaultObject()->ItemID == Station->DeskMeshID) {
-				//	Station->ComputerMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh->GetStaticMesh());
-				//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "Replaced Mesh of ComputerStationID" + FString::FromInt(Station->WorkstationIndex));
-				//	//Station->UpgradeMeshFromSave();
-				//	break;
-				//}
-			}
 		}
 	}
 }

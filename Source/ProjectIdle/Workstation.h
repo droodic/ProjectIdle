@@ -39,12 +39,14 @@ public:
 		UBoxComponent* CollisionBox;
 
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) int ComputerMeshID;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) int DeskMeshID;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) int ChairMeshID;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) int DeskMeshID;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) int KeyboardMeshID;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) int WorkstationIndex;//for now set in editor, make dynamic later
 	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite) float AssignedCompileLoad;
 	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite) float CurrentCompileLoad;
 
-	TArray<UStaticMeshComponent*> WorkstationSaveMesh;
 	UPROPERTY(SaveGame, VisibleAnywhere)
 		UStaticMeshComponent* DeskMesh;
 	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite)

@@ -178,11 +178,13 @@ void AWorkstation::UpgradeMesh(AItem* Item)
 	else if (Item->ItemSubCategory == ESubCategory::Keyboard) {
 		KeyboardMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
 		UpgradeWidget->Keyboard_Img->SetBrushFromTexture(Item->ItemImage);
+		KeyboardMeshID = Item->ItemID;
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Keyboard detect"));
 	}
 	else if (Item->ItemSubCategory == ESubCategory::Chair) {
 		ChairMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
 		UpgradeWidget->Chair_Img->SetBrushFromTexture(Item->ItemImage);
+		ChairMeshID = Item->ItemID;
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Chair detect"));
 	}
 	UpgradeWidget->RemoveFromViewport();
@@ -190,17 +192,25 @@ void AWorkstation::UpgradeMesh(AItem* Item)
 
 
 void AWorkstation::UpgradeMeshFromSave() {
-	//Find item in OfficeDepartment -> GameItemList
-	//ComputerMeshID = SaveMesh.S_ComputerMeshID;
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, "Monitor self checking for upgrades, MonitorID: " + FString::FromInt(ComputerMeshID));
+
 	for (auto Item : GM->OfficeDepartment->GameItemList) {
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Looping gameitemlist "));
 		if (Item.GetDefaultObject()->ItemID == ComputerMeshID) {
-		//	ComputerMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh->GetStaticMesh());
-			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Monitor UPDATED!"));
+			ComputerMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh->GetStaticMesh());
+			
+		}
+		else if (Item.GetDefaultObject()->ItemID == DeskMeshID) {
+			DeskMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh->GetStaticMesh());
+			
+		}
+		else if (Item.GetDefaultObject()->ItemID == KeyboardMeshID) {
+			KeyboardMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh->GetStaticMesh());
+			
+		}
+		else if (Item.GetDefaultObject()->ItemID == ChairMeshID) {
+			ChairMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh->GetStaticMesh());
+			
 		}
 	}
-	//ComputerMesh->SetMesh =
 }
 
 void AWorkstation::NotifyActorBeginOverlap(AActor* OtherActor)
