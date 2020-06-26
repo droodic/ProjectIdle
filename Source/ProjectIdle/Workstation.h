@@ -43,7 +43,7 @@ public:
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) int DeskMeshID;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) int KeyboardMeshID;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) int WorkstationIndex;//for now set in editor, make dynamic later
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) int WorkstationIndex;//for now set in editor, make dynamic later
 	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite) float AssignedCompileLoad;
 	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite) float CurrentCompileLoad;
 
@@ -56,9 +56,6 @@ public:
 	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite)
 		UStaticMeshComponent* KeyboardMesh;
 
-	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeMonitor; //remove
-	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeKeyboard;
-
 	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere, Category = "Role") ERole StationRole;
 	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere, Category = "Role") EPosition StationOwnerPosition;
 
@@ -68,7 +65,7 @@ public:
 	UPROPERTY()
 		FVector StationVector;
 
-	UPROPERTY(SaveGame) bool IsCompiling;
+	UPROPERTY() bool IsCompiling;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool HasEmployee;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool IsEnabled;
 
@@ -80,7 +77,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Widgets") TSubclassOf<UUserWidget> UserWidget;
 	UPROPERTY() class UWorkstationUpgradeWidget* UpgradeWidget;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UWidgetComponent* CompileProgressBar;
-	int CompileModifier = 0;
+	UPROPERTY(SaveGame) int CompileModifier = 0;
 
 protected:
 	// Called when the game starts or when spawned
@@ -98,7 +95,7 @@ public:
 	UFUNCTION() void DoCompile();
 	void UpgradeMesh(AItem* Item);
 	void UpgradeMeshFromSave();
-	UFUNCTION(BlueprintCallable) void InitFromSave(int Index);
+	//UFUNCTION(BlueprintCallable) void InitFromSave(int Index);
 
 	//UFUNCTION(BlueprintCallable) void UpgradeMeshFromSave(AWorkstation* SavedStation);
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;

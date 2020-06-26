@@ -49,12 +49,24 @@ void AMeetingDepartment::TakeIdea(Idea* SentIdea)
 		MeetingWidget->T_Genre->SetText(Idea::GenreToText(SentIdea->Genre));
 		MeetingWidget->T_GameDescription->SetText(FText::FromString(SentIdea->IdeaDescription));
 		MeetingWidget->T_SuccessChance->SetText(FText::AsPercent(SentIdea->SuccessChance / 100.f));
-		MeetingWidget->T_Weight->SetText((SentIdea->ProgrammerWorkload > SentIdea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
+		//MeetingWidget->T_Weight->SetText((SentIdea->ProgrammerWorkload > SentIdea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
 
-		if (SentIdea->ProgrammerWorkload == SentIdea->ArtistWorkload)
-		{
-			MeetingWidget->T_Weight->SetText(FText::FromString("All"));
+		//if (SentIdea->ProgrammerWorkload == SentIdea->ArtistWorkload)
+		//{
+		//	MeetingWidget->T_Weight->SetText(FText::FromString("All"));
+		//}
+
+		if (SentIdea->ProgrammerWorkload > (SentIdea->ArtistWorkload + 20)) {
+			SentIdea->IdeaButton->Weight_T->SetText(FText::FromString("Programmer"));
 		}
+		else if (SentIdea->ArtistWorkload > (SentIdea->ProgrammerWorkload + 20)) {
+			SentIdea->IdeaButton->Weight_T->SetText(FText::FromString("Artist"));
+		}
+		else
+		{
+			SentIdea->IdeaButton->Weight_T->SetText(FText::FromString("All"));
+		}
+
 		GEngine->AddOnScreenDebugMessage(105, 5.f, FColor::Red, "Idea Transferred");
 	}
 	else if (MeetingWidget == nullptr)

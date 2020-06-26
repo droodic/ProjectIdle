@@ -32,12 +32,7 @@ AWorkstation::AWorkstation()
 	CollisionBox->SetBoxExtent(FVector(350, 350, 350));
 
 	StationRole = ERole::Programmer;//Default to stop crashing
-	UpgradeMonitor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeMonitor"));
-	UpgradeKeyboard = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeKeyBoard"));
-	//UpgradeChair = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeChair"));
 
-	UpgradeMonitor->SetupAttachment(RootComponent);
-	UpgradeKeyboard->SetupAttachment(RootComponent);
 	ComputerMesh->SetupAttachment(RootComponent);
 	ChairMesh->SetupAttachment(RootComponent);
 	KeyboardMesh->SetupAttachment(RootComponent);
@@ -98,7 +93,6 @@ void AWorkstation::Tick(float DeltaTime)
 			if (CurrentCompileLoad <= 0) {
 				CompileProgressBar->SetVisibility(false);
 				IsCompiling = false;
-				//send to employee that yolo etc
 			}
 		}
 
@@ -108,21 +102,10 @@ void AWorkstation::Tick(float DeltaTime)
 void AWorkstation::UpdateWorkstationPosition(AEmployee* EmployeeRef)
 {
 	if (!HasEmployee) {
-		//int32 employeeSize = GM->EmployeeList.Num();
-		//int32 workstationSize = GM->WorkstationList.Num();
-		//FVector AStationLocation = this->GetActorLocation();
 		EmployeeRef->WorkstationRef = this;
 		EmployeeRef->HasWorkStation = true;
 		EmployeeRef->StartPosition = StationLocation;
 		HasEmployee = true;
-		//for (auto Employee : GM->EmployeeList) {
-		//	if (!Employee->HasWorkStation && Employee->EmployeeRole == StationRole && IsEnabled) {
-		//		Employee->WorkstationRef = this;
-		//		Employee->HasWorkStation = true;
-		//		Employee->StartPosition = StationLocation;
-		//		HasEmployee = true;
-		//	}
-		//}
 	}
 }
 
@@ -257,8 +240,4 @@ void AWorkstation::UpdateSupervisorWorkstationPosition()
 			//HasEmployee = true;
 		}
 	}
-}
-
-void AWorkstation::InitFromSave(int Index) {
-	ComputerMeshID = Index;
 }

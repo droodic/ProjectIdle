@@ -51,9 +51,13 @@ void UIdeaBacklogWidget::AddValuesToButton(Idea* idea)
 	idea->IdeaButton->Genre_T->SetText(Idea::GenreToText(idea->Genre));
 	idea->IdeaButton->SuccessChance_T->SetText(FText::AsPercent(idea->SuccessChance / 100.f));
 
-	idea->IdeaButton->Weight_T->SetText((idea->ProgrammerWorkload > idea->ArtistWorkload) ? FText::FromString("Programmer") : FText::FromString("Artist"));
-
-	if (idea->ProgrammerWorkload == idea->ArtistWorkload)
+	if (idea->ProgrammerWorkload > (idea->ArtistWorkload + 20)) {
+		idea->IdeaButton->Weight_T->SetText(FText::FromString("Programmer"));
+	}
+	else if (idea->ArtistWorkload > (idea->ProgrammerWorkload + 20)) {
+		idea->IdeaButton->Weight_T->SetText(FText::FromString("Artist"));
+	}
+	else
 	{
 		idea->IdeaButton->Weight_T->SetText(FText::FromString("All"));
 	}
