@@ -18,6 +18,13 @@ enum class EType : int16
 };
 
 
+//USTRUCT()
+//struct FSaveMesh {
+//	GENERATED_USTRUCT_BODY()
+//	int WorkstationIndex;
+//	int S_ComputerMeshID;
+//};
+
 UCLASS()
 class PROJECTIDLE_API AWorkstation : public AActor
 {
@@ -31,8 +38,14 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		UBoxComponent* CollisionBox;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite) float AssignedCompileLoad;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite) float CurrentCompileLoad;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) int ComputerMeshID;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) int ChairMeshID;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) int DeskMeshID;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) int KeyboardMeshID;
+
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) int WorkstationIndex;//for now set in editor, make dynamic later
+	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite) float AssignedCompileLoad;
+	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite) float CurrentCompileLoad;
 
 	UPROPERTY(SaveGame, VisibleAnywhere)
 		UStaticMeshComponent* DeskMesh;
@@ -43,9 +56,6 @@ public:
 	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite)
 		UStaticMeshComponent* KeyboardMesh;
 
-	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeMonitor; //remove
-	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* UpgradeKeyboard;
-
 	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere, Category = "Role") ERole StationRole;
 	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere, Category = "Role") EPosition StationOwnerPosition;
 
@@ -55,7 +65,7 @@ public:
 	UPROPERTY()
 		FVector StationVector;
 
-	bool IsCompiling;
+	UPROPERTY() bool IsCompiling;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool HasEmployee;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool IsEnabled;
 
@@ -67,7 +77,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Widgets") TSubclassOf<UUserWidget> UserWidget;
 	UPROPERTY() class UWorkstationUpgradeWidget* UpgradeWidget;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UWidgetComponent* CompileProgressBar;
-	int CompileModifier = 0;
+	UPROPERTY(SaveGame) int CompileModifier = 0;
 
 protected:
 	// Called when the game starts or when spawned
@@ -84,7 +94,10 @@ public:
 	UFUNCTION(BlueprintCallable) void EnableStation(bool Enabled);
 	UFUNCTION() void DoCompile();
 	void UpgradeMesh(AItem* Item);
-	UFUNCTION(BlueprintCallable) void UpgradeMeshFromSave(AWorkstation* SavedStation);
+	void UpgradeMeshFromSave();
+	//UFUNCTION(BlueprintCallable) void InitFromSave(int Index);
+
+	//UFUNCTION(BlueprintCallable) void UpgradeMeshFromSave(AWorkstation* SavedStation);
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 	//UFUNCTION() int WorkstationActiveLenght();

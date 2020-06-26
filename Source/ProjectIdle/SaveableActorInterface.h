@@ -53,7 +53,7 @@ struct FGameSavedData
 {
 	GENERATED_USTRUCT_BODY()
 
-		FDateTime Timestamp;
+	FDateTime Timestamp;
 	FName MapName;
 	//FInventorySaveData InventoryData;
 	//TArray<FWorkstationSavedData> SavedWorkstations;

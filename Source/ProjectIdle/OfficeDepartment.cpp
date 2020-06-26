@@ -3,6 +3,7 @@
 
 #include "OfficeDepartment.h"
 #include "Idea.h"
+#include "Shop/Item.h"
 #include "CeoDepMenuWidget.h"
 #include "Department.h"
 #include "GameManager.h"
@@ -194,7 +195,7 @@ void AOfficeDepartment::Tick(float DeltaTime)
 
 			//auto newIdea = new Idea(GenerateIdeaValues());
 			auto randomNumber = UKismetMathLibrary::RandomIntegerInRange(0, 100);
-			auto newIdea = new Idea("GAME " + FString::FromInt(randomNumber), "Game description of game " + FString::FromInt(randomNumber), Idea::GetRandomGenre(), FLinearColor::MakeRandomColor(), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(75.f, 150.f), UKismetMathLibrary::RandomFloatInRange(75.f, 150.f));
+			auto newIdea = new Idea("GAME " + FString::FromInt(randomNumber), "Game description of game " + FString::FromInt(randomNumber), Idea::GetRandomGenre(), FLinearColor::MakeRandomColor(), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f));
 
 			IdeaList.Insert(newIdea, Index);
 			BacklogWidget->DisplayNewIdea(IdeaList[Index]);
@@ -278,6 +279,7 @@ AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.Owner = this;
 	SpawnParameters.Instigator = GetInstigator();
+	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
 	FVector NewVector = FVector(0, -50, 0);
 	SpawnLocation = GM->Door->GetActorLocation() + NewVector;

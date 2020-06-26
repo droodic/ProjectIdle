@@ -62,6 +62,8 @@ struct FSaveGameData
 //	//}
 //};
 
+
+
 UCLASS()
 class PROJECTIDLE_API UGameSave : public USaveGame
 {
@@ -75,6 +77,8 @@ public:
 	UPROPERTY(EditAnywhere) int Saved_Money;
 	UPROPERTY(EditAnywhere) TArray<class AItem*> InventoryList;
 	UPROPERTY(EditAnywhere) TArray<class AWorkstation*> WorkstationList;
+//	UPROPERTY(EditAnywhere) TArray<struct FSaveMesh> WorkstationMeshList;
+	//UPROPERTY(EditAnywhere) TArray<class FSaveMesh*> WorkstationMesh;
 
 public:
 	// void SaveEmployeeRecords(FArchive Ar); Method 1

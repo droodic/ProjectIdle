@@ -28,6 +28,8 @@ public:
 	UPROPERTY(BlueprintReadWrite) float AvgProgMorale = 0.f;
 	UPROPERTY(BlueprintReadWrite) float AvgArtistMorale = 0.f;
 
+	//TArray<TSubclassOf<AItem*>> List;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) TArray<TSubclassOf<class AItem>> GameItemList;
 	TArray<class Idea*> IdeaList;
 	TArray<class Idea*> FinishedIdeaList;
 	

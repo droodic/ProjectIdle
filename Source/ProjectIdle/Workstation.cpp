@@ -3,6 +3,7 @@
 
 #include "Workstation.h"
 #include "ProjectIdle/GameManager.h"
+#include "ProjectIdle/OfficeDepartment.h"
 #include "Employees/Artist.h"
 #include "Employees/Programmer.h"
 #include "ProjectIdle/GameHUD.h"
@@ -31,12 +32,7 @@ AWorkstation::AWorkstation()
 	CollisionBox->SetBoxExtent(FVector(350, 350, 350));
 
 	StationRole = ERole::Programmer;//Default to stop crashing
-	UpgradeMonitor = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeMonitor"));
-	UpgradeKeyboard = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeKeyBoard"));
-	//UpgradeChair = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("UpgradeChair"));
 
-	UpgradeMonitor->SetupAttachment(RootComponent);
-	UpgradeKeyboard->SetupAttachment(RootComponent);
 	ComputerMesh->SetupAttachment(RootComponent);
 	ChairMesh->SetupAttachment(RootComponent);
 	KeyboardMesh->SetupAttachment(RootComponent);
@@ -97,7 +93,6 @@ void AWorkstation::Tick(float DeltaTime)
 			if (CurrentCompileLoad <= 0) {
 				CompileProgressBar->SetVisibility(false);
 				IsCompiling = false;
-				//send to employee that yolo etc
 			}
 		}
 
@@ -107,21 +102,10 @@ void AWorkstation::Tick(float DeltaTime)
 void AWorkstation::UpdateWorkstationPosition(AEmployee* EmployeeRef)
 {
 	if (!HasEmployee) {
-		//int32 employeeSize = GM->EmployeeList.Num();
-		//int32 workstationSize = GM->WorkstationList.Num();
-		//FVector AStationLocation = this->GetActorLocation();
 		EmployeeRef->WorkstationRef = this;
 		EmployeeRef->HasWorkStation = true;
 		EmployeeRef->StartPosition = StationLocation;
 		HasEmployee = true;
-		//for (auto Employee : GM->EmployeeList) {
-		//	if (!Employee->HasWorkStation && Employee->EmployeeRole == StationRole && IsEnabled) {
-		//		Employee->WorkstationRef = this;
-		//		Employee->HasWorkStation = true;
-		//		Employee->StartPosition = StationLocation;
-		//		HasEmployee = true;
-		//	}
-		//}
 	}
 }
 
@@ -165,44 +149,51 @@ void AWorkstation::UpgradeMesh(AItem* Item)
 		ComputerMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
 		UpgradeWidget->MonitorImage->SetBrushFromTexture(Item->ItemImage);
 		CompileModifier = Item->ItemCompileRate;
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Computermesh detect"));
+		ComputerMeshID = Item->ItemID;
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Computermesh detect, ID: " + FString::FromInt(ComputerMeshID)));
 	}
 	else if (Item->ItemSubCategory == ESubCategory::Desk) {
 		ChairMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
 		UpgradeWidget->Desk_Img->SetBrushFromTexture(Item->ItemImage);
+		DeskMeshID = Item->ItemID;
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Desk detect"));
 	}
 	else if (Item->ItemSubCategory == ESubCategory::Keyboard) {
 		KeyboardMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
 		UpgradeWidget->Keyboard_Img->SetBrushFromTexture(Item->ItemImage);
+		KeyboardMeshID = Item->ItemID;
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Keyboard detect"));
 	}
 	else if (Item->ItemSubCategory == ESubCategory::Chair) {
 		ChairMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
 		UpgradeWidget->Chair_Img->SetBrushFromTexture(Item->ItemImage);
+		ChairMeshID = Item->ItemID;
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Chair detect"));
 	}
-
-
-	//if (Index == 0)
-	//{
-	//	ComputerMesh->SetVisibility(false);
-	//	UpgradeMonitor->SetVisibility(true);
-	//	CompileModifier += 10;
-	//}
-	//if (Index == 1)
-	//{
-	//	KeyboardMesh->SetVisibility(false);
-	//	UpgradeKeyboard->SetVisibility(true);
-	//	CompileModifier += 5;
-	//}
 	UpgradeWidget->RemoveFromViewport();
 }
 
-void AWorkstation::UpgradeMeshFromSave(AWorkstation* SavedStation) {
-	ComputerMesh->SetStaticMesh(SavedStation->ComputerMesh->GetStaticMesh());
-	KeyboardMesh->SetStaticMesh(SavedStation->KeyboardMesh->GetStaticMesh());
-	ChairMesh->SetStaticMesh(SavedStation->ChairMesh->GetStaticMesh());
+
+void AWorkstation::UpgradeMeshFromSave() {
+
+	for (auto Item : GM->OfficeDepartment->GameItemList) {
+		if (Item.GetDefaultObject()->ItemID == ComputerMeshID) {
+			ComputerMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh->GetStaticMesh());
+			
+		}
+		else if (Item.GetDefaultObject()->ItemID == DeskMeshID) {
+			DeskMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh->GetStaticMesh());
+			
+		}
+		else if (Item.GetDefaultObject()->ItemID == KeyboardMeshID) {
+			KeyboardMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh->GetStaticMesh());
+			
+		}
+		else if (Item.GetDefaultObject()->ItemID == ChairMeshID) {
+			ChairMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh->GetStaticMesh());
+			
+		}
+	}
 }
 
 void AWorkstation::NotifyActorBeginOverlap(AActor* OtherActor)
