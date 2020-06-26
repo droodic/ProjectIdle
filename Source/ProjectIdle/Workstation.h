@@ -18,12 +18,12 @@ enum class EType : int16
 };
 
 
-USTRUCT()
-struct FSaveMesh {
-	GENERATED_USTRUCT_BODY()
-	int WorkstationIndex;
-	int S_ComputerMeshID;
-};
+//USTRUCT()
+//struct FSaveMesh {
+//	GENERATED_USTRUCT_BODY()
+//	int WorkstationIndex;
+//	int S_ComputerMeshID;
+//};
 
 UCLASS()
 class PROJECTIDLE_API AWorkstation : public AActor
@@ -38,11 +38,11 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		UBoxComponent* CollisionBox;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite) int ComputerMeshID;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) int ComputerMeshID;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) int DeskMeshID;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) int WorkstationIndex;//for now set in editor, make dynamic later
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite) float AssignedCompileLoad;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite) float CurrentCompileLoad;
+	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite) float AssignedCompileLoad;
+	UPROPERTY(SaveGame, VisibleAnywhere, BlueprintReadWrite) float CurrentCompileLoad;
 
 	TArray<UStaticMeshComponent*> WorkstationSaveMesh;
 	UPROPERTY(SaveGame, VisibleAnywhere)
@@ -66,7 +66,7 @@ public:
 	UPROPERTY()
 		FVector StationVector;
 
-	bool IsCompiling;
+	UPROPERTY(SaveGame) bool IsCompiling;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool HasEmployee;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool IsEnabled;
 
@@ -95,7 +95,8 @@ public:
 	UFUNCTION(BlueprintCallable) void EnableStation(bool Enabled);
 	UFUNCTION() void DoCompile();
 	void UpgradeMesh(AItem* Item);
-	void UpgradeMeshFromSave(FSaveMesh SavedMesh);
+	void UpgradeMeshFromSave();
+	UFUNCTION(BlueprintCallable) void InitFromSave(int Index);
 
 	//UFUNCTION(BlueprintCallable) void UpgradeMeshFromSave(AWorkstation* SavedStation);
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;

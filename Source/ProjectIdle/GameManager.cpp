@@ -33,19 +33,22 @@ void UGameManager::SaveGame(FString SaveFile)
 	for (auto Item : InventoryList) {
 		SaveGameInstance->InventoryList.Add(Item);
 	}
-	for (auto Station : WorkstationList) {
-		if (Station->IsEnabled) {
-			FSaveMesh SavedMesh;
-			SavedMesh.WorkstationIndex = Station->WorkstationIndex;
-			SavedMesh.S_ComputerMeshID = Station->ComputerMeshID;
-			//SavedMesh.S_ComputerMesh->SetStaticMesh(Station->ComputerMesh->GetStaticMesh());
-			SaveGameInstance->WorkstationMeshList.Add(SavedMesh);
-			//GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Station Saved, id: " + FString::FromInt(SavedMesh.S_ComputerMeshID));
-			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Station Saved, id: " + FString::FromInt(SavedMesh.WorkstationIndex));
-			SaveGameInstance->WorkstationList.Add(Station);
-			
-		}
-	}
+	//for (auto Station : WorkstationList) {
+	//	if (Station->IsEnabled) {
+	//		//FSaveMesh SavedMesh;
+	//		//SavedMesh.WorkstationIndex = Station->WorkstationIndex;
+	//		//SavedMesh.S_ComputerMeshID = Station->ComputerMeshID;
+	//		//SavedMesh.S_ComputerMesh->SetStaticMesh(Station->ComputerMesh->GetStaticMesh());
+	//		//SaveGameInstance->WorkstationMeshList.Add(SavedMesh);
+	//		//GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Station Saved, id: " + FString::FromInt(SavedMesh.S_ComputerMeshID));
+	//		//GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Station Computer ID Saved, id: " + FString::FromInt(SavedMesh.S_ComputerMeshID));
+	//		//Station->ComputerMeshID = 
+	//		//SaveGameInstance->get
+	//		SaveGameInstance->WorkstationList.Add(Station);
+	//		//SaveGameInstance->WorkstationList.Last()->ComputerMeshID = Station->ComputerMeshID;
+	//		
+	//	}
+	//}
 
 
 	//SaveGameInstance->Saved_PlayerLocation = UGameplayStatics::GetPlayerController(GetWorld(), 0);
@@ -135,26 +138,42 @@ void UGameManager::LoadGame(FString SaveFile)
 	SaveGameInstance = Cast<UGameSave>(UGameplayStatics::LoadGameFromSlot("Default", 0));
 	Money = SaveGameInstance->Saved_Money;
 	InventoryList.Empty();
-	WorkstationList.Empty();
+	//WorkstationList.Empty();
 	for (auto Item : SaveGameInstance->InventoryList) {
 		InventoryList.Add(Item);
 	}
+
+	/*
 	for (auto Station : SaveGameInstance->WorkstationList) {
 		WorkstationList.Add(Station);
 		Station->EnableStation(true);
 		Station->HasEmployee = false;
-
+		//if(Station->WorkstationIndex)
+		for (auto Item : OfficeDepartment->GameItemList) {
+			if (Item.GetDefaultObject()->ItemID == Station->ComputerMeshID) {
+				//Station->ComputerMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh.GetStaticMesh());
+				Station->ComputerMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh->GetStaticMesh());
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "Replaced Mesh of ComputerStationID" + FString::FromInt(Station->WorkstationIndex));
+				//Station->UpgradeMeshFromSave();
+				break;
+			}
+		}
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "SavedStation WorkstationID" + FString::FromInt(Station->WorkstationIndex));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "SavedStation ComputerStationID" + FString::FromInt(Station->ComputerMeshID));
 		//Station->ComputerMesh->SetStaticMesh(Station->WorkstationSaveMesh[0]->GetStaticMesh());
 	}
-	for (auto SavedStation : SaveGameInstance->WorkstationMeshList) {
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "SavedStation ComputerID" + FString::FromInt(SavedStation.S_ComputerMeshID));
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "SavedStation WorkstationID" + FString::FromInt(SavedStation.WorkstationIndex));
-		//if (Station->WorkstationIndex == SavedStation.WorkstationIndex) {
-		//	//function here to change mesh respectively to id given
-		//	Station->UpgradeMeshFromSave(SavedStation);
-		//	//Station->ComputerMeshID = SavedStation.S_ComputerMeshID;
-		//}
-	}
+	*/
+
+	//for (auto SavedStation : SaveGameInstance->WorkstationMeshList) {
+	//	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "SavedMesh ComputerID" + FString::FromInt(SaveMesh.S_ComputerMeshID));
+	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "SavedStation ComputerID" + FString::FromInt(SavedStation.S_ComputerMeshID));
+
+	//	//if (Station->WorkstationIndex == SavedStation.WorkstationIndex) {
+	//	//	//function here to change mesh respectively to id given
+	//	//	Station->UpgradeMeshFromSave(SavedStation);
+	//	//	//Station->ComputerMeshID = SavedStation.S_ComputerMeshID;
+	//	//}
+	//}
 
 	FString outPath = FPaths::ProjectSavedDir() + SaveFile;
 
@@ -313,4 +332,31 @@ void UGameManager::OnGameLoadedFixup(UWorld* World) {
 	}
 
 	BinaryData.Empty();
+
+	//postload function
+	for (auto Station : WorkstationList) {
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "Looping Stations, Station ID: " + FString::FromInt(Station->WorkstationIndex));
+
+		if (Station->IsEnabled) {
+			Station->EnableStation(true);
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "Enabling station " + FString::FromInt(Station->WorkstationIndex));
+
+			//Set Meshes, move to function in Workstation when works? 
+			for (auto Item : OfficeDepartment->GameItemList) {
+				if (Item.GetDefaultObject()->ItemID == Station->ComputerMeshID) {
+					Station->ComputerMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh->GetStaticMesh());
+					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "Replaced Mesh of ComputerStationID" + FString::FromInt(Station->WorkstationIndex));
+					//Station->UpgradeMeshFromSave();
+					break;
+				}
+
+				//if (Item.GetDefaultObject()->ItemID == Station->DeskMeshID) {
+				//	Station->ComputerMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh->GetStaticMesh());
+				//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "Replaced Mesh of ComputerStationID" + FString::FromInt(Station->WorkstationIndex));
+				//	//Station->UpgradeMeshFromSave();
+				//	break;
+				//}
+			}
+		}
+	}
 }

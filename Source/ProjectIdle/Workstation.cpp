@@ -189,14 +189,14 @@ void AWorkstation::UpgradeMesh(AItem* Item)
 }
 
 
-void AWorkstation::UpgradeMeshFromSave(FSaveMesh SaveMesh) {
+void AWorkstation::UpgradeMeshFromSave() {
 	//Find item in OfficeDepartment -> GameItemList
-	ComputerMeshID = SaveMesh.S_ComputerMeshID;
+	//ComputerMeshID = SaveMesh.S_ComputerMeshID;
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, "Monitor self checking for upgrades, MonitorID: " + FString::FromInt(ComputerMeshID));
 	for (auto Item : GM->OfficeDepartment->GameItemList) {
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Looping gameitemlist "));
 		if (Item.GetDefaultObject()->ItemID == ComputerMeshID) {
-			ComputerMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh->GetStaticMesh());
+		//	ComputerMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh->GetStaticMesh());
 			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Monitor UPDATED!"));
 		}
 	}
@@ -247,4 +247,8 @@ void AWorkstation::UpdateSupervisorWorkstationPosition()
 			//HasEmployee = true;
 		}
 	}
+}
+
+void AWorkstation::InitFromSave(int Index) {
+	ComputerMeshID = Index;
 }
