@@ -25,9 +25,10 @@ public:
 	UPROPERTY(meta = (BindWidget)) class UWrapBox* Tab3;
 	UPROPERTY(meta = (BindWidget)) class UWrapBox* Tab4;
 	UPROPERTY(meta = (BindWidget)) class UWrapBox* CheckoutItems_WB;
-	UPROPERTY(meta = (BindWidget)) class UCanvasPanel* DescriptionPanel;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UCanvasPanel* DescriptionPanel;
 
 	UPROPERTY(meta = (BindWidget)) class UButton* Buy_Btn;
+	UPROPERTY(meta = (BindWidget)) class UButton* DescReturn_Btn;
 	UPROPERTY(meta = (BindWidget)) class UButton* ShopReturn_Btn;
 
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* Money_T;
@@ -50,6 +51,7 @@ private:
 public:
 	UFUNCTION() void Return();
 	UFUNCTION() void Buy();
+	UFUNCTION(BlueprintCallable) void IsDescriptionOn(bool setDesc);
 
 	void AddItemToCheckout(class AItem* item);
 	void RemoveItemFromCheckout(int ItemID);
@@ -57,4 +59,6 @@ public:
 private:
 	void NativeConstruct() override;
 	void RemoveNotEnoughMoney();
+	
+	UFUNCTION() void CloseDescription();
 };

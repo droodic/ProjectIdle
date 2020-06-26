@@ -23,6 +23,10 @@ void UShopWidget::NativeConstruct()
 	{
 		Buy_Btn->OnClicked.AddDynamic(this, &UShopWidget::Buy);
 	}
+	if (!DescReturn_Btn->OnClicked.IsBound())
+	{
+		DescReturn_Btn->OnClicked.AddDynamic(this, &UShopWidget::CloseDescription);
+	}
 	if (!ShopReturn_Btn->OnClicked.IsBound())
 	{
 		ShopReturn_Btn->OnClicked.AddDynamic(this, &UShopWidget::Return);
@@ -46,12 +50,15 @@ void UShopWidget::Buy()
 						GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Red, FString::FromInt(j + 1) + " " + CheckList[i]->Item->ItemName + "Added");
 					}
 				}
-				else 
+				else
 				{
 					if (CheckList[i]->Item->ItemCategory == ECategory::Materials)
 					{
-						GameManager->Wall->UpdateWallMaterial(CheckList[i]->Item->Material->GetMaterial());
-						GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Red, "Noob");
+						for (int j = 0; j < GameManager->FloorList.Num(); j++)
+						{
+							GameManager->FloorList[j]->UpdateWallMaterial(CheckList[i]->Item->Material->GetMaterial());
+							GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Red, "Noob");
+						}
 
 						for (size_t j = 0; j < Tab4->GetChildrenCount(); j++)
 						{
@@ -107,7 +114,7 @@ void UShopWidget::AddItemToCheckout(class AItem* item)
 
 				Total += CheckList[i]->Item->ItemPrice;
 				TotalMoney_T->SetText(FText::AsCurrency(Total));
-				
+
 				isInCheckout = true;
 
 				break;
@@ -197,5 +204,18 @@ void UShopWidget::RemoveNotEnoughMoney()
 
 void UShopWidget::Return()
 {
+	DescriptionPanel->SetVisibility(ESlateVisibility::Hidden);
+	UItemButton::IsDescriptionOn = false;
 	OfficeDepartment->ShopReturn();
+}
+
+void UShopWidget::CloseDescription()
+{
+	DescriptionPanel->SetVisibility(ESlateVisibility::Hidden);
+	UItemButton::IsDescriptionOn = false;
+}
+
+void UShopWidget::IsDescriptionOn(bool setDesc)
+{
+	UItemButton::IsDescriptionOn = setDesc;
 }
