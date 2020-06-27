@@ -23,7 +23,8 @@ enum class ESubCategory : uint8
 	Desk			   UMETA(DisplayName = "Desk"),
 	Chair			   UMETA(DisplayName = "Chair"),
 	FloorMat		   UMETA(DisplayName = "Floor"),
-	WallMat			   UMETA(DisplayName = "Wall")
+	WallMat			   UMETA(DisplayName = "Wall"),
+	Other			   UMETA(DisplayName = "Other")
 };
 
 UCLASS()

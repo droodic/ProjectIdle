@@ -29,8 +29,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_Artist_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_ProgSup_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_ArtistSup_Btn;
-	UPROPERTY(meta = (BindWidget)) class UButton* Return_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* Total_Artist_Btn;
+	UPROPERTY(meta = (BindWidget)) class UButton* Return_Btn;
 	UPROPERTY() FString Worker;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* CreateDep_Btn;
@@ -40,10 +40,22 @@ public:
 	int Index = 0;
 	int ChosenIndex;
 
+#pragma region InventoryPanel
+	UPROPERTY(meta = (BindWidget)) class UWrapBox* OfficeDecoration_WB;
+	UPROPERTY(meta = (BindWidget)) class UHorizontalBox* FloorMaterial_HB;
+	UPROPERTY(meta = (BindWidget)) class UHorizontalBox* WallMaterial_HB;
+	UPROPERTY(meta = (BindWidget)) class UImage* CurrentFloorMat_I;
+	UPROPERTY(meta = (BindWidget)) class UImage* CurrentWallMat_I;
+
+	UPROPERTY(EditAnywhere) TSubclassOf<UUserWidget> InventoryButtonWidgetClass;
+
+#pragma endregion
+
 public:
 	virtual void NativeConstruct() override;
 	void GetFinishedIdea(class Idea* idea);
-	UFUNCTION() void ActivateWorkstation(ERole StationRole, EPosition OwnerPosition, bool IsSupervisor);
+	void AddItemToInventory(class AItem* item);
+	UFUNCTION() void ActivateWorkstation(enum ERole StationRole, enum EPosition OwnerPosition, bool IsSupervisor);
 
 private:
 	UFUNCTION() void CallHiring();

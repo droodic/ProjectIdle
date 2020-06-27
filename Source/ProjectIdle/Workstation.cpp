@@ -127,15 +127,21 @@ void AWorkstation::EnableStation(bool Enable)
 	}
 }
 
-
 void AWorkstation::NotifyActorOnClicked(FKey ButtonPressed)
 {
 	if (!UpgradeWidget->IsInViewport() && InRange)
 	{
 		UpgradeWidget->AddToViewport();
-		if (UpgradeWidget->InventoryScrollBox->GetChildrenCount() >= 1) {
-			UpgradeWidget->InventoryScrollBox->ClearChildren();
+		
+		if (UpgradeWidget->InventoryWrapBox->GetChildrenCount() >= 1)
+		{
+			UpgradeWidget->InventoryWrapBox->ClearChildren();
 		}
+		
+		/*if (UpgradeWidget->InventoryScrollBox->GetChildrenCount() >= 1)
+		{
+			UpgradeWidget->InventoryScrollBox->ClearChildren();
+		}*/
 	}
 	else
 	{
@@ -170,7 +176,7 @@ void AWorkstation::UpgradeMesh(AItem* Item)
 		ChairMeshID = Item->ItemID;
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Chair detect"));
 	}
-	UpgradeWidget->RemoveFromViewport();
+	//UpgradeWidget->RemoveFromViewport();
 }
 
 
@@ -220,10 +226,7 @@ void AWorkstation::DoCompile() {
 	//Make function for generation of compile loads scaling with player progress, etc
 	AssignedCompileLoad = UKismetMathLibrary::RandomFloatInRange(50, 100);
 	CurrentCompileLoad = AssignedCompileLoad;
-
 }
-
-
 
 void AWorkstation::UpdateSupervisorWorkstationPosition()
 {
