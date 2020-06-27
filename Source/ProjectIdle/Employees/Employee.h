@@ -29,7 +29,8 @@ enum class EPosition : uint8
 	//Artist			       UMETA(DisplayName = "Artist"),
 	//SeniorProgrammer	   UMETA(DisplayName = "Senior"),
 	//SeniorArtist 	       UMETA(DisplayName = "Senior"),
-	Supervisor             UMETA(DisplayName = "Supervisor")
+	Supervisor             UMETA(DisplayName = "Supervisor"),
+	FloorManager		   UMETA(DisplayName = "FloorManager")
 };
 
 UCLASS()
