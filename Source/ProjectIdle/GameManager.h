@@ -12,6 +12,7 @@
 #include "Departments/ProgrammingDepartment.h"
 #include "Departments/ArtistDepartment.h"
 #include "Widgets/WorkstationUpgradeWidget.h"
+#include "CeoDepMenuWidget.h"
 #include "GameManager.generated.h"
 
 /**

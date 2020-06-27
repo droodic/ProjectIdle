@@ -29,29 +29,15 @@ void UGameManager::SaveGame(FString SaveFile)
 	//Old approach
 	UGameSave* SaveGameInstance = Cast<UGameSave>(UGameplayStatics::CreateSaveGameObject(UGameSave::StaticClass()));
 	SaveGameInstance->Saved_Money = Money;
-	//SaveGameInstance->ClearLists();
+	SaveGameInstance->InventoryList.Empty();
 	for (auto Item : InventoryList) {
 		SaveGameInstance->InventoryList.Add(Item);
 	}
-	//for (auto Station : WorkstationList) {
-	//	if (Station->IsEnabled) {
-	//		//FSaveMesh SavedMesh;
-	//		//SavedMesh.WorkstationIndex = Station->WorkstationIndex;
-	//		//SavedMesh.S_ComputerMeshID = Station->ComputerMeshID;
-	//		//SavedMesh.S_ComputerMesh->SetStaticMesh(Station->ComputerMesh->GetStaticMesh());
-	//		//SaveGameInstance->WorkstationMeshList.Add(SavedMesh);
-	//		//GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Station Saved, id: " + FString::FromInt(SavedMesh.S_ComputerMeshID));
-	//		//GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Station Computer ID Saved, id: " + FString::FromInt(SavedMesh.S_ComputerMeshID));
-	//		//Station->ComputerMeshID = 
-	//		//SaveGameInstance->get
-	//		SaveGameInstance->WorkstationList.Add(Station);
-	//		//SaveGameInstance->WorkstationList.Last()->ComputerMeshID = Station->ComputerMeshID;
-	//		
-	//	}
-	//}
+	for (auto Idea : OfficeDepartment->IdeaList) {
+		SaveGameInstance->IdeaList.Add(Idea);
 
+	}
 
-	//SaveGameInstance->Saved_PlayerLocation = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("Default"), 0);
 
 	checkSlow(World != nullptr);
@@ -79,31 +65,10 @@ void UGameManager::SaveGame(FString SaveFile)
 		ActorRecord.MyName = FName(*Actor->GetName());
 		ActorRecord.MyClass = Actor->GetClass()->GetPathName();
 		ActorRecord.MyTransform = Actor->GetTransform();
-		//ActorRecord.MyVelocity = Actor->GetVelocity();
-
 		FMemoryWriter MemoryWriter(ActorRecord.MyData, true);
 		FSaveGameArchive Ar(MemoryWriter);
-		//AMasteringCharacter* Mast = Cast<AMasteringCharacter>(Actor);
 		ISaveableActorInterface::Execute_ActorSaved(Actor);
 		Actor->Serialize(Ar);
-
-
-		//if (Mast != nullptr)
-		//{
-		//	UMasteringInventory* Inv = Mast->GetInventory();
-		//	SaveGameData.InventoryData.CurrentWeapon = Inv->GetCurrentWeapon()->GetPathName();
-		//	SaveGameData.InventoryData.CurrentWeaponPower = Inv->GetCurrentWeaponPower();
-		//	for (FWeaponProperties weapon : Inv->GetWeaponsArray())
-		//	{
-		//		FInventoryItemData data;
-		//		data.WeaponClass = weapon.WeaponClass->GetPathName();
-		//		data.WeaponPower = weapon.WeaponPower;
-		//		data.Ammo = weapon.Ammo;
-		//		data.TextureClass = weapon.InventoryIcon->GetPathName();
-
-		//		SaveGameData.InventoryData.WeaponsArray.Add(data);
-		//	}
-		//}
 
 		SavedActors.Add(ActorRecord);
 	}
@@ -115,20 +80,6 @@ void UGameManager::SaveGame(FString SaveFile)
 	FFileHelper::SaveArrayToFile(SaveData, *outPath);
 	SaveData.FlushCache();
 	SaveData.Empty();
-
-	//APlayerController* playerController = World->GetFirstPlayerController();
-	//if (playerController)
-	//{
-	//	playerController->bShowMouseCursor = false;
-	//	FInputModeGameOnly InputMode;
-	//	playerController->SetInputMode(InputMode);
-	//	UGameplayStatics::SetGamePaused(this, false);
-	//}
-
-	//Close();
-
-
-
 }
 
 void UGameManager::LoadGame(FString SaveFile)
@@ -138,42 +89,15 @@ void UGameManager::LoadGame(FString SaveFile)
 	SaveGameInstance = Cast<UGameSave>(UGameplayStatics::LoadGameFromSlot("Default", 0));
 	Money = SaveGameInstance->Saved_Money;
 	InventoryList.Empty();
-	//WorkstationList.Empty();
+	OfficeDepartment->IdeaList.Empty();
 	for (auto Item : SaveGameInstance->InventoryList) {
 		InventoryList.Add(Item);
 	}
-
-	/*
-	for (auto Station : SaveGameInstance->WorkstationList) {
-		WorkstationList.Add(Station);
-		Station->EnableStation(true);
-		Station->HasEmployee = false;
-		//if(Station->WorkstationIndex)
-		for (auto Item : OfficeDepartment->GameItemList) {
-			if (Item.GetDefaultObject()->ItemID == Station->ComputerMeshID) {
-				//Station->ComputerMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh.GetStaticMesh());
-				Station->ComputerMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh->GetStaticMesh());
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "Replaced Mesh of ComputerStationID" + FString::FromInt(Station->WorkstationIndex));
-				//Station->UpgradeMeshFromSave();
-				break;
-			}
-		}
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "SavedStation WorkstationID" + FString::FromInt(Station->WorkstationIndex));
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "SavedStation ComputerStationID" + FString::FromInt(Station->ComputerMeshID));
-		//Station->ComputerMesh->SetStaticMesh(Station->WorkstationSaveMesh[0]->GetStaticMesh());
+	for (auto Idea : SaveGameInstance->IdeaList) {
+		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Loading Idea");
+		OfficeDepartment->IdeaList.Add(Idea);
+		OfficeDepartment->PopulateIdeaListFromSave(Idea); 
 	}
-	*/
-
-	//for (auto SavedStation : SaveGameInstance->WorkstationMeshList) {
-	//	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "SavedMesh ComputerID" + FString::FromInt(SaveMesh.S_ComputerMeshID));
-	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "SavedStation ComputerID" + FString::FromInt(SavedStation.S_ComputerMeshID));
-
-	//	//if (Station->WorkstationIndex == SavedStation.WorkstationIndex) {
-	//	//	//function here to change mesh respectively to id given
-	//	//	Station->UpgradeMeshFromSave(SavedStation);
-	//	//	//Station->ComputerMeshID = SavedStation.S_ComputerMeshID;
-	//	//}
-	//}
 
 	FString outPath = FPaths::ProjectSavedDir() + SaveFile;
 

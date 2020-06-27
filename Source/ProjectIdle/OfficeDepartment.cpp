@@ -295,3 +295,7 @@ AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
 
 
 }
+
+void AOfficeDepartment::PopulateIdeaListFromSave(Idea* Idea) {
+	BacklogWidget->DisplayNewIdea(Idea);
+}

@@ -74,6 +74,7 @@ public:
 	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void HireProgrammer();
 	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void HireArtist();
 	UFUNCTION(BlueprintCallable) void GetDepartmentUIValues();
+	void PopulateIdeaListFromSave(Idea* Idea);
 
 	void Return();
 	void BacklogReturn();
