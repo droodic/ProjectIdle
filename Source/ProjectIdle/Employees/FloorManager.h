@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Employee.h"
+#include "ProjectIdle/GameManager.h"
 #include "FloorManager.generated.h"
 
 /**

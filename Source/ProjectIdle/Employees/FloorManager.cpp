@@ -30,14 +30,15 @@ void AFloorManager::Tick(float DeltaTime) {
 	//Start meeting state
 	if (MeetingState && !AI->IsMoving) {
 		//call meeting handled by ideabacklog widget function after, migrate somehow here? 
+		//MAKE THIS TIMER, CALLED VERY OFTEN
 		GM->MeetingDepartment->BackFromMeeting();
+
 		if (GM->MeetingDepartment->CanReturn) {
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Backfrommeetingcall");
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Backfrommeetingcall");
 			MeetingState = false;
 			IdeaInProductionState = true;
 		}
 
-		//MAKE THIS TIMER, CALLED VERY OFTEN
 		//also problem with assigning workload, floormanager given workload?
 		//MeetingState = false;
 	}

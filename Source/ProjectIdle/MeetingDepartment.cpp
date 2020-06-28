@@ -156,7 +156,7 @@ void AMeetingDepartment::MoveToMeeting()
 
 void AMeetingDepartment::BackFromMeeting()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Backfrommeetingcall");
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Backfrommeetingcall");
 
 	auto Counter = EmployeesAtMeetingList.Num();
 
@@ -184,7 +184,7 @@ void AMeetingDepartment::BackFromMeeting()
 		EmployeesAtMeetingList.Empty();
 
 		for (auto Emp : GM->EmployeeList) {
-			if (Emp->Position != EPosition::Supervisor) {
+			if (Emp->Position != EPosition::Supervisor && Emp->Position != EPosition::FloorManager) {
 				if (Emp->EmployeeRole == ERole::Artist)
 				{
 					Emp->AssignedWorkload = CurrentIdea->ArtistWorkload / GM->NumOfArtists;
@@ -196,6 +196,7 @@ void AMeetingDepartment::BackFromMeeting()
 					Emp->AssignedWorkload = CurrentIdea->ProgrammerWorkload / GM->NumOfProgrammers;
 					Emp->CurrentWorkload = Emp->AssignedWorkload;
 					Emp->BeginWork();
+					GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, TEXT("Workload assigned"));
 				}
 			}
 		}
