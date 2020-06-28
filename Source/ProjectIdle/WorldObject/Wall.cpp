@@ -39,10 +39,6 @@ void AWall::BeginPlay()
 	{
 		GM->FloorList.Add(this);
 	}
-
-
-	
-
 }
 
 // Called every frame
@@ -56,7 +52,6 @@ void AWall::UpdateWallMaterial(UMaterialInterface* NewMaterial)
 {
 	//Mesh->SetMaterial(0, NewMaterial);
 	Mesh->SetMaterial(1, NewMaterial);
-
 }
 
 void AWall::UpdateWallMaterialTest()
@@ -110,5 +105,3 @@ void AWall::DeactivateWallAndFloor()
 		}
 	}
 }
-
-

@@ -222,8 +222,6 @@ void AOfficeDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
 		{
 			OfficeDepMenuWidget->AddToViewport();
 		}
-
-		//UI->ShowWidget(OfficeDepMenuWidget, UserWidgets[1]); 
 	}
 }
 

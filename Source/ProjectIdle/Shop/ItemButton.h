@@ -35,8 +35,6 @@ public:
 	int ItemCount = 1;
 	bool InCheckout = false;
 
-	static bool IsDescriptionOn;
-
 private:
 	void NativePreConstruct() override;
 	void NativeConstruct() override;
@@ -44,5 +42,3 @@ private:
 
 	UFUNCTION() void OnClicked();
 };
-
-bool UItemButton::IsDescriptionOn = false;

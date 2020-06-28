@@ -23,7 +23,6 @@ public:
 
 	bool IsGenerating;
 
-
 	UPROPERTY(BlueprintReadWrite) float TProgSalary = 0.f;
 	UPROPERTY(BlueprintReadWrite) float TArtistSalary = 0.f;
 	UPROPERTY(BlueprintReadWrite) float AvgProgMorale = 0.f;
@@ -59,6 +58,11 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class UDecalComponent* CursorToWorld;
+
+	TArray<class Idea*> IdeaList;
+	TArray<class Idea*> FinishedIdeaList;
+
+	TArray<class AItem*> InventoryList;
 
 //Functions
 public:
