@@ -59,9 +59,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class UDecalComponent* CursorToWorld;
 
-	TArray<class Idea*> IdeaList;
-	TArray<class Idea*> FinishedIdeaList;
-
 	TArray<class AItem*> InventoryList;
 
 //Functions
