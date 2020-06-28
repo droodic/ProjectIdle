@@ -29,11 +29,11 @@ public:
 public:
 	virtual void NativeConstruct() override;
 	void DisplayNewIdea(class Idea* idea);
+	UFUNCTION() void CallMeeting();
+	UFUNCTION() void CallMeeting_M(AFloorManager* ManagerRef);
 
 private:
 	UFUNCTION() void Return();
-	UFUNCTION() void CallMeeting();
-
-	void SendIdea();
+	void SendIdea(int Index);
 	void AddValuesToButton(class Idea* idea);
 };

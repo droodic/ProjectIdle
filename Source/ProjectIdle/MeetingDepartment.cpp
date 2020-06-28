@@ -142,7 +142,10 @@ void AMeetingDepartment::MoveToMeeting()
 				}
 			}
 			else {
-				//Debug Message to prevent crash, implement later
+				//Debug Message to prevent crash, implement later NEED SUPERVISOR, EMPLOYEEROOM TOO FULL
+				//Cant hire floormanager without both supervisor?
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "NEED SUPERVISOR, EMPLOYEEROOM TOO FULL");
+
 			}
 		}
 	}
@@ -156,7 +159,14 @@ void AMeetingDepartment::MoveToMeeting()
 
 void AMeetingDepartment::BackFromMeeting()
 {
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Backfrommeetingcall");
+
 	auto Counter = EmployeesAtMeetingList.Num();
+	GEngine->AddOnScreenDebugMessage(2109130941, 5.f, FColor::Green, "Counter: " + FString::FromInt(Counter));
+	if (Counter == 0) {
+		return;
+	}
+	CanReturn = false;
 
 	if (!CanReturn) {
 		for (auto Emp : EmployeesAtMeetingList) {
@@ -177,14 +187,12 @@ void AMeetingDepartment::BackFromMeeting()
 
 	if (CanReturn) {
 		for (auto Emp : EmployeesAtMeetingList) {
-
 			Emp->MoveEmployee(Emp->StartPosition);
-
 		}
 		EmployeesAtMeetingList.Empty();
 
 		for (auto Emp : GM->EmployeeList) {
-			if (Emp->Position != EPosition::Supervisor) {
+			if (Emp->Position != EPosition::Supervisor && Emp->Position != EPosition::FloorManager) {
 				if (Emp->EmployeeRole == ERole::Artist)
 				{
 					Emp->AssignedWorkload = CurrentIdea->ArtistWorkload / GM->NumOfArtists;

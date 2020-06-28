@@ -16,6 +16,8 @@
 #include "Workstations/ArtistStation.h"
 #include "Workstations/ProgrammerStation.h"
 #include "Components/Button.h"
+#include "ProjectIdle/Workstations/SupervisorWorkstation.h"
+#include "WorldObject/Wall.h"
 
 void UCeoDepMenuWidget::NativeConstruct()
 {
@@ -100,7 +102,6 @@ void UCeoDepMenuWidget::CallArtistSupSpawn()
 		GM->Money -= 30000;
 		ActivateWorkstation(ERole::Artist, EPosition::Supervisor, true);
 		GM->ArtistDepartment->HasSupervisor = true;
-		ActivateWorkstation(ERole::Artist, EPosition::Supervisor, true);
 		OfficeDepartment->GenerateActor(2, ERole::Artist);
 		Hire_ArtistSup_Btn->SetIsEnabled(false);
 		//OfficeDepartment->GetDepartmentUIValues();
@@ -149,7 +150,7 @@ void UCeoDepMenuWidget::ActivateWorkstation(ERole StationRole, EPosition OwnerPo
 	{
 		for (int i = 0; i < Length; i++)
 		{
-			if (!GM->WorkstationList[i]->IsEnabled && GM->WorkstationList[i]->StationRole == StationRole)
+			if (!GM->WorkstationList[i]->IsEnabled && GM->WorkstationList[i]->StationRole == StationRole && !Cast<ASupervisorWorkstation>(GM->WorkstationList[i]))
 			{
 				GM->WorkstationList[i]->EnableStation(true);
 				return;

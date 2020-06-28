@@ -7,6 +7,7 @@
 #include "CeoDepMenuWidget.h"
 #include "Department.h"
 #include "GameManager.h"
+#include "Employees/FloorManager.h"
 #include "GameHUD.h"
 #include "Workstation.h"
 #include "Engine/World.h"
@@ -199,10 +200,16 @@ void AOfficeDepartment::Tick(float DeltaTime)
 
 			IdeaList.Insert(newIdea, Index);
 			BacklogWidget->DisplayNewIdea(IdeaList[Index]);
-
 			Index++;
 
 			UI->MoneyWidget->ShowANotification("IDEA GENERATED!");
+
+			if (ManagerRef->GeneratingIdea) {
+				//ManagerRef->
+				BacklogWidget->CallMeeting_M(ManagerRef);
+				ManagerRef->GeneratingIdea = false;
+				ManagerRef->IdeaIndex++; //use pop instead
+			}
 		}
 	}
 }

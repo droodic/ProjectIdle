@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Employee.h"
+#include "ProjectIdle/GameManager.h"
 #include "FloorManager.generated.h"
 
 /**
@@ -15,4 +16,17 @@ class PROJECTIDLE_API AFloorManager : public AEmployee
 	GENERATED_BODY()
 public:
 	AFloorManager();
+	void AutomateTasks();
+
+	//quick test iteration, State machine later?
+	bool IdeaInProductionState;
+	bool IdeaGenerationState;
+	bool MeetingState;
+	bool AllAtMeeting;
+	bool GeneratingIdea;
+	int IdeaIndex = 0;
+
+protected:
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 };
