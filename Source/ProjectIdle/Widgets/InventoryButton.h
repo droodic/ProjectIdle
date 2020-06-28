@@ -23,7 +23,7 @@ public:
 	UPROPERTY(meta = (BindWidget)) class UButton* Item_Btn;
 	UPROPERTY(meta = (BindWidget)) class UImage* Item_I;
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* ItemName_T;
-	//UPROPERTY(meta = (BindWidget)) class UTextBlock* ItemCount_T;
+	UPROPERTY(meta = (BindWidget)) class UTextBlock* ItemCount_T;
 
 public:
 	void NativeConstruct() override;

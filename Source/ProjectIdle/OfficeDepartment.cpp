@@ -215,8 +215,6 @@ void AOfficeDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
 		{
 			OfficeDepMenuWidget->AddToViewport();
 		}
-
-		//UI->ShowWidget(OfficeDepMenuWidget, UserWidgets[1]); 
 	}
 }
 
@@ -294,4 +292,8 @@ AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
 	return Emp;
 
 
+}
+
+void AOfficeDepartment::PopulateIdeaListFromSave(Idea* Idea) {
+	BacklogWidget->DisplayNewIdea(Idea);
 }

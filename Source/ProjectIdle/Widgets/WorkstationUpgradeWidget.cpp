@@ -2,11 +2,10 @@
 
 #include "WorkstationUpgradeWidget.h"
 #include "Engine.h"
-#include "ProjectIdle/Shop/Item.h"
-#include "ProjectIdle/Widgets/InventoryButton.h"
 #include "ProjectIdle/GameManager.h"
-
-
+#include "ProjectIdle/Shop/Item.h"
+#include "ProjectIdle/Shop/ItemButton.h"
+#include "ProjectIdle/Widgets/InventoryButton.h"
 
 void UWorkstationUpgradeWidget::NativeConstruct()
 {
@@ -17,7 +16,10 @@ void UWorkstationUpgradeWidget::NativeConstruct()
 	{
 		Monitor_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::ShowInventoryMonitor);
 	}
-
+	if (!Keyboard_Btn->OnClicked.IsBound())
+	{
+		Keyboard_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::ShowInventoryKeyboard);
+	}
 	if (!Desk_Btn->OnClicked.IsBound())
 	{
 		Desk_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::ShowInventoryDesk);
@@ -26,20 +28,11 @@ void UWorkstationUpgradeWidget::NativeConstruct()
 	{
 		Chair_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::ShowInventoryChair);
 	}
-	if (!Keyboard_Btn->OnClicked.IsBound())
+	if (!ReturnUpgrBtn->OnClicked.IsBound())
 	{
-		Keyboard_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::ShowInventoryKeyboard);
+		ReturnUpgrBtn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::CloseUpgrWidget);
 	}
-
-	//if (!Chair_Btn->OnClicked.IsBound())
-	//{
-
-	//	//Chair_Btn->OnClicked.AddDynamic(this, &UWorkstationUpgradeWidget::Monitor);
-	//}
-
-
 }
-
 
 void UWorkstationUpgradeWidget::ShowInventory(ESubCategory ItemCategory) {
 
@@ -50,7 +43,9 @@ void UWorkstationUpgradeWidget::ShowInventory(ESubCategory ItemCategory) {
 	//NewItemButton->ItemPrice_T->SetText(FText::AsCurrency(NewItemButton->Item->ItemPrice));
 	//InventoryScrollBox->AddChild(NewItemButton);
 
-	InventoryScrollBox->ClearChildren();
+	//InventoryScrollBox->ClearChildren();
+
+	InventoryWrapBox->ClearChildren();
 
 	for (auto Item : GM->InventoryList) {
 		//Show computercomponents 
@@ -62,19 +57,18 @@ void UWorkstationUpgradeWidget::ShowInventory(ESubCategory ItemCategory) {
 			NewItemButton->Item = Item;
 			NewItemButton->Item_I->SetBrushFromTexture(Item->ItemImage);
 			NewItemButton->ItemName_T->SetText(FText::FromString(Item->ItemName));
+
+			if (Item->ItemButton->ItemCount > 1)
+			{
+				NewItemButton->ItemCount_T->SetText(FText::FromString(FString::FromInt(Item->ItemButton->ItemCount)));
+			}
+			
 			//NewItemButton->ItemPrice_T->SetText(FText::AsCurrency(Item->ItemPrice));
-			InventoryScrollBox->AddChild(NewItemButton);
+			//InventoryScrollBox->AddChild(NewItemButton);
+			InventoryWrapBox->AddChild(NewItemButton);
 		}
-
-
-
 	}
-
-
-
-
 }
-
 
 void UWorkstationUpgradeWidget::ShowInventoryMonitor() {
 	ShowInventory(ESubCategory::Monitor);
@@ -90,6 +84,11 @@ void UWorkstationUpgradeWidget::ShowInventoryChair() {
 
 void UWorkstationUpgradeWidget::ShowInventoryKeyboard() {
 	ShowInventory(ESubCategory::Keyboard);
+}
+
+void UWorkstationUpgradeWidget::CloseUpgrWidget()
+{
+	RemoveFromViewport();
 }
 //void UWorkstationUpgradeWidget::Monitor()
 //{

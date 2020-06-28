@@ -4,11 +4,12 @@
 #include "ShopWidget.h"
 #include "ProjectIdle/GameManager.h"
 #include "ProjectIdle/OfficeDepartment.h"
+#include "ProjectIdle/CeoDepMenuWidget.h"
+#include "ProjectIdle/WorldObject/Wall.h"
 #include "ProjectIdle/Shop/ItemButton.h"
 #include "ProjectIdle/Shop/Item.h"
-#include "Components/Button.h"
-#include "ProjectIdle/WorldObject/Wall.h"
 #include "Components/TextBlock.h"
+#include "Components/Button.h"
 
 void UShopWidget::NativeConstruct()
 {
@@ -23,9 +24,9 @@ void UShopWidget::NativeConstruct()
 	{
 		Buy_Btn->OnClicked.AddDynamic(this, &UShopWidget::Buy);
 	}
-	if (!DescReturn_Btn->OnClicked.IsBound())
+	if (!EmptyCart_Btn->OnClicked.IsBound())
 	{
-		DescReturn_Btn->OnClicked.AddDynamic(this, &UShopWidget::CloseDescription);
+		EmptyCart_Btn->OnClicked.AddDynamic(this, &UShopWidget::EmptyCart);
 	}
 	if (!ShopReturn_Btn->OnClicked.IsBound())
 	{
@@ -39,11 +40,11 @@ void UShopWidget::Buy()
 	{
 		if (GameManager->Money >= Total)
 		{
-			for (size_t i = 0; i < CheckList.Num(); i++)
+			/*for (int i = 0; i < CheckList.Num(); i++)
 			{
 				if (CheckList[i]->ItemCount > 1)
 				{
-					for (size_t j = 0; j < CheckList[i]->ItemCount; j++)
+					for (int j = 0; j < CheckList[i]->ItemCount; j++)
 					{
 						GameManager->InventoryList.Add(CheckList[i]->Item);
 
@@ -60,7 +61,7 @@ void UShopWidget::Buy()
 							GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Red, "Noob");
 						}
 
-						for (size_t j = 0; j < Tab4->GetChildrenCount(); j++)
+						for (int j = 0; j < Tab4->GetChildrenCount(); j++)
 						{
 							auto materialButton = Cast<UItemButton>(Tab4->GetChildAt(j));
 
@@ -75,9 +76,33 @@ void UShopWidget::Buy()
 
 					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "1 " + CheckList[i]->Item->ItemName + "Added");
 				}
+			}*/
+
+			for (int i = 0; i < CheckList.Num(); i++)
+			{
+				GameManager->InventoryList.Add(CheckList[i]->Item);
+
+				if (CheckList[i]->Item->ItemCategory == ECategory::Materials || CheckList[i]->Item->ItemCategory == ECategory::OfficeDecorations)
+				{
+					GameManager->OfficeDepartment->OfficeDepMenuWidget->AddItemToInventory(CheckList[i]->Item);
+				}
+
+				if (CheckList[i]->Item->ItemCategory == ECategory::Materials)
+				{
+					for (int j = 0; j < Tab4->GetChildrenCount(); j++)
+					{
+						auto materialButton = Cast<UItemButton>(Tab4->GetChildAt(j));
+
+						if (CheckList[i]->ItemID == materialButton->ItemID)
+						{
+							materialButton->Bought_T->SetText(FText::FromString("Bought"));
+						}
+					}
+				}
 			}
 
 			GameManager->Money -= Total;
+			Money_T->SetText(FText::AsCurrency(GameManager->Money));
 
 			CheckoutItems_WB->ClearChildren();
 			CheckList.Empty();
@@ -87,8 +112,6 @@ void UShopWidget::Buy()
 
 			TotalMoney_T->SetText(FText::AsCurrency(Total));
 			CheckoutCount_T->SetText(FText::FromString(FString::FromInt(CheckoutCount)));
-
-			Money_T->SetText(FText::AsCurrency(GameManager->Money));
 		}
 		else
 		{
@@ -197,6 +220,38 @@ void UShopWidget::RemoveItemFromCheckout(int itemID)
 	CheckoutCount_T->SetText(FText::FromString(FString::FromInt(CheckoutCount)));
 }
 
+void UShopWidget::EmptyCart()
+{
+	if (CheckList.Num() > 0)
+	{
+		for (size_t i = 0; i < CheckList.Num(); i++)
+		{
+			if (CheckList[i]->Item->ItemCategory == ECategory::Materials)
+			{
+				for (size_t j = 0; j < Tab4->GetChildrenCount(); j++)
+				{
+					auto materialButton = Cast<UItemButton>(Tab4->GetChildAt(j));
+
+					if (CheckList[i]->ItemID == materialButton->ItemID)
+					{
+						materialButton->BoughtItem_I->SetVisibility(ESlateVisibility::Hidden);
+						materialButton->Bought_T->SetVisibility(ESlateVisibility::Hidden);
+					}
+				}
+			}
+		}
+
+		CheckoutItems_WB->ClearChildren();
+		CheckList.Empty();
+
+		Total = 0;
+		CheckoutCount = 0;
+
+		TotalMoney_T->SetText(FText::AsCurrency(Total));
+		CheckoutCount_T->SetText(FText::FromString(FString::FromInt(CheckoutCount)));
+	}
+}
+
 void UShopWidget::RemoveNotEnoughMoney()
 {
 	NotEnoughMoney_T->SetText(FText::FromString(""));
@@ -204,18 +259,6 @@ void UShopWidget::RemoveNotEnoughMoney()
 
 void UShopWidget::Return()
 {
-	DescriptionPanel->SetVisibility(ESlateVisibility::Hidden);
-	UItemButton::IsDescriptionOn = false;
+	CheckoutPanel->SetVisibility(ESlateVisibility::Hidden);
 	OfficeDepartment->ShopReturn();
-}
-
-void UShopWidget::CloseDescription()
-{
-	DescriptionPanel->SetVisibility(ESlateVisibility::Hidden);
-	UItemButton::IsDescriptionOn = false;
-}
-
-void UShopWidget::IsDescriptionOn(bool setDesc)
-{
-	UItemButton::IsDescriptionOn = setDesc;
 }

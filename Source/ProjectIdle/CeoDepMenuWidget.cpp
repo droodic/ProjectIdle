@@ -2,17 +2,20 @@
 
 
 #include "CeoDepMenuWidget.h"
+#include "Engine.h"
 #include "Idea.h"
 #include "GameManager.h"
 #include "OfficeDepartment.h"
 #include "Workstation.h"
-#include "Engine.h"
+#include "Shop/Item.h"
+#include "Shop/ItemButton.h"
 #include "Blueprint/UserWidget.h"
+#include "WorldObject/Wall.h"
 #include "Widgets/IdeaButton.h"
-#include "Components/Button.h"
+#include "Widgets/InventoryButton.h"
 #include "Workstations/ArtistStation.h"
 #include "Workstations/ProgrammerStation.h"
-#include "WorldObject/Wall.h"
+#include "Components/Button.h"
 
 void UCeoDepMenuWidget::NativeConstruct()
 {
@@ -44,7 +47,6 @@ void UCeoDepMenuWidget::NativeConstruct()
 	{
 		Return_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::Return);
 	}
-
 	if (!CreateDep_Btn->OnClicked.IsBound())
 	{
 		CreateDep_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::CreateDepartment);
@@ -78,7 +80,6 @@ void UCeoDepMenuWidget::CallProgrammerSpawn()
 			OfficeDepartment->GenerateActor(0, ERole::Programmer);
 		}
 	}
-
 }
 
 void UCeoDepMenuWidget::CallProgrammerSupSpawn()
@@ -104,7 +105,6 @@ void UCeoDepMenuWidget::CallArtistSupSpawn()
 		Hire_ArtistSup_Btn->SetIsEnabled(false);
 		//OfficeDepartment->GetDepartmentUIValues();
 	}
-
 }
 
 void UCeoDepMenuWidget::CallArtistSpawn()
@@ -189,6 +189,33 @@ void UCeoDepMenuWidget::GetFinishedIdea(Idea* idea)
 	IdeaScrollBox->AddChild(OfficeDepartment->FinishedIdeaList[Index]->IdeaButton);
 
 	Index++;
+}
+
+void UCeoDepMenuWidget::AddItemToInventory(AItem* item)
+{
+	UInventoryButton* NewItemButton = CreateWidget<UInventoryButton>(this, InventoryButtonWidgetClass);
+
+	NewItemButton->Item = item;
+	NewItemButton->Item_I->SetBrushFromTexture(item->ItemImage);
+	NewItemButton->ItemName_T->SetText(FText::FromString(item->ItemName));
+
+	if (item->ItemSubCategory == ESubCategory::Other)
+	{
+		if (item->ItemButton->ItemCount > 1)
+		{
+			NewItemButton->ItemCount_T->SetText(FText::FromString(FString::FromInt(item->ItemButton->ItemCount)));
+		}
+
+		OfficeDecoration_WB->AddChildToWrapBox(NewItemButton);
+	}
+	else if (item->ItemSubCategory == ESubCategory::FloorMat)
+	{
+		FloorMaterial_HB->AddChildToHorizontalBox(NewItemButton);
+	}
+	else if (item->ItemSubCategory == ESubCategory::WallMat)
+	{
+		WallMaterial_HB->AddChildToHorizontalBox(NewItemButton);
+	}
 }
 
 void UCeoDepMenuWidget::AddValuesToButton(Idea* idea)

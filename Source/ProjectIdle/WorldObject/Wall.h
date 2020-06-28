@@ -51,7 +51,4 @@ public:
 	UFUNCTION() void ActivateWallAndFloor();
 	UFUNCTION() void DeactivateWallAndFloor();
 	UFUNCTION() void EnableObject(bool Enabled);
-
-
-
 };

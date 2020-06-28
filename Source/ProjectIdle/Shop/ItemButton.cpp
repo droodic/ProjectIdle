@@ -47,30 +47,23 @@ void UItemButton::NativeConstruct()
 
 void UItemButton::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
-	if (!IsDescriptionOn)
+	if (!InCheckout)
 	{
 		if (IsHovered())
 		{
-			if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->WasInputKeyJustPressed(EKeys::D))
+			GameManager->ShopWidget->DescriptionPanel->SetVisibility(ESlateVisibility::Visible);
+			GameManager->ShopWidget->Description_T->SetText(FText::FromString(Item->ItemDescription));
+
+			if (Item->ItemCompileRate > 0)
 			{
-				IsDescriptionOn = true;
-
-				GameManager->ShopWidget->DescriptionPanel->SetVisibility(ESlateVisibility::Visible);
-				GameManager->ShopWidget->Description_T->SetText(FText::FromString(Item->ItemDescription));
-
-				if (Item->ItemCompileRate > 0)
-				{
-					GameManager->ShopWidget->DescriptionStats_T->SetText(FText::FromString("Compile time descrease: " + FString::FromInt(Item->ItemCompileRate) + "%"));
-				}
-				else
-				{
-					GameManager->ShopWidget->DescriptionStats_T->SetText(FText::FromString(""));
-				}
+				GameManager->ShopWidget->DescriptionStats_T->SetText(FText::FromString("Compile time descrease: " + FString::FromInt(Item->ItemCompileRate) + "%"));
+			}
+			else
+			{
+				GameManager->ShopWidget->DescriptionStats_T->SetText(FText::FromString(""));
 			}
 		}
 	}
-
-	GEngine->AddOnScreenDebugMessage(101, 5.f, FColor::White, (IsDescriptionOn) ? "True" : "False ");
 }
 
 void UItemButton::OnClicked()
