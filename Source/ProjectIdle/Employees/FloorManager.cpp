@@ -32,9 +32,8 @@ void AFloorManager::Tick(float DeltaTime) {
 		//call meeting handled by ideabacklog widget function after, migrate somehow here? 
 		//MAKE THIS TIMER, CALLED VERY OFTEN
 		GM->MeetingDepartment->BackFromMeeting();
-
 		if (GM->MeetingDepartment->CanReturn) {
-			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Backfrommeetingcall");
+			GEngine->AddOnScreenDebugMessage(120941, 5.f, FColor::Green, "BackfromMeetingcall");
 			MeetingState = false;
 			IdeaInProductionState = true;
 		}

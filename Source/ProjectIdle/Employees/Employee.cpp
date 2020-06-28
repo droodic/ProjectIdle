@@ -50,18 +50,21 @@ void AEmployee::BeginPlay()
 
 	if (Position != EPosition::Supervisor) { //move to bool function for scale
 		//something here for floormanager ui count
-		GM->EmployeeList.Add(this);
-		switch (EmployeeRole)
-		{
-		case ERole::Programmer:
-			GM->NumOfProgrammers++; //remove later
-			GM->ProgrammingDepartment->EmpCount++;
-			break;
-		case ERole::Artist:
-			GM->NumOfArtists++;
-			GM->ArtistDepartment->EmpCount++;
-			break;
+		GM->EmployeeList.Add(this); //floormanagers still added to list
+		if (Position != EPosition::FloorManager) {
+			switch (EmployeeRole)
+			{
+			case ERole::Programmer:
+				GM->NumOfProgrammers++; //remove later
+				GM->ProgrammingDepartment->EmpCount++;
+				break;
+			case ERole::Artist:
+				GM->NumOfArtists++;
+				GM->ArtistDepartment->EmpCount++;
+				break;
+			}
 		}
+
 	}
 	this->SpawnDefaultController();
 	AI = Cast<AEmployeeAIC>(GetController());

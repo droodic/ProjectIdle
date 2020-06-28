@@ -22,6 +22,7 @@ public:
 	bool IdeaInProductionState;
 	bool IdeaGenerationState;
 	bool MeetingState;
+	bool AllAtMeeting;
 	bool GeneratingIdea;
 	int IdeaIndex = 0;
 

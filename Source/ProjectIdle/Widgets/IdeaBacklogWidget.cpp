@@ -89,7 +89,6 @@ void UIdeaBacklogWidget::CallMeeting_M(AFloorManager* ManagerRef)
 	if (GM == nullptr)
 	{
 		GM = GetWorld()->GetGameInstance<UGameManager>();
-		GEngine->AddOnScreenDebugMessage(101, 5.f, FColor::Red, "populate GM");
 	}
 
 	OfficeDepartment->IdeaList[ManagerRef->IdeaIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
@@ -98,6 +97,8 @@ void UIdeaBacklogWidget::CallMeeting_M(AFloorManager* ManagerRef)
 	CallMeetingBtn->SetIsEnabled(false);
 	GM->MeetingDepartment->MoveToMeeting();
 	ManagerRef->MeetingState = true;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Movetomeeting");
+
 	//ManagerRef->MoveEmployee();
 	SendIdea(ManagerRef->IdeaIndex);
 }

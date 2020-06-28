@@ -200,7 +200,6 @@ void AOfficeDepartment::Tick(float DeltaTime)
 
 			IdeaList.Insert(newIdea, Index);
 			BacklogWidget->DisplayNewIdea(IdeaList[Index]);
-
 			Index++;
 
 			UI->MoneyWidget->ShowANotification("IDEA GENERATED!");
@@ -209,7 +208,7 @@ void AOfficeDepartment::Tick(float DeltaTime)
 				//ManagerRef->
 				BacklogWidget->CallMeeting_M(ManagerRef);
 				ManagerRef->GeneratingIdea = false;
-				ManagerRef->IdeaIndex++;
+				ManagerRef->IdeaIndex++; //use pop instead
 			}
 		}
 	}
