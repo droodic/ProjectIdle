@@ -9,9 +9,9 @@
 #include "ProjectIdle/Idea.h"
 #include "ProjectIdle/EmployeeAIC.h"
 #include "ProjectIdle/GameManager.h"
+#include "ProjectIdle/OfficeDepartment.h"
 #include "ProjectIdle/Workstation.h"
 #include "ProjectIdle/GameHUD.h"
-#include "ProjectIdle/OfficeDepartment.h"
 #include "ProjectIdle/MeetingDepartment.h"
 #include "ProjectIdle/CeoDepMenuWidget.h"
 #include "ProjectIdle/ProjectIdleCharacter.h"
@@ -48,7 +48,8 @@ void AEmployee::BeginPlay()
 	Camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
 	//WorkTimer = GetWorldTimerManager();
 
-	if (Position != EPosition::Supervisor) {
+	if (Position != EPosition::Supervisor) { //move to bool function for scale
+		//something here for floormanager ui count
 		GM->EmployeeList.Add(this);
 		switch (EmployeeRole)
 		{
@@ -78,7 +79,7 @@ void AEmployee::BeginPlay()
 		WorkProgressBar->SetVisibility(false);
 	}
 
-	if (Position != EPosition::Supervisor) {
+	if (Position != EPosition::Supervisor && Position != EPosition::FloorManager) {
 		//GM->WorkStation->UpdateWorkstationPosition();
 		for (auto Workstation : GM->WorkstationList) {
 			if (Workstation->IsEnabled == true && !Workstation->HasEmployee && Workstation->StationRole == EmployeeRole) {

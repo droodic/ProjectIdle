@@ -19,6 +19,7 @@ public:
 
 	class UGameManager* GM;
 	class AGameHUD* UI;
+	class AFloorManager* ManagerRef;
 
 	bool IsGenerating;
 

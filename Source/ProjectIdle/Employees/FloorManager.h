@@ -15,4 +15,16 @@ class PROJECTIDLE_API AFloorManager : public AEmployee
 	GENERATED_BODY()
 public:
 	AFloorManager();
+	void AutomateTasks();
+
+	//quick test iteration, State machine later?
+	bool IdeaInProductionState;
+	bool IdeaGenerationState;
+	bool MeetingState;
+	bool GeneratingIdea;
+	int IdeaIndex = 0;
+
+protected:
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 };

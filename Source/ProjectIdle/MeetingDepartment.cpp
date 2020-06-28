@@ -156,6 +156,8 @@ void AMeetingDepartment::MoveToMeeting()
 
 void AMeetingDepartment::BackFromMeeting()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Backfrommeetingcall");
+
 	auto Counter = EmployeesAtMeetingList.Num();
 
 	if (!CanReturn) {
@@ -177,9 +179,7 @@ void AMeetingDepartment::BackFromMeeting()
 
 	if (CanReturn) {
 		for (auto Emp : EmployeesAtMeetingList) {
-
 			Emp->MoveEmployee(Emp->StartPosition);
-
 		}
 		EmployeesAtMeetingList.Empty();
 
