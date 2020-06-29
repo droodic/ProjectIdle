@@ -5,6 +5,7 @@
 #include "Engine.h"
 #include "Widgets/MoneyWidget.h"
 #include "Widgets/EmployeeSheetWidget.h"
+#include "Employees/FloorManager.h"
 #include "Employees/Supervisor.h"
 
 AGameHUD::AGameHUD()
@@ -58,10 +59,15 @@ void AGameHUD::ShowEmployeeSheet(class AEmployee* employee)
 		}
 
 		if (Cast<ASupervisor>(employee) != nullptr) {
-			EmpSheetWidget->EvaluateBtn->SetVisibility(ESlateVisibility::Visible);
+			EmpSheetWidget->Action_Btn->SetVisibility(ESlateVisibility::Visible);
+			EmpSheetWidget->Action_BtnTxt->SetText(FText::FromString("Evaluate"));
+		}
+		else if (Cast<AFloorManager>(employee) != nullptr) {
+			EmpSheetWidget->Action_Btn->SetVisibility(ESlateVisibility::Visible);
+			EmpSheetWidget->Action_BtnTxt->SetText(FText::FromString("Manage"));
 		}
 		else {
-			EmpSheetWidget->EvaluateBtn->SetVisibility(ESlateVisibility::Hidden);
+			EmpSheetWidget->Action_Btn->SetVisibility(ESlateVisibility::Hidden);
 		}
 
 		EmpSheetWidget->AddToViewport();

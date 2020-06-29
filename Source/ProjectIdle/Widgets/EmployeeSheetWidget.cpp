@@ -3,6 +3,7 @@
 
 #include "EmployeeSheetWidget.h"
 #include "ProjectIdle/Employees/Supervisor.h"
+#include "ProjectIdle/Employees/FloorManager.h"
 
 void UEmployeeSheetWidget::NativeConstruct()
 {
@@ -16,9 +17,9 @@ void UEmployeeSheetWidget::NativeConstruct()
 	{
 		Fire_Btn->OnClicked.AddDynamic(this, &UEmployeeSheetWidget::Fire);
 	}
-	if (!EvaluateBtn->OnClicked.IsBound())
+	if (!Action_Btn->OnClicked.IsBound())
 	{
-		EvaluateBtn->OnClicked.AddDynamic(this, &UEmployeeSheetWidget::EvaluateDepartment);
+		Action_Btn->OnClicked.AddDynamic(this, &UEmployeeSheetWidget::PerformAction);
 	}
 }
 
@@ -38,11 +39,16 @@ void UEmployeeSheetWidget::Fire()
 	}
 }
 
-void UEmployeeSheetWidget::EvaluateDepartment()
+void UEmployeeSheetWidget::PerformAction()
 {
 	if (Employee != nullptr)
 	{
-		Cast<ASupervisor>(Employee)->EvaluateEmployee();
+		if (Cast<ASupervisor>(Employee) != nullptr) {
+			Cast<ASupervisor>(Employee)->EvaluateEmployee();
+		}
+		else if (Cast<AFloorManager>(Employee) != nullptr) {
+			Cast<AFloorManager>(Employee)->AutomateTasks();
+		}
 	}
 }
 
@@ -58,7 +64,7 @@ FText UEmployeeSheetWidget::RoleToText(ERole role)
 	case ERole::Artist:
 		text = FText::FromString("Artist");
 		break;
-		
+
 	}
 
 	return text;

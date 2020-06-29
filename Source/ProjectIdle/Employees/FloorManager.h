@@ -19,11 +19,12 @@ public:
 	void AutomateTasks();
 
 	//quick test iteration, State machine later?
-	bool IdeaInProductionState;
-	bool IdeaGenerationState;
-	bool MeetingState;
-	bool AllAtMeeting;
-	bool GeneratingIdea;
+	bool AutoManaging;
+	UPROPERTY(BlueprintReadWrite) bool IdeaInProductionState;
+	UPROPERTY(BlueprintReadWrite) bool IdeaGenerationState;
+	UPROPERTY(BlueprintReadWrite) bool MeetingState;
+	UPROPERTY(BlueprintReadWrite) bool AllAtMeeting;
+	UPROPERTY(BlueprintReadWrite) bool GeneratingIdea;
 	int IdeaIndex = 0;
 
 protected:
