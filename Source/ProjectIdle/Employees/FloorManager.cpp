@@ -51,7 +51,7 @@ void AFloorManager::Tick(float DeltaTime) {
 
 void AFloorManager::AutomateTasks() {
 	if (!IdeaGenerationState) {
-		MoveEmployee(GM->OfficeDepartment->GetActorLocation());
+		MoveEmployee(GM->OfficeDepartment->ChairMesh->GetComponentLocation());
 		IdeaGenerationState = true;
 	}
 }
