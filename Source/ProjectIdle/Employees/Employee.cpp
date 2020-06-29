@@ -445,3 +445,9 @@ void AEmployee::AssignSupervisor()
 //{
 //}
 
+
+void AEmployee::MaxSpeedEmployees()
+{
+	GetCharacterMovement()->MaxWalkSpeed = 10000.0f;
+}
+

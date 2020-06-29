@@ -17,5 +17,9 @@ void UCheatMode::MaxSpeed()
 {
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->Character->IdleMaxSpeed();
+	for (int i = 0; i < GM->EmployeeList.Num(); i++)
+	{
+		GM->EmployeeList[i]->MaxSpeedEmployees();
+	}
 }
 
