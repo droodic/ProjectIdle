@@ -17,7 +17,11 @@ class PROJECTIDLE_API UCheatMode : public UCheatManager
 
 public:
 	class UGameManager* GM;
-	UFUNCTION(Exec) void MaxMoney();
-	UFUNCTION(Exec) void MaxSpeed();
+
+	UFUNCTION(Exec) void Cheat_AllCheatOn();
+	UFUNCTION(Exec) void Cheat_MaxMoney();
+	UFUNCTION(Exec) void Cheat_MaxSpeed();
+	UFUNCTION(Exec) void Cheat_FastCompile();
+
 
 };
