@@ -15,6 +15,8 @@ class AProjectIdleCharacter : public ACharacter
 public:
 	AProjectIdleCharacter();
 
+	class UGameManager* GM;
+
 	// Called every frame.
 	virtual void Tick(float DeltaSeconds) override;
 
@@ -45,6 +47,8 @@ public:
 		int32 ScreenSizeY;
 
 	bool OutOfBound = false;
+
+	void IdleMaxSpeed();
 
 	UFUNCTION()
 		FVector GetCameraPanDirection();

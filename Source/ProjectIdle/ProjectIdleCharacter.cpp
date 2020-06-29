@@ -13,6 +13,7 @@
 #include "GameUI.h"
 #include "GameHUD.h"
 #include "Engine/World.h"
+#include "GameManager.h"
 
 AProjectIdleCharacter::AProjectIdleCharacter()
 {
@@ -68,6 +69,8 @@ AProjectIdleCharacter::AProjectIdleCharacter()
 void AProjectIdleCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	GM = GetWorld()->GetGameInstance<UGameManager>();
+	GM->Character = this;
 	PlayerControl = Cast<APlayerController>(GetController());
 	PlayerControl->GetViewportSize(ScreenSizeX, ScreenSizeY);
 
@@ -79,7 +82,6 @@ void AProjectIdleCharacter::BeginPlay()
 	}
 
 	AGameHUD* GameHUD = Cast<AGameHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
-
 }
 
 void AProjectIdleCharacter::Tick(float DeltaSeconds)
@@ -156,4 +158,9 @@ FVector AProjectIdleCharacter::GetCameraPanDirection()
 	}
 
 	return FVector(CamDirectionX, CamDirectionY, 0);
+}
+
+void AProjectIdleCharacter::IdleMaxSpeed()
+{
+	GetCharacterMovement()->MaxWalkSpeed = 10000.0f;
 }
