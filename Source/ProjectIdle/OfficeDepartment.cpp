@@ -263,6 +263,18 @@ void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 				SpawnLocation = GM->Door->GetActorLocation() + NewVector;
 				SpawnRotation = FRotator::ZeroRotator;
 			}
+
+			if (Position == 4)
+			{
+				SpawnRotation = FRotator(0,-90,0);
+				SpawnLocation = FVector(510.0, -1520.0, 160.0); // Array of grid vector position later on
+				AWorkstation* Station = World->SpawnActorDeferred<AWorkstation>(SpawnActors[Position], FTransform(SpawnRotation, SpawnLocation, FVector::OneVector), nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+				Station->WorkstationInit(EmpRole);
+				Station->FinishSpawning(FTransform(SpawnRotation, SpawnLocation, FVector::OneVector));
+				return;
+			}
+
+
 			auto Emp = World->SpawnActor<AEmployee>(SpawnActors[Position], SpawnLocation, SpawnRotation, SpawnParameters);
 			Emp->EmployeeRole = EmpRole;
 			if (Cast<ASupervisor>(Emp) != nullptr) {

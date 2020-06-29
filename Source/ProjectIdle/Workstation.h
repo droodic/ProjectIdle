@@ -102,4 +102,5 @@ public:
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 	//UFUNCTION() int WorkstationActiveLenght();
 	//UFUNCTION() void TestFunction();
+	void WorkstationInit(ERole StationRole);
 };
