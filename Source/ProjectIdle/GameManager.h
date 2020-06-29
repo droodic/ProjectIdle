@@ -13,6 +13,7 @@
 #include "Departments/ArtistDepartment.h"
 #include "Widgets/WorkstationUpgradeWidget.h"
 #include "CeoDepMenuWidget.h"
+#include "ProjectIdleCharacter.h"
 #include "GameManager.generated.h"
 
 /**
@@ -38,7 +39,7 @@ public:
 	UPROPERTY(BlueprintReadWrite) TArray<class AChair*> MeetingChairList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AWorkstation*> WorkstationList;
 
-
+	UPROPERTY(BlueprintReadWrite) class AProjectIdleCharacter* Character;
 	UPROPERTY(BlueprintReadWrite) class AOfficeDepartment* OfficeDepartment;
 	UPROPERTY(BlueprintReadWrite) class AMeetingDepartment* MeetingDepartment;
 	UPROPERTY(BlueprintReadWrite) class AProgrammingDepartment* ProgrammingDepartment;

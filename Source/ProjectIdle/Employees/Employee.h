@@ -120,6 +120,7 @@ public:
 	void IsDepartmentWorking();
 	void WorkOnTask();
 	void AssignSupervisor();
+	void MaxSpeedEmployees();
 
 public:
 	//UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Saveable Actor")

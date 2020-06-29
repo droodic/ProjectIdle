@@ -244,3 +244,8 @@ void AWorkstation::UpdateSupervisorWorkstationPosition()
 		}
 	}
 }
+
+void AWorkstation::WorkstationInit(ERole Station)
+{
+	StationRole = Station;
+}

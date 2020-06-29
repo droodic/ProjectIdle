@@ -248,7 +248,8 @@ void UCeoDepMenuWidget::CreateDepartment()
 	{
 		GM->Wall->DeactivateWallAndFloor();
 		GM->Wall->ActivateWallAndFloor();
-		ActivateWorkstation(ERole::Marketing, EPosition::Intern, false);
+		//ActivateWorkstation(ERole::Marketing, EPosition::Intern, false);
+		OfficeDepartment->GenerateActor(4, ERole::Marketing);
 		CreateDep_Btn->SetIsEnabled(false);
 	}
 	if (Selected == "Test")
