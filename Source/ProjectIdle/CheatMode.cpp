@@ -7,19 +7,40 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStaticsTypes.h"
 
-void UCheatMode::MaxMoney()
+
+void UCheatMode::Cheat_AllCheatOn()
+{
+	Cheat_MaxMoney();
+	Cheat_MaxSpeed();
+	Cheat_FastCompile();
+}
+
+
+
+void UCheatMode::Cheat_MaxMoney()
 {
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->Money = INT32_MAX;
 }
 
-void UCheatMode::MaxSpeed()
+void UCheatMode::Cheat_MaxSpeed()
 {
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->Character->IdleMaxSpeed();
 	for (int i = 0; i < GM->EmployeeList.Num(); i++)
 	{
 		GM->EmployeeList[i]->MaxSpeedEmployees();
+	}
+}
+
+void UCheatMode::Cheat_FastCompile()
+{
+	GM = GetWorld()->GetGameInstance<UGameManager>();
+	GM->CheatSpeedRate = 200.0f;
+	for (int i = 0; i < GM->WorkstationList.Num(); i++)
+	{
+		GM->WorkstationList[i]->CompileModifier = 50;
+		GM->WorkstationList[i]->CurrentCompileLoad = 1;
 	}
 }
 
