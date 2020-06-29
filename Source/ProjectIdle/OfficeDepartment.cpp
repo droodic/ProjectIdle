@@ -204,12 +204,14 @@ void AOfficeDepartment::Tick(float DeltaTime)
 
 			UI->MoneyWidget->ShowANotification("IDEA GENERATED!");
 
-			if (ManagerRef->GeneratingIdea) {
-				//ManagerRef->
-				BacklogWidget->CallMeeting_M(ManagerRef);
-				ManagerRef->GeneratingIdea = false;
-				ManagerRef->IdeaIndex++; //use pop instead
+			if (ManagerRef != nullptr && ManagerRef->GeneratingIdea) {
+		
+					//ManagerRef->
+					BacklogWidget->CallMeeting_M(ManagerRef);
+					ManagerRef->GeneratingIdea = false;
+					ManagerRef->IdeaIndex++; //use pop instead
 			}
+
 		}
 	}
 }
