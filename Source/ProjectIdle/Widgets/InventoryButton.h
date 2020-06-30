@@ -25,7 +25,11 @@ public:
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* ItemName_T;
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* ItemCount_T;
 
-public:
+	UPROPERTY(EditAnywhere) TSubclassOf<class AItem> ItemBP;
+
+private:
 	void NativeConstruct() override;
+	void NativePreConstruct() override;
+
 	UFUNCTION() void OnClicked();
 };

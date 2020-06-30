@@ -151,26 +151,30 @@ void AWorkstation::NotifyActorOnClicked(FKey ButtonPressed)
 
 void AWorkstation::UpgradeMesh(AItem* Item)
 {
-	if (Item->ItemSubCategory == ESubCategory::Monitor) {
+	if (Item->ItemSubCategory == ESubCategory::Monitor) 
+	{
 		ComputerMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
 		UpgradeWidget->MonitorImage->SetBrushFromTexture(Item->ItemImage);
 		CompileModifier = Item->ItemCompileRate;
 		ComputerMeshID = Item->ItemID;
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Computermesh detect, ID: " + FString::FromInt(ComputerMeshID)));
 	}
-	else if (Item->ItemSubCategory == ESubCategory::Desk) {
+	else if (Item->ItemSubCategory == ESubCategory::Desk) 
+	{
 		ChairMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
 		UpgradeWidget->Desk_Img->SetBrushFromTexture(Item->ItemImage);
 		DeskMeshID = Item->ItemID;
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Desk detect"));
 	}
-	else if (Item->ItemSubCategory == ESubCategory::Keyboard) {
+	else if (Item->ItemSubCategory == ESubCategory::Keyboard) 
+	{
 		KeyboardMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
 		UpgradeWidget->Keyboard_Img->SetBrushFromTexture(Item->ItemImage);
 		KeyboardMeshID = Item->ItemID;
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Keyboard detect"));
 	}
-	else if (Item->ItemSubCategory == ESubCategory::Chair) {
+	else if (Item->ItemSubCategory == ESubCategory::Chair) 
+	{
 		ChairMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
 		UpgradeWidget->Chair_Img->SetBrushFromTexture(Item->ItemImage);
 		ChairMeshID = Item->ItemID;
@@ -179,25 +183,20 @@ void AWorkstation::UpgradeMesh(AItem* Item)
 	//UpgradeWidget->RemoveFromViewport();
 }
 
-
 void AWorkstation::UpgradeMeshFromSave() {
 
 	for (auto Item : GM->OfficeDepartment->GameItemList) {
 		if (Item.GetDefaultObject()->ItemID == ComputerMeshID) {
 			ComputerMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh->GetStaticMesh());
-			
 		}
 		else if (Item.GetDefaultObject()->ItemID == DeskMeshID) {
 			DeskMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh->GetStaticMesh());
-			
 		}
 		else if (Item.GetDefaultObject()->ItemID == KeyboardMeshID) {
 			KeyboardMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh->GetStaticMesh());
-			
 		}
 		else if (Item.GetDefaultObject()->ItemID == ChairMeshID) {
 			ChairMesh->SetStaticMesh(Item.GetDefaultObject()->ItemMesh->GetStaticMesh());
-			
 		}
 	}
 }
