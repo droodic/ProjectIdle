@@ -36,6 +36,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "IsEnabled") bool IsEnabled;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "ObjectType") ObjectType Type;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "IsEnabled") bool RemovableWall;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool StartingFloor;
+
 
 
 protected:
