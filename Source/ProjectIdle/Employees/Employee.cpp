@@ -404,8 +404,13 @@ void AEmployee::AssignSupervisor()
 	MoveEmployee(StartPosition);
 }
 
-void AEmployee::MaxSpeedEmployees()
-{
-	GetCharacterMovement()->MaxWalkSpeed = 10000.0f;
-}
+//void AEmployee::ActorSaveDataLoaded()
+//{
+//}
+//
+//void AEmployee::ActorSaveDataSaved()
+//{
+//}
+
+
 

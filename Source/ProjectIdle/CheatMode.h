@@ -18,6 +18,8 @@ class PROJECTIDLE_API UCheatMode : public UCheatManager
 public:
 	class UGameManager* GM;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Speed") float Speed = 5000.0f;
+
 	UFUNCTION(Exec) void Cheat_AllCheatOn();
 	UFUNCTION(Exec) void Cheat_MaxMoney();
 	UFUNCTION(Exec) void Cheat_MaxSpeed();

@@ -48,7 +48,7 @@ public:
 
 	bool OutOfBound = false;
 
-	void IdleMaxSpeed();
+	
 
 	UFUNCTION()
 		FVector GetCameraPanDirection();

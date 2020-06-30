@@ -159,8 +159,3 @@ FVector AProjectIdleCharacter::GetCameraPanDirection()
 
 	return FVector(CamDirectionX, CamDirectionY, 0);
 }
-
-void AProjectIdleCharacter::IdleMaxSpeed()
-{
-	GetCharacterMovement()->MaxWalkSpeed = 10000.0f;
-}

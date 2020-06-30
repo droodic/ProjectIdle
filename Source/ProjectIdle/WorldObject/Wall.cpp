@@ -35,7 +35,7 @@ void AWall::BeginPlay()
 	{
 		GM->WallList.Add(this);
 	}
-	if (this->Type == ObjectType::Floor)
+	if (this->Type == ObjectType::Floor && StartingFloor)
 	{
 		GM->FloorList.Add(this);
 	}
