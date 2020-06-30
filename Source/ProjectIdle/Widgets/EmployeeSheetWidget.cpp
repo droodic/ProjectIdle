@@ -47,7 +47,7 @@ void UEmployeeSheetWidget::PerformAction()
 			Cast<ASupervisor>(Employee)->EvaluateEmployee();
 		}
 		else if (Cast<AFloorManager>(Employee) != nullptr) {
-			Cast<AFloorManager>(Employee)->AutomateTasks();
+			Cast<AFloorManager>(Employee)->AutomateTasks(true);
 		}
 	}
 }
@@ -64,7 +64,9 @@ FText UEmployeeSheetWidget::RoleToText(ERole role)
 	case ERole::Artist:
 		text = FText::FromString("Artist");
 		break;
-
+	case ERole::Management:
+		text = FText::FromString("Management");
+		break;
 	}
 
 	return text;
@@ -90,6 +92,9 @@ FText UEmployeeSheetWidget::PositionToText(EPosition position)
 		break;
 	case EPosition::Supervisor:
 		text = FText::FromString("Supervisor");
+		break;
+	case EPosition::FloorManager:
+		text = FText::FromString("Floor Manager");
 		break;
 	}
 

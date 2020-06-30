@@ -95,9 +95,6 @@ void AEmployee::BeginPlay()
 		IsDepartmentWorking();
 		MoveEmployee(StartPosition);
 	}
-
-
-
 }
 
 void AEmployee::IsDepartmentWorking() {

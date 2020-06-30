@@ -14,6 +14,7 @@ enum class ERole : uint8
 	Artist				   UMETA(DisplayName = "Artist"),
 	Marketing			   UMETA(DisplayName = "Marketing"),
 	Test				   UMETA(DisplayName = "Test"),
+	Management			   UMETA(DisplayName = "Management")
 
 
 };
@@ -95,9 +96,6 @@ public:
 	int CompileValueOriginal = 0;
 	int CompileValue = 0;
 	int NumCompile;
-
-	FTimerManager WorkTimer;
-	FTimerHandle TimerHandle;
 
 protected:
 	// Called when the game starts or when spawned

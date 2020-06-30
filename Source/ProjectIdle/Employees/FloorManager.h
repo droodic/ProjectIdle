@@ -16,7 +16,7 @@ class PROJECTIDLE_API AFloorManager : public AEmployee
 	GENERATED_BODY()
 public:
 	AFloorManager();
-	void AutomateTasks();
+	void AutomateTasks(bool PlayerInput = false);
 
 	//quick test iteration, State machine later?
 	bool AutoManaging;
