@@ -2,6 +2,8 @@
 
 
 #include "InventoryButton.h"
+#include "ProjectIdle/OfficeDepartment.h"
+#include "ProjectIdle/CeoDepMenuWidget.h"
 #include "ProjectIdle/Shop/Item.h"
 #include "ProjectIdle/Workstation.h"
 #include "ProjectIdle/GameManager.h"
@@ -14,7 +16,19 @@ UInventoryButton::UInventoryButton(const FObjectInitializer& ObjectInitializer) 
 
 }
 
-void UInventoryButton::NativeConstruct() 
+void UInventoryButton::NativePreConstruct()
+{
+	Super::NativePreConstruct();
+
+	if (ItemBP != nullptr)
+	{
+		Item = ItemBP.GetDefaultObject();
+		Item_I->SetBrushFromTexture(Item->ItemImage);
+		ItemName_T->SetText(FText::FromString(Item->ItemName));
+	}
+}
+
+void UInventoryButton::NativeConstruct()
 {
 	Super::NativeConstruct();
 	GameManager = GetWorld()->GetGameInstance<UGameManager>();
@@ -27,5 +41,26 @@ void UInventoryButton::NativeConstruct()
 
 void UInventoryButton::OnClicked()
 {
-	CurrentStation->UpgradeMesh(Item);
+	switch (Item->ItemCategory)
+	{
+	case ECategory::ComputerComponents:
+	case ECategory::DeskAndChairs:
+		CurrentStation->UpgradeMesh(Item);
+		break;
+	case ECategory::Materials:
+		if (Item->ItemSubCategory == ESubCategory::FloorMat)
+		{
+			GameManager->OfficeDepartment->OfficeDepMenuWidget->CurrentFloorMat_I->SetBrushFromTexture(Item->ItemImage);
+
+			for (int i = 0; i < GameManager->FloorList.Num(); i++)
+			{
+				GameManager->FloorList[i]->UpdateWallMaterial(Item->Material->GetMaterial());
+			}
+		}
+		else if (Item->ItemSubCategory == ESubCategory::WallMat)
+		{
+			GameManager->OfficeDepartment->OfficeDepMenuWidget->CurrentWallMat_I->SetBrushFromTexture(Item->ItemImage);
+		}
+		break;
+	}
 }

@@ -36,9 +36,9 @@ void UShopWidget::NativeConstruct()
 
 void UShopWidget::Buy()
 {
-	if (CheckList.Num() > 0)
+	if (GameManager->Money >= Total)
 	{
-		if (GameManager->Money >= Total)
+		if (CheckList.Num() > 0)
 		{
 			/*for (int i = 0; i < CheckList.Num(); i++)
 			{
@@ -77,9 +77,24 @@ void UShopWidget::Buy()
 					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "1 " + CheckList[i]->Item->ItemName + "Added");
 				}
 			}*/
-
+			
 			for (int i = 0; i < CheckList.Num(); i++)
 			{
+				/*if (GameManager->InventoryList.Num() > 0)
+				{
+					for (int j = 0; j < GameManager->InventoryList.Num(); j++)
+					{
+						if (CheckList[i]->ItemID == GameManager->InventoryList[j]->ItemID)
+						{
+							GameManager->InventoryList[j]->ItemButton->ItemCount += CheckList[i]->ItemCount;
+							break;
+						}
+						else
+						{
+							GameManager->InventoryList.Add(CheckList[i]->Item);
+						}
+					}
+				}*/
 				GameManager->InventoryList.Add(CheckList[i]->Item);
 
 				if (CheckList[i]->Item->ItemCategory == ECategory::Materials || CheckList[i]->Item->ItemCategory == ECategory::OfficeDecorations)
@@ -113,12 +128,12 @@ void UShopWidget::Buy()
 			TotalMoney_T->SetText(FText::AsCurrency(Total));
 			CheckoutCount_T->SetText(FText::FromString(FString::FromInt(CheckoutCount)));
 		}
-		else
-		{
-			NotEnoughMoney_T->SetText(FText::FromString("Not enough money."));
+	}
+	else
+	{
+		NotEnoughMoney_T->SetText(FText::FromString("Not enough money."));
 
-			GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UShopWidget::RemoveNotEnoughMoney, 5.f, false);
-		}
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UShopWidget::RemoveNotEnoughMoney, 5.f, false);
 	}
 }
 
@@ -207,6 +222,11 @@ void UShopWidget::RemoveItemFromCheckout(int itemID)
 			{
 				CheckList[i]->ItemCount--;
 				CheckList[i]->ItemCount_T->SetText(FText::FromString(FString::FromInt(CheckList[i]->ItemCount)));
+
+				if (CheckList[i]->ItemCount == 1)
+				{
+					CheckList[i]->ItemCount_T->SetText(FText::FromString(" "));
+				}
 
 				Total -= CheckList[i]->Item->ItemPrice;
 				TotalMoney_T->SetText(FText::AsCurrency(Total));

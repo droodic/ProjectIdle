@@ -34,17 +34,8 @@ void UWorkstationUpgradeWidget::NativeConstruct()
 	}
 }
 
-void UWorkstationUpgradeWidget::ShowInventory(ESubCategory ItemCategory) {
-
-	//UItemButton* NewItemButton = CreateWidget<UItemButton>(this, ItemButtonWidgetClass);
-	//NewItemButton->Item = Item;
-	//NewItemButton->Item_I->SetBrushFromTexture(NewItemButton->Item->ItemImage);
-	//NewItemButton->ItemName_T->SetText(FText::FromString(NewItemButton->Item->ItemName));
-	//NewItemButton->ItemPrice_T->SetText(FText::AsCurrency(NewItemButton->Item->ItemPrice));
-	//InventoryScrollBox->AddChild(NewItemButton);
-
-	//InventoryScrollBox->ClearChildren();
-
+void UWorkstationUpgradeWidget::ShowInventory(ESubCategory ItemCategory) 
+{
 	InventoryWrapBox->ClearChildren();
 
 	for (auto Item : GM->InventoryList) {
@@ -58,13 +49,13 @@ void UWorkstationUpgradeWidget::ShowInventory(ESubCategory ItemCategory) {
 			NewItemButton->Item_I->SetBrushFromTexture(Item->ItemImage);
 			NewItemButton->ItemName_T->SetText(FText::FromString(Item->ItemName));
 
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, FString::FromInt(Item->ItemButton->ItemCount));
+
 			if (Item->ItemButton->ItemCount > 1)
 			{
 				NewItemButton->ItemCount_T->SetText(FText::FromString(FString::FromInt(Item->ItemButton->ItemCount)));
 			}
-			
-			//NewItemButton->ItemPrice_T->SetText(FText::AsCurrency(Item->ItemPrice));
-			//InventoryScrollBox->AddChild(NewItemButton);
+
 			InventoryWrapBox->AddChild(NewItemButton);
 		}
 	}
