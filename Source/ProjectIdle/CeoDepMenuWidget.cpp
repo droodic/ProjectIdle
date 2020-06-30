@@ -41,6 +41,10 @@ void UCeoDepMenuWidget::NativeConstruct()
 	{
 		Hire_ArtistSup_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::CallArtistSupSpawn);
 	}
+	if (!Hire_FloorManager_Btn->OnClicked.IsBound())
+	{
+		Hire_FloorManager_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::CallFloorManagerSpawn);
+	}
 	if (!PublishGame_Btn->OnClicked.IsBound())
 	{
 		PublishGame_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::PublishGame);
@@ -104,6 +108,19 @@ void UCeoDepMenuWidget::CallArtistSupSpawn()
 		GM->ArtistDepartment->HasSupervisor = true;
 		OfficeDepartment->GenerateActor(2, ERole::Artist);
 		Hire_ArtistSup_Btn->SetIsEnabled(false);
+		//OfficeDepartment->GetDepartmentUIValues();
+	}
+}
+
+void UCeoDepMenuWidget::CallFloorManagerSpawn()
+{
+	if (OfficeDepartment->ManagerRef == nullptr && GM->Money>= 100000) {
+
+		GM->Money -= 100000;
+		//ActivateWorkstation(ERole::Artist, EPosition::FloorManager, true);
+		//GM->ArtistDepartment->HasSupervisor = true;
+		OfficeDepartment->GenerateActor(5, ERole::Programmer);
+		Hire_FloorManager_Btn->SetIsEnabled(false);
 		//OfficeDepartment->GetDepartmentUIValues();
 	}
 }

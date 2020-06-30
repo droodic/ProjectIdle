@@ -12,13 +12,9 @@ AFloorManager::AFloorManager() {
 
 void AFloorManager::BeginPlay() {
 	Super::BeginPlay();
-	//dont call super, check if need regular Employee Position check then
 	GM->OfficeDepartment->ManagerRef = this;
-	//AutomateTasks();
 	StartPosition = GM->OfficeDepartment->ChairMesh->GetComponentLocation();
 	MoveEmployee(StartPosition);
-	//MoveEmployee(StartPosition);
-	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "...");
 
 }
 

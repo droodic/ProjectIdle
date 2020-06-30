@@ -259,7 +259,7 @@ void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 			FActorSpawnParameters SpawnParameters;
 			SpawnParameters.Owner = this;
 			SpawnParameters.Instigator = GetInstigator();
-			if (Position == 0 || Position == 1 || Position == 2)
+			if (Position == 0 || Position == 1 || Position == 2 || Position == 5)
 			{
 				FVector NewVector = FVector(0, -100, 100);
 				SpawnLocation = GM->Door->GetActorLocation() + NewVector;
