@@ -48,8 +48,22 @@ void AGameHUD::ShowEmployeeSheet(class AEmployee* employee)
 		EmpSheetWidget->EmployeeRole_T->Text = EmpSheetWidget->RoleToText(employee->EmployeeRole);
 		EmpSheetWidget->EmployeePosition = employee->Position;
 		EmpSheetWidget->Salary = employee->Salary;
-		EmpSheetWidget->Morale = employee->Morale;
-		EmpSheetWidget->Performance = employee->Performance;
+
+		if (Cast<AFloorManager>(EmpSheetWidget->Employee) == nullptr && Cast<ASupervisor>(EmpSheetWidget->Employee) == nullptr) {
+			EmpSheetWidget->Promote_Btn->SetVisibility(ESlateVisibility::Visible);
+			EmpSheetWidget->Fire_Btn->SetVisibility(ESlateVisibility::Visible);
+			EmpSheetWidget->Morale = employee->Morale;
+			EmpSheetWidget->Performance = employee->Performance;
+		}
+		else if (Cast<ASupervisor>(EmpSheetWidget->Employee) != nullptr) {
+			EmpSheetWidget->Promote_Btn->SetVisibility(ESlateVisibility::Hidden);
+			EmpSheetWidget->Fire_Btn->SetVisibility(ESlateVisibility::Visible);
+		}
+		else {
+			EmpSheetWidget->Promote_Btn->SetVisibility(ESlateVisibility::Hidden);
+			EmpSheetWidget->Fire_Btn->SetVisibility(ESlateVisibility::Hidden);
+		}
+
 
 		if (employee->HasBeenEvaluated) {
 			EmpSheetWidget->Performance_Box->SetVisibility(ESlateVisibility::Visible);

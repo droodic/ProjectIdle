@@ -38,11 +38,11 @@ void AFloorManager::Tick(float DeltaTime) {
 			//MAKE THIS TIMER, CALLED VERY OFTEN, or find better way
 			GM->MeetingDepartment->BackFromMeeting();
 			if (GM->MeetingDepartment->CanReturn) {
-				GEngine->AddOnScreenDebugMessage(120941, 5.f, FColor::Green, "BackfromMeetingcall");
 				MeetingState = false;
 				IdeaInProductionState = true;
 			}
 		}
+		//Restart loop when idea finished
 		if (IdeaInProductionState) {
 			if (!GM->IdeaInProduction) {
 				AutomateTasks();
@@ -53,26 +53,32 @@ void AFloorManager::Tick(float DeltaTime) {
 
 }
 
-void AFloorManager::AutomateTasks() {
-	if (!AutoManaging) {
+void AFloorManager::AutomateTasks(bool PlayerInput) {
+
+	if (AutoManaging && PlayerInput) {
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Turning off Manager");
+		AutoManaging = false;
+		MoveEmployee(StartPosition, 25.f);
+		return;
+	}
+	else {
 		AutoManaging = true;
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Starting loop");
 		if (!IdeaGenerationState) {
-			if (FVector::Dist(GetActorLocation(), GM->OfficeDepartment->ChairMesh->GetComponentLocation()) <= 100.0f) {
+			if (FVector::Dist(GetActorLocation(), GM->OfficeDepartment->ChairMesh->GetComponentLocation()) <= 115.0f) {
 				AI->IsMoving = false;
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "at desk");
 				IdeaGenerationState = true;
 			}
 			else {
-				MoveEmployee(StartPosition);
+				MoveEmployee(StartPosition, 25.f);
 				IdeaGenerationState = true;
 			}
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "automate");
 
 		}
+		return;
 	}
-	else if (AutoManaging) {
-		AutoManaging = false;
-		MoveEmployee(StartPosition);
-	}
+
+
+
 
 }
