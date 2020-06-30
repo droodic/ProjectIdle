@@ -166,19 +166,33 @@ void AOfficeDepartment::PublishGame()
 	if (successChance >= rateRolled)
 	{
 		auto moneyGenerated = UKismetMathLibrary::RandomIntegerInRange(15000, 25000);
-		GM->Money += moneyGenerated;
-		//GM->Money += UKismetMathLibrary::RandomIntegerInRange(15000, 25000); //Use algo later, and do real way of assgning money
+		if (GM->Money >= INT32_MAX || GM->Money + moneyGenerated > INT32_MAX)
+		{
+			UI->MoneyWidget->ShowANotification("MAX MONEY");
 
-		UI->MoneyWidget->ShowANotification("$" + FString::FromInt(moneyGenerated) + ".00");
+		}
+		else
+		{
+			GM->Money += moneyGenerated;
+			//GM->Money += UKismetMathLibrary::RandomIntegerInRange(15000, 25000); //Use algo later, and do real way of assgning money
+
+			UI->MoneyWidget->ShowANotification("$" + FString::FromInt(moneyGenerated) + ".00");
+		}
 	}
 	else
 	{
 		UI->MoneyWidget->ShowANotification("SORRY, THE GAME WAS NOT A SUCCESS", FLinearColor::Red);
 		auto moneyGenerated = UKismetMathLibrary::RandomIntegerInRange(100, 1000);
-		GM->Money += moneyGenerated;
+		if (GM->Money >= INT32_MAX || GM->Money + moneyGenerated > INT32_MAX)
+		{
+			UI->MoneyWidget->ShowANotification("MAX MONEY");
+		}
+		else
+		{
+			GM->Money += moneyGenerated;
 
-		UI->MoneyWidget->ShowANotification("$" + FString::FromInt(moneyGenerated) + ".00");
-
+			UI->MoneyWidget->ShowANotification("$" + FString::FromInt(moneyGenerated) + ".00");
+		}
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->PublishedColor = FLinearColor::Red;
 	}
 }
