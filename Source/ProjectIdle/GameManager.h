@@ -26,7 +26,8 @@ class PROJECTIDLE_API UGameManager : public UGameInstance
 
 public:
 	UGameManager();
-	UPROPERTY(BlueprintReadWrite) TArray<class AItem*> InventoryList;
+	//UPROPERTY(BlueprintReadWrite) TArray<class AItem*> InventoryList;
+	UPROPERTY(BlueprintReadWrite) TMap<class AItem*, int> InventoryList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AEmployee*> EmployeeList;
 	UPROPERTY(BlueprintReadWrite) TArray<class ADepartment*> DepartmentList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AWall*> FloorList;

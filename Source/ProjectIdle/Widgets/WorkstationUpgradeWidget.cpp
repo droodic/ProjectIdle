@@ -38,22 +38,25 @@ void UWorkstationUpgradeWidget::ShowInventory(ESubCategory ItemCategory)
 {
 	InventoryWrapBox->ClearChildren();
 
-	for (auto Item : GM->InventoryList) {
-		//Show computercomponents 
-		if (Item->ItemSubCategory == ItemCategory) {
+	TArray<AItem*> inventoryList; 
+	GM->InventoryList.GenerateKeyArray(inventoryList);
 
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, "Computer Component :" + Item->ItemName);
+	for (auto Item : inventoryList) 
+	{
+		//Show computercomponents 
+		if (Item->ItemSubCategory == ItemCategory) 
+		{
 			UInventoryButton* NewItemButton = CreateWidget<UInventoryButton>(this, InventoryButtonWidgetClass);
 			NewItemButton->CurrentStation = Station;
 			NewItemButton->Item = Item;
 			NewItemButton->Item_I->SetBrushFromTexture(Item->ItemImage);
 			NewItemButton->ItemName_T->SetText(FText::FromString(Item->ItemName));
 
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, FString::FromInt(Item->ItemButton->ItemCount));
+			auto itemCount = GM->InventoryList.FindRef(Item);
 
 			if (Item->ItemButton->ItemCount > 1)
 			{
-				NewItemButton->ItemCount_T->SetText(FText::FromString(FString::FromInt(Item->ItemButton->ItemCount)));
+				NewItemButton->ItemCount_T->SetText(FText::FromString(FString::FromInt(itemCount)));
 			}
 
 			InventoryWrapBox->AddChild(NewItemButton);

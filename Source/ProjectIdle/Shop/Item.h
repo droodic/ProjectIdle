@@ -41,6 +41,7 @@ public:
 	UPROPERTY(EditAnywhere) int ItemCompileRate; //If Monitor for now yolo
 	UPROPERTY(EditDefaultsOnly) int ItemID;
 	UPROPERTY(EditDefaultsOnly) int ItemPrice;
+	int ItemCount = 0;
 	
 	UPROPERTY(EditDefaultsOnly) FString ItemName;
 	UPROPERTY(EditDefaultsOnly) FString ItemDescription;
