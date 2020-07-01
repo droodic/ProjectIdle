@@ -24,6 +24,8 @@ public:
 
 	UPROPERTY(EditAnywhere) TSubclassOf<UUserWidget> IdeaButtonWidgetClass;
 	
+//	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* SaveGame_Btn;
+
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* PublishGame_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_FloorManager_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_Prog_Btn;

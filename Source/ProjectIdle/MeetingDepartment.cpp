@@ -131,11 +131,12 @@ void AMeetingDepartment::MoveToMeeting()
 			if (!MoreEmployeeThanChair) {
 				for (auto Emp : GM->EmployeeList) {
 					//if (Dep->DepRole == Emp->EmployeeRole) {
-						EmployeesAtMeetingList.Add(Emp);
-						Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
-						//Emp->MoveEmployee(FVector(0, 0, 0));
-						//GEngine->AddOnScreenDebugMessage(Index++, 5.f, FColor::Red, "No supp- Sending employee");
-					//}
+					EmployeesAtMeetingList.Add(Emp);
+					Emp->IsAtMeeting = true;
+					Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
+					//Emp->MoveEmployee(FVector(0, 0, 0));
+					//GEngine->AddOnScreenDebugMessage(Index++, 5.f, FColor::Red, "No supp- Sending employee");
+				//}
 				}
 				break;
 			}
@@ -190,6 +191,7 @@ void AMeetingDepartment::BackFromMeeting()
 		EmployeesAtMeetingList.Empty();
 
 		for (auto Emp : GM->EmployeeList) {
+
 			if (Emp->Position != EPosition::Supervisor && Emp->Position != EPosition::FloorManager) {
 				if (Emp->EmployeeRole == ERole::Artist)
 				{
@@ -204,6 +206,7 @@ void AMeetingDepartment::BackFromMeeting()
 					Emp->BeginWork();
 				}
 			}
+			Emp->IsAtMeeting = false;
 		}
 
 		if (GM->MeetingWidget)

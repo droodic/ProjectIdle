@@ -193,6 +193,9 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 	if (WorkProgressBar != nullptr) {
 		WorkProgressBar->SetWorldRotation(Camera->GetCameraRotation());
 		WorkProgressBar->AddLocalRotation(FRotator(0, 180, 0));
+		if (!WorkProgressBar->IsVisible()) {
+			WorkProgressBar->SetVisibility(true); //temp solution to not showing on load
+		}
 	}
 
 	if (CompileValue == 0) {
