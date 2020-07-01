@@ -63,6 +63,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
 
+private:
+	bool bInRadius = false;
+
 //Functions
 public:
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void GenerateIdea();
@@ -85,6 +88,7 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
-	
+	void NotifyActorOnClicked(FKey ButtonPressed = EKeys::RightMouseButton) override;
+
 	class Idea GenerateIdeaValues();
 };

@@ -49,6 +49,10 @@ void UEmployeeSheetWidget::PerformAction()
 		else if (Cast<AFloorManager>(Employee) != nullptr) {
 			Cast<AFloorManager>(Employee)->AutomateTasks(true);
 		}
+		if (Employee->UI->EmpSheetWidget->IsInViewport())
+		{
+			Employee->UI->EmpSheetWidget->RemoveFromViewport();
+		}
 	}
 }
 

@@ -68,6 +68,7 @@ public:
 	bool IsWidgetInDisplay = false;
 	bool IsFloorUpgraded = false;
 	UUserWidget* CurrentWidgetInDisplay;
+	AEmployee* CurrentEmployeeInDisplay;
 
 public:
 	virtual void Init();

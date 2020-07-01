@@ -41,10 +41,11 @@ void AGameHUD::BeginPlay()
 
 void AGameHUD::ShowEmployeeSheet(class AEmployee* employee)
 {
-
 	if (!EmpSheetWidget->IsInViewport() && EmpSheetWidget != nullptr && EmpSheetWidget->IsValidLowLevel())
 	{
 		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Showing Employee Sheet"));
+
+		employee->IsDisplaying = true;
 
 		EmpSheetWidget->Employee = employee;
 		EmpSheetWidget->EmployeeName_T->Text = employee->EmployeeName;

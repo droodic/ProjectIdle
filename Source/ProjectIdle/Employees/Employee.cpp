@@ -91,7 +91,7 @@ void AEmployee::BeginPlay()
 	if (Position != EPosition::Supervisor && Position != EPosition::FloorManager) {
 		//GM->WorkStation->UpdateWorkstationPosition();
 		for (auto Workstation : GM->WorkstationList) {
-			if (Workstation->IsEnabled == true && !Workstation->HasEmployee && Workstation->StationRole == EmployeeRole) {
+			if (Workstation->IsEnabled == true && !Workstation->HasEmployee && Workstation->StationRole == EmployeeRole && Workstation->StationOwnerPosition != EPosition::Supervisor) {
 				Workstation->UpdateWorkstationPosition(this);
 				//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Assigning Workstation");
 				break;
@@ -145,24 +145,36 @@ void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 {
 	if (!GM->IsWidgetInDisplay)
 	{
-		if (UI != nullptr && CanInspect) {
-
-			UI->ShowEmployeeSheet(this);
-		}
-		else
+		if (UI != nullptr && CanInspect) 
 		{
-			GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, TEXT("Employee is Clicked, UI Is null!"));
+			IsDisplaying = true;
+			GM->CurrentEmployeeInDisplay = this;
+			UI->ShowEmployeeSheet(this);
 		}
 	}
 	else
 	{
-		GM->IsWidgetInDisplay = false;
-		if (GM->CurrentWidgetInDisplay)
+		if (CanInspect)
 		{
-			GM->CurrentWidgetInDisplay->RemoveFromViewport();
+			GM->IsWidgetInDisplay = false;
+			if (GM->CurrentWidgetInDisplay)
+			{
+				GM->CurrentWidgetInDisplay->RemoveFromViewport();
+			}
 		}
 
-		UI->ShowEmployeeSheet(this);
+		if (UI != nullptr && CanInspect && !IsDisplaying)
+		{
+			GM->CurrentEmployeeInDisplay->IsDisplaying = false;
+			GM->CurrentEmployeeInDisplay = this;
+			IsDisplaying = true;
+			UI->ShowEmployeeSheet(this);
+		}
+		else if (CanInspect && IsDisplaying)
+		{
+			IsDisplaying = false;
+			UI->EmpSheetWidget->RemoveFromViewport();
+		}
 	}
 }
 
@@ -199,6 +211,9 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 	if (WorkProgressBar != nullptr) {
 		WorkProgressBar->SetWorldRotation(Camera->GetCameraRotation());
 		WorkProgressBar->AddLocalRotation(FRotator(0, 180, 0));
+		if (!WorkProgressBar->IsVisible()) {
+			WorkProgressBar->SetVisibility(true); //temp solution to not showing on load
+		}
 	}
 
 	if (CompileValue == 0) {
@@ -294,11 +309,14 @@ void AEmployee::NotifyActorBeginOverlap(AActor* OtherActor)
 
 void AEmployee::NotifyActorEndOverlap(AActor* OtherActor)
 {
-	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr) {
+	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr) 
+	{
 		CanInspect = false;
 		if (UI->EmpSheetWidget->IsInViewport())
 		{
 			UI->EmpSheetWidget->RemoveFromViewport();
+			GM->IsWidgetInDisplay = false;
+			IsDisplaying = false;
 		}
 	}
 }
