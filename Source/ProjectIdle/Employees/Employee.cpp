@@ -139,8 +139,6 @@ void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 {
 	if (!GM->IsWidgetInDisplay)
 	{
-		GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, TEXT("Is not in display call"));
-
 		if (UI != nullptr && CanInspect) 
 		{
 			IsDisplaying = true;
@@ -150,12 +148,13 @@ void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, TEXT("Is in display call"));
-
-		GM->IsWidgetInDisplay = false;
-		if (GM->CurrentWidgetInDisplay)
+		if (CanInspect)
 		{
-			GM->CurrentWidgetInDisplay->RemoveFromViewport();
+			GM->IsWidgetInDisplay = false;
+			if (GM->CurrentWidgetInDisplay)
+			{
+				GM->CurrentWidgetInDisplay->RemoveFromViewport();
+			}
 		}
 
 		if (UI != nullptr && CanInspect && !IsDisplaying)

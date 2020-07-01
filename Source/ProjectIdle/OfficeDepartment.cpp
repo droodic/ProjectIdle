@@ -243,6 +243,7 @@ void AOfficeDepartment::NotifyActorOnClicked(FKey ButtonPressed)
 		else
 		{
 			OfficeDepMenuWidget->RemoveFromViewport();
+			UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
 		}
 	}
 
