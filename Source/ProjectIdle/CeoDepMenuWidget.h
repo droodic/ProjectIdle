@@ -57,6 +57,7 @@ public:
 	void GetFinishedIdea(class Idea* idea);
 	void AddItemToInventory(class AItem* item);
 	UFUNCTION() void ActivateWorkstation(enum ERole StationRole, enum EPosition OwnerPosition, bool IsSupervisor);
+	UFUNCTION() void ClearFinishedGames();
 
 private:
 	UFUNCTION() void CallHiring();
