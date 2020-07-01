@@ -17,6 +17,8 @@ void AGameHUD::BeginPlay()
 {
 	Super::BeginPlay();
 
+	GM = GetWorld()->GetGameInstance<UGameManager>();
+
 	if (MoneyWidgetClass)
 	{
 		MoneyWidget = CreateWidget<UMoneyWidget>(UGameplayStatics::GetPlayerController(this, 0), MoneyWidgetClass);
@@ -39,6 +41,7 @@ void AGameHUD::BeginPlay()
 
 void AGameHUD::ShowEmployeeSheet(class AEmployee* employee)
 {
+
 	if (!EmpSheetWidget->IsInViewport() && EmpSheetWidget != nullptr && EmpSheetWidget->IsValidLowLevel())
 	{
 		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Emerald, TEXT("Showing Employee Sheet"));
@@ -84,11 +87,9 @@ void AGameHUD::ShowEmployeeSheet(class AEmployee* employee)
 			EmpSheetWidget->Action_Btn->SetVisibility(ESlateVisibility::Hidden);
 		}
 
+		GM->IsWidgetInDisplay = true;
+		GM->CurrentWidgetInDisplay = EmpSheetWidget;
 		EmpSheetWidget->AddToViewport();
-	}
-	else if (EmpSheetWidget->IsInViewport()) 
-	{
-		EmpSheetWidget->RemoveFromViewport();
 	}
 }
 

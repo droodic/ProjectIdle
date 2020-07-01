@@ -137,13 +137,26 @@ void AEmployee::WorkOnTask() {
 
 void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 {
-	if (UI != nullptr && CanInspect) {
+	if (!GM->IsWidgetInDisplay)
+	{
+		if (UI != nullptr && CanInspect) {
 
-		UI->ShowEmployeeSheet(this);
+			UI->ShowEmployeeSheet(this);
+		}
+		else
+		{
+			GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, TEXT("Employee is Clicked, UI Is null!"));
+		}
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, TEXT("Employee is Clicked, UI Is null!"));
+		GM->IsWidgetInDisplay = false;
+		if (GM->CurrentWidgetInDisplay)
+		{
+			GM->CurrentWidgetInDisplay->RemoveFromViewport();
+		}
+
+		UI->ShowEmployeeSheet(this);
 	}
 }
 

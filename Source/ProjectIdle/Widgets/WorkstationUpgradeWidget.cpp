@@ -83,6 +83,7 @@ void UWorkstationUpgradeWidget::ShowInventoryKeyboard() {
 void UWorkstationUpgradeWidget::CloseUpgrWidget()
 {
 	RemoveFromViewport();
+	GM->IsWidgetInDisplay = false;
 }
 //void UWorkstationUpgradeWidget::Monitor()
 //{
