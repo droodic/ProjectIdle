@@ -108,11 +108,14 @@ void AWorkstation::Tick(float DeltaTime)
 
 void AWorkstation::UpdateWorkstationPosition(AEmployee* EmployeeRef)
 {
-	if (!HasEmployee) {
-		EmployeeRef->WorkstationRef = this;
-		EmployeeRef->HasWorkStation = true;
-		EmployeeRef->StartPosition = StationLocation;
-		HasEmployee = true;
+	if (!HasEmployee && this->FloorLevel != -1) {
+		if (this->FloorLevel == EmployeeRef->FloorLevel)
+		{
+			EmployeeRef->WorkstationRef = this;
+			EmployeeRef->HasWorkStation = true;
+			EmployeeRef->StartPosition = StationLocation;
+			HasEmployee = true;
+		}
 	}
 }
 
