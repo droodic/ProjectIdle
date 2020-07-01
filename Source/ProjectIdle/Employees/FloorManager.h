@@ -19,7 +19,7 @@ public:
 	void AutomateTasks(bool PlayerInput = false);
 
 	//quick test iteration, State machine later?
-	UPROPERTY() bool AutoManaging;
+	UPROPERTY(EditAnywhere) bool AutoManaging;
 	UPROPERTY( BlueprintReadWrite) bool IdeaInProductionState;
 	UPROPERTY( BlueprintReadWrite) bool IdeaGenerationState;
 	UPROPERTY( BlueprintReadWrite) bool MeetingState;
