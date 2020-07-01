@@ -110,6 +110,7 @@ void AOfficeDepartment::Return()
 	if (OfficeDepMenuWidget != nullptr)
 	{
 		OfficeDepMenuWidget->RemoveFromViewport();
+		UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
 	}
 }
 
@@ -230,14 +231,28 @@ void AOfficeDepartment::Tick(float DeltaTime)
 	}
 }
 
+void AOfficeDepartment::NotifyActorOnClicked(FKey ButtonPressed)
+{
+	if (bInRadius && OfficeDepMenuWidget != nullptr)
+	{
+		if (!OfficeDepMenuWidget->IsInViewport())
+		{
+			UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetCharacterMovement()->DisableMovement();
+			OfficeDepMenuWidget->AddToViewport();
+		}
+		else
+		{
+			OfficeDepMenuWidget->RemoveFromViewport();
+		}
+	}
+
+}
+
 void AOfficeDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
 	{
-		if (OfficeDepMenuWidget != nullptr) //&& OfficeDepMenuWidget->IsValidLowLevel())
-		{
-			OfficeDepMenuWidget->AddToViewport();
-		}
+		bInRadius = true;
 	}
 }
 
@@ -245,7 +260,9 @@ void AOfficeDepartment::NotifyActorEndOverlap(AActor* OtherActor)
 {
 	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
 	{
-		if (OfficeDepMenuWidget->IsInViewport())
+		bInRadius = false;
+
+		/*if (OfficeDepMenuWidget->IsInViewport())
 		{
 			OfficeDepMenuWidget->RemoveFromViewport();
 		}
@@ -256,7 +273,7 @@ void AOfficeDepartment::NotifyActorEndOverlap(AActor* OtherActor)
 		else if (ShopWidget->IsInViewport())
 		{
 			ShopWidget->RemoveFromViewport();
-		}
+		}*/
 	}
 }
 
@@ -290,7 +307,6 @@ void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 				return;
 			}
 
-
 			auto Emp = World->SpawnActor<AEmployee>(SpawnActors[Position], SpawnLocation, SpawnRotation, SpawnParameters);
 			Emp->EmployeeRole = EmpRole;
 			if (Cast<ASupervisor>(Emp) != nullptr) {
@@ -304,7 +320,6 @@ void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 
 AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
 {
-
 	UWorld* World = GetWorld();
 
 	FVector SpawnLocation;
@@ -325,8 +340,6 @@ AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
 	}
 	GetDepartmentUIValues();
 	return Emp;
-
-
 }
 
 void AOfficeDepartment::PopulateIdeaListFromSave(Idea* Idea) {

@@ -97,6 +97,8 @@ public:
 	int CompileValue = 0;
 	int NumCompile;
 
+	bool IsDisplaying = false;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

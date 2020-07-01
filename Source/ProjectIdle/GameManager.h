@@ -60,6 +60,7 @@ public:
 	bool IdeaInProduction = false;
 	bool IsWidgetInDisplay = false;
 	UUserWidget* CurrentWidgetInDisplay;
+	AEmployee* CurrentEmployeeInDisplay;
 
 public:
 	virtual void Init();

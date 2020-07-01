@@ -139,24 +139,37 @@ void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 {
 	if (!GM->IsWidgetInDisplay)
 	{
-		if (UI != nullptr && CanInspect) {
+		GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, TEXT("Is not in display call"));
 
-			UI->ShowEmployeeSheet(this);
-		}
-		else
+		if (UI != nullptr && CanInspect) 
 		{
-			GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, TEXT("Employee is Clicked, UI Is null!"));
+			IsDisplaying = true;
+			GM->CurrentEmployeeInDisplay = this;
+			UI->ShowEmployeeSheet(this);
 		}
 	}
 	else
 	{
+		GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, TEXT("Is in display call"));
+
 		GM->IsWidgetInDisplay = false;
 		if (GM->CurrentWidgetInDisplay)
 		{
 			GM->CurrentWidgetInDisplay->RemoveFromViewport();
 		}
 
-		UI->ShowEmployeeSheet(this);
+		if (UI != nullptr && CanInspect && !IsDisplaying)
+		{
+			GM->CurrentEmployeeInDisplay->IsDisplaying = false;
+			GM->CurrentEmployeeInDisplay = this;
+			IsDisplaying = true;
+			UI->ShowEmployeeSheet(this);
+		}
+		else if (CanInspect && IsDisplaying)
+		{
+			IsDisplaying = false;
+			UI->EmpSheetWidget->RemoveFromViewport();
+		}
 	}
 }
 
@@ -288,11 +301,14 @@ void AEmployee::NotifyActorBeginOverlap(AActor* OtherActor)
 
 void AEmployee::NotifyActorEndOverlap(AActor* OtherActor)
 {
-	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr) {
+	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr) 
+	{
 		CanInspect = false;
 		if (UI->EmpSheetWidget->IsInViewport())
 		{
 			UI->EmpSheetWidget->RemoveFromViewport();
+			GM->IsWidgetInDisplay = false;
+			IsDisplaying = false;
 		}
 	}
 }
