@@ -22,6 +22,7 @@
 #include "Components/DecalComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "ProjectIdle/WorldObject/Door.h"
 
 AOfficeDepartment::AOfficeDepartment()
 {
@@ -277,7 +278,8 @@ void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 			if (Position == 0 || Position == 1 || Position == 2 || Position == 5)
 			{
 				FVector NewVector = FVector(0, -100, 100);
-				SpawnLocation = GM->Door->GetActorLocation() + NewVector;
+				int floor = this->FloorLevel;
+				SpawnLocation = GM->DoorList[floor - 1]->GetActorLocation() + NewVector;
 				SpawnRotation = FRotator::ZeroRotator;
 			}
 

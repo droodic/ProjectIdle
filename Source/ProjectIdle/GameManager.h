@@ -53,7 +53,7 @@ public:
 	UPROPERTY(BlueprintReadWrite) class AProgrammingDepartment* ProgrammingDepartment;
 	UPROPERTY(BlueprintReadWrite) class AArtistDepartment* ArtistDepartment;
 
-	//UPROPERTY(BlueprintReadWrite) class AWorkstation* WorkStation;
+	UPROPERTY(BlueprintReadWrite) class AWorkstation* WorkStation;
 	UPROPERTY(BlueprintReadWrite) class ADoor* Door;
 	UPROPERTY(BlueprintReadWrite) class UWorkstationUpgradeWidget* Upgrade;
 	UPROPERTY(BlueprintReadWrite) class UMeetingDepWidget* MeetingWidget;
@@ -66,6 +66,7 @@ public:
 
 	bool IdeaInProduction = false;
 	bool IsWidgetInDisplay = false;
+	bool IsFloorUpgraded = false;
 	UUserWidget* CurrentWidgetInDisplay;
 
 public:

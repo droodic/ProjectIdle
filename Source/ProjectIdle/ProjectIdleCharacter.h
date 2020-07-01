@@ -48,7 +48,8 @@ public:
 
 	bool OutOfBound = false;
 
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Floor") int CurrentFloor = 1;
+
 
 	UFUNCTION()
 		FVector GetCameraPanDirection();

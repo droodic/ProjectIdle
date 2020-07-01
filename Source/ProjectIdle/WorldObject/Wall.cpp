@@ -8,6 +8,7 @@
 #include "Math/Vector.h"
 #include "ProjectIdle/OfficeDepartment.h"
 #include "ProjectIdle/Workstation.h"
+#include "Door.h"
 
 
 // Sets default values
@@ -118,7 +119,7 @@ void AWall::DeactivateWallAndFloor()
 void AWall::AssignFloorLevel()
 {
 
-	for (int i = 0; i < GM->FloorList.Num(); i++)
+	for (int i = 0; i <= GM->FloorList.Num() -1; i++)
 	{
 		for (int j = 0; j < GM->WallList.Num(); j++)
 		{
@@ -165,6 +166,18 @@ void AWall::AssignFloorLevel()
 				}
 			}
 			
+		}
+
+		for (auto Door : GM->DoorList)
+		{
+			if (Door->FloorLevel == -1)
+			{
+				if (Door->GetActorLocation().Y > GM->FloorList[i]->LeftSide.Y && Door->GetActorLocation().Y < GM->FloorList[i]->RightSide.Y)
+				{
+					Door->FloorLevel = GM->FloorList[i]->FloorLevel;
+				}
+			}
+
 		}
 
 

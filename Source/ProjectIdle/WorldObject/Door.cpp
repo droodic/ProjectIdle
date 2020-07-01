@@ -6,6 +6,7 @@
 #include "ProjectIdle/GameManager.h"
 #include "ProjectIdle/Employees/Employee.h"
 #include "Components/MeshComponent.h"
+#include "ProjectIdle/ProjectIdleCharacter.h"
 
 // Sets default values
 ADoor::ADoor()
@@ -49,11 +50,30 @@ void ADoor::Tick(float DeltaTime)
 void ADoor::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	auto Emp = Cast<AEmployee>(OtherActor);
+	auto Player = Cast<AProjectIdleCharacter>(OtherActor);
 
 	if (Emp != nullptr && Emp->IsFired)
 	{
 		Emp->FiredFinal();
 		//UI->ShowWidget(OfficeDepMenuWidget, UserWidgets[1]); 
+	}
+
+	if (Player != nullptr && GM->IsFloorUpgraded)
+	{
+		FVector NewVector = FVector(0, -100, 100);
+		if (Player->CurrentFloor == 1)
+		{
+			Player->SetActorLocation(FVector(198, 3806, 242));
+			Player->CurrentFloor = 2;
+			return;
+		}
+
+		if (Player->CurrentFloor == 2)
+		{
+			Player->SetActorLocation(GM->DoorList[0]->GetActorLocation() + NewVector);
+			Player->CurrentFloor = 1;
+			return;
+		}
 	}
 }
 

@@ -294,6 +294,7 @@ void UCeoDepMenuWidget::CreateDepartment()
 		{
 			if (Floor->Flooring == FloorType::Dev)
 			{
+				GM->IsFloorUpgraded = true;
 				GM->FloorList.Add(Floor);
 				GM->UnassignedFloorList.Remove(Floor);
 				GM->FloorList[GM->FloorList.Num() - 1]->FloorLevel = GM->FloorList.Num();

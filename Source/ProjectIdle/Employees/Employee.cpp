@@ -83,6 +83,11 @@ void AEmployee::BeginPlay()
 		WorkProgressBar->SetVisibility(false);
 	}
 
+	GM->Wall->AssignFloorLevel();
+	
+
+
+
 	if (Position != EPosition::Supervisor && Position != EPosition::FloorManager) {
 		//GM->WorkStation->UpdateWorkstationPosition();
 		for (auto Workstation : GM->WorkstationList) {
