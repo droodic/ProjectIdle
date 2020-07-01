@@ -154,6 +154,7 @@ void AWorkstation::NotifyActorOnClicked(FKey ButtonPressed)
 	else if (GM->IsWidgetInDisplay && InRange)
 	{
 		GM->IsWidgetInDisplay = false;
+		GM->CurrentEmployeeInDisplay->IsDisplaying = false;
 		if (GM->CurrentWidgetInDisplay)
 		{
 			GM->CurrentWidgetInDisplay->RemoveFromViewport();
@@ -177,22 +178,6 @@ void AWorkstation::NotifyActorOnClicked(FKey ButtonPressed)
 
 void AWorkstation::UpgradeMesh(AItem* Item)
 {
-	switch (Item->ItemSubCategory)
-	{
-	case ESubCategory::Monitor:
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "Item ID: " + FString::FromInt(Item->ItemID) + " Name: " + Item->ItemName + " Item sub: Monitor");
-		break;
-	case ESubCategory::Keyboard:
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "Item ID: " + FString::FromInt(Item->ItemID) + " Name: " + Item->ItemName + " Item sub: Keyboard");
-		break;
-	case ESubCategory::Desk:
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "Item ID: " + FString::FromInt(Item->ItemID) + " Name: " + Item->ItemName + " Item sub: Desk");
-		break;
-	case ESubCategory::Chair:
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "Item ID: " + FString::FromInt(Item->ItemID) + " Name: " + Item->ItemName + " Item sub: Chair");
-		break;
-	}
-
 	/*AItem* CurrentItem = Item;
 	for (auto item : GM->OfficeDepartment->GameItemList)
 	{
@@ -306,10 +291,6 @@ void AWorkstation::UpgradeMesh(AItem* Item)
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, "Item ID: " + FString::FromInt(item.GetDefaultObject()->ItemID) + " Name: " + item.GetDefaultObject()->ItemName);
 	}
 
-	
-
-
-
 	auto itemCount = GM->InventoryList.FindRef(Item);
 	itemCount--;
 
@@ -378,10 +359,13 @@ void AWorkstation::NotifyActorBeginOverlap(AActor* OtherActor)
 
 void AWorkstation::NotifyActorEndOverlap(AActor* OtherActor)
 {
-	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr) {
+	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr) 
+	{
 		InRange = false;
-		if (UpgradeWidget->IsInViewport()) {
+		if (UpgradeWidget->IsInViewport()) 
+		{
 			UpgradeWidget->RemoveFromViewport();
+			GM->IsWidgetInDisplay = false;
 		}
 	}
 }

@@ -61,6 +61,9 @@ public:
 
 	TArray<class AItem*> InventoryList;
 
+private:
+	bool bInRadius = false;
+
 //Functions
 public:
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void GenerateIdea();
@@ -83,6 +86,7 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
-	
+	void NotifyActorOnClicked(FKey ButtonPressed = EKeys::RightMouseButton) override;
+
 	class Idea GenerateIdeaValues();
 };
