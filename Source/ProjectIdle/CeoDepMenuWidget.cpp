@@ -114,7 +114,7 @@ void UCeoDepMenuWidget::CallArtistSupSpawn()
 
 void UCeoDepMenuWidget::CallFloorManagerSpawn()
 {
-	if (OfficeDepartment->ManagerRef == nullptr && GM->Money>= 100000) {
+	if (OfficeDepartment->ManagerRef == nullptr && GM->Money >= 100000) {
 
 		GM->Money -= 100000;
 		//ActivateWorkstation(ERole::Artist, EPosition::FloorManager, true);
@@ -209,6 +209,17 @@ void UCeoDepMenuWidget::GetFinishedIdea(Idea* idea)
 	Index++;
 }
 
+void UCeoDepMenuWidget::ClearFinishedGames()
+{
+	//->IdeaButton = Cast<UIdeaButton>(CreateWidget(this, IdeaButtonWidgetClass));
+	if (OfficeDepartment->FinishedIdeaList.Num() > 0) {
+		OfficeDepartment->FinishedIdeaList.Empty();
+	}
+	if (IdeaScrollBox->GetChildrenCount() > 0) {
+		IdeaScrollBox->ClearChildren();
+		Index = 0;
+	}
+}
 void UCeoDepMenuWidget::AddItemToInventory(AItem* item)
 {
 	UInventoryButton* NewItemButton = CreateWidget<UInventoryButton>(this, InventoryButtonWidgetClass);
