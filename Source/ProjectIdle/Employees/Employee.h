@@ -43,6 +43,8 @@ public:
 	// Sets default values for this character's properties
 	AEmployee();
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere) bool IsAtMeeting;
+
 	UPROPERTY(SaveGame, EditAnywhere) ERole EmployeeRole;
 	UPROPERTY(SaveGame, EditAnywhere) EPosition Position = EPosition::Intern;
 	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere) FText EmployeeName;
