@@ -19,12 +19,12 @@ public:
 	void AutomateTasks(bool PlayerInput = false);
 
 	//quick test iteration, State machine later?
-	bool AutoManaging;
-	UPROPERTY(BlueprintReadWrite) bool IdeaInProductionState;
-	UPROPERTY(BlueprintReadWrite) bool IdeaGenerationState;
-	UPROPERTY(BlueprintReadWrite) bool MeetingState;
-	UPROPERTY(BlueprintReadWrite) bool AllAtMeeting;
-	UPROPERTY(BlueprintReadWrite) bool GeneratingIdea;
+	UPROPERTY(SaveGame) bool AutoManaging;
+	UPROPERTY(SaveGame, BlueprintReadWrite) bool IdeaInProductionState;
+	UPROPERTY(SaveGame, BlueprintReadWrite) bool IdeaGenerationState;
+	UPROPERTY(SaveGame, BlueprintReadWrite) bool MeetingState;
+	UPROPERTY(SaveGame, BlueprintReadWrite) bool AllAtMeeting;
+	UPROPERTY(SaveGame, BlueprintReadWrite) bool GeneratingIdea;
 	int IdeaIndex = 0;
 
 protected:

@@ -119,7 +119,7 @@ void UCeoDepMenuWidget::CallFloorManagerSpawn()
 		GM->Money -= 100000;
 		//ActivateWorkstation(ERole::Artist, EPosition::FloorManager, true);
 		//GM->ArtistDepartment->HasSupervisor = true;
-		OfficeDepartment->GenerateActor(5, ERole::Programmer);
+		OfficeDepartment->GenerateActor(5, ERole::Management);
 		Hire_FloorManager_Btn->SetIsEnabled(false);
 		//OfficeDepartment->GetDepartmentUIValues();
 	}

@@ -35,8 +35,8 @@ void UGameManager::SaveGame(FString SaveFile)
 	}
 	for (auto Idea : OfficeDepartment->IdeaList) {
 		SaveGameInstance->IdeaList.Add(Idea);
-
 	}
+	//SaveGameInstance->IdeaInProduction = IdeaInProduction;
 
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("Default"), 0);
 
@@ -98,6 +98,7 @@ void UGameManager::LoadGame(FString SaveFile)
 		OfficeDepartment->IdeaList.Add(Idea);
 		OfficeDepartment->PopulateIdeaListFromSave(Idea); 
 	}
+	//IdeaInProduction = SaveGameInstance->IdeaInProduction;
 
 	FString outPath = FPaths::ProjectSavedDir() + SaveFile;
 

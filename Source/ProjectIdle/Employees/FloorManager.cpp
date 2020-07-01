@@ -6,7 +6,7 @@
 //#include "ProjectIdle/OfficeDepartment.h"
 
 AFloorManager::AFloorManager() {
-	EmployeeRole = ERole::Programmer; //?
+	EmployeeRole = ERole::Management; //?
 	Position = EPosition::FloorManager;
 }
 
@@ -23,6 +23,8 @@ void AFloorManager::Tick(float DeltaTime) {
 	if (AutoManaging) {
 		//Start idea gen state
 		if (IdeaGenerationState && !AI->IsMoving && !GM->OfficeDepartment->IsGenerating) {
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Manager gen idea");
+
 			GM->OfficeDepartment->GenerateIdea();
 			GeneratingIdea = true;
 			IdeaGenerationState = false;
@@ -32,8 +34,11 @@ void AFloorManager::Tick(float DeltaTime) {
 		if (MeetingState && !AI->IsMoving) {
 			//call meeting handled by ideabacklog widget function after, migrate somehow here? 
 			//MAKE THIS TIMER, CALLED VERY OFTEN, or find better way
+
 			GM->MeetingDepartment->BackFromMeeting();
 			if (GM->MeetingDepartment->CanReturn) {
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Manager backfrommeeting");
+
 				MeetingState = false;
 				IdeaInProductionState = true;
 			}
@@ -42,6 +47,8 @@ void AFloorManager::Tick(float DeltaTime) {
 		if (IdeaInProductionState) {
 			if (!GM->IdeaInProduction) {
 				AutomateTasks();
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Manager restartloop");
+
 				IdeaInProductionState = false;
 			}
 		}

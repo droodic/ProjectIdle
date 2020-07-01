@@ -161,7 +161,7 @@ void AWorkstation::UpgradeMesh(AItem* Item)
 	}
 	else if (Item->ItemSubCategory == ESubCategory::Desk) 
 	{
-		ChairMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
+		DeskMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
 		UpgradeWidget->Desk_Img->SetBrushFromTexture(Item->ItemImage);
 		DeskMeshID = Item->ItemID;
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Desk detect"));
