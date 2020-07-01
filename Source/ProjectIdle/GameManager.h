@@ -58,7 +58,10 @@ public:
 	UPROPERTY(BlueprintReadWrite) float CheatSpeedRate = 1;
 
 	bool IdeaInProduction = false;
+	bool IsWidgetInDisplay = false;
+	UUserWidget* CurrentWidgetInDisplay;
 
+public:
 	virtual void Init();
 	UFUNCTION(BlueprintImplementableEvent) void SaveGameState();
 	UFUNCTION(BlueprintImplementableEvent) void LoadGameState();

@@ -38,10 +38,7 @@ public:
 	//UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* UpgradeMonitor_Btn;
 	//UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* UpgradeKeyboard_Btn;
 
-
-	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void Monitor();
-	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") void Keyboard();
-
+public:
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void ShowInventory(ESubCategory ItemCategory);
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void ShowInventoryMonitor();
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void ShowInventoryDesk();
