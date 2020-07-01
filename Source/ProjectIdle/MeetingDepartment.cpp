@@ -121,6 +121,7 @@ void AMeetingDepartment::MoveToMeeting()
 			Dep->SupervisorRef->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
 			EmployeesAtMeetingList.Add(Dep->SupervisorRef);
 			if (GM->OfficeDepartment->ManagerRef != nullptr && !OnlyOnce) {
+				EmployeesAtMeetingList.Add(Cast<AEmployee>(GM->OfficeDepartment->ManagerRef));
 				GM->OfficeDepartment->ManagerRef->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
 				OnlyOnce = true;
 			}
@@ -131,9 +132,16 @@ void AMeetingDepartment::MoveToMeeting()
 			if (!MoreEmployeeThanChair) {
 				for (auto Emp : GM->EmployeeList) {
 					//if (Dep->DepRole == Emp->EmployeeRole) {
-					EmployeesAtMeetingList.Add(Emp);
-					Emp->IsAtMeeting = true;
-					Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
+					if (Cast<AFloorManager>(Emp) && GM->OfficeDepartment->ManagerRef != nullptr && !OnlyOnce) {
+						EmployeesAtMeetingList.Add(Cast<AEmployee>(GM->OfficeDepartment->ManagerRef));
+						Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
+						OnlyOnce = true;
+					}
+					else if (Cast<AFloorManager>(Emp) == nullptr) {
+						EmployeesAtMeetingList.Add(Emp);
+						Emp->IsAtMeeting = true;
+						Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
+					}
 					//Emp->MoveEmployee(FVector(0, 0, 0));
 					//GEngine->AddOnScreenDebugMessage(Index++, 5.f, FColor::Red, "No supp- Sending employee");
 				//}

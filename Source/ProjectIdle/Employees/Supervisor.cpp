@@ -43,7 +43,21 @@ void ASupervisor::EvaluateEmployee() {
 void ASupervisor::BeginPlay()
 {
 	Super::BeginPlay();
-	StartPosition = FVector(0, 0, 0);
+	//StartPosition = FVector(0, 0, 0);
+
+
+		//GM->WorkStation->UpdateWorkstationPosition();
+	for (auto Workstation : GM->WorkstationList) {
+		if (Workstation->IsEnabled == true && !Workstation->HasEmployee && Workstation->StationRole == EmployeeRole && Workstation->StationOwnerPosition == EPosition::Supervisor) {
+			Workstation->UpdateWorkstationPosition(this);
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Assigning Sup Workstation");
+			break;
+		}
+		//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, "Looping Workstation");
+	}
+	//IsDepartmentWorking();
+	MoveEmployee(StartPosition);
+
 
 }
 

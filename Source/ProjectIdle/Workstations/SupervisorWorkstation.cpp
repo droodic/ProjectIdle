@@ -7,5 +7,5 @@
 ASupervisorWorkstation::ASupervisorWorkstation()
 {
 	//StationRole = ERole::Artist;
-	//StationOwnerPosition = EPosition::Supervisor;
+	StationOwnerPosition = EPosition::Supervisor;
 }
