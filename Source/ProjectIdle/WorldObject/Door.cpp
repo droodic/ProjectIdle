@@ -34,7 +34,7 @@ void ADoor::BeginPlay()
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->Door = this;
-
+	GM->DoorList.Add(this);
 	//DoorLocation = this->GetActorLocation();
 }
 

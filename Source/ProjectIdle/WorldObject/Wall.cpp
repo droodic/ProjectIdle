@@ -5,6 +5,9 @@
 #include "ProjectIdle/GameManager.h"
 #include "Components/MeshComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Math/Vector.h"
+#include "ProjectIdle/OfficeDepartment.h"
+#include "ProjectIdle/Workstation.h"
 
 
 // Sets default values
@@ -38,7 +41,13 @@ void AWall::BeginPlay()
 	if (this->Type == ObjectType::Floor && StartingFloor)
 	{
 		GM->FloorList.Add(this);
+
 	}
+	if (this->Type == ObjectType::Floor && !StartingFloor)
+	{
+		GM->UnassignedFloorList.Add(this);
+	}
+
 }
 
 // Called every frame
@@ -104,4 +113,63 @@ void AWall::DeactivateWallAndFloor()
 			GM->WallList[i]->EnableObject(false);
 		}
 	}
+}
+
+void AWall::AssignFloorLevel()
+{
+
+	for (int i = 0; i < GM->FloorList.Num(); i++)
+	{
+		for (int j = 0; j < GM->WallList.Num(); j++)
+		{
+			if (GM->WallList[j]->WallDirection == WallPosition::Left && GM->WallList[j]->GetActorLocation().Y == GM->FloorList[i]->GetActorLocation().Y)
+			{
+				GM->FloorList[i]->LeftSide = GM->WallList[j]->GetActorLocation();
+			}
+			else if (GM->WallList[j]->WallDirection == WallPosition::Right && GM->WallList[j]->GetActorLocation().Y - 2230 == GM->FloorList[i]->GetActorLocation().Y)
+			{
+				GM->FloorList[i]->RightSide = GM->WallList[j]->GetActorLocation();
+
+			}
+		}
+
+		for (auto Emp : GM->EmployeeList)
+		{
+			if (Emp->FloorLevel == -1)
+			{
+				if (Emp->GetActorLocation().Y > GM->FloorList[i]->LeftSide.Y && Emp->GetActorLocation().Y < GM->FloorList[i]->RightSide.Y)
+				{
+					Emp->FloorLevel = GM->FloorList[i]->FloorLevel;
+				}
+			}
+		}
+
+		for (auto OfficeDep : GM->OfficeDepartmentList)
+		{
+			if (OfficeDep->FloorLevel == -1)
+			{
+				if (OfficeDep->GetActorLocation().Y > GM->FloorList[i]->LeftSide.Y && OfficeDep->GetActorLocation().Y < GM->FloorList[i]->RightSide.Y)
+				{
+					OfficeDep->FloorLevel = GM->FloorList[i]->FloorLevel;
+				}
+			}
+		}
+
+		for (auto Workstation : GM->WorkstationList)
+		{
+			if (Workstation->FloorLevel == -1)
+			{
+				if (Workstation->GetActorLocation().Y > GM->FloorList[i]->LeftSide.Y && Workstation->GetActorLocation().Y < GM->FloorList[i]->RightSide.Y)
+				{
+					Workstation->FloorLevel = GM->FloorList[i]->FloorLevel;
+				}
+			}
+			
+		}
+
+
+	}
+
+
+
 }

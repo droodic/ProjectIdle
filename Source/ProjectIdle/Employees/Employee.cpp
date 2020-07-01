@@ -21,6 +21,7 @@
 #include "ProjectIdle/Widgets/EmployeeSheetWidget.h"
 #include "Runtime/AIModule/Classes/Blueprint/AIBlueprintHelperLibrary.h"
 #include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
+#include "ProjectIdle/WorldObject/Wall.h"
 
 // Sets default values
 AEmployee::AEmployee()
@@ -303,6 +304,12 @@ void AEmployee::Promote()
 {
 	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, "Promote button called");
 	float AddMorale = FMath::FRandRange(.25f, .75f);
+
+	for (int j = 0; j < GM->FloorList.Num(); j++)
+	{
+		GM->FloorList[j]->AssignFloorLevel();
+		GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Red, "Noob");
+	}
 
 	if (GM->Money >= CostEmployeePromote)
 	{

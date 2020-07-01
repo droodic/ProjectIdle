@@ -20,11 +20,12 @@ public:
 		UBoxComponent* CollisionBox;
 
 	class UGameManager* GM;
-
 	UPROPERTY() FVector DoorLocation;
 	UPROPERTY() USceneComponent* Root;
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* DoorMesh;
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* DoorFrameMesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
 
 protected:
 	// Called when the game starts or when spawned

@@ -16,6 +16,24 @@ enum class ObjectType : uint8
 
 };
 
+UENUM(Meta = (ScriptName = "FloorType"))
+enum class FloorType : uint8
+{
+	None     		UMETA(DisplayName = "None"),
+	Dev             UMETA(DisplayName = "Dev"),
+	Marketing		UMETA(DisplayName = "Marketing"),
+
+};
+
+UENUM(Meta = (ScriptName = "WallPosition"))
+enum class WallPosition : uint8
+{
+	None             UMETA(DisplayName = "None"),
+	Right            UMETA(DisplayName = "Right"),
+	Left		     UMETA(DisplayName = "Left"),
+
+};
+
 
 UCLASS()
 class PROJECTIDLE_API AWall : public AActor
@@ -34,9 +52,18 @@ public:
 	UPROPERTY(EditAnywhere) UMaterial* UpgradeMaterial;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "IsEnabled") bool IsEnabled;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "ObjectType") ObjectType Type;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "IsEnabled") bool RemovableWall;
+	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere, Category = "ObjectType") ObjectType Type;
+	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere, Category = "FloorType") FloorType Flooring;
+	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere, Category = "WallPosition") WallPosition WallDirection;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool StartingFloor;
+
+	//int FloorLevel;
+	bool IsFloorAssigned = false;
+	FVector LeftSide;
+	FVector RightSide;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
 
 
 
@@ -53,4 +80,7 @@ public:
 	UFUNCTION() void ActivateWallAndFloor();
 	UFUNCTION() void DeactivateWallAndFloor();
 	UFUNCTION() void EnableObject(bool Enabled);
+	UFUNCTION() void AssignFloorLevel();
+
+
 };

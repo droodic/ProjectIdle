@@ -79,6 +79,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UWidgetComponent* CompileProgressBar;
 	UPROPERTY(SaveGame) int CompileModifier = 0;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
