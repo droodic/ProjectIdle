@@ -3,7 +3,9 @@
 
 #include "GameManager.h"
 #include "GameSave.h"
+#include "Idea.h"
 #include "OfficeDepartment.h"
+#include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
 #include "MeetingDepartment.h"
 
 
@@ -40,6 +42,9 @@ void UGameManager::SaveGame(FString SaveFile)
 	for (auto Idea : OfficeDepartment->IdeaList) {
 		SaveGameInstance->IdeaList.Add(Idea);
 	}
+
+	SaveGameInstance->SavedTime = FDateTime::Now();
+
 	//SaveGameInstance->IdeaInProduction = IdeaInProduction;
 
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("Default"), 0);
@@ -102,6 +107,38 @@ void UGameManager::LoadGame(FString SaveFile)
 		OfficeDepartment->IdeaList.Add(Idea);
 		OfficeDepartment->PopulateIdeaListFromSave(Idea);
 	}
+
+
+	//if automanaging on
+	FDateTime CurrentTime = FDateTime::Now();
+	FTimespan Difference;
+	Difference = CurrentTime - SaveGameInstance->SavedTime;
+
+	GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Time spent since last save:(seconds) " + FString::FromInt(Difference.GetTotalSeconds()));
+
+	int IdeasToGenerate = Difference.GetTotalSeconds();
+	IdeasToGenerate /= 10;
+
+	OfficeDepartment->OfficeDepMenuWidget->ClearFinishedGames();
+
+	for(int i = 0; i < IdeasToGenerate; i++) {
+		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "finished idea load " + FString::FromInt(Difference.GetTotalSeconds()));
+		//Generate Idea in Publish List
+		auto randomNumber = UKismetMathLibrary::RandomIntegerInRange(0, 100);
+		auto newIdea = new Idea("GAME " + FString::FromInt(randomNumber), "Game description of game " + FString::FromInt(randomNumber), Idea::GetRandomGenre(), FLinearColor::MakeRandomColor(), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f));
+
+		if (OfficeDepartment->OfficeDepMenuWidget != nullptr) {
+
+			OfficeDepartment->OfficeDepMenuWidget->GetFinishedIdea(newIdea);
+		}
+	}
+	
+	//SaveGameInstance->SavedTime = FDateTime::Now(); //Reset
+
+	//float SavedTicks = SaveGameInstance->SavedTime.GetTicks();
+	//float SavedHours = SaveGameInstance->SavedTime.GetHour();
+
+
 	//IdeaInProduction = SaveGameInstance->IdeaInProduction;
 
 	FString outPath = FPaths::ProjectSavedDir() + SaveFile;
