@@ -54,7 +54,7 @@ void UWorkstationUpgradeWidget::ShowInventory(ESubCategory ItemCategory)
 
 			auto itemCount = GM->InventoryList.FindRef(Item);
 
-			if (Item->ItemButton->ItemCount > 1)
+			if (itemCount > 1)
 			{
 				NewItemButton->ItemCount_T->SetText(FText::FromString(FString::FromInt(itemCount)));
 			}
@@ -64,19 +64,23 @@ void UWorkstationUpgradeWidget::ShowInventory(ESubCategory ItemCategory)
 	}
 }
 
-void UWorkstationUpgradeWidget::ShowInventoryMonitor() {
+void UWorkstationUpgradeWidget::ShowInventoryMonitor() 
+{
 	ShowInventory(ESubCategory::Monitor);
 }
 
-void UWorkstationUpgradeWidget::ShowInventoryDesk() {
+void UWorkstationUpgradeWidget::ShowInventoryDesk() 
+{
 	ShowInventory(ESubCategory::Desk);
 }
 
-void UWorkstationUpgradeWidget::ShowInventoryChair() {
+void UWorkstationUpgradeWidget::ShowInventoryChair() 
+{
 	ShowInventory(ESubCategory::Chair);
 }
 
-void UWorkstationUpgradeWidget::ShowInventoryKeyboard() {
+void UWorkstationUpgradeWidget::ShowInventoryKeyboard() 
+{
 	ShowInventory(ESubCategory::Keyboard);
 }
 

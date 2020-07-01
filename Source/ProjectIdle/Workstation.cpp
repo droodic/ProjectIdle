@@ -178,51 +178,6 @@ void AWorkstation::NotifyActorOnClicked(FKey ButtonPressed)
 
 void AWorkstation::UpgradeMesh(AItem* Item)
 {
-	/*AItem* CurrentItem = Item;
-	for (auto item : GM->OfficeDepartment->GameItemList)
-	{
-		switch (Item->ItemSubCategory)
-		{
-		case ESubCategory::Monitor:
-			if (ComputerMeshID == item.GetDefaultObject()->ItemID)
-			{
-				CurrentItem = item.GetDefaultObject();
-			}
-			break;
-		case ESubCategory::Keyboard:
-			if (KeyboardMeshID == item.GetDefaultObject()->ItemID)
-			{
-				CurrentItem = item.GetDefaultObject();
-			}
-			break;
-		case ESubCategory::Desk:
-			if (DeskMeshID == item.GetDefaultObject()->ItemID)
-			{
-				CurrentItem = item.GetDefaultObject();
-			}
-			break;
-		case ESubCategory::Chair:
-			if (ChairMeshID == item.GetDefaultObject()->ItemID)
-			{
-				CurrentItem = item.GetDefaultObject();
-			}
-			break;
-		}
-	}
-
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, "Item ID: " + FString::FromInt(CurrentItem->ItemID) + " Name: " + CurrentItem->ItemName);
-
-	if (GM->InventoryList.Contains(CurrentItem))
-	{
-		auto itemCount = GM->InventoryList.FindRef(CurrentItem);
-		itemCount++;
-		GM->InventoryList.Add(CurrentItem, itemCount);
-	}
-	else
-	{
-		GM->InventoryList.Add(CurrentItem, 1);
-	}*/
-
 	for (auto item : GM->OfficeDepartment->GameItemList)
 	{
 		switch (Item->ItemSubCategory)
@@ -301,14 +256,12 @@ void AWorkstation::UpgradeMesh(AItem* Item)
 		GM->InventoryList.Remove(Item);
 	}
 
-
 	if (Item->ItemSubCategory == ESubCategory::Monitor)
 	{
 		ComputerMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
 		UpgradeWidget->MonitorImage->SetBrushFromTexture(Item->ItemImage);
 		CompileModifier = Item->ItemCompileRate;
 		ComputerMeshID = Item->ItemID;
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::White, "Current Monitor ID: " + FString::FromInt(ComputerMeshID));
 	}
 	else if (Item->ItemSubCategory == ESubCategory::Keyboard)
 	{
