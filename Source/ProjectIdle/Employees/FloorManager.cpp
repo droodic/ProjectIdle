@@ -6,19 +6,15 @@
 //#include "ProjectIdle/OfficeDepartment.h"
 
 AFloorManager::AFloorManager() {
-	EmployeeRole = ERole::Programmer; //?
+	EmployeeRole = ERole::Management; //?
 	Position = EPosition::FloorManager;
 }
 
 void AFloorManager::BeginPlay() {
 	Super::BeginPlay();
-	//dont call super, check if need regular Employee Position check then
 	GM->OfficeDepartment->ManagerRef = this;
-	//AutomateTasks();
 	StartPosition = GM->OfficeDepartment->ChairMesh->GetComponentLocation();
 	MoveEmployee(StartPosition);
-	//MoveEmployee(StartPosition);
-	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "...");
 
 }
 
@@ -27,6 +23,8 @@ void AFloorManager::Tick(float DeltaTime) {
 	if (AutoManaging) {
 		//Start idea gen state
 		if (IdeaGenerationState && !AI->IsMoving && !GM->OfficeDepartment->IsGenerating) {
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Manager gen idea");
+
 			GM->OfficeDepartment->GenerateIdea();
 			GeneratingIdea = true;
 			IdeaGenerationState = false;
@@ -36,8 +34,11 @@ void AFloorManager::Tick(float DeltaTime) {
 		if (MeetingState && !AI->IsMoving) {
 			//call meeting handled by ideabacklog widget function after, migrate somehow here? 
 			//MAKE THIS TIMER, CALLED VERY OFTEN, or find better way
+
 			GM->MeetingDepartment->BackFromMeeting();
 			if (GM->MeetingDepartment->CanReturn) {
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Manager backfrommeeting");
+
 				MeetingState = false;
 				IdeaInProductionState = true;
 			}
@@ -46,6 +47,8 @@ void AFloorManager::Tick(float DeltaTime) {
 		if (IdeaInProductionState) {
 			if (!GM->IdeaInProduction) {
 				AutomateTasks();
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Manager restartloop");
+
 				IdeaInProductionState = false;
 			}
 		}

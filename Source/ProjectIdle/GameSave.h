@@ -16,6 +16,7 @@ public:
 	UGameSave();
 	UGameManager* GM;
 
+	bool IdeaInProduction;
 	UPROPERTY(EditAnywhere) FVector Saved_PlayerLocation;
 	UPROPERTY(EditAnywhere) int Saved_Money;
 	UPROPERTY(EditAnywhere) TArray<class AItem*> InventoryList;

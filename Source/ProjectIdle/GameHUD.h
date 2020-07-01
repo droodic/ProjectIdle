@@ -17,6 +17,7 @@ class PROJECTIDLE_API AGameHUD : public AHUD
 
 public:
 	AGameHUD();
+	class UGameManager* GM;
 
 	virtual void DrawHUD() override;
 	virtual void BeginPlay() override;
@@ -31,6 +32,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Widgets")
 		TSubclassOf<UUserWidget> WorkstationClass;
 
+	UPROPERTY() class UEmployeeSheetWidget* EmpSheetWidget;
 	//class UCeoDepMenuWidget* OfficeDepMenuWidget;
 
 	class UMoneyWidget* MoneyWidget;
@@ -39,7 +41,6 @@ private:
 	//UWorkstationUpgradeWidget* WorkstationWidget;
 
 public:
-	UPROPERTY() class UEmployeeSheetWidget* EmpSheetWidget;
 	void ShowEmployeeSheet(class AEmployee* employee);
 	void RefreshEmployeeSheet(class AEmployee* employee);
 	void ShowStationUpgrade(class AWorkstation* station);

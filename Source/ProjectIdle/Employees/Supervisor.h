@@ -17,8 +17,8 @@ public:
 	ASupervisor(ERole Department);
 	ASupervisor();
 
-	bool IsEvaluating;
-	AEmployee* EmployeeToEval;
+	UPROPERTY(SaveGame) bool IsEvaluating;
+	UPROPERTY(SaveGame) AEmployee* EmployeeToEval;
 
 	void InitSupervisor(ERole Department);
 	void EvaluateEmployee();

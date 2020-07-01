@@ -95,7 +95,17 @@ void UShopWidget::Buy()
 						}
 					}
 				}*/
-				GameManager->InventoryList.Add(CheckList[i]->Item);
+
+				if (GameManager->InventoryList.Contains(CheckList[i]->Item))
+				{
+					auto itemCount = GameManager->InventoryList.FindRef(CheckList[i]->Item);
+					itemCount += CheckList[i]->ItemCount;
+					GameManager->InventoryList.Add(CheckList[i]->Item, itemCount);
+				}
+				else
+				{
+					GameManager->InventoryList.Add(CheckList[i]->Item, CheckList[i]->ItemCount);
+				}
 
 				if (CheckList[i]->Item->ItemCategory == ECategory::Materials || CheckList[i]->Item->ItemCategory == ECategory::OfficeDecorations)
 				{

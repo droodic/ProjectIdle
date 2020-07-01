@@ -113,26 +113,31 @@ void AMeetingDepartment::MoveToMeeting()
 		//If there too many employee
 		MoreEmployeeThanChair = true;
 	}
-
+	bool OnlyOnce = false;
 	for (auto Dep : GM->DepartmentList) {
 		//GEngine->AddOnScreenDebugMessage(Index++, 3.f, FColor::Red, "Loop through Deplist", true);
 
 		if (Dep->HasSupervisor) {
 			Dep->SupervisorRef->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
 			EmployeesAtMeetingList.Add(Dep->SupervisorRef);
+			if (GM->OfficeDepartment->ManagerRef != nullptr && !OnlyOnce) {
+				GM->OfficeDepartment->ManagerRef->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
+				OnlyOnce = true;
+			}
 			//GEngine->AddOnScreenDebugMessage(Index++, 5.f, FColor::Red, "Supervisor found");
 			//break;
 		}
 		else if (!Dep->HasSupervisor) {
 			if (!MoreEmployeeThanChair) {
 				for (auto Emp : GM->EmployeeList) {
-					if (Dep->DepRole == Emp->EmployeeRole) {
+					//if (Dep->DepRole == Emp->EmployeeRole) {
 						EmployeesAtMeetingList.Add(Emp);
 						Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
 						//Emp->MoveEmployee(FVector(0, 0, 0));
 						//GEngine->AddOnScreenDebugMessage(Index++, 5.f, FColor::Red, "No supp- Sending employee");
-					}
+					//}
 				}
+				break;
 			}
 			else {
 				//Debug Message to prevent crash, implement later NEED SUPERVISOR, EMPLOYEEROOM TOO FULL

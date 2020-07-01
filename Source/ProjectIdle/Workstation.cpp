@@ -2,18 +2,20 @@
 
 
 #include "Workstation.h"
+#include "Engine.h"
 #include "ProjectIdle/GameManager.h"
+#include "ProjectIdle/GameHUD.h"
 #include "ProjectIdle/OfficeDepartment.h"
+#include "ProjectIdle/Department.h"
 #include "Employees/Artist.h"
 #include "Employees/Programmer.h"
-#include "ProjectIdle/GameHUD.h"
-#include "ProjectIdle/Department.h"
 #include "Workstations/ArtistStation.h"
 #include "Workstations/ProgrammerStation.h"
+//#include "ProjectIdle/Shop/Item.h"
+#include "ProjectIdle/Shop/ItemButton.h"
 #include "ProjectIdle/Widgets/WorkstationUpgradeWidget.h"
 #include "ProjectIdle/Widgets/WorkstationCompileWidget.h"
 #include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
-#include "Engine.h"
 
 // Sets default values
 AWorkstation::AWorkstation()
@@ -41,7 +43,6 @@ AWorkstation::AWorkstation()
 	CompileProgressBar->AttachTo(RootComponent);
 	CompileProgressBar->SetVisibility(false);
 	CompileProgressBar->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-
 }
 
 // Called when the game starts or when spawned
@@ -73,6 +74,13 @@ void AWorkstation::BeginPlay()
 		CompileProgressBar->SetVisibility(false);
 	}
 
+	/*if (DefaultMonitor != nullptr && DefaultKeyboard != nullptr && DefaultDesk != nullptr && DefaultChair != nullptr)
+	{
+		CurrentMonitor = DefaultMonitor.GetDefaultObject();
+		CurrentKeyboard = DefaultKeyboard.GetDefaultObject();
+		CurrentDesk = DefaultDesk.GetDefaultObject();
+		CurrentChair = DefaultChair.GetDefaultObject();
+	}*/
 	//DoCompile();//test
 }
 
@@ -95,7 +103,6 @@ void AWorkstation::Tick(float DeltaTime)
 				IsCompiling = false;
 			}
 		}
-
 	}
 }
 
@@ -129,58 +136,219 @@ void AWorkstation::EnableStation(bool Enable)
 
 void AWorkstation::NotifyActorOnClicked(FKey ButtonPressed)
 {
-	if (!UpgradeWidget->IsInViewport() && InRange)
+	if (!GM->IsWidgetInDisplay)
 	{
-		UpgradeWidget->AddToViewport();
-		
-		if (UpgradeWidget->InventoryWrapBox->GetChildrenCount() >= 1)
+		if (!UpgradeWidget->IsInViewport() && InRange)
 		{
-			UpgradeWidget->InventoryWrapBox->ClearChildren();
+			GM-> IsWidgetInDisplay = true;
+			GM->CurrentWidgetInDisplay = UpgradeWidget;
+
+			UpgradeWidget->AddToViewport();
+
+			if (UpgradeWidget->InventoryWrapBox->GetChildrenCount() >= 1)
+			{
+				UpgradeWidget->InventoryWrapBox->ClearChildren();
+			}
 		}
-		
-		/*if (UpgradeWidget->InventoryScrollBox->GetChildrenCount() >= 1)
-		{
-			UpgradeWidget->InventoryScrollBox->ClearChildren();
-		}*/
 	}
-	else
+	else if (GM->IsWidgetInDisplay && InRange)
 	{
-		UpgradeWidget->RemoveFromViewport();
+		GM->IsWidgetInDisplay = false;
+		if (GM->CurrentWidgetInDisplay)
+		{
+			GM->CurrentWidgetInDisplay->RemoveFromViewport();
+		}
+
+		if (!UpgradeWidget->IsInViewport() && InRange)
+		{
+			GM->IsWidgetInDisplay = true;
+			GM->CurrentWidgetInDisplay = Cast<UUserWidget>(UpgradeWidget);
+
+			UpgradeWidget->AddToViewport();
+
+			if (UpgradeWidget->InventoryWrapBox->GetChildrenCount() >= 1)
+			{
+				UpgradeWidget->InventoryWrapBox->ClearChildren();
+			}
+		}
+
 	}
 }
 
 void AWorkstation::UpgradeMesh(AItem* Item)
 {
-	if (Item->ItemSubCategory == ESubCategory::Monitor) 
+	switch (Item->ItemSubCategory)
+	{
+	case ESubCategory::Monitor:
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "Item ID: " + FString::FromInt(Item->ItemID) + " Name: " + Item->ItemName + " Item sub: Monitor");
+		break;
+	case ESubCategory::Keyboard:
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "Item ID: " + FString::FromInt(Item->ItemID) + " Name: " + Item->ItemName + " Item sub: Keyboard");
+		break;
+	case ESubCategory::Desk:
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "Item ID: " + FString::FromInt(Item->ItemID) + " Name: " + Item->ItemName + " Item sub: Desk");
+		break;
+	case ESubCategory::Chair:
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, "Item ID: " + FString::FromInt(Item->ItemID) + " Name: " + Item->ItemName + " Item sub: Chair");
+		break;
+	}
+
+	/*AItem* CurrentItem = Item;
+	for (auto item : GM->OfficeDepartment->GameItemList)
+	{
+		switch (Item->ItemSubCategory)
+		{
+		case ESubCategory::Monitor:
+			if (ComputerMeshID == item.GetDefaultObject()->ItemID)
+			{
+				CurrentItem = item.GetDefaultObject();
+			}
+			break;
+		case ESubCategory::Keyboard:
+			if (KeyboardMeshID == item.GetDefaultObject()->ItemID)
+			{
+				CurrentItem = item.GetDefaultObject();
+			}
+			break;
+		case ESubCategory::Desk:
+			if (DeskMeshID == item.GetDefaultObject()->ItemID)
+			{
+				CurrentItem = item.GetDefaultObject();
+			}
+			break;
+		case ESubCategory::Chair:
+			if (ChairMeshID == item.GetDefaultObject()->ItemID)
+			{
+				CurrentItem = item.GetDefaultObject();
+			}
+			break;
+		}
+	}
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, "Item ID: " + FString::FromInt(CurrentItem->ItemID) + " Name: " + CurrentItem->ItemName);
+
+	if (GM->InventoryList.Contains(CurrentItem))
+	{
+		auto itemCount = GM->InventoryList.FindRef(CurrentItem);
+		itemCount++;
+		GM->InventoryList.Add(CurrentItem, itemCount);
+	}
+	else
+	{
+		GM->InventoryList.Add(CurrentItem, 1);
+	}*/
+
+	for (auto item : GM->OfficeDepartment->GameItemList)
+	{
+		switch (Item->ItemSubCategory)
+		{
+		case ESubCategory::Monitor:
+			if (ComputerMeshID == item.GetDefaultObject()->ItemID)
+			{
+				if (GM->InventoryList.Contains(item.GetDefaultObject()))
+				{
+					auto itemCount = GM->InventoryList.FindRef(item.GetDefaultObject());
+					itemCount++;
+					GM->InventoryList.Add(item.GetDefaultObject(), itemCount);
+				}
+				else
+				{
+					GM->InventoryList.Add(item.GetDefaultObject(), 1);
+				}
+			}
+			break;
+		case ESubCategory::Keyboard:
+			if (KeyboardMeshID == item.GetDefaultObject()->ItemID)
+			{
+				if (GM->InventoryList.Contains(item.GetDefaultObject()))
+				{
+					auto itemCount = GM->InventoryList.FindRef(item.GetDefaultObject());
+					itemCount++;
+					GM->InventoryList.Add(item.GetDefaultObject(), itemCount);
+				}
+				else
+				{
+					GM->InventoryList.Add(item.GetDefaultObject(), 1);
+				}
+			}
+			break;
+		case ESubCategory::Desk:
+			if (DeskMeshID == item.GetDefaultObject()->ItemID)
+			{
+				if (GM->InventoryList.Contains(item.GetDefaultObject()))
+				{
+					auto itemCount = GM->InventoryList.FindRef(item.GetDefaultObject());
+					itemCount++;
+					GM->InventoryList.Add(item.GetDefaultObject(), itemCount);
+				}
+				else
+				{
+					GM->InventoryList.Add(item.GetDefaultObject(), 1);
+				}
+			}
+			break;
+		case ESubCategory::Chair:
+			if (ChairMeshID == item.GetDefaultObject()->ItemID)
+			{
+				if (GM->InventoryList.Contains(item.GetDefaultObject()))
+				{
+					auto itemCount = GM->InventoryList.FindRef(item.GetDefaultObject());
+					itemCount++;
+					GM->InventoryList.Add(item.GetDefaultObject(), itemCount);
+				}
+				else
+				{
+					GM->InventoryList.Add(item.GetDefaultObject(), 1);
+				}
+			}
+			break;
+		}
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, "Item ID: " + FString::FromInt(item.GetDefaultObject()->ItemID) + " Name: " + item.GetDefaultObject()->ItemName);
+	}
+
+	
+
+
+
+	auto itemCount = GM->InventoryList.FindRef(Item);
+	itemCount--;
+
+	GM->InventoryList.Emplace(Item, itemCount);
+
+	if (GM->InventoryList.FindRef(Item) == 0)
+	{
+		GM->InventoryList.Remove(Item);
+	}
+
+
+	if (Item->ItemSubCategory == ESubCategory::Monitor)
 	{
 		ComputerMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
 		UpgradeWidget->MonitorImage->SetBrushFromTexture(Item->ItemImage);
 		CompileModifier = Item->ItemCompileRate;
 		ComputerMeshID = Item->ItemID;
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Computermesh detect, ID: " + FString::FromInt(ComputerMeshID)));
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::White, "Current Monitor ID: " + FString::FromInt(ComputerMeshID));
 	}
-	else if (Item->ItemSubCategory == ESubCategory::Desk) 
-	{
-		ChairMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
-		UpgradeWidget->Desk_Img->SetBrushFromTexture(Item->ItemImage);
-		DeskMeshID = Item->ItemID;
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Desk detect"));
-	}
-	else if (Item->ItemSubCategory == ESubCategory::Keyboard) 
+	else if (Item->ItemSubCategory == ESubCategory::Keyboard)
 	{
 		KeyboardMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
 		UpgradeWidget->Keyboard_Img->SetBrushFromTexture(Item->ItemImage);
 		KeyboardMeshID = Item->ItemID;
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Keyboard detect"));
 	}
-	else if (Item->ItemSubCategory == ESubCategory::Chair) 
+	else if (Item->ItemSubCategory == ESubCategory::Desk)
+	{
+		DeskMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
+		UpgradeWidget->Desk_Img->SetBrushFromTexture(Item->ItemImage);
+		DeskMeshID = Item->ItemID;
+	}
+	else if (Item->ItemSubCategory == ESubCategory::Chair)
 	{
 		ChairMesh->SetStaticMesh(Item->ItemMesh->GetStaticMesh());
 		UpgradeWidget->Chair_Img->SetBrushFromTexture(Item->ItemImage);
 		ChairMeshID = Item->ItemID;
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Chair detect"));
 	}
-	//UpgradeWidget->RemoveFromViewport();
+
+	UpgradeWidget->ShowInventory(Item->ItemSubCategory);
 }
 
 void AWorkstation::UpgradeMeshFromSave() {

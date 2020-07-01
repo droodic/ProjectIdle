@@ -82,6 +82,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
 
 
+private:
+	/*UPROPERTY(EditAnywhere) TSubclassOf<AItem> DefaultMonitor;
+	UPROPERTY(EditAnywhere) TSubclassOf<AItem> DefaultKeyboard;
+	UPROPERTY(EditAnywhere) TSubclassOf<AItem> DefaultDesk;
+	UPROPERTY(EditAnywhere) TSubclassOf<AItem> DefaultChair;
+
+	AItem* CurrentMonitor;
+	AItem* CurrentKeyboard;
+	AItem* CurrentDesk;
+	AItem* CurrentChair;*/
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

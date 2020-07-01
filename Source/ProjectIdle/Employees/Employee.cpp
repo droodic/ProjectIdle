@@ -138,13 +138,26 @@ void AEmployee::WorkOnTask() {
 
 void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 {
-	if (UI != nullptr && CanInspect) {
+	if (!GM->IsWidgetInDisplay)
+	{
+		if (UI != nullptr && CanInspect) {
 
-		UI->ShowEmployeeSheet(this);
+			UI->ShowEmployeeSheet(this);
+		}
+		else
+		{
+			GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, TEXT("Employee is Clicked, UI Is null!"));
+		}
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, TEXT("Employee is Clicked, UI Is null!"));
+		GM->IsWidgetInDisplay = false;
+		if (GM->CurrentWidgetInDisplay)
+		{
+			GM->CurrentWidgetInDisplay->RemoveFromViewport();
+		}
+
+		UI->ShowEmployeeSheet(this);
 	}
 }
 
@@ -191,10 +204,6 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		}
 		CompileValueOriginal = (AssignedWorkload / NumCompile);
 		CompileValue = CompileValueOriginal;
-		/*GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "NumCompile:" + FString::FromInt(NumCompile));
-		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Compile value original:" + FString::FromInt(CompileValueOriginal));
-		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Blue, "Current Workload:" + FString::FromInt(CurrentWorkload));
-		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Yellow, "Next Compile at : " + FString::FromInt(AssignedWorkload - CompileValueOriginal));*/
 
 		if (CurrentWorkload <= AssignedWorkload - CompileValueOriginal) {
 			//Under exact compile range, force compile
@@ -257,21 +266,10 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		}
 		if (isOver == true)
 		{
-			//UIdeaButton::IsInProduction = false;
 			GM->IdeaInProduction = false;
 			GM->OfficeDepartment->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartment->CurrentIdea);
 			UI->MoneyWidget->ShowANotification("PRODUCTION OF A GAME FINISHED, WAITING FOR BEING PUBLISHED");
 			CompileValue = 0;
-			//if (SucessChance >= RateRolled)
-			//{
-			//	UI->MoneyWidget->ShowANotification("PRODUCTION OF A GAME FINISHED, WAITING FOR BEING PUBLISHED");
-			//}
-			//else
-			//{
-			//	UI->MoneyWidget->ShowANotification("Sorry failed");
-			//}
-
-			//GM->Money += UKismetMathLibrary::RandomIntegerInRange(15000, 25000); //Use algo later, and do real way of assgning money
 		}
 	}
 }
@@ -327,10 +325,8 @@ void AEmployee::Promote()
 					Morale = 10;
 				}
 			}
-
 			GM->Money -= CostEmployeePromote;
 			CostEmployeePromote = PromoteToRegular;
-
 			break;
 		case EPosition::Junior:
 			Position = EPosition::Regular;
@@ -356,18 +352,6 @@ void AEmployee::Promote()
 			}
 			GM->Money -= CostEmployeePromote;
 			break;
-			//case EPosition::SeniorProgrammer:
-			//	Salary += 100;
-			//	if (Morale < 10) {
-
-			//		Morale += AddMorale;
-			//		if (Morale >= 10) {
-			//			Morale = 10;
-			//		}
-			//	}
-			//	GM->Money -= PromoteToSenior;
-			//	break;
-			//}
 		}
 
 		UI->RefreshEmployeeSheet(this);
@@ -407,7 +391,6 @@ void AEmployee::FiredFinal()
 		}
 		GM->WorkstationList[this->WorkstationPositionRef]->HasEmployee = false;
 	}
-
 	GM->EmployeeList.Remove(this);
 	UI->CloseEmployeeSheet();
 	this->Destroy();

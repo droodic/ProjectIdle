@@ -26,7 +26,8 @@ class PROJECTIDLE_API UGameManager : public UGameInstance
 
 public:
 	UGameManager();
-	UPROPERTY(BlueprintReadWrite) TArray<class AItem*> InventoryList;
+	//UPROPERTY(BlueprintReadWrite) TArray<class AItem*> InventoryList;
+	UPROPERTY(BlueprintReadWrite) TMap<class AItem*, int> InventoryList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AEmployee*> EmployeeList;
 	UPROPERTY(BlueprintReadWrite) TArray<class ADepartment*> DepartmentList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AWall*> FloorList;
@@ -64,7 +65,10 @@ public:
 	UPROPERTY(BlueprintReadWrite) float CheatSpeedRate = 1;
 
 	bool IdeaInProduction = false;
+	bool IsWidgetInDisplay = false;
+	UUserWidget* CurrentWidgetInDisplay;
 
+public:
 	virtual void Init();
 	UFUNCTION(BlueprintImplementableEvent) void SaveGameState();
 	UFUNCTION(BlueprintImplementableEvent) void LoadGameState();

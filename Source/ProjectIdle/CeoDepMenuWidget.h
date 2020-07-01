@@ -25,6 +25,7 @@ public:
 	UPROPERTY(EditAnywhere) TSubclassOf<UUserWidget> IdeaButtonWidgetClass;
 	
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* PublishGame_Btn;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_FloorManager_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_Prog_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_Artist_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_ProgSup_Btn;
@@ -63,6 +64,7 @@ private:
 	UFUNCTION() void CallProgrammerSupSpawn();
 	UFUNCTION() void CallArtistSpawn();
 	UFUNCTION() void CallArtistSupSpawn();
+	UFUNCTION() void CallFloorManagerSpawn();
 	UFUNCTION() void PublishGame();
 	UFUNCTION() void Return();
 	UFUNCTION() void CreateDepartment();

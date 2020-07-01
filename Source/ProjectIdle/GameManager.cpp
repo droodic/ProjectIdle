@@ -30,13 +30,17 @@ void UGameManager::SaveGame(FString SaveFile)
 	UGameSave* SaveGameInstance = Cast<UGameSave>(UGameplayStatics::CreateSaveGameObject(UGameSave::StaticClass()));
 	SaveGameInstance->Saved_Money = Money;
 	SaveGameInstance->InventoryList.Empty();
-	for (auto Item : InventoryList) {
+
+	TArray<AItem*> inventoryList;
+	InventoryList.GenerateKeyArray(inventoryList);
+
+	for (auto Item : inventoryList) {
 		SaveGameInstance->InventoryList.Add(Item);
 	}
 	for (auto Idea : OfficeDepartment->IdeaList) {
 		SaveGameInstance->IdeaList.Add(Idea);
-
 	}
+	//SaveGameInstance->IdeaInProduction = IdeaInProduction;
 
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("Default"), 0);
 
@@ -96,8 +100,9 @@ void UGameManager::LoadGame(FString SaveFile)
 	for (auto Idea : SaveGameInstance->IdeaList) {
 		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Loading Idea");
 		OfficeDepartment->IdeaList.Add(Idea);
-		OfficeDepartment->PopulateIdeaListFromSave(Idea); 
+		OfficeDepartment->PopulateIdeaListFromSave(Idea);
 	}
+	//IdeaInProduction = SaveGameInstance->IdeaInProduction;
 
 	FString outPath = FPaths::ProjectSavedDir() + SaveFile;
 
@@ -237,7 +242,7 @@ void UGameManager::OnGameLoadedFixup(UWorld* World) {
 			AActor* NewActor = OfficeDepartment->GenerateSavedActor(SpawnClass);//IFemployee, figure way to scale with other type actor like workstation?
 			FMemoryReader MemoryReader(ActorRecord.MyData, true);
 			FSaveGameArchive Ar(MemoryReader);
-			
+
 			if (NewActor != nullptr) {
 				NewActor->Serialize(Ar);
 				NewActor->SetActorTransform(ActorRecord.MyTransform);
