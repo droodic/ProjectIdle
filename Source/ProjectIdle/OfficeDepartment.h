@@ -61,6 +61,8 @@ public:
 
 	TArray<class AItem*> InventoryList;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
+
 private:
 	bool bInRadius = false;
 

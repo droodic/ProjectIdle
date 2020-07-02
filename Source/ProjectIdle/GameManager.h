@@ -32,6 +32,13 @@ public:
 	UPROPERTY(BlueprintReadWrite) TArray<class ADepartment*> DepartmentList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AWall*> FloorList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AWall*> WallList;
+	UPROPERTY(BlueprintReadWrite) TArray<class AWall*> UnassignedFloorList;
+	UPROPERTY(BlueprintReadWrite) TArray<class AWall*> FullLevel;
+	UPROPERTY(BlueprintReadWrite) TArray<class ADoor*> DoorList;
+	UPROPERTY(BlueprintReadWrite) TArray<class AOfficeDepartment*> OfficeDepartmentList;
+
+
+
 
 
 	UPROPERTY(BlueprintReadWrite) int NumOfProgrammers;
@@ -46,7 +53,7 @@ public:
 	UPROPERTY(BlueprintReadWrite) class AProgrammingDepartment* ProgrammingDepartment;
 	UPROPERTY(BlueprintReadWrite) class AArtistDepartment* ArtistDepartment;
 
-	//UPROPERTY(BlueprintReadWrite) class AWorkstation* WorkStation;
+	UPROPERTY(BlueprintReadWrite) class AWorkstation* WorkStation;
 	UPROPERTY(BlueprintReadWrite) class ADoor* Door;
 	UPROPERTY(BlueprintReadWrite) class UWorkstationUpgradeWidget* Upgrade;
 	UPROPERTY(BlueprintReadWrite) class UMeetingDepWidget* MeetingWidget;
@@ -59,6 +66,7 @@ public:
 
 	bool IdeaInProduction = false;
 	bool IsWidgetInDisplay = false;
+	bool IsFloorUpgraded = false;
 	UUserWidget* CurrentWidgetInDisplay;
 	AEmployee* CurrentEmployeeInDisplay;
 

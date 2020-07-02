@@ -79,6 +79,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) UWidgetComponent* CompileProgressBar;
 	UPROPERTY(SaveGame) int CompileModifier = 0;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
+
+
 private:
 	/*UPROPERTY(EditAnywhere) TSubclassOf<AItem> DefaultMonitor;
 	UPROPERTY(EditAnywhere) TSubclassOf<AItem> DefaultKeyboard;

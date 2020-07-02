@@ -16,6 +16,7 @@
 #include "ProjectIdle/Widgets/WorkstationUpgradeWidget.h"
 #include "ProjectIdle/Widgets/WorkstationCompileWidget.h"
 #include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
+#include "Workstation.h"
 
 // Sets default values
 AWorkstation::AWorkstation()
@@ -52,6 +53,7 @@ void AWorkstation::BeginPlay()
 	//IsObjectDisable = DisableObject;
 	EnableStation(IsEnabled);
 	GM = GetWorld()->GetGameInstance<UGameManager>();
+	GM->WorkStation = this;
 	GM->WorkstationList.Add(this);
 	HasEmployee = false;
 	StationLocation = ChairMesh->GetComponentLocation();
@@ -108,11 +110,14 @@ void AWorkstation::Tick(float DeltaTime)
 
 void AWorkstation::UpdateWorkstationPosition(AEmployee* EmployeeRef)
 {
-	if (!HasEmployee) {
-		EmployeeRef->WorkstationRef = this;
-		EmployeeRef->HasWorkStation = true;
-		EmployeeRef->StartPosition = StationLocation;
-		HasEmployee = true;
+	if (!HasEmployee && this->FloorLevel != -1) {
+		if (this->FloorLevel == EmployeeRef->FloorLevel)
+		{
+			EmployeeRef->WorkstationRef = this;
+			EmployeeRef->HasWorkStation = true;
+			EmployeeRef->StartPosition = StationLocation;
+			HasEmployee = true;
+		}
 	}
 }
 

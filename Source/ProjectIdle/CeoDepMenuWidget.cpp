@@ -169,8 +169,11 @@ void UCeoDepMenuWidget::ActivateWorkstation(ERole StationRole, EPosition OwnerPo
 		{
 			if (!GM->WorkstationList[i]->IsEnabled && GM->WorkstationList[i]->StationRole == StationRole && !Cast<ASupervisorWorkstation>(GM->WorkstationList[i]))
 			{
-				GM->WorkstationList[i]->EnableStation(true);
-				return;
+				if (GM->WorkstationList[i]->FloorLevel == GM->Character->CurrentFloor)
+				{
+					GM->WorkstationList[i]->EnableStation(true);
+					return;
+				}
 			}
 		}
 	}
@@ -180,8 +183,11 @@ void UCeoDepMenuWidget::ActivateWorkstation(ERole StationRole, EPosition OwnerPo
 		{
 			if (!GM->WorkstationList[i]->IsEnabled && GM->WorkstationList[i]->StationRole == StationRole && GM->WorkstationList[i]->StationOwnerPosition == OwnerPosition)
 			{
-				GM->WorkstationList[i]->EnableStation(true);
-				return;
+				if (GM->WorkstationList[i]->FloorLevel == GM->Character->CurrentFloor)
+				{
+					GM->WorkstationList[i]->EnableStation(true);
+					return;
+				}
 			}
 		}
 	}
@@ -274,14 +280,33 @@ void UCeoDepMenuWidget::CreateDepartment()
 {
 	if (Selected == "Marketing")
 	{
-		GM->Wall->DeactivateWallAndFloor();
-		GM->Wall->ActivateWallAndFloor();
-		//ActivateWorkstation(ERole::Marketing, EPosition::Intern, false);
-		OfficeDepartment->GenerateActor(4, ERole::Marketing);
+		for (auto Floor : GM->UnassignedFloorList)
+		{
+			if (Floor->Flooring == FloorType::Marketing)
+			{
+				GM->FloorList.Add(Floor);
+				GM->UnassignedFloorList.Remove(Floor);
+				GM->FloorList[GM->FloorList.Num() - 1]->FloorLevel = GM->FloorList.Num();
+				GM->FloorList[GM->FloorList.Num() - 1]->AssignFloorLevel();
+				return;
+			}
+		}
 		CreateDep_Btn->SetIsEnabled(false);
 	}
-	if (Selected == "Test")
-	{
 
+	else if (Selected == "Development")
+	{
+		for (auto Floor : GM->UnassignedFloorList)
+		{
+			if (Floor->Flooring == FloorType::Dev)
+			{
+				GM->IsFloorUpgraded = true;
+				GM->FloorList.Add(Floor);
+				GM->UnassignedFloorList.Remove(Floor);
+				GM->FloorList[GM->FloorList.Num() - 1]->FloorLevel = GM->FloorList.Num();
+				GM->FloorList[GM->FloorList.Num() - 1]->AssignFloorLevel();
+				return;
+			}
+		}
 	}
 }
