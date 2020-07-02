@@ -159,8 +159,12 @@ void AWorkstation::NotifyActorOnClicked(FKey ButtonPressed)
 	else if (GM->IsWidgetInDisplay && InRange)
 	{
 		GM->IsWidgetInDisplay = false;
-		GM->CurrentEmployeeInDisplay->IsDisplaying = false;
-		if (GM->CurrentWidgetInDisplay)
+
+		if (GM->CurrentEmployeeInDisplay != nullptr)
+		{
+			GM->CurrentEmployeeInDisplay->IsDisplaying = false;
+		}
+		if (GM->CurrentWidgetInDisplay != nullptr)
 		{
 			GM->CurrentWidgetInDisplay->RemoveFromViewport();
 		}
