@@ -5,6 +5,7 @@
 #include "GameSave.h"
 #include "Idea.h"
 #include "OfficeDepartment.h"
+#include "Employees/FloorManager.h"
 #include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
 #include "MeetingDepartment.h"
 
@@ -42,8 +43,13 @@ void UGameManager::SaveGame(FString SaveFile)
 	for (auto Idea : OfficeDepartment->IdeaList) {
 		SaveGameInstance->IdeaList.Add(Idea);
 	}
-
 	SaveGameInstance->SavedTime = FDateTime::Now();
+
+	if (OfficeDepartment->ManagerRef != nullptr) {
+		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Saving manager");
+		SaveGameInstance->AutoManaging = OfficeDepartment->ManagerRef->AutoManaging;
+		SaveGameInstance->NumEmployees = EmployeeList.Num();
+	}
 
 	//SaveGameInstance->IdeaInProduction = IdeaInProduction;
 
@@ -109,30 +115,35 @@ void UGameManager::LoadGame(FString SaveFile)
 	}
 
 
-	//if automanaging on
-	FDateTime CurrentTime = FDateTime::Now();
-	FTimespan Difference;
-	Difference = CurrentTime - SaveGameInstance->SavedTime;
+	//if (SaveGameInstance->AutoManaging == true) {
+		FDateTime CurrentTime = FDateTime::Now();
+		FTimespan Difference;
+		Difference = CurrentTime - SaveGameInstance->SavedTime;
 
-	GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Time spent since last save:(seconds) " + FString::FromInt(Difference.GetTotalSeconds()));
+		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Time spent since last save:(seconds) " + FString::FromInt(Difference.GetTotalSeconds()));
 
-	int IdeasToGenerate = Difference.GetTotalSeconds();
-	IdeasToGenerate /= 10;
+		int IdeasToGenerate = Difference.GetTotalMinutes();
 
-	OfficeDepartment->OfficeDepMenuWidget->ClearFinishedGames();
+		if (IdeasToGenerate > 0) {
+			int Multiplier = SaveGameInstance->NumEmployees / 8;
+			IdeasToGenerate /= 5 * (Multiplier);
 
-	for(int i = 0; i < IdeasToGenerate; i++) {
-		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "finished idea load " + FString::FromInt(Difference.GetTotalSeconds()));
-		//Generate Idea in Publish List
-		auto randomNumber = UKismetMathLibrary::RandomIntegerInRange(0, 100);
-		auto newIdea = new Idea("GAME " + FString::FromInt(randomNumber), "Game description of game " + FString::FromInt(randomNumber), Idea::GetRandomGenre(), FLinearColor::MakeRandomColor(), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f));
+			OfficeDepartment->OfficeDepMenuWidget->ClearFinishedGames();
+			for (int i = 0; i < IdeasToGenerate; i++) {
+				GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "finished idea load " + FString::FromInt(Difference.GetTotalSeconds()));
+				//Generate Idea in Publish List
+				auto randomNumber = UKismetMathLibrary::RandomIntegerInRange(0, 100);
+				auto newIdea = new Idea("GAME " + FString::FromInt(randomNumber), "Game description of game " + FString::FromInt(randomNumber), Idea::GetRandomGenre(), FLinearColor::MakeRandomColor(), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f));
+				if (OfficeDepartment->OfficeDepMenuWidget != nullptr) {
 
-		if (OfficeDepartment->OfficeDepMenuWidget != nullptr) {
-
-			OfficeDepartment->OfficeDepMenuWidget->GetFinishedIdea(newIdea);
+					OfficeDepartment->OfficeDepMenuWidget->GetFinishedIdea(newIdea);
+				}
+			}
 		}
-	}
-	
+
+	//}
+
+
 	//SaveGameInstance->SavedTime = FDateTime::Now(); //Reset
 
 	//float SavedTicks = SaveGameInstance->SavedTime.GetTicks();

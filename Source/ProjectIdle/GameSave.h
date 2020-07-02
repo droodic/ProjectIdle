@@ -15,7 +15,8 @@ class PROJECTIDLE_API UGameSave : public USaveGame
 public:
 	UGameSave();
 	UGameManager* GM;
-
+	int NumEmployees;
+	bool AutoManaging;
 	bool IdeaInProduction;
 	UPROPERTY(EditAnywhere) FDateTime SavedTime;
 	UPROPERTY(EditAnywhere) FVector Saved_PlayerLocation;
