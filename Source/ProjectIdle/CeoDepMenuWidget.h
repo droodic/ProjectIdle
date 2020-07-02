@@ -38,7 +38,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* CreateDep_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UComboBoxString* SelectComboBox;
-	UPROPERTY(BlueprintReadWrite) FString Selected = "Test";
+	UPROPERTY(BlueprintReadWrite) FString Selected = "Development";
 
 	int Index = 0;
 	int ChosenIndex;

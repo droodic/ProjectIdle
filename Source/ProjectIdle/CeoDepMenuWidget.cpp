@@ -169,8 +169,11 @@ void UCeoDepMenuWidget::ActivateWorkstation(ERole StationRole, EPosition OwnerPo
 		{
 			if (!GM->WorkstationList[i]->IsEnabled && GM->WorkstationList[i]->StationRole == StationRole && !Cast<ASupervisorWorkstation>(GM->WorkstationList[i]))
 			{
-				GM->WorkstationList[i]->EnableStation(true);
-				return;
+				if (GM->WorkstationList[i]->FloorLevel == GM->Character->CurrentFloor)
+				{
+					GM->WorkstationList[i]->EnableStation(true);
+					return;
+				}
 			}
 		}
 	}
@@ -180,8 +183,11 @@ void UCeoDepMenuWidget::ActivateWorkstation(ERole StationRole, EPosition OwnerPo
 		{
 			if (!GM->WorkstationList[i]->IsEnabled && GM->WorkstationList[i]->StationRole == StationRole && GM->WorkstationList[i]->StationOwnerPosition == OwnerPosition)
 			{
-				GM->WorkstationList[i]->EnableStation(true);
-				return;
+				if (GM->WorkstationList[i]->FloorLevel == GM->Character->CurrentFloor)
+				{
+					GM->WorkstationList[i]->EnableStation(true);
+					return;
+				}
 			}
 		}
 	}
@@ -288,7 +294,7 @@ void UCeoDepMenuWidget::CreateDepartment()
 		CreateDep_Btn->SetIsEnabled(false);
 	}
 
-	else if (Selected == "Test")
+	else if (Selected == "Development")
 	{
 		for (auto Floor : GM->UnassignedFloorList)
 		{
