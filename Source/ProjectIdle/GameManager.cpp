@@ -122,11 +122,11 @@ void UGameManager::LoadGame(FString SaveFile)
 
 		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Time spent since last save:(seconds) " + FString::FromInt(Difference.GetTotalSeconds()));
 
-		int IdeasToGenerate = Difference.GetTotalMinutes();
+		int IdeasToGenerate = Difference.GetTotalSeconds();
 
 		if (IdeasToGenerate > 0) {
-			int Multiplier = SaveGameInstance->NumEmployees / 8;
-			IdeasToGenerate /= 5 * (Multiplier);
+			//int Multiplier = SaveGameInstance->NumEmployees / 8;
+			IdeasToGenerate /= 5;// * (Multiplier);
 
 			OfficeDepartment->OfficeDepMenuWidget->ClearFinishedGames();
 			for (int i = 0; i < IdeasToGenerate; i++) {
