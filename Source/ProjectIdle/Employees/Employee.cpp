@@ -165,7 +165,10 @@ void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 
 		if (UI != nullptr && CanInspect && !IsDisplaying)
 		{
-			GM->CurrentEmployeeInDisplay->IsDisplaying = false;
+			if (GM->CurrentEmployeeInDisplay != nullptr)
+			{
+				GM->CurrentEmployeeInDisplay->IsDisplaying = false;
+			}
 			GM->CurrentEmployeeInDisplay = this;
 			IsDisplaying = true;
 			UI->ShowEmployeeSheet(this);
