@@ -54,8 +54,6 @@ public:
 
 	UPROPERTY(EditAnywhere) TArray<TSubclassOf<class AActor>> SpawnActors;
 
-	FORCEINLINE class UDecalComponent* GetCursorToWorld() { return CursorToWorld; }
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class UDecalComponent* CursorToWorld;
 
@@ -63,11 +61,17 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
 
+	UPROPERTY(EditAnywhere) class ACameraActor* SpawnItemCamera;
+
 private:
 	bool bInRadius = false;
+	bool bInSpawnCamera = false;
+
+	class AActor* PlayersCamera;
 
 //Functions
 public:
+	FORCEINLINE class UDecalComponent* GetCursorToWorld() { return CursorToWorld; }
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void GenerateIdea();
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void ViewBacklog();
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void ViewShop();
@@ -82,6 +86,7 @@ public:
 	void Return();
 	void BacklogReturn();
 	void ShopReturn();
+	void SpawnItemInWorld(AItem* item);
 
 protected:
 	virtual void BeginPlay() override;

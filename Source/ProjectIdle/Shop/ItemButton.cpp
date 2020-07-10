@@ -28,6 +28,8 @@ void UItemButton::NativePreConstruct()
 		Item_I->SetBrushFromTexture(Item->ItemImage);
 		ItemName_T->SetText(FText::FromString(Item->ItemName));
 		ItemPrice_T->SetText(FText::AsCurrency(Item->ItemPrice));
+
+		Item->ItemBP = BPItem;
 	}
 }
 

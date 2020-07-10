@@ -89,20 +89,3 @@ void UWorkstationUpgradeWidget::CloseUpgrWidget()
 	RemoveFromViewport();
 	GM->IsWidgetInDisplay = false;
 }
-//void UWorkstationUpgradeWidget::Monitor()
-//{
-//	if (Station)
-//	{
-//		Station->UpgradeMesh(0);
-//	}
-//}
-//
-//
-//
-//void UWorkstationUpgradeWidget::Keyboard()
-//{
-//	if (Station)
-//	{
-//		Station->UpgradeMesh(1);
-//	}
-//}
