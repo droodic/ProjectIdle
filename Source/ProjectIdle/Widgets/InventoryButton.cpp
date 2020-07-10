@@ -48,7 +48,7 @@ void UInventoryButton::OnClicked()
 		CurrentStation->UpgradeMesh(Item);
 		break;
 	case ECategory::Materials:
-		if (Item->ItemSubCategory == ESubCategory::FloorMat)
+		if (Item->ItemSubCategory == ESubCategory::Floor)
 		{
 			GameManager->OfficeDepartment->OfficeDepMenuWidget->CurrentFloorMat_I->SetBrushFromTexture(Item->ItemImage);
 
@@ -57,10 +57,14 @@ void UInventoryButton::OnClicked()
 				GameManager->FloorList[i]->UpdateWallMaterial(Item->Material->GetMaterial());
 			}
 		}
-		else if (Item->ItemSubCategory == ESubCategory::WallMat)
+		else if (Item->ItemSubCategory == ESubCategory::Wall)
 		{
 			GameManager->OfficeDepartment->OfficeDepMenuWidget->CurrentWallMat_I->SetBrushFromTexture(Item->ItemImage);
 		}
 		break;
+	case ECategory::OfficeDecorations:
+		GameManager->OfficeDepartment->SpawnItemInWorld(Item);
+		break;
 	}
+
 }

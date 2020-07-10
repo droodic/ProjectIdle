@@ -67,6 +67,54 @@ void AOfficeDepartment::BeginPlay()
 	//GetDepartmentUIValues(); //call this on click to see ui in wbp
 }
 
+void AOfficeDepartment::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (IsGenerating && CurrIdeaProgress <= MaxIdeaProgress)
+	{
+		CurrIdeaProgress += DeltaTime * 30; // + DeltaTime * SpeedModifer (? - Have some algorithm to be able to scale this)
+		if (CurrIdeaProgress >= MaxIdeaProgress) {
+			IsGenerating = false;
+			CurrIdeaProgress = 0;
+			ideasGenerated++;
+
+			//auto newIdea = new Idea(GenerateIdeaValues());
+			auto randomNumber = UKismetMathLibrary::RandomIntegerInRange(0, 100);
+			auto newIdea = new Idea("GAME " + FString::FromInt(randomNumber), "Game description of game " + FString::FromInt(randomNumber), Idea::GetRandomGenre(), FLinearColor::MakeRandomColor(), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f));
+
+			IdeaList.Insert(newIdea, Index);
+			BacklogWidget->DisplayNewIdea(IdeaList[Index]);
+			Index++;
+
+			UI->MoneyWidget->ShowANotification("IDEA GENERATED!");
+
+			if (ManagerRef != nullptr && ManagerRef->GeneratingIdea) {
+
+				//ManagerRef->
+				BacklogWidget->CallMeeting_M(ManagerRef);
+				ManagerRef->GeneratingIdea = false;
+				ManagerRef->IdeaIndex++; //use pop instead
+			}
+		}
+	}
+
+	if (bInSpawnCamera)
+	{
+		if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->IsInputKeyDown(EKeys::RightMouseButton))
+		{
+			bInSpawnCamera = false;
+
+			if (PlayersCamera)
+			{
+				UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(PlayersCamera);
+			}
+
+			OfficeDepMenuWidget->AddToViewport();
+		}
+	}
+}
+
 #pragma region Backlog & Shop Widgets
 
 void AOfficeDepartment::ViewBacklog()
@@ -200,39 +248,6 @@ void AOfficeDepartment::PublishGame()
 	}
 }
 
-void AOfficeDepartment::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-	if (IsGenerating && CurrIdeaProgress <= MaxIdeaProgress)
-	{
-		CurrIdeaProgress += DeltaTime * 30; // + DeltaTime * SpeedModifer (? - Have some algorithm to be able to scale this)
-		if (CurrIdeaProgress >= MaxIdeaProgress) {
-			IsGenerating = false;
-			CurrIdeaProgress = 0;
-			ideasGenerated++;
-
-			//auto newIdea = new Idea(GenerateIdeaValues());
-			auto randomNumber = UKismetMathLibrary::RandomIntegerInRange(0, 100);
-			auto newIdea = new Idea("GAME " + FString::FromInt(randomNumber), "Game description of game " + FString::FromInt(randomNumber), Idea::GetRandomGenre(), FLinearColor::MakeRandomColor(), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f));
-
-			IdeaList.Insert(newIdea, Index);
-			BacklogWidget->DisplayNewIdea(IdeaList[Index]);
-			Index++;
-
-			UI->MoneyWidget->ShowANotification("IDEA GENERATED!");
-
-			if (ManagerRef != nullptr && ManagerRef->GeneratingIdea) {
-		
-					//ManagerRef->
-					BacklogWidget->CallMeeting_M(ManagerRef);
-					ManagerRef->GeneratingIdea = false;
-					ManagerRef->IdeaIndex++; //use pop instead
-			}
-
-		}
-	}
-}
-
 void AOfficeDepartment::NotifyActorOnClicked(FKey ButtonPressed)
 {
 	if (bInRadius && OfficeDepMenuWidget != nullptr)
@@ -241,6 +256,11 @@ void AOfficeDepartment::NotifyActorOnClicked(FKey ButtonPressed)
 		{
 			UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetCharacterMovement()->DisableMovement();
 			OfficeDepMenuWidget->AddToViewport();
+
+			if (GM->CurrentWidgetInDisplay != nullptr)
+			{
+				GM->CurrentWidgetInDisplay->RemoveFromViewport();
+			}
 		}
 		else
 		{
@@ -280,6 +300,30 @@ void AOfficeDepartment::NotifyActorEndOverlap(AActor* OtherActor)
 	}
 }
 
+void AOfficeDepartment::SpawnItemInWorld(AItem* item)
+{
+	bInSpawnCamera = true;
+
+	OfficeDepMenuWidget->RemoveFromViewport();
+
+	PlayersCamera = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetViewTarget();
+
+	if (SpawnItemCamera != nullptr)
+	{
+		UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(SpawnItemCamera);
+	}
+
+	FHitResult hitResult;
+	UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHitResultUnderCursorByChannel(ETraceTypeQuery::TraceTypeQuery1, true, hitResult);
+
+	auto itemReference = TSubclassOf<AItem>(GetWorld()->SpawnActor<AItem>(item->ItemBP, hitResult.Location, item->ItemMesh->GetRelativeRotation())->GetClass());
+	
+	/*do
+	{
+		itemReference->SetActorLocation(hitResult.Location);
+	} while (!UGameplayStatics::GetPlayerController(GetWorld(), 0)->IsInputKeyDown(EKeys::LeftMouseButton));*/
+}
+
 //Future transition 
 void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 {
@@ -303,7 +347,7 @@ void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 
 			if (Position == 4)
 			{
-				SpawnRotation = FRotator(0,-90,0);
+				SpawnRotation = FRotator(0, -90, 0);
 				SpawnLocation = FVector(510.0, -1520.0, 160.0); // Array of grid vector position later on
 				AWorkstation* Station = World->SpawnActorDeferred<AWorkstation>(SpawnActors[Position], FTransform(SpawnRotation, SpawnLocation, FVector::OneVector), nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 				Station->WorkstationInit(EmpRole);

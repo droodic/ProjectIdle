@@ -252,7 +252,6 @@ void AWorkstation::UpgradeMesh(AItem* Item)
 			}
 			break;
 		}
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, "Item ID: " + FString::FromInt(item.GetDefaultObject()->ItemID) + " Name: " + item.GetDefaultObject()->ItemName);
 	}
 
 	auto itemCount = GM->InventoryList.FindRef(Item);
