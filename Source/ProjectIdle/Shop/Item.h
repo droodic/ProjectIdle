@@ -22,8 +22,8 @@ enum class ESubCategory : uint8
 	Keyboard		   UMETA(DisplayName = "Keyboard"),
 	Desk			   UMETA(DisplayName = "Desk"),
 	Chair			   UMETA(DisplayName = "Chair"),
-	FloorMat		   UMETA(DisplayName = "Floor"),
-	WallMat			   UMETA(DisplayName = "Wall"),
+	Floor		   UMETA(DisplayName = "Floor"),
+	Wall			   UMETA(DisplayName = "Wall"),
 	Other			   UMETA(DisplayName = "Other")
 };
 
@@ -51,5 +51,6 @@ public:
 
 	UPROPERTY(EditDefaultsOnly) class UTexture2D* ItemImage;
 
+	class TSubclassOf<AItem> ItemBP;
 	class UItemButton* ItemButton;
 };

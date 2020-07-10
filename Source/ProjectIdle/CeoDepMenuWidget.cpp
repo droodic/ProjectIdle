@@ -243,11 +243,11 @@ void UCeoDepMenuWidget::AddItemToInventory(AItem* item)
 
 		OfficeDecoration_WB->AddChildToWrapBox(NewItemButton);
 	}
-	else if (item->ItemSubCategory == ESubCategory::FloorMat)
+	else if (item->ItemSubCategory == ESubCategory::Floor)
 	{
 		FloorMaterial_HB->AddChildToHorizontalBox(NewItemButton);
 	}
-	else if (item->ItemSubCategory == ESubCategory::WallMat)
+	else if (item->ItemSubCategory == ESubCategory::Wall)
 	{
 		WallMaterial_HB->AddChildToHorizontalBox(NewItemButton);
 	}

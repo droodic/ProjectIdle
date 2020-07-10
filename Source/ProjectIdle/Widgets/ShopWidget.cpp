@@ -40,62 +40,8 @@ void UShopWidget::Buy()
 	{
 		if (CheckList.Num() > 0)
 		{
-			/*for (int i = 0; i < CheckList.Num(); i++)
-			{
-				if (CheckList[i]->ItemCount > 1)
-				{
-					for (int j = 0; j < CheckList[i]->ItemCount; j++)
-					{
-						GameManager->InventoryList.Add(CheckList[i]->Item);
-
-						GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Red, FString::FromInt(j + 1) + " " + CheckList[i]->Item->ItemName + "Added");
-					}
-				}
-				else
-				{
-					if (CheckList[i]->Item->ItemCategory == ECategory::Materials)
-					{
-						for (int j = 0; j < GameManager->FloorList.Num(); j++)
-						{
-							GameManager->FloorList[j]->UpdateWallMaterial(CheckList[i]->Item->Material->GetMaterial());
-							GEngine->AddOnScreenDebugMessage(100, 5.f, FColor::Red, "Noob");
-						}
-
-						for (int j = 0; j < Tab4->GetChildrenCount(); j++)
-						{
-							auto materialButton = Cast<UItemButton>(Tab4->GetChildAt(j));
-
-							if (CheckList[i]->ItemID == materialButton->ItemID)
-							{
-								materialButton->Bought_T->SetText(FText::FromString("Bought"));
-							}
-						}
-
-					}
-					GameManager->InventoryList.Add(CheckList[i]->Item);
-
-					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "1 " + CheckList[i]->Item->ItemName + "Added");
-				}
-			}*/
-			
 			for (int i = 0; i < CheckList.Num(); i++)
 			{
-				/*if (GameManager->InventoryList.Num() > 0)
-				{
-					for (int j = 0; j < GameManager->InventoryList.Num(); j++)
-					{
-						if (CheckList[i]->ItemID == GameManager->InventoryList[j]->ItemID)
-						{
-							GameManager->InventoryList[j]->ItemButton->ItemCount += CheckList[i]->ItemCount;
-							break;
-						}
-						else
-						{
-							GameManager->InventoryList.Add(CheckList[i]->Item);
-						}
-					}
-				}*/
-
 				if (GameManager->InventoryList.Contains(CheckList[i]->Item))
 				{
 					auto itemCount = GameManager->InventoryList.FindRef(CheckList[i]->Item);
