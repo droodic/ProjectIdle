@@ -63,7 +63,7 @@ public:
 	bool IsFloorAssigned = false;
 	FVector LeftSide;
 	FVector RightSide;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
 
 
 
