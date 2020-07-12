@@ -65,6 +65,8 @@ void UCeoDepMenuWidget::CallProgrammerSpawn()
 	int32 numberOfProgrammerStation = 0;
 	int32 numberOfArtistStation = 0;
 
+	
+
 	for (int i = 0; i < length; i++)
 	{
 		if (GM->WorkstationList[i]->StationRole == ERole::Programmer)
@@ -77,13 +79,18 @@ void UCeoDepMenuWidget::CallProgrammerSpawn()
 		}
 	}
 
+
 	if (numberOfProgrammerStation > GM->NumOfProgrammers)
 	{
-		if (GM->Money >= 10000) //make money editable inspector constant that scales up , same for all dep & sup hire
+		if (GM->FloorList[GM->Character->CurrentFloor - 1]->ProgrammerCount < 3)
 		{
-			GM->Money -= 10000;
-			ActivateWorkstation(ERole::Programmer, EPosition::Intern, false);
-			OfficeDepartment->GenerateActor(0, ERole::Programmer);
+			if (GM->Money >= 10000) //make money editable inspector constant that scales up , same for all dep & sup hire
+			{
+				GM->Money -= 10000;
+				GM->FloorList[GM->Character->CurrentFloor - 1]->ProgrammerCount++;
+				ActivateWorkstation(ERole::Programmer, EPosition::Intern, false);
+				OfficeDepartment->GenerateActor(0, ERole::Programmer);
+			}
 		}
 	}
 }
@@ -142,11 +149,12 @@ void UCeoDepMenuWidget::CallArtistSpawn()
 			numberOfArtistStation--;
 		}
 	}
-	if (numberOfArtistStation > GM->NumOfArtists)
+	if (numberOfArtistStation > GM->NumOfArtists && GM->FloorList[GM->Character->CurrentFloor - 1]->ArtistCount <= 3)
 	{
 		if (GM->Money >= 10000)
 		{
 			GM->Money -= 10000;
+			GM->FloorList[GM->Character->CurrentFloor - 1]->ArtistCount++;
 			ActivateWorkstation(ERole::Artist, EPosition::Intern, false);
 			OfficeDepartment->GenerateActor(1, ERole::Artist);
 		}
@@ -305,8 +313,16 @@ void UCeoDepMenuWidget::CreateDepartment()
 				GM->UnassignedFloorList.Remove(Floor);
 				GM->FloorList[GM->FloorList.Num() - 1]->FloorLevel = GM->FloorList.Num();
 				GM->FloorList[GM->FloorList.Num() - 1]->AssignFloorLevel();
-				return;
+				break;
 			}
+		}
+
+		for (auto Door : GM->UnassignedDoorList)
+		{
+			GM->DoorList.Add(Door);
+			GM->UnassignedDoorList.Remove(Door);
+			GM->DoorList[GM->DoorList.Num() - 1]->FloorLevel = GM->DoorList.Num();
+			break;
 		}
 	}
 }

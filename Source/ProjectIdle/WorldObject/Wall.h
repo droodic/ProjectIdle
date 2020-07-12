@@ -64,6 +64,10 @@ public:
 	FVector LeftSide;
 	FVector RightSide;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) int ArtistCount = 0;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) int ProgrammerCount = 0;
+
+
 
 
 

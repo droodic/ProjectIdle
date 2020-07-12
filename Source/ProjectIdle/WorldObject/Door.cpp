@@ -35,7 +35,14 @@ void ADoor::BeginPlay()
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->Door = this;
-	GM->DoorList.Add(this);
+	if (StartingDoor)
+	{
+		GM->DoorList.Add(this);
+	}
+	else
+	{
+		GM->UnassignedDoorList.Add(this);
+	}
 	//DoorLocation = this->GetActorLocation();
 }
 
@@ -63,14 +70,14 @@ void ADoor::NotifyActorBeginOverlap(AActor* OtherActor)
 		FVector NewVector = FVector(0, -100, 100);
 		if (Player->CurrentFloor == 1)
 		{
-			Player->SetActorLocation(GM->DoorList[0]->GetActorLocation() + NewVector);
+			Player->SetActorLocation(GM->DoorList[1]->GetActorLocation() + NewVector);
 			Player->CurrentFloor = 2;
 			return;
 		}
 
 		if (Player->CurrentFloor == 2)
 		{
-			Player->SetActorLocation(GM->DoorList[1]->GetActorLocation() + NewVector);
+			Player->SetActorLocation(GM->DoorList[0]->GetActorLocation() + NewVector);
 			Player->CurrentFloor = 1;
 			return;
 		}
