@@ -46,9 +46,11 @@ void UGameManager::SaveGame(FString SaveFile)
 	SaveGameInstance->SavedTime = FDateTime::Now();
 
 	if (OfficeDepartment->ManagerRef != nullptr) {
+		SaveGameInstance->NumEmployees = EmployeeList.Num();
 		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Saving manager");
 		SaveGameInstance->AutoManaging = OfficeDepartment->ManagerRef->AutoManaging;
-		SaveGameInstance->NumEmployees = EmployeeList.Num();
+		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "numemployeee saved: " + FString::FromInt(SaveGameInstance->NumEmployees));
+
 	}
 
 	//SaveGameInstance->IdeaInProduction = IdeaInProduction;
@@ -123,14 +125,13 @@ void UGameManager::LoadGame(FString SaveFile)
 		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Time spent since last save:(seconds) " + FString::FromInt(Difference.GetTotalSeconds()));
 
 		int IdeasToGenerate = Difference.GetTotalSeconds();
-
-		if (IdeasToGenerate > 0) {
-			//int Multiplier = SaveGameInstance->NumEmployees / 8;
-			IdeasToGenerate /= 5;// * (Multiplier);
+		if (IdeasToGenerate > 0){ //&& SaveGameInstance->NumEmployees > 0) {
+			int Multiplier = 1; //SaveGameInstance->NumEmployees / 8;   numEmployees not loading, find out why
+			IdeasToGenerate /= 5 * (Multiplier);
 
 			OfficeDepartment->OfficeDepMenuWidget->ClearFinishedGames();
+			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Loading Ideas generated since last save" + FString::FromInt(Difference.GetTotalSeconds()));
 			for (int i = 0; i < IdeasToGenerate; i++) {
-				GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "finished idea load " + FString::FromInt(Difference.GetTotalSeconds()));
 				//Generate Idea in Publish List
 				auto randomNumber = UKismetMathLibrary::RandomIntegerInRange(0, 100);
 				auto newIdea = new Idea("GAME " + FString::FromInt(randomNumber), "Game description of game " + FString::FromInt(randomNumber), Idea::GetRandomGenre(), FLinearColor::MakeRandomColor(), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f));
@@ -140,6 +141,10 @@ void UGameManager::LoadGame(FString SaveFile)
 				}
 			}
 		}
+		//else if (SaveGameInstance->NumEmployees <= 0) {
+		//	GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "NumEmployees loaded as 0 - Publish idea generation failed");
+
+		//}
 
 	//}
 
