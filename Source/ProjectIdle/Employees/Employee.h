@@ -102,6 +102,9 @@ public:
 	int NumCompile;
 
 	bool IsDisplaying = false;
+	FTimerHandle HelpTimer;
+	int RandomHelpNumber;
+	UPROPERTY(BlueprintReadWrite) bool NeedAssistance;
 
 protected:
 	// Called when the game starts or when spawned
@@ -124,6 +127,9 @@ public:
 	void IsDepartmentWorking();
 	void WorkOnTask();
 	void AssignSupervisor();
+	
+	void StartGetHelp(); //Call Timer start
+	UFUNCTION() void GetHelp(); //Timer Event
 
 public:
 	//UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Saveable Actor")

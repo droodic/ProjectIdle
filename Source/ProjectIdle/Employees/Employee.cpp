@@ -129,7 +129,8 @@ void AEmployee::BeginWork() {
 	//make funciton to find self department and values, example get all department employees number
 	for (auto Dep : GM->DepartmentList) {
 		if (Dep->DepRole == EmployeeRole) {
-			NumCompile = ceil(NumCompile / Dep->EmpCount);
+			NumCompile = ceil(NumCompile / Dep->EmpCount) - (int)Position; //Reduce numcompile depending on emp promotion level
+			if (NumCompile < 0) NumCompile = 0; //dont go below 0
 		}
 	}
 
@@ -137,48 +138,52 @@ void AEmployee::BeginWork() {
 	//GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AEmployee::WorkOnTask, .5f, true);
 }
 
-void AEmployee::WorkOnTask() {
-	//implement instead of tick way
-}
-
 void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 {
-	if (!GM->IsWidgetInDisplay)
-	{
-		if (UI != nullptr && CanInspect) 
+	if (!NeedAssistance) {
+		if (!GM->IsWidgetInDisplay)
 		{
-			IsDisplaying = true;
-			GM->CurrentEmployeeInDisplay = this;
-			UI->ShowEmployeeSheet(this);
-		}
-	}
-	else
-	{
-		if (CanInspect)
-		{
-			GM->IsWidgetInDisplay = false;
-			if (GM->CurrentWidgetInDisplay)
+			if (UI != nullptr && CanInspect)
 			{
-				GM->CurrentWidgetInDisplay->RemoveFromViewport();
+				IsDisplaying = true;
+				GM->CurrentEmployeeInDisplay = this;
+				UI->ShowEmployeeSheet(this);
 			}
 		}
+		else
+		{
+			if (CanInspect)
+			{
+				GM->IsWidgetInDisplay = false;
+				if (GM->CurrentWidgetInDisplay)
+				{
+					GM->CurrentWidgetInDisplay->RemoveFromViewport();
+				}
+			}
 
-		if (UI != nullptr && CanInspect && !IsDisplaying)
-		{
-			if (GM->CurrentEmployeeInDisplay != nullptr)
+			if (UI != nullptr && CanInspect && !IsDisplaying)
 			{
-				GM->CurrentEmployeeInDisplay->IsDisplaying = false;
+				if (GM->CurrentEmployeeInDisplay != nullptr)
+				{
+					GM->CurrentEmployeeInDisplay->IsDisplaying = false;
+				}
+				GM->CurrentEmployeeInDisplay = this;
+				IsDisplaying = true;
+				UI->ShowEmployeeSheet(this);
 			}
-			GM->CurrentEmployeeInDisplay = this;
-			IsDisplaying = true;
-			UI->ShowEmployeeSheet(this);
-		}
-		else if (CanInspect && IsDisplaying)
-		{
-			IsDisplaying = false;
-			UI->EmpSheetWidget->RemoveFromViewport();
+			else if (CanInspect && IsDisplaying)
+			{
+				IsDisplaying = false;
+				UI->EmpSheetWidget->RemoveFromViewport();
+			}
 		}
 	}
+	else if (NeedAssistance){
+		NeedAssistance = false;
+		GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Employee has been helped"));
+
+	}
+	
 }
 
 // Called every frame
@@ -188,10 +193,26 @@ void AEmployee::Tick(float DeltaTime)
 
 	//add a if enabled condition or smth
 
-	if (HasWorkload && CurrentWorkload > 0 && !AI->IsMoving && !WorkstationRef->IsCompiling) {
+	if (HasWorkload && CurrentWorkload > 0 && !AI->IsMoving && !WorkstationRef->IsCompiling && !NeedAssistance) {
 		WorkloadProgress(DeltaTime * ((Performance / 2.5) + (Morale / 5) * GM->SpeedRate * GM->CheatSpeedRate));
 	}
 
+}
+
+void AEmployee::GetHelp() {
+	if (!WorkstationRef->IsCompiling && !NeedAssistance) { //Iscompiling redundant? 
+		RandomHelpNumber = UKismetMathLibrary::RandomIntegerInRange(0, 10);
+		if (RandomHelpNumber == 0) {
+			GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Employee GetHelp"));
+			NeedAssistance = true;
+			GetWorldTimerManager().ClearTimer(HelpTimer);
+
+			//Check for supervisors, call Help function
+			//Player 
+		}
+	}
+
+	//implement instead of tick way
 }
 
 void AEmployee::WorkloadProgress(float Multiplier) {
@@ -210,6 +231,8 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		SetActorRotation(WorkstationRef->ChairMesh->GetComponentRotation() + AdjustRotate);
 		WorkProgressBar->SetVisibility(true);
 		IsWorking = true;
+		GetWorldTimerManager().SetTimer(HelpTimer, this, &AEmployee::GetHelp, 1.f, true);
+
 	}
 	if (WorkProgressBar != nullptr) {
 		WorkProgressBar->SetWorldRotation(Camera->GetCameraRotation());
@@ -219,33 +242,37 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		}
 	}
 
-	if (CompileValue == 0) {
-		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Assigned workload:" + FString::FromInt(AssignedWorkload));
+	if (!NeedAssistance) {
+		if (CompileValue == 0) {
+			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Assigned workload:" + FString::FromInt(AssignedWorkload));
 
-		if (NumCompile == 1) {
-			NumCompile = 3; //min 3 compile ? , Figure out better way of dividing number of compiles on new hire
+			if (NumCompile == 1) {
+				NumCompile = 3; //min 3 compile ? , Figure out better way of dividing number of compiles on new hire
+			}
+			CompileValueOriginal = (AssignedWorkload / NumCompile);
+			CompileValue = CompileValueOriginal;
+
+			if (CurrentWorkload <= AssignedWorkload - CompileValueOriginal) {
+				//Under exact compile range, force compile
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Forcing compile");
+				WorkstationRef->DoCompile();
+				CompileValue += CompileValueOriginal; //+1 to stop from 100% compiling at 0 workload
+				NumCompile--;
+			}
 		}
-		CompileValueOriginal = (AssignedWorkload / NumCompile);
-		CompileValue = CompileValueOriginal;
-
-		if (CurrentWorkload <= AssignedWorkload - CompileValueOriginal) {
-			//Under exact compile range, force compile
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Forcing compile");
+		if (CompileValue != 0 && (int)CurrentWorkload == (int)(AssignedWorkload - CompileValue) && NumCompile > 0) {
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Compiling");
 			WorkstationRef->DoCompile();
+
 			CompileValue += CompileValueOriginal; //+1 to stop from 100% compiling at 0 workload
 			NumCompile--;
 		}
+		else {
+			CurrentWorkload -= Multiplier;
+		}
 	}
-	if (CompileValue != 0 && (int)CurrentWorkload == (int)(AssignedWorkload - CompileValue) && NumCompile > 0) {
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Compiling");
-		WorkstationRef->DoCompile();
 
-		CompileValue += CompileValueOriginal; //+1 to stop from 100% compiling at 0 workload
-		NumCompile--;
-	}
-	else {
-		CurrentWorkload -= Multiplier;
-	}
+
 
 
 	if (CurrentWorkload <= 0) {
