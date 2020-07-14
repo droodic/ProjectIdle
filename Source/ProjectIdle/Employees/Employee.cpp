@@ -34,6 +34,11 @@ AEmployee::AEmployee()
 	WorkProgressBar->SetVisibility(false);
 	WorkProgressBar->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 
+	HelpWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HelpWidget")); //Maybe make Employee BP to set this up, because if later Employee classes emerge if we
+	HelpWidget->AttachTo(RootComponent);
+	HelpWidget->SetVisibility(false);
+	HelpWidget->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("RangeBox"));
 	CollisionBox->AttachTo(RootComponent);
 	CollisionBox->SetBoxExtent(FVector(350, 350, 350));
@@ -191,7 +196,7 @@ void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 	else if (NeedAssistance){
 		NeedAssistance = false;
 		GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Employee has been helped"));
-
+		HelpWidget->SetVisibility(false);
 	}
 	
 }
@@ -206,18 +211,27 @@ void AEmployee::Tick(float DeltaTime)
 	if (HasWorkload && CurrentWorkload > 0 && !AI->IsMoving && !WorkstationRef->IsCompiling && !NeedAssistance) {
 		WorkloadProgress(DeltaTime * ((Performance / 2.5) + (Morale / 5) * GM->SpeedRate * GM->CheatSpeedRate));
 	}
-
+	if (HelpWidget != nullptr && NeedAssistance && HelpWidget->IsVisible()) {
+		HelpWidget->SetWorldRotation(Camera->GetCameraRotation());
+		HelpWidget->AddLocalRotation(FRotator(0, 180, 0));
+	}
 }
 
 void AEmployee::GetHelp() {
 	if (!WorkstationRef->IsCompiling && !NeedAssistance) { //Iscompiling redundant? 
 		RandomHelpNumber = UKismetMathLibrary::RandomIntegerInRange(0, (60 + ((int)Position * 15)));
-		GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Number == " + FString::FromInt(((int)Position * 50))));
+		//GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Number == " + FString::FromInt(((int)Position * 50))));
 
 		if (RandomHelpNumber == 0) {
 			GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Employee GetHelp"));
 			NeedAssistance = true;
 			GetWorldTimerManager().ClearTimer(HelpTimer);
+			if (!HelpWidget->IsVisible()) {
+				HelpWidget->SetVisibility(true); //temp solution to not showing on load
+				HelpWidget->SetWorldRotation(Camera->GetCameraRotation());
+				HelpWidget->AddLocalRotation(FRotator(0, 180, 0));
+				//Gets adjusted on tick after this call
+			}
 
 			//Check for supervisors, call Help function
 			//Player 

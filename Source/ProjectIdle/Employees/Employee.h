@@ -62,6 +62,7 @@ public:
 	UPROPERTY(SaveGame) int WorkstationPositionRef;
 	//class AWorkstation* WorkstationRef;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) class UWidgetComponent* WorkProgressBar;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) class UWidgetComponent* HelpWidget;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) float AssignedWorkload;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) float CurrentWorkload;
 
