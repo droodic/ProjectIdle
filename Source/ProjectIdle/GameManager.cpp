@@ -137,7 +137,7 @@ void UGameManager::LoadGame(FString SaveFile)
 				auto newIdea = new Idea("GAME " + FString::FromInt(randomNumber), "Game description of game " + FString::FromInt(randomNumber), Idea::GetRandomGenre(), FLinearColor::MakeRandomColor(), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f));
 				if (OfficeDepartment->OfficeDepMenuWidget != nullptr) {
 
-					OfficeDepartment->OfficeDepMenuWidget->GetFinishedIdea(newIdea);
+					OfficeDepartmentList[Character->CurrentFloor - 1]->OfficeDepMenuWidget->GetFinishedIdea(newIdea);
 				}
 			}
 		}

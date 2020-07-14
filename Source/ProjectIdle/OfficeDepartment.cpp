@@ -378,7 +378,7 @@ AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
 	FVector NewVector = FVector(0, -50, 0);
-	SpawnLocation = GM->Door->GetActorLocation() + NewVector;
+	SpawnLocation = FVector(0, 0, 0); //GM->Door->GetActorLocation() + NewVector; 
 	SpawnRotation = FRotator::ZeroRotator;
 
 	auto Emp = World->SpawnActor<AEmployee>(ClassRef, SpawnLocation, SpawnRotation, SpawnParameters);
