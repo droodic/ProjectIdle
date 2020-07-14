@@ -52,7 +52,7 @@ public:
 	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere) float Performance;
 	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere) float Salary = 200;
 	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere) float CostEmployeePromote = 5000;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
 
 
 	UPROPERTY() float PromoteToRegular = 20000;

@@ -35,6 +35,7 @@ public:
 	UPROPERTY(BlueprintReadWrite) TArray<class AWall*> UnassignedFloorList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AWall*> FullLevel;
 	UPROPERTY(BlueprintReadWrite) TArray<class ADoor*> DoorList;
+	UPROPERTY(BlueprintReadWrite) TArray<class ADoor*> UnassignedDoorList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AOfficeDepartment*> OfficeDepartmentList;
 
 

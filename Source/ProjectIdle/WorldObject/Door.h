@@ -25,6 +25,7 @@ public:
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* DoorMesh;
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* DoorFrameMesh;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool StartingDoor;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
 	bool Moved = false;
 
