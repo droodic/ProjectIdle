@@ -52,19 +52,29 @@ void AEmployee::BeginPlay()
 	if (Position != EPosition::Supervisor) { //move to bool function for scale
 		//something here for floormanager ui count
 		GM->EmployeeList.Add(this); //floormanagers still added to list
+		GM->Wall->AssignFloorLevel();
+		int level = 0;
 		if (Position != EPosition::FloorManager) {
 			switch (EmployeeRole)
 			{
 			case ERole::Programmer:
 				GM->NumOfProgrammers++; //remove later
 				GM->ProgrammingDepartment->EmpCount++;
+				level = GM->EmployeeList[GM->EmployeeList.Num() - 1]->FloorLevel;
+				GM->FloorList[level - 1]->FloorProgrammerCount++;
 				break;
 			case ERole::Artist:
 				GM->NumOfArtists++;
 				GM->ArtistDepartment->EmpCount++;
+				level = GM->EmployeeList[GM->EmployeeList.Num() - 1]->FloorLevel;
+				GM->FloorList[level - 1]->FloorArtistCount++;
 				break;
 			}
 		}
+
+		auto Size = GM->EmployeeList.Num();
+		FString sizeString = FString::FromInt(Size);
+		UE_LOG(LogTemp, Warning, TEXT("%sizeString"), *sizeString)
 
 	}
 	this->SpawnDefaultController();
@@ -83,7 +93,7 @@ void AEmployee::BeginPlay()
 		WorkProgressBar->SetVisibility(false);
 	}
 
-	GM->Wall->AssignFloorLevel();
+	//GM->Wall->AssignFloorLevel();
 	
 
 

@@ -80,18 +80,14 @@ void UCeoDepMenuWidget::CallProgrammerSpawn()
 	}
 
 
-	if (numberOfProgrammerStation > GM->NumOfProgrammers)
+	if (numberOfProgrammerStation > GM->NumOfProgrammers && GM->FloorList[GM->Character->CurrentFloor - 1]->FloorProgrammerCount < 3)
 	{
-		if (GM->FloorList[GM->Character->CurrentFloor - 1]->ProgrammerCount < 3)
-		{
 			if (GM->Money >= 10000) //make money editable inspector constant that scales up , same for all dep & sup hire
 			{
 				GM->Money -= 10000;
-				GM->FloorList[GM->Character->CurrentFloor - 1]->ProgrammerCount++;
 				ActivateWorkstation(ERole::Programmer, EPosition::Intern, false);
 				OfficeDepartment->GenerateActor(0, ERole::Programmer);
 			}
-		}
 	}
 }
 
@@ -149,12 +145,11 @@ void UCeoDepMenuWidget::CallArtistSpawn()
 			numberOfArtistStation--;
 		}
 	}
-	if (numberOfArtistStation > GM->NumOfArtists && GM->FloorList[GM->Character->CurrentFloor - 1]->ArtistCount <= 3)
+	if (numberOfArtistStation > GM->NumOfArtists && GM->FloorList[GM->Character->CurrentFloor - 1]->FloorArtistCount < 3 )
 	{
 		if (GM->Money >= 10000)
 		{
 			GM->Money -= 10000;
-			GM->FloorList[GM->Character->CurrentFloor - 1]->ArtistCount++;
 			ActivateWorkstation(ERole::Artist, EPosition::Intern, false);
 			OfficeDepartment->GenerateActor(1, ERole::Artist);
 		}
