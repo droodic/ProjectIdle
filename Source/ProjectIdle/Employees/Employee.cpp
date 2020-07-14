@@ -72,9 +72,9 @@ void AEmployee::BeginPlay()
 			}
 		}
 
-		auto Size = GM->EmployeeList.Num();
-		FString sizeString = FString::FromInt(Size);
-		UE_LOG(LogTemp, Warning, TEXT("%sizeString"), *sizeString)
+		//auto Size = GM->EmployeeList.Num();
+		//FString sizeString = FString::FromInt(Size);
+		//UE_LOG(LogTemp, Warning, TEXT("%sizeString"), *sizeString)
 
 	}
 	this->SpawnDefaultController();
@@ -300,7 +300,7 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		if (isOver == true)
 		{
 			GM->IdeaInProduction = false;
-			GM->OfficeDepartment->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartment->CurrentIdea);
+			GM->OfficeDepartmentList[this->FloorLevel - 1]->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartment->CurrentIdea);
 			UI->MoneyWidget->ShowANotification("PRODUCTION OF A GAME FINISHED, WAITING FOR BEING PUBLISHED");
 			CompileValue = 0;
 		}
