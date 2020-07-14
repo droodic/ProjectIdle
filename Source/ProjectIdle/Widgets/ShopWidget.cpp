@@ -193,7 +193,15 @@ void UShopWidget::RemoveItemFromCheckout(int itemID)
 	}
 
 	CheckoutCount--;
-	CheckoutCount_T->SetText(FText::FromString(FString::FromInt(CheckoutCount)));
+
+	if (CheckoutCount > 0)
+	{
+		CheckoutCount_T->SetText(FText::FromString(FString::FromInt(CheckoutCount)));
+	}
+	else
+	{
+		CheckoutCount_T->SetText(FText::FromString(""));
+	}
 }
 
 void UShopWidget::EmptyCart()
@@ -224,7 +232,7 @@ void UShopWidget::EmptyCart()
 		CheckoutCount = 0;
 
 		TotalMoney_T->SetText(FText::AsCurrency(Total));
-		CheckoutCount_T->SetText(FText::FromString(FString::FromInt(CheckoutCount)));
+		CheckoutCount_T->SetText(FText::FromString(""));
 	}
 }
 
