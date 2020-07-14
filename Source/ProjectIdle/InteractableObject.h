@@ -7,7 +7,7 @@
 #include "InteractableObject.generated.h"
 
 // This class does not need to be modified.
-UINTERFACE(MinimalAPI)
+UINTERFACE(meta = (CannotImplementInterfaceInBlueprint))
 class UInteractableObject : public UInterface
 {
 	GENERATED_BODY()
@@ -22,5 +22,6 @@ class PROJECTIDLE_API IInteractableObject
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	void Interact();
+	UFUNCTION(BlueprintCallable,  Category = "Interact")
+	virtual void OnInteract() = 0;
 };

@@ -7,6 +7,7 @@
 #include "Components/BoxComponent.h"
 #include "GameFramework/Actor.h"
 #include "ProjectIdle/Shop/Item.h"
+#include "ProjectIdle/InteractableObject.h"
 #include "Components/WidgetComponent.h"
 #include "ProjectIdle/Employees/Employee.h"
 #include "Workstation.generated.h"
@@ -26,7 +27,7 @@ enum class EType : int16
 //};
 
 UCLASS()
-class PROJECTIDLE_API AWorkstation : public AActor
+class PROJECTIDLE_API AWorkstation : public AActor, public IInteractableObject
 {
 	GENERATED_BODY()
 public:
@@ -117,4 +118,7 @@ public:
 	//UFUNCTION() int WorkstationActiveLenght();
 	//UFUNCTION() void TestFunction();
 	void WorkstationInit(ERole StationRole);
+
+	// Inherited via IInteractableObject
+	virtual void OnInteract();
 };

@@ -155,6 +155,101 @@ void AEmployee::BeginWork() {
 
 void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 {
+	//replaced by InteractableInterface OnInteract method, remove later
+	//if (!NeedAssistance) {
+	//	if (!GM->IsWidgetInDisplay)
+	//	{
+	//		if (UI != nullptr && CanInspect)
+	//		{
+	//			IsDisplaying = true;
+	//			GM->CurrentEmployeeInDisplay = this;
+	//			UI->ShowEmployeeSheet(this);
+	//		}
+	//	}
+	//	else
+	//	{
+	//		if (CanInspect)
+	//		{
+	//			GM->IsWidgetInDisplay = false;
+	//			if (GM->CurrentWidgetInDisplay)
+	//			{
+	//				GM->CurrentWidgetInDisplay->RemoveFromViewport();
+	//			}
+	//		}
+
+	//		if (UI != nullptr && CanInspect && !IsDisplaying)
+	//		{
+	//			if (GM->CurrentEmployeeInDisplay != nullptr)
+	//			{
+	//				GM->CurrentEmployeeInDisplay->IsDisplaying = false;
+	//			}
+	//			GM->CurrentEmployeeInDisplay = this;
+	//			IsDisplaying = true;
+	//			UI->ShowEmployeeSheet(this);
+	//		}
+	//		else if (CanInspect && IsDisplaying)
+	//		{
+	//			IsDisplaying = false;
+	//			UI->EmpSheetWidget->RemoveFromViewport();
+	//		}
+	//	}
+	//}
+	//else if (NeedAssistance){
+	//	NeedAssistance = false;
+	//	GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Employee has been helped"));
+	//	HelpWidget->SetVisibility(false);
+	//}
+	
+}
+
+// Called every frame
+void AEmployee::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	//add a if enabled condition or smth
+
+	if (HasWorkload && CurrentWorkload > 0 && !AI->IsMoving && !WorkstationRef->IsCompiling && !NeedAssistance) {
+		WorkloadProgress(DeltaTime * ((Performance / 2.5) + (Morale / 5) * GM->SpeedRate * GM->CheatSpeedRate));
+	}
+	if (HelpWidget != nullptr && NeedAssistance && HelpWidget->IsVisible()) {
+		HelpWidget->SetWorldRotation(Camera->GetCameraRotation());
+		HelpWidget->AddLocalRotation(FRotator(0, 180, 0));
+	}
+}
+
+void AEmployee::GetHelp() {
+	if (!WorkstationRef->IsCompiling && !NeedAssistance) { //Iscompiling redundant? 
+		RandomHelpNumber = UKismetMathLibrary::RandomIntegerInRange(0, (90 + ((int)Position * 15)));
+		//GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, TEXT("Number == " + FString::FromInt(RandomHelpNumber)));
+
+		if (RandomHelpNumber == 0) {
+			GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Employee GetHelp"));
+			NeedAssistance = true;
+			GetWorldTimerManager().ClearTimer(HelpTimer);
+			if (!HelpWidget->IsVisible()) {
+				HelpWidget->SetVisibility(true); //temp solution to not showing on load
+				HelpWidget->SetWorldRotation(Camera->GetCameraRotation());
+				HelpWidget->AddLocalRotation(FRotator(0, 180, 0));
+				//Gets adjusted on tick after this call
+			}
+
+			//Check for supervisors, call Help function
+			//Player 
+		}
+	}
+
+	//implement instead of tick way
+}
+
+//void AEmployee::OnInteract()
+//{
+//}
+
+void AEmployee::OnInteract()
+{
+
+	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, TEXT("Interface Interact"));
 	if (!NeedAssistance) {
 		if (!GM->IsWidgetInDisplay)
 		{
@@ -193,7 +288,7 @@ void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 			}
 		}
 	}
-	else if (NeedAssistance){
+	else if (NeedAssistance) {
 		NeedAssistance = false;
 		GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Employee has been helped"));
 		HelpWidget->SetVisibility(false);
@@ -201,45 +296,7 @@ void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 	
 }
 
-// Called every frame
-void AEmployee::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 
-	//add a if enabled condition or smth
-
-	if (HasWorkload && CurrentWorkload > 0 && !AI->IsMoving && !WorkstationRef->IsCompiling && !NeedAssistance) {
-		WorkloadProgress(DeltaTime * ((Performance / 2.5) + (Morale / 5) * GM->SpeedRate * GM->CheatSpeedRate));
-	}
-	if (HelpWidget != nullptr && NeedAssistance && HelpWidget->IsVisible()) {
-		HelpWidget->SetWorldRotation(Camera->GetCameraRotation());
-		HelpWidget->AddLocalRotation(FRotator(0, 180, 0));
-	}
-}
-
-void AEmployee::GetHelp() {
-	if (!WorkstationRef->IsCompiling && !NeedAssistance) { //Iscompiling redundant? 
-		RandomHelpNumber = UKismetMathLibrary::RandomIntegerInRange(0, (60 + ((int)Position * 15)));
-		//GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Number == " + FString::FromInt(((int)Position * 50))));
-
-		if (RandomHelpNumber == 0) {
-			GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Employee GetHelp"));
-			NeedAssistance = true;
-			GetWorldTimerManager().ClearTimer(HelpTimer);
-			if (!HelpWidget->IsVisible()) {
-				HelpWidget->SetVisibility(true); //temp solution to not showing on load
-				HelpWidget->SetWorldRotation(Camera->GetCameraRotation());
-				HelpWidget->AddLocalRotation(FRotator(0, 180, 0));
-				//Gets adjusted on tick after this call
-			}
-
-			//Check for supervisors, call Help function
-			//Player 
-		}
-	}
-
-	//implement instead of tick way
-}
 
 void AEmployee::WorkloadProgress(float Multiplier) {
 

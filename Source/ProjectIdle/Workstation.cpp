@@ -141,48 +141,48 @@ void AWorkstation::EnableStation(bool Enable)
 
 void AWorkstation::NotifyActorOnClicked(FKey ButtonPressed)
 {
-	if (!GM->IsWidgetInDisplay)
-	{
-		if (!UpgradeWidget->IsInViewport() && InRange)
-		{
-			GM-> IsWidgetInDisplay = true;
-			GM->CurrentWidgetInDisplay = UpgradeWidget;
+	//if (!GM->IsWidgetInDisplay)
+	//{
+	//	if (!UpgradeWidget->IsInViewport() && InRange)
+	//	{
+	//		GM-> IsWidgetInDisplay = true;
+	//		GM->CurrentWidgetInDisplay = UpgradeWidget;
 
-			UpgradeWidget->AddToViewport();
+	//		UpgradeWidget->AddToViewport();
 
-			if (UpgradeWidget->InventoryWrapBox->GetChildrenCount() >= 1)
-			{
-				UpgradeWidget->InventoryWrapBox->ClearChildren();
-			}
-		}
-	}
-	else if (GM->IsWidgetInDisplay && InRange)
-	{
-		GM->IsWidgetInDisplay = false;
+	//		if (UpgradeWidget->InventoryWrapBox->GetChildrenCount() >= 1)
+	//		{
+	//			UpgradeWidget->InventoryWrapBox->ClearChildren();
+	//		}
+	//	}
+	//}
+	//else if (GM->IsWidgetInDisplay && InRange)
+	//{
+	//	GM->IsWidgetInDisplay = false;
 
-		if (GM->CurrentEmployeeInDisplay != nullptr)
-		{
-			GM->CurrentEmployeeInDisplay->IsDisplaying = false;
-		}
-		if (GM->CurrentWidgetInDisplay != nullptr)
-		{
-			GM->CurrentWidgetInDisplay->RemoveFromViewport();
-		}
+	//	if (GM->CurrentEmployeeInDisplay != nullptr)
+	//	{
+	//		GM->CurrentEmployeeInDisplay->IsDisplaying = false;
+	//	}
+	//	if (GM->CurrentWidgetInDisplay != nullptr)
+	//	{
+	//		GM->CurrentWidgetInDisplay->RemoveFromViewport();
+	//	}
 
-		if (!UpgradeWidget->IsInViewport() && InRange)
-		{
-			GM->IsWidgetInDisplay = true;
-			GM->CurrentWidgetInDisplay = Cast<UUserWidget>(UpgradeWidget);
+	//	if (!UpgradeWidget->IsInViewport() && InRange)
+	//	{
+	//		GM->IsWidgetInDisplay = true;
+	//		GM->CurrentWidgetInDisplay = Cast<UUserWidget>(UpgradeWidget);
 
-			UpgradeWidget->AddToViewport();
+	//		UpgradeWidget->AddToViewport();
 
-			if (UpgradeWidget->InventoryWrapBox->GetChildrenCount() >= 1)
-			{
-				UpgradeWidget->InventoryWrapBox->ClearChildren();
-			}
-		}
+	//		if (UpgradeWidget->InventoryWrapBox->GetChildrenCount() >= 1)
+	//		{
+	//			UpgradeWidget->InventoryWrapBox->ClearChildren();
+	//		}
+	//	}
 
-	}
+	//}
 }
 
 void AWorkstation::UpgradeMesh(AItem* Item)
@@ -360,4 +360,50 @@ void AWorkstation::UpdateSupervisorWorkstationPosition()
 void AWorkstation::WorkstationInit(ERole Station)
 {
 	StationRole = Station;
+}
+
+void AWorkstation::OnInteract()
+{
+	if (!GM->IsWidgetInDisplay)
+	{
+		if (!UpgradeWidget->IsInViewport() && InRange)
+		{
+			GM->IsWidgetInDisplay = true;
+			GM->CurrentWidgetInDisplay = UpgradeWidget;
+
+			UpgradeWidget->AddToViewport();
+
+			if (UpgradeWidget->InventoryWrapBox->GetChildrenCount() >= 1)
+			{
+				UpgradeWidget->InventoryWrapBox->ClearChildren();
+			}
+		}
+	}
+	else if (GM->IsWidgetInDisplay && InRange)
+	{
+		GM->IsWidgetInDisplay = false;
+
+		if (GM->CurrentEmployeeInDisplay != nullptr)
+		{
+			GM->CurrentEmployeeInDisplay->IsDisplaying = false;
+		}
+		if (GM->CurrentWidgetInDisplay != nullptr)
+		{
+			GM->CurrentWidgetInDisplay->RemoveFromViewport();
+		}
+
+		if (!UpgradeWidget->IsInViewport() && InRange)
+		{
+			GM->IsWidgetInDisplay = true;
+			GM->CurrentWidgetInDisplay = Cast<UUserWidget>(UpgradeWidget);
+
+			UpgradeWidget->AddToViewport();
+
+			if (UpgradeWidget->InventoryWrapBox->GetChildrenCount() >= 1)
+			{
+				UpgradeWidget->InventoryWrapBox->ClearChildren();
+			}
+		}
+
+	}
 }

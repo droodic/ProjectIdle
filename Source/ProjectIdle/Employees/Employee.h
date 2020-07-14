@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "ProjectIdle/SaveableActorInterface.h"
+#include "ProjectIdle/InteractableObject.h"
 #include "GameFramework/Character.h"
 #include "Employee.generated.h"
 
@@ -35,7 +36,7 @@ enum class EPosition : uint8
 };
 
 UCLASS()
-class PROJECTIDLE_API AEmployee : public ACharacter//, public USaveableActorInterface
+class PROJECTIDLE_API AEmployee : public ACharacter, public IInteractableObject
 {
 	GENERATED_BODY()
 
@@ -128,11 +129,16 @@ public:
 	void IsDepartmentWorking();
 	void WorkOnTask();
 	void AssignSupervisor();
-	
+
 	void StartGetHelp(); //Call Timer start
 	UFUNCTION() void GetHelp(); //Timer Event
 
+	//void OnInteract() override;  //virtual void OnInteract() override;
+
 public:
+
+	// Inherited via IInteractableObject
+	virtual void OnInteract();
 	//UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Saveable Actor")
 	//	 void ActorSaveDataLoaded();
 	//UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Saveable Actor")
