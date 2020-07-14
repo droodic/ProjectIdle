@@ -135,7 +135,7 @@ void AEmployee::IsDepartmentWorking() {
 void AEmployee::BeginWork() {
 	//if compile phase in work
 	CompileValue = 0;
-	NumCompile = UKismetMathLibrary::RandomIntegerInRange(9, 12);
+	NumCompile = UKismetMathLibrary::RandomIntegerInRange(3, 5);
 	//make funciton to find self department and values, example get all department employees number
 	for (auto Dep : GM->DepartmentList) {
 		if (Dep->DepRole == EmployeeRole) {
@@ -211,7 +211,9 @@ void AEmployee::Tick(float DeltaTime)
 
 void AEmployee::GetHelp() {
 	if (!WorkstationRef->IsCompiling && !NeedAssistance) { //Iscompiling redundant? 
-		RandomHelpNumber = UKismetMathLibrary::RandomIntegerInRange(0, 10);
+		RandomHelpNumber = UKismetMathLibrary::RandomIntegerInRange(0, (60 + ((int)Position * 15)));
+		GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Number == " + FString::FromInt(((int)Position * 50))));
+
 		if (RandomHelpNumber == 0) {
 			GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Employee GetHelp"));
 			NeedAssistance = true;
