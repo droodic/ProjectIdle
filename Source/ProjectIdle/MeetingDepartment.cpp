@@ -127,7 +127,7 @@ void AMeetingDepartment::MoveToMeeting()
 	GEngine->AddOnScreenDebugMessage(Index++, 3.f, FColor::Red, sizeString, true);
 
 	bool MoreEmployeeThanChair = false;
-
+	
 	if (EmployeeSize > ChairSize)
 	{
 		//If there too many employee
