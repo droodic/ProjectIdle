@@ -64,6 +64,8 @@ public:
 	UPROPERTY(BlueprintReadWrite) int EmployeeNameIndex;
 	UPROPERTY(BlueprintReadWrite) float SpeedRate = 1;
 	UPROPERTY(BlueprintReadWrite) float CheatSpeedRate = 1;
+	UPROPERTY(BlueprintReadWrite) int CurrentOfficeFloor = 1;
+
 
 	bool IdeaInProduction = false;
 	bool IsWidgetInDisplay = false;

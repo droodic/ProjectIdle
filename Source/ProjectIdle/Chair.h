@@ -23,6 +23,7 @@ public:
 	UPROPERTY() USceneComponent* Root;
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* Mesh;
 
+	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
 
 protected:
 	// Called when the game starts or when spawned

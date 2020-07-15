@@ -140,7 +140,17 @@ void AMeetingDepartment::MoveToMeeting()
 					else if (Cast<AFloorManager>(Emp) == nullptr) {
 						EmployeesAtMeetingList.Add(Emp);
 						Emp->IsAtMeeting = true;
-						Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
+						if (Emp->FloorLevel == GM->Character->CurrentFloor)
+						{
+							for (auto Chair : GM->MeetingChairList)
+							{
+								if (Emp->FloorLevel == Chair->FloorLevel)
+								{
+									Emp->MoveEmployee(Chair->GetActorLocation());
+								}
+							}
+							//Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
+						}
 					}
 					//Emp->MoveEmployee(FVector(0, 0, 0));
 					//GEngine->AddOnScreenDebugMessage(Index++, 5.f, FColor::Red, "No supp- Sending employee");
