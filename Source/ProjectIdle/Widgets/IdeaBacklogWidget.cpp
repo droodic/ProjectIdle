@@ -92,6 +92,7 @@ void UIdeaBacklogWidget::CallMeeting()
 	GM->IdeaInProduction = true;
 	CallMeetingBtn->SetIsEnabled(false);
 	GM->MeetingDepartment->MoveToMeeting();
+	//GM->MeetingDepartmentList[0]->MoveToMeeting();
 	SendIdea(ChosenIndex);
 }
 void UIdeaBacklogWidget::CallMeeting_M(AFloorManager* ManagerRef)
@@ -125,6 +126,7 @@ void UIdeaBacklogWidget::SendIdea(int Index) {
 		{
 			GEngine->AddOnScreenDebugMessage(1036, 5.f, FColor::Red, "tIdea work");
 			GM->MeetingDepartment->TakeIdea(tIdea);
+			//GM->MeetingDepartmentList[0]->TakeIdea(tIdea);
 		}
 		//GM->MeetingDepartment->TakeIdea(OfficeDepartment->IdeaList[ChosenIndex]);
 		GEngine->AddOnScreenDebugMessage(103, 5.f, FColor::Red, "Meeting TakeIdea");

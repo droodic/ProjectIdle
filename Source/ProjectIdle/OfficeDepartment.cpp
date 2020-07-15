@@ -369,7 +369,7 @@ void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 			if (Position == 0 || Position == 1 || Position == 2 || Position == 5)
 			{
 				FVector NewVector = FVector(0, -100, 100);
-				int floor = this->FloorLevel;
+				int floor = GM->Character->CurrentFloor;
 				SpawnLocation = GM->DoorList[floor - 1]->GetActorLocation() + NewVector;
 				SpawnRotation = FRotator::ZeroRotator;
 			}
