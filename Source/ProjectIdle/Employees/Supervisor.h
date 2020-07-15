@@ -20,10 +20,16 @@ public:
 	UPROPERTY(SaveGame) bool IsEvaluating;
 	UPROPERTY(SaveGame) AEmployee* EmployeeToEval;
 
+	bool CheckingForHelp;
+	//FTimerHandle HelpTimer;
+
+
 	void InitSupervisor(ERole Department);
 	void EvaluateEmployee();
+	UFUNCTION() void CheckForHelp(); //Called by timer
+	AEmployee* TargetEmployee;
 	virtual void FiredFinal() override;
-
+	void BeginSupervisorWork();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

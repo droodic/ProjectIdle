@@ -227,6 +227,9 @@ void AMeetingDepartment::BackFromMeeting()
 	if (CanReturn) {
 		for (auto Emp : EmployeesAtMeetingList) {
 			Emp->MoveEmployee(Emp->StartPosition);
+			if (Emp->Position == EPosition::Supervisor) {
+				Cast<ASupervisor>(Emp)->BeginSupervisorWork();
+			}
 		}
 		EmployeesAtMeetingList.Empty();
 
@@ -250,7 +253,9 @@ void AMeetingDepartment::BackFromMeeting()
 					Emp->CurrentWorkload = Emp->AssignedWorkload;
 					Emp->BeginWork();
 				}
+
 			}
+
 			Emp->IsAtMeeting = false;
 		}
 

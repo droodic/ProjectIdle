@@ -80,7 +80,7 @@ public:
 	UPROPERTY(SaveGame) bool HasWorkStation;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool IsFired = false;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool HasWorkload;
-	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool IsMoving = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsMoving = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsWorking;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool DefaultEmployee;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool HasBeenEvaluated;
@@ -121,11 +121,12 @@ public:
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void MoveEmployee(FVector Destination, float AcceptanceRadius = 0.f);
-	void BeginWork();
+	virtual void BeginWork();
+	virtual void FiredFinal(); //Called by Door onOverlap
+	
 	void WorkloadProgress(float Multiplier);
 	void Promote();
 	void Fire();
-	virtual void FiredFinal(); //Called by Door onOverlap
 	void IsDepartmentWorking();
 	void WorkOnTask();
 	void AssignSupervisor();
