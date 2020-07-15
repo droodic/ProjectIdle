@@ -39,6 +39,28 @@ Idea AOfficeDepartment::GenerateIdeaValues()
 	return Idea(UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f));
 }
 
+void AOfficeDepartment::OnInteract()
+{
+	if (bInRadius && OfficeDepMenuWidget != nullptr)
+	{
+		if (!OfficeDepMenuWidget->IsInViewport())
+		{
+			UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetCharacterMovement()->DisableMovement();
+			OfficeDepMenuWidget->AddToViewport();
+
+			if (GM->CurrentWidgetInDisplay != nullptr)
+			{
+				GM->CurrentWidgetInDisplay->RemoveFromViewport();
+			}
+		}
+		else
+		{
+			OfficeDepMenuWidget->RemoveFromViewport();
+			UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+		}
+	}
+}
+
 void AOfficeDepartment::BeginPlay()
 {
 	Super::BeginPlay();
@@ -250,24 +272,24 @@ void AOfficeDepartment::PublishGame()
 
 void AOfficeDepartment::NotifyActorOnClicked(FKey ButtonPressed)
 {
-	if (bInRadius && OfficeDepMenuWidget != nullptr)
-	{
-		if (!OfficeDepMenuWidget->IsInViewport())
-		{
-			UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetCharacterMovement()->DisableMovement();
-			OfficeDepMenuWidget->AddToViewport();
+	//if (bInRadius && OfficeDepMenuWidget != nullptr)
+	//{
+	//	if (!OfficeDepMenuWidget->IsInViewport())
+	//	{
+	//		UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetCharacterMovement()->DisableMovement();
+	//		OfficeDepMenuWidget->AddToViewport();
 
-			if (GM->CurrentWidgetInDisplay != nullptr)
-			{
-				GM->CurrentWidgetInDisplay->RemoveFromViewport();
-			}
-		}
-		else
-		{
-			OfficeDepMenuWidget->RemoveFromViewport();
-			UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
-		}
-	}
+	//		if (GM->CurrentWidgetInDisplay != nullptr)
+	//		{
+	//			GM->CurrentWidgetInDisplay->RemoveFromViewport();
+	//		}
+	//	}
+	//	else
+	//	{
+	//		OfficeDepMenuWidget->RemoveFromViewport();
+	//		UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+	//	}
+	//}
 
 }
 

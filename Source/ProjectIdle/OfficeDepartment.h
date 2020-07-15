@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Department.h"
+#include "InteractableObject.h"
 #include "OfficeDepartment.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PROJECTIDLE_API AOfficeDepartment : public ADepartment
+class PROJECTIDLE_API AOfficeDepartment : public ADepartment, public IInteractableObject
 {
 	GENERATED_BODY()
 	
@@ -96,4 +97,7 @@ protected:
 	void NotifyActorOnClicked(FKey ButtonPressed = EKeys::RightMouseButton) override;
 
 	class Idea GenerateIdeaValues();
+
+	// Inherited via IInteractableObject
+	virtual void OnInteract();
 };
