@@ -77,24 +77,27 @@ void UIdeaBacklogWidget::CallMeeting()
 		GM = GetWorld()->GetGameInstance<UGameManager>();
 		GEngine->AddOnScreenDebugMessage(101, 5.f, FColor::Red, "populate GM");
 	}
-	//int CurrentFloorLevel = 0;
+	//if (GM->Character->CurrentFloor == 1)
+	//{
+		//int CurrentFloorLevel = 0;
 
-	//if (GM->OfficeDepartment->ManagerRef->AutoManaging)
-	//{
-	//	CurrentFloorLevel = GM->OfficeDepartment->ManagerRef->FloorLevel;
+		//if (GM->OfficeDepartment->ManagerRef->AutoManaging)
+		//{
+		//	CurrentFloorLevel = GM->OfficeDepartment->ManagerRef->FloorLevel;
+		//}
+		//else
+		//{
+		//	CurrentFloorLevel = GM->Character->CurrentFloor;
+		//}
+		//GM->OfficeDepartmentList[CurrentFloorLevel]->IdeaList[ChosenIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
+		OfficeDepartment->IdeaList[ChosenIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
+		//UIdeaButton::IsInProduction = true;
+		GM->IdeaInProduction = true;
+		CallMeetingBtn->SetIsEnabled(false);
+		GM->MeetingDepartment->MoveToMeeting();
+		//GM->MeetingDepartmentList[OfficeDepartment->FloorLevel - 1]->MoveToMeeting();
+		SendIdea(ChosenIndex);
 	//}
-	//else
-	//{
-	//	CurrentFloorLevel = GM->Character->CurrentFloor;
-	//}
-	//GM->OfficeDepartmentList[CurrentFloorLevel]->IdeaList[ChosenIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
-	OfficeDepartment->IdeaList[ChosenIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
-	//UIdeaButton::IsInProduction = true;
-	GM->IdeaInProduction = true;
-	CallMeetingBtn->SetIsEnabled(false);
-	GM->MeetingDepartment->MoveToMeeting();
-	//GM->MeetingDepartmentList[OfficeDepartment->FloorLevel - 1]->MoveToMeeting();
-	SendIdea(ChosenIndex);
 }
 void UIdeaBacklogWidget::CallMeeting_M(AFloorManager* ManagerRef)
 {
@@ -107,8 +110,8 @@ void UIdeaBacklogWidget::CallMeeting_M(AFloorManager* ManagerRef)
 	//UIdeaButton::IsInProduction = true;
 	GM->IdeaInProduction = true;
 	CallMeetingBtn->SetIsEnabled(false);
-	GM->MeetingDepartmentList[GM->OfficeDepartment->FloorLevel - 1]->MoveToMeeting();
-	//GM->MeetingDepartment->MoveToMeeting();
+	//GM->MeetingDepartmentList[GM->OfficeDepartment->FloorLevel - 1]->MoveToMeeting();
+	GM->MeetingDepartment->MoveToMeeting();
 	ManagerRef->MeetingState = true;
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Movetomeeting");
 
