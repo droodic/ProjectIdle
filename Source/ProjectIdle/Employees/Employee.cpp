@@ -99,7 +99,7 @@ void AEmployee::BeginPlay()
 	}
 
 	//GM->Wall->AssignFloorLevel();
-	
+
 
 
 
@@ -114,7 +114,12 @@ void AEmployee::BeginPlay()
 			//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, "Looping Workstation");
 		}
 		IsDepartmentWorking();
-		MoveEmployee(StartPosition);
+		auto Distance = FVector::Dist(GetActorLocation(), StartPosition);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::FromInt(Distance));
+		if (Distance >= 475.f) {
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "MoveEmployeeCalled" );
+			MoveEmployee(StartPosition, 5.f);
+		}
 	}
 }
 
@@ -199,7 +204,7 @@ void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 	//	GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Employee has been helped"));
 	//	HelpWidget->SetVisibility(false);
 	//}
-	
+
 }
 
 // Called every frame
@@ -293,7 +298,7 @@ void AEmployee::OnInteract()
 		GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Employee has been helped"));
 		HelpWidget->SetVisibility(false);
 	}
-	
+
 }
 
 
@@ -423,7 +428,7 @@ void AEmployee::NotifyActorBeginOverlap(AActor* OtherActor)
 
 void AEmployee::NotifyActorEndOverlap(AActor* OtherActor)
 {
-	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr) 
+	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
 	{
 		CanInspect = false;
 		if (UI->EmpSheetWidget->IsInViewport())

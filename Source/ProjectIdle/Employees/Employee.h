@@ -80,7 +80,7 @@ public:
 	UPROPERTY(SaveGame) bool HasWorkStation;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool IsFired = false;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool HasWorkload;
-	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool IsMoving = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsMoving = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsWorking;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool DefaultEmployee;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool HasBeenEvaluated;
