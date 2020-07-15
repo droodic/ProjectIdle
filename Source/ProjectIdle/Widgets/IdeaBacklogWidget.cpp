@@ -76,7 +76,17 @@ void UIdeaBacklogWidget::CallMeeting()
 		GM = GetWorld()->GetGameInstance<UGameManager>();
 		GEngine->AddOnScreenDebugMessage(101, 5.f, FColor::Red, "populate GM");
 	}
+	//int CurrentFloorLevel = 0;
 
+	//if (GM->OfficeDepartment->ManagerRef->AutoManaging)
+	//{
+	//	CurrentFloorLevel = GM->OfficeDepartment->ManagerRef->FloorLevel;
+	//}
+	//else
+	//{
+	//	CurrentFloorLevel = GM->Character->CurrentFloor;
+	//}
+	//GM->OfficeDepartmentList[CurrentFloorLevel]->IdeaList[ChosenIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
 	OfficeDepartment->IdeaList[ChosenIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
 	//UIdeaButton::IsInProduction = true;
 	GM->IdeaInProduction = true;

@@ -37,6 +37,11 @@ public:
 	UPROPERTY(BlueprintReadWrite) TArray<class ADoor*> DoorList;
 	UPROPERTY(BlueprintReadWrite) TArray<class ADoor*> UnassignedDoorList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AOfficeDepartment*> OfficeDepartmentList;
+	UPROPERTY(BlueprintReadWrite) TArray<class AOfficeDepartment*> UnassignedOfficeDepartmentList;
+	UPROPERTY(BlueprintReadWrite) TArray<class AMeetingDepartment*> MeetingDepartmentList;
+	UPROPERTY(BlueprintReadWrite) TArray<class AMeetingDepartment*> UnassignedMeetingDepartmentList;
+
+
 
 
 

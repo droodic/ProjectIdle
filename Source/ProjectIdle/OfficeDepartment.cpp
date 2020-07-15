@@ -66,7 +66,14 @@ void AOfficeDepartment::BeginPlay()
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->OfficeDepartment = this;
-	GM->OfficeDepartmentList.Add(this);
+	if (StartingOffice)
+	{
+		GM->OfficeDepartmentList.Add(this);
+	}
+	else{
+		GM->UnassignedOfficeDepartmentList.Add(this);
+	}
+
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
 
 	if (UserWidgets[0] != nullptr)

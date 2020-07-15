@@ -13,6 +13,7 @@
 #include "Employees/Artist.h"
 #include "Employees/Programmer.h"
 #include "EngineUtils.h"
+#include "ProjectIdle/Employees/FloorManager.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "ProjectIdle/Widgets/IdeaBacklogWidget.h"
 
@@ -30,6 +31,16 @@ void AMeetingDepartment::BeginPlay()
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->MeetingDepartment = this;
+
+	if (StartingMeetingDep) 
+	{
+		GM->MeetingDepartmentList.Add(this);
+	}
+	else
+	{
+		GM->UnassignedMeetingDepartmentList.Add(this);
+	}
+
 	//GM->DepartmentList.Add(this);
 	//temp assign, need to change class name , maybe move functions to gm
 	UWorld* world = GetWorld();
@@ -99,7 +110,16 @@ void AMeetingDepartment::MoveToMeeting()
 	auto ChairIndex = 0;
 	auto Index = 0;
 	auto LoopCount = 0;
-
+	int CurrentFloorLevel = 0;
+	
+	//if (GM->OfficeDepartment->ManagerRef->AutoManaging)
+	//{
+	//	CurrentFloorLevel = GM->OfficeDepartment->ManagerRef->FloorLevel;
+	//}
+	//else
+	//{
+		CurrentFloorLevel = GM->Character->CurrentFloor;
+	//}
 
 	auto ChairSize = GM->MeetingChairList.Num();
 	auto EmployeeSize = GM->EmployeeList.Num();
@@ -140,13 +160,15 @@ void AMeetingDepartment::MoveToMeeting()
 					else if (Cast<AFloorManager>(Emp) == nullptr) {
 						EmployeesAtMeetingList.Add(Emp);
 						Emp->IsAtMeeting = true;
-						if (Emp->FloorLevel == GM->Character->CurrentFloor)
+						if (Emp->FloorLevel == CurrentFloorLevel)
 						{
 							for (auto Chair : GM->MeetingChairList)
 							{
-								if (Emp->FloorLevel == Chair->FloorLevel)
+								if (Emp->FloorLevel == Chair->FloorLevel && !Chair->IsChairTaken)
 								{
 									Emp->MoveEmployee(Chair->GetActorLocation());
+									Chair->IsChairTaken = true;
+									break;
 								}
 							}
 							//Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
@@ -207,6 +229,11 @@ void AMeetingDepartment::BackFromMeeting()
 			Emp->MoveEmployee(Emp->StartPosition);
 		}
 		EmployeesAtMeetingList.Empty();
+
+		for (auto Chair : GM->MeetingChairList)
+		{
+			Chair->IsChairTaken = false;
+		}
 
 		for (auto Emp : GM->EmployeeList) {
 

@@ -61,6 +61,7 @@ public:
 	TArray<class AItem*> InventoryList;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool StartingOffice;
 
 	UPROPERTY(EditAnywhere) class ACameraActor* SpawnItemCamera;
 

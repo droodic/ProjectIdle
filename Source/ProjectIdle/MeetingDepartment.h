@@ -32,6 +32,9 @@ public:
 	
 	class Idea* CurrentIdea;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool StartingMeetingDep;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
