@@ -121,11 +121,12 @@ public:
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "TestBPFunc") void MoveEmployee(FVector Destination, float AcceptanceRadius = 0.f);
-	void BeginWork();
+	virtual void BeginWork();
+	virtual void FiredFinal(); //Called by Door onOverlap
+	
 	void WorkloadProgress(float Multiplier);
 	void Promote();
 	void Fire();
-	virtual void FiredFinal(); //Called by Door onOverlap
 	void IsDepartmentWorking();
 	void WorkOnTask();
 	void AssignSupervisor();

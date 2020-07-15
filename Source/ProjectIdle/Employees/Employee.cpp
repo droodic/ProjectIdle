@@ -220,7 +220,7 @@ void AEmployee::Tick(float DeltaTime)
 
 void AEmployee::GetHelp() {
 	if (!WorkstationRef->IsCompiling && !NeedAssistance) { //Iscompiling redundant? 
-		RandomHelpNumber = UKismetMathLibrary::RandomIntegerInRange(0, (90 + ((int)Position * 15)));
+		RandomHelpNumber = UKismetMathLibrary::RandomIntegerInRange(0, (60 + ((int)Position * 15)));
 		//GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, TEXT("Number == " + FString::FromInt(RandomHelpNumber)));
 
 		if (RandomHelpNumber == 0) {
@@ -402,6 +402,7 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 			GM->IdeaInProduction = false;
 			GM->OfficeDepartment->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartment->CurrentIdea);
 			UI->MoneyWidget->ShowANotification("PRODUCTION OF A GAME FINISHED, WAITING FOR BEING PUBLISHED");
+			GetWorldTimerManager().ClearTimer(HelpTimer);
 			CompileValue = 0;
 		}
 	}

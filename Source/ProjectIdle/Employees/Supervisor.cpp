@@ -46,7 +46,7 @@ void ASupervisor::BeginPlay()
 	//StartPosition = FVector(0, 0, 0);
 
 
-		//GM->WorkStation->UpdateWorkstationPosition();
+	//GM->WorkStation->UpdateWorkstationPosition();
 	for (auto Workstation : GM->WorkstationList) {
 		if (Workstation->IsEnabled == true && !Workstation->HasEmployee && Workstation->StationRole == EmployeeRole && Workstation->StationOwnerPosition == EPosition::Supervisor) {
 			Workstation->UpdateWorkstationPosition(this);
@@ -60,7 +60,37 @@ void ASupervisor::BeginPlay()
 
 
 }
+void ASupervisor::CheckForHelp() {
+	
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Supervisor checking for help");
 
+	if (CheckingForHelp) {
+		if (FVector::Dist(GetActorLocation(), TargetEmployee->GetActorLocation()) <= 250) {
+			TargetEmployee->NeedAssistance = false;
+			TargetEmployee->HelpWidget->SetVisibility(false);
+			MoveEmployee(StartPosition);
+			CheckingForHelp = false;
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Supervisor helped employee, returning");
+
+		}
+	}
+	
+	if (!CheckingForHelp) {
+		for (auto Employee : GM->EmployeeList) {
+			if (Employee->EmployeeRole == EmployeeRole && Employee->IsWorking && Employee->CurrentWorkload > 0 && Employee->NeedAssistance) {
+				MoveEmployee(Employee->GetActorLocation(), 100.f);
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Moving to help employee");
+
+				CheckingForHelp = true;
+				TargetEmployee = Employee;
+				//Employee->NeedAssistance = false;
+				break;
+			}
+		}
+	}
+	
+
+}
 
 void ASupervisor::Tick(float DeltaTime)
 {
@@ -90,6 +120,11 @@ void ASupervisor::Tick(float DeltaTime)
 
 	}
 
+	//if (GM->IdeaInProduction && !CheckingForHelp) {
+	//	CheckingForHelp = true;
+	//	GetWorldTimerManager().SetTimer(HelpTimer, this, &ASupervisor::CheckForHelp, 2.5f, true);
+	//}
+
 }
 
 void ASupervisor::InitSupervisor(ERole Department) {
@@ -117,6 +152,14 @@ void ASupervisor::FiredFinal()
 		GM->ArtistDepartment->HasSupervisor = false;
 		GM->ArtistDepartment->SupervisorRef = nullptr;
 	}
+}
+
+void ASupervisor::BeginSupervisorWork()
+{
+	//CheckingForHelp = true;
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, "Supervisor beginwork for help");
+
+	GetWorldTimerManager().SetTimer(HelpTimer, this, &ASupervisor::CheckForHelp, 2.5f, true);
 }
 
 

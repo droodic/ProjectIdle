@@ -16,6 +16,7 @@
 #include "ProjectIdle/Widgets/WorkstationUpgradeWidget.h"
 #include "ProjectIdle/Widgets/WorkstationCompileWidget.h"
 #include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
+#include "ProjectIdle/Workstations/SupervisorWorkstation.h"
 #include "Workstation.h"
 
 // Sets default values
@@ -364,46 +365,50 @@ void AWorkstation::WorkstationInit(ERole Station)
 
 void AWorkstation::OnInteract()
 {
-	if (!GM->IsWidgetInDisplay)
+	if (Cast<ASupervisorWorkstation>(this) == nullptr) 
 	{
-		if (!UpgradeWidget->IsInViewport() && InRange)
+		if (!GM->IsWidgetInDisplay)
 		{
-			GM->IsWidgetInDisplay = true;
-			GM->CurrentWidgetInDisplay = UpgradeWidget;
-
-			UpgradeWidget->AddToViewport();
-
-			if (UpgradeWidget->InventoryWrapBox->GetChildrenCount() >= 1)
+			if (!UpgradeWidget->IsInViewport() && InRange)
 			{
-				UpgradeWidget->InventoryWrapBox->ClearChildren();
+				GM->IsWidgetInDisplay = true;
+				GM->CurrentWidgetInDisplay = UpgradeWidget;
+
+				UpgradeWidget->AddToViewport();
+
+				if (UpgradeWidget->InventoryWrapBox->GetChildrenCount() >= 1)
+				{
+					UpgradeWidget->InventoryWrapBox->ClearChildren();
+				}
 			}
 		}
-	}
-	else if (GM->IsWidgetInDisplay && InRange)
-	{
-		GM->IsWidgetInDisplay = false;
-
-		if (GM->CurrentEmployeeInDisplay != nullptr)
+		else if (GM->IsWidgetInDisplay && InRange)
 		{
-			GM->CurrentEmployeeInDisplay->IsDisplaying = false;
-		}
-		if (GM->CurrentWidgetInDisplay != nullptr)
-		{
-			GM->CurrentWidgetInDisplay->RemoveFromViewport();
-		}
+			GM->IsWidgetInDisplay = false;
 
-		if (!UpgradeWidget->IsInViewport() && InRange)
-		{
-			GM->IsWidgetInDisplay = true;
-			GM->CurrentWidgetInDisplay = Cast<UUserWidget>(UpgradeWidget);
-
-			UpgradeWidget->AddToViewport();
-
-			if (UpgradeWidget->InventoryWrapBox->GetChildrenCount() >= 1)
+			if (GM->CurrentEmployeeInDisplay != nullptr)
 			{
-				UpgradeWidget->InventoryWrapBox->ClearChildren();
+				GM->CurrentEmployeeInDisplay->IsDisplaying = false;
 			}
-		}
+			if (GM->CurrentWidgetInDisplay != nullptr)
+			{
+				GM->CurrentWidgetInDisplay->RemoveFromViewport();
+			}
 
+			if (!UpgradeWidget->IsInViewport() && InRange)
+			{
+				GM->IsWidgetInDisplay = true;
+				GM->CurrentWidgetInDisplay = Cast<UUserWidget>(UpgradeWidget);
+
+				UpgradeWidget->AddToViewport();
+
+				if (UpgradeWidget->InventoryWrapBox->GetChildrenCount() >= 1)
+				{
+					UpgradeWidget->InventoryWrapBox->ClearChildren();
+				}
+			}
+
+		}
 	}
+	
 }
