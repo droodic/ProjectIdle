@@ -63,6 +63,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
 
 	UPROPERTY(EditAnywhere) class ACameraActor* SpawnItemCamera;
+	UPROPERTY(EditAnywhere) class TSubclassOf<class APreviewItem> SpawnPreviewItemBP;
 
 private:
 	bool bInRadius = false;
