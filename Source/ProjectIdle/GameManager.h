@@ -37,6 +37,11 @@ public:
 	UPROPERTY(BlueprintReadWrite) TArray<class ADoor*> DoorList;
 	UPROPERTY(BlueprintReadWrite) TArray<class ADoor*> UnassignedDoorList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AOfficeDepartment*> OfficeDepartmentList;
+	UPROPERTY(BlueprintReadWrite) TArray<class AOfficeDepartment*> UnassignedOfficeDepartmentList;
+	UPROPERTY(BlueprintReadWrite) TArray<class AMeetingDepartment*> MeetingDepartmentList;
+	UPROPERTY(BlueprintReadWrite) TArray<class AMeetingDepartment*> UnassignedMeetingDepartmentList;
+
+
 
 
 
@@ -64,6 +69,8 @@ public:
 	UPROPERTY(BlueprintReadWrite) int EmployeeNameIndex;
 	UPROPERTY(BlueprintReadWrite) float SpeedRate = 1;
 	UPROPERTY(BlueprintReadWrite) float CheatSpeedRate = 1;
+	UPROPERTY(BlueprintReadWrite) int CurrentOfficeFloor = 1;
+
 
 	bool IdeaInProduction = false;
 	bool IsWidgetInDisplay = false;

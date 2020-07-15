@@ -13,7 +13,7 @@ AFloorManager::AFloorManager() {
 void AFloorManager::BeginPlay() {
 	Super::BeginPlay();
 	GM->OfficeDepartment->ManagerRef = this;
-	StartPosition = GM->OfficeDepartment->ChairMesh->GetComponentLocation();
+	StartPosition = GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->ChairMesh->GetComponentLocation();
 	MoveEmployee(StartPosition);
 
 }
@@ -68,7 +68,7 @@ void AFloorManager::AutomateTasks(bool PlayerInput) {
 		AutoManaging = true;
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Starting loop");
 		if (!IdeaGenerationState) {
-			if (FVector::Dist(GetActorLocation(), GM->OfficeDepartment->ChairMesh->GetComponentLocation()) <= 115.0f) {
+			if (FVector::Dist(GetActorLocation(), GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->ChairMesh->GetComponentLocation()) <= 115.0f) {
 				AI->IsMoving = false;
 				IdeaGenerationState = true;
 			}

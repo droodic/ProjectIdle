@@ -317,5 +317,22 @@ void UCeoDepMenuWidget::CreateDepartment()
 			GM->DoorList[GM->DoorList.Num() - 1]->FloorLevel = GM->DoorList.Num();
 			break;
 		}
+
+		for (auto Office : GM->UnassignedOfficeDepartmentList)
+		{
+			GM->OfficeDepartmentList.Add(Office);
+			GM->UnassignedOfficeDepartmentList.Remove(Office);
+			GM->OfficeDepartmentList[GM->OfficeDepartmentList.Num() - 1]->FloorLevel = GM->OfficeDepartmentList.Num();
+			break;
+		}
+
+		for (auto Meeting : GM->UnassignedMeetingDepartmentList)
+		{
+			GM->MeetingDepartmentList.Add(Meeting);
+			GM->UnassignedMeetingDepartmentList.Remove(Meeting);
+			GM->MeetingDepartmentList[GM->MeetingDepartmentList.Num() - 1]->FloorLevel = GM->MeetingDepartmentList.Num();
+			break;
+		}
+
 	}
 }

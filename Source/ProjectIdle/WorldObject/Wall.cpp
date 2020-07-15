@@ -180,6 +180,28 @@ void AWall::AssignFloorLevel()
 
 		}
 
+		for (auto Chair : GM->MeetingChairList)
+		{
+			if (Chair->FloorLevel == -1)
+			{
+				if (Chair->GetActorLocation().Y > GM->FloorList[i]->LeftSide.Y && Chair->GetActorLocation().Y < GM->FloorList[i]->RightSide.Y)
+				{
+					Chair->FloorLevel = GM->FloorList[i]->FloorLevel;
+				}
+			}
+		}
+
+		for (auto Meeting : GM->MeetingDepartmentList)
+		{
+			if (Meeting->FloorLevel == -1)
+			{
+				if (Meeting->GetActorLocation().Y > GM->FloorList[i]->LeftSide.Y && Meeting->GetActorLocation().Y < GM->FloorList[i]->RightSide.Y)
+				{
+					Meeting->FloorLevel = GM->FloorList[i]->FloorLevel;
+				}
+			}
+		}
+
 
 	}
 

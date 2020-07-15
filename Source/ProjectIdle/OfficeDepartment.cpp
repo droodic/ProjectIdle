@@ -66,7 +66,14 @@ void AOfficeDepartment::BeginPlay()
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->OfficeDepartment = this;
-	GM->OfficeDepartmentList.Add(this);
+	if (StartingOffice)
+	{
+		GM->OfficeDepartmentList.Add(this);
+	}
+	else{
+		GM->UnassignedOfficeDepartmentList.Add(this);
+	}
+
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
 
 	if (UserWidgets[0] != nullptr)
@@ -362,7 +369,7 @@ void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 			if (Position == 0 || Position == 1 || Position == 2 || Position == 5)
 			{
 				FVector NewVector = FVector(0, -100, 100);
-				int floor = this->FloorLevel;
+				int floor = GM->Character->CurrentFloor;
 				SpawnLocation = GM->DoorList[floor - 1]->GetActorLocation() + NewVector;
 				SpawnRotation = FRotator::ZeroRotator;
 			}
