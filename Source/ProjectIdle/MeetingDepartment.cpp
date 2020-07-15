@@ -158,10 +158,12 @@ void AMeetingDepartment::MoveToMeeting()
 						OnlyOnce = true;
 					}
 					else if (Cast<AFloorManager>(Emp) == nullptr) {
-						EmployeesAtMeetingList.Add(Emp);
-						Emp->IsAtMeeting = true;
+						//EmployeesAtMeetingList.Add(Emp);
+						//Emp->IsAtMeeting = true;
 						if (Emp->FloorLevel == CurrentFloorLevel)
 						{
+							EmployeesAtMeetingList.Add(Emp);
+							Emp->IsAtMeeting = true;
 							for (auto Chair : GM->MeetingChairList)
 							{
 								if (Emp->FloorLevel == Chair->FloorLevel && !Chair->IsChairTaken)

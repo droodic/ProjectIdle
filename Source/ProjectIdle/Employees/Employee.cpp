@@ -511,7 +511,7 @@ void AEmployee::Fire()
 		}
 	}
 
-	MoveEmployee(GM->Door->GetActorLocation());
+	MoveEmployee(GM->DoorList[this->FloorLevel - 1]->GetActorLocation());
 }
 
 void AEmployee::FiredFinal()
