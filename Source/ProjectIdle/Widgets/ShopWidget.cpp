@@ -82,7 +82,7 @@ void UShopWidget::Buy()
 			CheckoutCount = 0;
 
 			TotalMoney_T->SetText(FText::AsCurrency(Total));
-			CheckoutCount_T->SetText(FText::FromString(FString::FromInt(CheckoutCount)));
+			CheckoutCount_T->SetText(FText::FromString(""));
 		}
 	}
 	else

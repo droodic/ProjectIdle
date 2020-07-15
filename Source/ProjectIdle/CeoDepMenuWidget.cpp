@@ -65,8 +65,6 @@ void UCeoDepMenuWidget::CallProgrammerSpawn()
 	int32 numberOfProgrammerStation = 0;
 	int32 numberOfArtistStation = 0;
 
-	
-
 	for (int i = 0; i < length; i++)
 	{
 		if (GM->WorkstationList[i]->StationRole == ERole::Programmer)
@@ -79,15 +77,14 @@ void UCeoDepMenuWidget::CallProgrammerSpawn()
 		}
 	}
 
-
 	if (numberOfProgrammerStation > GM->NumOfProgrammers && GM->FloorList[GM->Character->CurrentFloor - 1]->FloorProgrammerCount < 3)
 	{
-			if (GM->Money >= 10000) //make money editable inspector constant that scales up , same for all dep & sup hire
-			{
-				GM->Money -= 10000;
-				ActivateWorkstation(ERole::Programmer, EPosition::Intern, false);
-				OfficeDepartment->GenerateActor(0, ERole::Programmer);
-			}
+		if (GM->Money >= 10000) //make money editable inspector constant that scales up , same for all dep & sup hire
+		{
+			GM->Money -= 10000;
+			ActivateWorkstation(ERole::Programmer, EPosition::Intern, false);
+			OfficeDepartment->GenerateActor(0, ERole::Programmer);
+		}
 	}
 }
 
@@ -145,7 +142,7 @@ void UCeoDepMenuWidget::CallArtistSpawn()
 			numberOfArtistStation--;
 		}
 	}
-	if (numberOfArtistStation > GM->NumOfArtists && GM->FloorList[GM->Character->CurrentFloor - 1]->FloorArtistCount < 3 )
+	if (numberOfArtistStation > GM->NumOfArtists && GM->FloorList[GM->Character->CurrentFloor - 1]->FloorArtistCount < 3)
 	{
 		if (GM->Money >= 10000)
 		{
@@ -229,6 +226,7 @@ void UCeoDepMenuWidget::ClearFinishedGames()
 		Index = 0;
 	}
 }
+
 void UCeoDepMenuWidget::AddItemToInventory(AItem* item)
 {
 	UInventoryButton* NewItemButton = CreateWidget<UInventoryButton>(this, InventoryButtonWidgetClass);
