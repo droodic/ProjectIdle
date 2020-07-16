@@ -105,8 +105,8 @@ void UIdeaBacklogWidget::CallMeeting_M(AFloorManager* ManagerRef)
 	{
 		GM = GetWorld()->GetGameInstance<UGameManager>();
 	}
-	GM->OfficeDepartmentList[GM->OfficeDepartment->FloorLevel - 1]->IdeaList[ManagerRef->IdeaIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
-	//OfficeDepartment->IdeaList[ManagerRef->IdeaIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
+	//GM->OfficeDepartmentList[GM->OfficeDepartment->FloorLevel - 1]->IdeaList[ManagerRef->IdeaIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
+	OfficeDepartment->IdeaList[ManagerRef->IdeaIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
 	//UIdeaButton::IsInProduction = true;
 	GM->IdeaInProduction = true;
 	CallMeetingBtn->SetIsEnabled(false);
