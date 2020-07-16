@@ -115,9 +115,9 @@ void AEmployee::BeginPlay()
 		}
 		IsDepartmentWorking();
 		auto Distance = FVector::Dist(GetActorLocation(), StartPosition);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::FromInt(Distance));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::FromInt(Distance));
 		if (Distance >= 475.f) {
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "MoveEmployeeCalled" );
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "MoveEmployeeCalled" );
 			MoveEmployee(StartPosition, 5.f);
 		}
 	}
