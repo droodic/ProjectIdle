@@ -25,6 +25,7 @@ void AFloorManager::Tick(float DeltaTime) {
 		if (IdeaGenerationState && !AI->IsMoving && !GM->OfficeDepartment->IsGenerating) {
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Manager gen idea");
 
+			//GM->OfficeDepartmentList[0]->GenerateIdea();
 			GM->OfficeDepartment->GenerateIdea();
 			GeneratingIdea = true;
 			IdeaGenerationState = false;
