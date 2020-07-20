@@ -125,9 +125,9 @@ void AEmployee::BeginPlay()
 
 void AEmployee::IsDepartmentWorking() {
 	for (auto Employee : GM->EmployeeList) {
-		//if (Employee->FloorLevel == FloorLevel)
-		//{
-			if (Employee->EmployeeRole == EmployeeRole && Employee->CurrentWorkload > 5.f && Employee->FloorLevel == FloorLevel) {
+		if (Employee->FloorLevel == GM->Character->CurrentFloor)
+		{
+			if (Employee->EmployeeRole == EmployeeRole && Employee->CurrentWorkload > 5.f) {
 				Employee->AssignedWorkload /= 2;
 				this->AssignedWorkload = Employee->AssignedWorkload;
 				this->CurrentWorkload = AssignedWorkload;//Employee->CurrentWorkload / 2;
@@ -141,7 +141,7 @@ void AEmployee::IsDepartmentWorking() {
 				GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Newly hired employee takes part in current department dev"));
 				break;
 			}
-		//}
+		}
 	}
 }
 

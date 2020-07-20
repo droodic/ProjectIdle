@@ -41,7 +41,7 @@ void UMeetingDepWidget::NativeConstruct()
 
 void UMeetingDepWidget::StartMeeting()
 {
-	if (GM->IdeaInProduction) {
+	//if (GM->IdeaInProduction) {
 		if (SelectedApproach == "Default") {
 			GM->SpeedRate = 1;
 			GM->OfficeDepartment->AddedChance = 0.0f;
@@ -69,7 +69,7 @@ void UMeetingDepWidget::StartMeeting()
 			//GM->MeetingDepartmentList[GM->OfficeDepartment->FloorLevel - 1]->BackFromMeeting();
 			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Crunch time approach"));
 		}
-	}
+	//}
 
 
 	//StartMeetingBtn->SetIsEnabled(false);

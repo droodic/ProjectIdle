@@ -47,7 +47,9 @@ void UIdeaBacklogWidget::Return()
 
 	//OfficeDepartment->BacklogReturn();
 	GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->BacklogReturn();
-	CallMeetingBtn->SetIsEnabled(false);
+	GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->BacklogWidget->CallMeetingBtn->SetIsEnabled(false);
+
+	//CallMeetingBtn->SetIsEnabled(false);
 }
 
 void UIdeaBacklogWidget::AddValuesToButton(Idea* idea)
@@ -93,15 +95,16 @@ void UIdeaBacklogWidget::CallMeeting()
 		//}
 		//else
 		//{
-		int	CurrentFloorLevel = GM->Character->CurrentFloor;
+		int	CurrentFloorLevel = GM->Character->CurrentFloor - 1;
 		//}
-		GM->OfficeDepartmentList[CurrentFloorLevel - 1]->IdeaList[ChosenIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
+		GM->OfficeDepartmentList[CurrentFloorLevel]->IdeaList[ChosenIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
 		//OfficeDepartment->IdeaList[ChosenIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
 		//UIdeaButton::IsInProduction = true;
-		GM->IdeaInProduction = true;
-		CallMeetingBtn->SetIsEnabled(false);
+		//GM->IdeaInProduction = true;
+		GM->OfficeDepartmentList[CurrentFloorLevel]->BacklogWidget->CallMeetingBtn->SetIsEnabled(false);
+		//CallMeetingBtn->SetIsEnabled(false);
 		//GM->MeetingDepartment->MoveToMeeting();
-		GM->MeetingDepartmentList[CurrentFloorLevel - 1]->MoveToMeeting();
+		GM->MeetingDepartmentList[CurrentFloorLevel]->MoveToMeeting();
 		SendIdea(ChosenIndex);
 	//}
 }
@@ -115,7 +118,7 @@ void UIdeaBacklogWidget::CallMeeting_M(AFloorManager* ManagerRef)
 	OfficeDepartment->IdeaList[ManagerRef->IdeaIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
 	//UIdeaButton::IsInProduction = true;
 	GM->IdeaInProduction = true;
-	CallMeetingBtn->SetIsEnabled(false);
+	//CallMeetingBtn->SetIsEnabled(false);
 	//GM->MeetingDepartmentList[GM->OfficeDepartment->FloorLevel - 1]->MoveToMeeting();
 	GM->MeetingDepartment->MoveToMeeting();
 	ManagerRef->MeetingState = true;
