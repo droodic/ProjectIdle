@@ -144,8 +144,12 @@ void AEmployee::IsDepartmentWorking() {
 
 void AEmployee::BeginWork() {
 	//if compile phase in work
+	FRandomStream RandomStream;
+	RandomStream.GenerateNewSeed();
 	CompileValue = 0;
-	NumCompile = UKismetMathLibrary::RandomIntegerInRange(3, 5);
+	NumCompile = UKismetMathLibrary::RandomIntegerInRangeFromStream(3, 6, RandomStream);
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, FString::FromInt(NumCompile));
+
 	//make funciton to find self department and values, example get all department employees number
 	for (auto Dep : GM->DepartmentList) {
 		if (Dep->DepRole == EmployeeRole) {
@@ -253,7 +257,6 @@ void AEmployee::GetHelp() {
 
 void AEmployee::OnInteract()
 {
-
 	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, TEXT("Interface Interact"));
 	if (!NeedAssistance) {
 		if (!GM->IsWidgetInDisplay)
@@ -395,6 +398,11 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		//go back to regular animation ?
 		IsWorking = false;
 		bool isOver = true;
+
+		GetWorldTimerManager().ClearTimer(HelpTimer);
+		NeedAssistance = false;
+		HelpWidget->SetVisibility(false);
+
 		for (auto AnEmployee : GM->EmployeeList)
 		{
 			if (AnEmployee->HasWorkload == true)
@@ -407,7 +415,6 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 			GM->IdeaInProduction = false;
 			GM->OfficeDepartmentList[this->FloorLevel - 1]->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartment->CurrentIdea);
 			UI->MoneyWidget->ShowANotification("PRODUCTION OF A GAME FINISHED, WAITING FOR BEING PUBLISHED");
-			GetWorldTimerManager().ClearTimer(HelpTimer);
 			CompileValue = 0;
 		}
 	}
