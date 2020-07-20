@@ -39,8 +39,14 @@ void UIdeaBacklogWidget::DisplayNewIdea(Idea* idea) {
 
 void UIdeaBacklogWidget::Return()
 {
-	OfficeDepartment->BacklogReturn();
-	//GM->OfficeDepartmentList[GM->OfficeDepartment->FloorLevel - 1]->BacklogReturn();
+	if (GM == nullptr)
+	{
+		GM = GetWorld()->GetGameInstance<UGameManager>();
+		GEngine->AddOnScreenDebugMessage(101, 5.f, FColor::Red, "populate GM");
+	}
+
+	//OfficeDepartment->BacklogReturn();
+	GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->BacklogReturn();
 	CallMeetingBtn->SetIsEnabled(false);
 }
 
@@ -87,15 +93,15 @@ void UIdeaBacklogWidget::CallMeeting()
 		//}
 		//else
 		//{
-		//	CurrentFloorLevel = GM->Character->CurrentFloor;
+		int	CurrentFloorLevel = GM->Character->CurrentFloor;
 		//}
-		//GM->OfficeDepartmentList[CurrentFloorLevel]->IdeaList[ChosenIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
-		OfficeDepartment->IdeaList[ChosenIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
+		GM->OfficeDepartmentList[CurrentFloorLevel - 1]->IdeaList[ChosenIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
+		//OfficeDepartment->IdeaList[ChosenIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
 		//UIdeaButton::IsInProduction = true;
 		GM->IdeaInProduction = true;
 		CallMeetingBtn->SetIsEnabled(false);
-		GM->MeetingDepartment->MoveToMeeting();
-		//GM->MeetingDepartmentList[OfficeDepartment->FloorLevel - 1]->MoveToMeeting();
+		//GM->MeetingDepartment->MoveToMeeting();
+		GM->MeetingDepartmentList[CurrentFloorLevel - 1]->MoveToMeeting();
 		SendIdea(ChosenIndex);
 	//}
 }
@@ -131,8 +137,8 @@ void UIdeaBacklogWidget::SendIdea(int Index) {
 		if (tIdea != nullptr)
 		{
 			GEngine->AddOnScreenDebugMessage(1036, 5.f, FColor::Red, "tIdea work");
-			GM->MeetingDepartment->TakeIdea(tIdea);
-			//GM->MeetingDepartmentList[0]->TakeIdea(tIdea);
+			//GM->MeetingDepartment->TakeIdea(tIdea);
+			GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->TakeIdea(tIdea);
 		}
 		//GM->MeetingDepartment->TakeIdea(OfficeDepartment->IdeaList[ChosenIndex]);
 		GEngine->AddOnScreenDebugMessage(103, 5.f, FColor::Red, "Meeting TakeIdea");

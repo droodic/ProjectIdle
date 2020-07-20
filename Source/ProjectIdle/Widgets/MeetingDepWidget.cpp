@@ -45,8 +45,8 @@ void UMeetingDepWidget::StartMeeting()
 		if (SelectedApproach == "Default") {
 			GM->SpeedRate = 1;
 			GM->OfficeDepartment->AddedChance = 0.0f;
-			GM->MeetingDepartment->BackFromMeeting();
-		    //GM->MeetingDepartmentList[GM->OfficeDepartment->FloorLevel - 1]->BackFromMeeting();
+			//GM->MeetingDepartment->BackFromMeeting();
+		    GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
 
 			//T_SuccessChance->SetText(FText::AsPercent((GM->MeetingDepartment->CurrentIdea->SuccessChance / 100.f)));
 			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach"));
