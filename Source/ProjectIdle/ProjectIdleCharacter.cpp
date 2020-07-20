@@ -77,7 +77,7 @@ void AProjectIdleCharacter::BeginPlay()
 	auto Widget = CreateWidget<UGameUI>(UGameplayStatics::GetPlayerController(this, 0), WidgetClass);
 	if (Widget)
 	{
-	    Widget->player = this;
+		Widget->player = this;
 		Widget->AddToViewport();
 	}
 
@@ -86,8 +86,8 @@ void AProjectIdleCharacter::BeginPlay()
 
 void AProjectIdleCharacter::Tick(float DeltaSeconds)
 {
-    Super::Tick(DeltaSeconds);
-    PlayerControl->GetViewportSize(ScreenSizeX, ScreenSizeY);
+	Super::Tick(DeltaSeconds);
+	PlayerControl->GetViewportSize(ScreenSizeX, ScreenSizeY);
 
 
 
@@ -96,32 +96,42 @@ void AProjectIdleCharacter::Tick(float DeltaSeconds)
 
 	if (CursorToWorld != nullptr)
 	{
-			if (UHeadMountedDisplayFunctionLibrary::IsHeadMountedDisplayEnabled())
+		if (UHeadMountedDisplayFunctionLibrary::IsHeadMountedDisplayEnabled())
+		{
+			if (UWorld* World = GetWorld())
 			{
-				if (UWorld* World = GetWorld())
-				{
 
-					FHitResult HitResult;
-					FCollisionQueryParams Params(NAME_None, FCollisionQueryParams::GetUnknownStatId());
-					FVector StartLocation = TopDownCameraComponent->GetComponentLocation();
-					FVector EndLocation = TopDownCameraComponent->GetComponentRotation().Vector() * 2000.0f;
-					Params.AddIgnoredActor(this);
-					World->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility, Params);
-					FQuat SurfaceRotation = HitResult.ImpactNormal.ToOrientationRotator().Quaternion();
-					CursorToWorld->SetWorldLocationAndRotation(HitResult.Location, SurfaceRotation);
-				}
+				FHitResult HitResult;
+				FCollisionQueryParams Params(NAME_None, FCollisionQueryParams::GetUnknownStatId());
+				FVector StartLocation = TopDownCameraComponent->GetComponentLocation();
+				FVector EndLocation = TopDownCameraComponent->GetComponentRotation().Vector() * 2000.0f;
+				Params.AddIgnoredActor(this);
+				World->LineTraceSingleByChannel(HitResult, StartLocation, EndLocation, ECC_Visibility, Params);
+				FQuat SurfaceRotation = HitResult.ImpactNormal.ToOrientationRotator().Quaternion();
+				CursorToWorld->SetWorldLocationAndRotation(HitResult.Location, SurfaceRotation);
 			}
-			else if (APlayerController* PC = Cast<APlayerController>(GetController()))
-			{
-				FHitResult TraceHitResult;
-				PC->GetHitResultUnderCursor(ECC_Visibility, true, TraceHitResult);
-				FVector CursorFV = TraceHitResult.ImpactNormal;
-				FRotator CursorR = CursorFV.Rotation();
-				CursorToWorld->SetWorldLocation(TraceHitResult.Location);
-				CursorToWorld->SetWorldRotation(CursorR);
-			}
+		}
+		else if (APlayerController* PC = Cast<APlayerController>(GetController()))
+		{
+			FHitResult TraceHitResult;
+			PC->GetHitResultUnderCursor(ECC_Visibility, true, TraceHitResult);
+			FVector CursorFV = TraceHitResult.ImpactNormal;
+			FRotator CursorR = CursorFV.Rotation();
+			CursorToWorld->SetWorldLocation(TraceHitResult.Location);
+			CursorToWorld->SetWorldRotation(CursorR);
+		}
 	}
 	//TopDownCameraComponent->AddWorldOffset(GetCameraPanDirection() * CameraMovementSpeed);
+}
+
+
+void AProjectIdleCharacter::PlayHelpAnim()
+{
+	if (HelpAnimation != nullptr) {
+		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+		AnimInstance->Montage_Play(HelpAnimation, 1.f);
+		//GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
+	}
 }
 
 FVector AProjectIdleCharacter::GetCameraPanDirection()
@@ -137,10 +147,10 @@ FVector AProjectIdleCharacter::GetCameraPanDirection()
 		FString mouseX = FString::FromInt(MousePositionX);
 		FString mouseY = FString::FromInt(MousePositionY);
 		UE_LOG(LogActor, Warning, TEXT("%s"), *mouseX)
-		UE_LOG(LogActor, Warning, TEXT("%s"), *mouseY)
+			UE_LOG(LogActor, Warning, TEXT("%s"), *mouseY)
 
 	}
-	if (MousePositionX >= 1 && MousePositionX <= 20) 
+	if (MousePositionX >= 1 && MousePositionX <= 20)
 	{
 		CamDirectionY = -1;
 	}
@@ -148,7 +158,7 @@ FVector AProjectIdleCharacter::GetCameraPanDirection()
 	{
 		CamDirectionX = 1;
 	}
-	if (MousePositionX >= ScreenSizeX - 15) 
+	if (MousePositionX >= ScreenSizeX - 15)
 	{
 		CamDirectionY = 1;
 	}

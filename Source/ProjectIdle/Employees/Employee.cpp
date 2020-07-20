@@ -77,10 +77,6 @@ void AEmployee::BeginPlay()
 			}
 		}
 
-		//auto Size = GM->EmployeeList.Num();
-		//FString sizeString = FString::FromInt(Size);
-		//UE_LOG(LogTemp, Warning, TEXT("%sizeString"), *sizeString)
-
 	}
 	this->SpawnDefaultController();
 	AI = Cast<AEmployeeAIC>(GetController());
@@ -148,7 +144,7 @@ void AEmployee::BeginWork() {
 	RandomStream.GenerateNewSeed();
 	CompileValue = 0;
 	NumCompile = UKismetMathLibrary::RandomIntegerInRangeFromStream(3, 6, RandomStream);
-	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, FString::FromInt(NumCompile));
+	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, FString::FromInt(NumCompile));
 
 	//make funciton to find self department and values, example get all department employees number
 	for (auto Dep : GM->DepartmentList) {
@@ -164,52 +160,9 @@ void AEmployee::BeginWork() {
 
 void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 {
-	//replaced by InteractableInterface OnInteract method, remove later
-	//if (!NeedAssistance) {
-	//	if (!GM->IsWidgetInDisplay)
-	//	{
-	//		if (UI != nullptr && CanInspect)
-	//		{
-	//			IsDisplaying = true;
-	//			GM->CurrentEmployeeInDisplay = this;
-	//			UI->ShowEmployeeSheet(this);
-	//		}
-	//	}
-	//	else
-	//	{
-	//		if (CanInspect)
-	//		{
-	//			GM->IsWidgetInDisplay = false;
-	//			if (GM->CurrentWidgetInDisplay)
-	//			{
-	//				GM->CurrentWidgetInDisplay->RemoveFromViewport();
-	//			}
-	//		}
-
-	//		if (UI != nullptr && CanInspect && !IsDisplaying)
-	//		{
-	//			if (GM->CurrentEmployeeInDisplay != nullptr)
-	//			{
-	//				GM->CurrentEmployeeInDisplay->IsDisplaying = false;
-	//			}
-	//			GM->CurrentEmployeeInDisplay = this;
-	//			IsDisplaying = true;
-	//			UI->ShowEmployeeSheet(this);
-	//		}
-	//		else if (CanInspect && IsDisplaying)
-	//		{
-	//			IsDisplaying = false;
-	//			UI->EmpSheetWidget->RemoveFromViewport();
-	//		}
-	//	}
-	//}
-	//else if (NeedAssistance){
-	//	NeedAssistance = false;
-	//	GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Employee has been helped"));
-	//	HelpWidget->SetVisibility(false);
-	//}
-
+	//Migrated to Interact event
 }
+
 
 // Called every frame
 void AEmployee::Tick(float DeltaTime)
@@ -300,6 +253,7 @@ void AEmployee::OnInteract()
 		NeedAssistance = false;
 		GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Employee has been helped"));
 		HelpWidget->SetVisibility(false);
+		Cast<AProjectIdleCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0))->PlayHelpAnim();
 	}
 
 }
@@ -452,10 +406,8 @@ void AEmployee::Promote()
 	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, "Promote button called");
 	float AddMorale = FMath::FRandRange(.25f, .75f);
 
-
 	if (GM->Money >= CostEmployeePromote)
 	{
-
 		//float AddMorale = FMath::FRandRange(1, 10);
 		GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, FString::Printf(TEXT("Number: x: %f"), AddMorale));
 		switch (Position)
@@ -476,7 +428,6 @@ void AEmployee::Promote()
 			Position = EPosition::Regular;
 			Salary += 200;
 			if (Morale < 10) {
-
 				Morale += AddMorale + 1.f;
 				if (Morale >= 10) {
 					Morale = 10;
@@ -497,7 +448,6 @@ void AEmployee::Promote()
 			GM->Money -= CostEmployeePromote;
 			break;
 		}
-
 		UI->RefreshEmployeeSheet(this);
 	}
 }

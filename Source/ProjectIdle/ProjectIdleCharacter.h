@@ -34,6 +34,10 @@ public:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class UGameUI> WidgetClass;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere) UAnimMontage* HelpAnimation;
+
+
+
 	UPROPERTY()
 		APlayerController* PlayerControl;
 
@@ -54,6 +58,9 @@ public:
 	UFUNCTION()
 		FVector GetCameraPanDirection();
 
+	UFUNCTION()
+		void PlayHelpAnim();
+
 	/** Returns TopDownCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	/** Returns CameraBoom subobject **/
@@ -65,15 +72,15 @@ public:
 private:
 	/** Top down camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* TopDownCameraComponent;
+		class UCameraComponent* TopDownCameraComponent;
 
 	/** Camera boom positioning the camera above the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* CameraBoom;
+		class USpringArmComponent* CameraBoom;
 
 	/** A decal that projects to the cursor location. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class UDecalComponent* CursorToWorld;
+		class UDecalComponent* CursorToWorld;
 
 
 	int32 TotalMoney;
