@@ -4,6 +4,7 @@
 #include "OfficeDepartment.h"
 #include "Idea.h"
 #include "Shop/Item.h"
+#include "Shop/PreviewItem.h"
 #include "CeoDepMenuWidget.h"
 #include "Department.h"
 #include "GameManager.h"
@@ -345,12 +346,11 @@ void AOfficeDepartment::SpawnItemInWorld(AItem* item)
 	FHitResult hitResult;
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHitResultUnderCursorByChannel(ETraceTypeQuery::TraceTypeQuery1, true, hitResult);
 
-	auto itemReference = TSubclassOf<AItem>(GetWorld()->SpawnActor<AItem>(item->ItemBP, hitResult.Location, item->ItemMesh->GetRelativeRotation())->GetClass());
-	
-	/*do
+	if (PreviewItemBP != nullptr)
 	{
-		itemReference->SetActorLocation(hitResult.Location);
-	} while (!UGameplayStatics::GetPlayerController(GetWorld(), 0)->IsInputKeyDown(EKeys::LeftMouseButton));*/
+		APreviewItem* previewItemReference = GetWorld()->SpawnActor<APreviewItem>(PreviewItemBP, hitResult.Location, item->ItemMesh->GetRelativeRotation());
+		previewItemReference->ItemReference = item;
+	}
 }
 
 //Future transition 
