@@ -67,7 +67,7 @@ public:
 	UPROPERTY(EditAnywhere) class TSubclassOf<class APreviewItem> SpawnPreviewItemBP;
 
 private:
-	bool bInRadius = false;
+	//bool bInRadius = false;
 	bool bInSpawnCamera = false;
 
 	class AActor* PlayersCamera;

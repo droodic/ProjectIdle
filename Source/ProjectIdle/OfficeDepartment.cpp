@@ -41,7 +41,7 @@ Idea AOfficeDepartment::GenerateIdeaValues()
 
 void AOfficeDepartment::OnInteract()
 {
-	if (bInRadius && OfficeDepMenuWidget != nullptr)
+	if (OfficeDepMenuWidget != nullptr)
 	{
 		if (!OfficeDepMenuWidget->IsInViewport())
 		{
@@ -302,17 +302,17 @@ void AOfficeDepartment::NotifyActorOnClicked(FKey ButtonPressed)
 
 void AOfficeDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
-	{
-		bInRadius = true;
-	}
+	//if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
+	//{
+	//	bInRadius = true;
+	//}
 }
 
 void AOfficeDepartment::NotifyActorEndOverlap(AActor* OtherActor)
 {
 	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
 	{
-		bInRadius = false;
+		//bInRadius = false;
 
 		/*if (OfficeDepMenuWidget->IsInViewport())
 		{

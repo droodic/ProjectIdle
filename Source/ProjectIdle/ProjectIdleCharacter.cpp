@@ -130,8 +130,16 @@ void AProjectIdleCharacter::PlayHelpAnim()
 	if (HelpAnimation != nullptr) {
 		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 		AnimInstance->Montage_Play(HelpAnimation, 1.f);
+		FTimerHandle DelayHandle;
+		GetWorldTimerManager().SetTimer(DelayHandle, this, &AProjectIdleCharacter::ResumeMovement, 4.25f, false);
+		GetCharacterMovement()->DisableMovement();
 		//GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
 	}
+}
+
+void AProjectIdleCharacter::ResumeMovement() {
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+
 }
 
 FVector AProjectIdleCharacter::GetCameraPanDirection()

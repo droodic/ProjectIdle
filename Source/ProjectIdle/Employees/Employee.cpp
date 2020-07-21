@@ -1,4 +1,4 @@
- // Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "Employee.h"
@@ -214,7 +214,7 @@ void AEmployee::OnInteract()
 	if (!NeedAssistance) {
 		if (!GM->IsWidgetInDisplay)
 		{
-			if (UI != nullptr && CanInspect)
+			if (UI != nullptr)// && CanInspect)
 			{
 				IsDisplaying = true;
 				GM->CurrentEmployeeInDisplay = this;
@@ -223,16 +223,13 @@ void AEmployee::OnInteract()
 		}
 		else
 		{
-			if (CanInspect)
+			GM->IsWidgetInDisplay = false;
+			if (GM->CurrentWidgetInDisplay)
 			{
-				GM->IsWidgetInDisplay = false;
-				if (GM->CurrentWidgetInDisplay)
-				{
-					GM->CurrentWidgetInDisplay->RemoveFromViewport();
-				}
+				GM->CurrentWidgetInDisplay->RemoveFromViewport();
 			}
 
-			if (UI != nullptr && CanInspect && !IsDisplaying)
+			if (UI != nullptr && !IsDisplaying)
 			{
 				if (GM->CurrentEmployeeInDisplay != nullptr)
 				{
@@ -242,7 +239,7 @@ void AEmployee::OnInteract()
 				IsDisplaying = true;
 				UI->ShowEmployeeSheet(this);
 			}
-			else if (CanInspect && IsDisplaying)
+			else if (IsDisplaying)
 			{
 				IsDisplaying = false;
 				UI->EmpSheetWidget->RemoveFromViewport();
@@ -382,16 +379,16 @@ void AEmployee::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AEmployee::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr) {
-		CanInspect = true;
-	}
+	//if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr) {
+	//	CanInspect = true;
+	//}
 }
 
 void AEmployee::NotifyActorEndOverlap(AActor* OtherActor)
 {
 	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
 	{
-		CanInspect = false;
+		//CanInspect = false;
 		if (UI->EmpSheetWidget->IsInViewport())
 		{
 			UI->EmpSheetWidget->RemoveFromViewport();

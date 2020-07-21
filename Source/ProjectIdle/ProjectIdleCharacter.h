@@ -61,6 +61,8 @@ public:
 	UFUNCTION()
 		void PlayHelpAnim();
 
+	UFUNCTION() void ResumeMovement();
+
 	/** Returns TopDownCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetTopDownCameraComponent() const { return TopDownCameraComponent; }
 	/** Returns CameraBoom subobject **/
@@ -81,6 +83,7 @@ private:
 	/** A decal that projects to the cursor location. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class UDecalComponent* CursorToWorld;
+
 
 
 	int32 TotalMoney;
