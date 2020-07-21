@@ -256,7 +256,7 @@ void AOfficeDepartment::PublishGame()
 			GM->Money += moneyGenerated;
 			//GM->Money += UKismetMathLibrary::RandomIntegerInRange(15000, 25000); //Use algo later, and do real way of assgning money
 
-			UI->MoneyWidget->ShowANotification("$" + FString::FromInt(moneyGenerated) + ".00");
+			UI->MoneyWidget->ShowANotification("$" + FString::FromInt(moneyGenerated) + ".00", FLinearColor::Green);
 		}
 	}
 	else
