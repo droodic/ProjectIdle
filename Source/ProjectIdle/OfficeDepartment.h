@@ -64,7 +64,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool StartingOffice;
 
 	UPROPERTY(EditAnywhere) class ACameraActor* SpawnItemCamera;
-	UPROPERTY(EditAnywhere) class TSubclassOf<class APreviewItem> SpawnPreviewItemBP;
+	UPROPERTY(EditAnywhere) class TSubclassOf<class APreviewItem> PreviewItemBP;
 
 private:
 	//bool bInRadius = false;
