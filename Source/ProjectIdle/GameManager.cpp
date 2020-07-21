@@ -127,8 +127,7 @@ void UGameManager::LoadGame(FString SaveFile)
 		int IdeasToGenerate = Difference.GetTotalSeconds();
 		if (IdeasToGenerate > 0){ //&& SaveGameInstance->NumEmployees > 0) {
 			int Multiplier = 1; //SaveGameInstance->NumEmployees / 8;   numEmployees not loading, find out why
-			IdeasToGenerate /= 60 * (Multiplier);
-			//if (IdeasToGenerate <= 0) return;
+			IdeasToGenerate /= 180 * (Multiplier); // 3 minutes per idea generate
 			OfficeDepartment->OfficeDepMenuWidget->ClearFinishedGames();
 			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Loading Ideas generated since last save" + FString::FromInt(Difference.GetTotalSeconds()));
 			for (int i = 0; i < IdeasToGenerate; i++) {

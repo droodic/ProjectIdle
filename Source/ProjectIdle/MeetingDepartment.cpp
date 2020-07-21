@@ -50,6 +50,17 @@ void AMeetingDepartment::BeginPlay()
 	}
 }
 
+void AMeetingDepartment::OnInteract() {
+	if (!MeetingWidget->IsInViewport())
+	{
+		MeetingWidget->AddToViewport();
+	}
+	else
+	{
+		MeetingWidget->RemoveFromParent();
+	}
+}
+
 void AMeetingDepartment::TakeIdea(Idea* SentIdea)
 {
 	CurrentIdea = SentIdea;
@@ -85,14 +96,14 @@ void AMeetingDepartment::TakeIdea(Idea* SentIdea)
 
 void AMeetingDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
-	{
-		MeetingWidget->AddToViewport();
-	}
+	//if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
+	//{
+	//	MeetingWidget->AddToViewport();
+	//}
 }
 void AMeetingDepartment::NotifyActorEndOverlap(AActor* OtherActor)
 {
-	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
+	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr && MeetingWidget->IsInViewport())
 	{
 		MeetingWidget->RemoveFromViewport();
 	}
