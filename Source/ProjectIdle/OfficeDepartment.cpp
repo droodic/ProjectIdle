@@ -257,13 +257,14 @@ void AOfficeDepartment::PublishGame()
 			GM->Money += moneyGenerated;
 			//GM->Money += UKismetMathLibrary::RandomIntegerInRange(15000, 25000); //Use algo later, and do real way of assgning money
 
-			UI->MoneyWidget->ShowANotification("$" + FString::FromInt(moneyGenerated) + ".00", FLinearColor::Green);
+			UI->MoneyWidget->ShowANotification("+ $" + FString::FromInt(moneyGenerated) + ".00", FLinearColor::Green);
 		}
 	}
 	else
 	{
 		UI->MoneyWidget->ShowANotification("SORRY, THE GAME WAS NOT A SUCCESS", FLinearColor::Red);
 		auto moneyGenerated = UKismetMathLibrary::RandomIntegerInRange(100, 1000);
+
 		if (GM->Money >= INT32_MAX || GM->Money + moneyGenerated > INT32_MAX)
 		{
 			UI->MoneyWidget->ShowANotification("MAX MONEY");
@@ -272,7 +273,7 @@ void AOfficeDepartment::PublishGame()
 		{
 			GM->Money += moneyGenerated;
 
-			UI->MoneyWidget->ShowANotification("$" + FString::FromInt(moneyGenerated) + ".00");
+			UI->MoneyWidget->ShowANotification("+ $" + FString::FromInt(moneyGenerated) + ".00", FLinearColor::Green);
 		}
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->PublishedColor = FLinearColor::Red;
 	}
