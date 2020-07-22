@@ -40,6 +40,8 @@ public:
 	UPROPERTY(BlueprintReadWrite) TArray<class AOfficeDepartment*> UnassignedOfficeDepartmentList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AMeetingDepartment*> MeetingDepartmentList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AMeetingDepartment*> UnassignedMeetingDepartmentList;
+	UPROPERTY(BlueprintReadWrite) TArray<class AElevator*> ElevatorList;
+	UPROPERTY(BlueprintReadWrite) TArray<class AElevator*> UnassignedElevatorList;
 
 	UPROPERTY(BlueprintReadWrite) int NumOfProgrammers;
 	UPROPERTY(BlueprintReadWrite) int NumOfArtists;
@@ -60,9 +62,14 @@ public:
 	UPROPERTY(BlueprintReadWrite) class UWorkstationUpgradeWidget* Upgrade;
 	UPROPERTY(BlueprintReadWrite) class UMeetingDepWidget* MeetingWidget;
 	UPROPERTY(BlueprintReadWrite) class UShopWidget* ShopWidget;
+	UPROPERTY(BlueprintReadWrite) class UElevatorWidget* ElevatorWidget;
+
+
 	UPROPERTY(BlueprintReadWrite) class AWall* Wall;
 	UPROPERTY(BlueprintReadWrite) class AEmployee* Emp;
 	UPROPERTY(BlueprintReadWrite) class AFloorManager* FLoorM;
+	UPROPERTY(BlueprintReadWrite) class AElevator* Elevator;
+
 
 
 

@@ -401,12 +401,12 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 			}
 
 			GM->IdeaInProduction = false;
-			GM->OfficeDepartmentList[this->FloorLevel - 1]->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartment->CurrentIdea);
+			GM->OfficeDepartmentList[this->FloorLevel - 1]->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartmentList[this->FloorLevel - 1]->CurrentIdea);
+			//GM->OfficeDepartmentList[this->FloorLevel - 1]->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartment->CurrentIdea);
 			UI->MoneyWidget->ShowANotification("GAME PRODUCTION FINISHED!");
 			UI->MoneyWidget->ShowANotification("Paying Employee Salaries...");
 			UI->MoneyWidget->ShowANotification(FString::FromInt(GM->TotalSalary), FLinearColor::Red);
 			GM->Money -= GM->TotalSalary;
-			GM->OfficeDepartmentList[this->FloorLevel - 1]->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartmentList[this->FloorLevel - 1]->CurrentIdea);
 			CompileValue = 0;
 		}
 	}
