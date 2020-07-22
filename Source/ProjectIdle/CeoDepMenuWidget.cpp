@@ -11,6 +11,7 @@
 #include "Shop/ItemButton.h"
 #include "Blueprint/UserWidget.h"
 #include "WorldObject/Wall.h"
+#include "WorldObject/Elevator.h"
 #include "Widgets/IdeaButton.h"
 #include "Widgets/InventoryButton.h"
 #include "Workstations/ArtistStation.h"
@@ -340,6 +341,14 @@ void UCeoDepMenuWidget::CreateDepartment()
 			GM->MeetingDepartmentList.Add(Meeting);
 			GM->UnassignedMeetingDepartmentList.Remove(Meeting);
 			GM->MeetingDepartmentList[GM->MeetingDepartmentList.Num() - 1]->FloorLevel = GM->MeetingDepartmentList.Num();
+			break;
+		}
+
+		for (auto Elevator : GM->UnassignedElevatorList)
+		{
+			GM->ElevatorList.Add(Elevator);
+			GM->UnassignedElevatorList.Remove(Elevator);
+			GM->ElevatorList[GM->ElevatorList.Num() - 1]->FloorLevel = GM->ElevatorList.Num();
 			break;
 		}
 

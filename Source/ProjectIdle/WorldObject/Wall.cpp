@@ -8,6 +8,7 @@
 #include "Math/Vector.h"
 #include "ProjectIdle/OfficeDepartment.h"
 #include "ProjectIdle/Workstation.h"
+#include "Elevator.h"
 #include "Door.h"
 
 
@@ -176,6 +177,7 @@ void AWall::AssignFloorLevel()
 				if (Door->GetActorLocation().Y > GM->FloorList[i]->LeftSide.Y && Door->GetActorLocation().Y < GM->FloorList[i]->RightSide.Y)
 				{
 					Door->FloorLevel = GM->FloorList[i]->FloorLevel;
+					break;
 				}
 			}
 
@@ -199,10 +201,22 @@ void AWall::AssignFloorLevel()
 				if (Meeting->GetActorLocation().Y > GM->FloorList[i]->LeftSide.Y && Meeting->GetActorLocation().Y < GM->FloorList[i]->RightSide.Y)
 				{
 					Meeting->FloorLevel = GM->FloorList[i]->FloorLevel;
+					break;
 				}
 			}
 		}
 
+		for (auto Elevator : GM->ElevatorList)
+		{
+			if (Elevator->FloorLevel == -1)
+			{
+				if (Elevator->GetActorLocation().Y > GM->FloorList[i]->LeftSide.Y && Elevator->GetActorLocation().Y < GM->FloorList[i]->RightSide.Y)
+				{
+					Elevator->FloorLevel = GM->FloorList[i]->FloorLevel;
+					break;
+				}
+			}
+		}
 
 	}
 
