@@ -54,7 +54,7 @@ void UInventoryButton::OnClicked()
 
 			for (int i = 0; i < GameManager->FloorList.Num(); i++)
 			{
-				GameManager->FloorList[i]->UpdateWallMaterial(Item->Material->GetMaterial());
+				GameManager->FloorList[i]->UpdateWallMaterial(Item);
 			}
 		}
 		else if (Item->ItemSubCategory == ESubCategory::Wall)
