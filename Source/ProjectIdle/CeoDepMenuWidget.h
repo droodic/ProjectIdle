@@ -62,6 +62,7 @@ public:
 	void AddItemToInventory(class AItem* item);
 	UFUNCTION() void ActivateWorkstation(enum ERole StationRole, enum EPosition OwnerPosition, bool IsSupervisor);
 	UFUNCTION() void ClearFinishedGames();
+	UFUNCTION() void CreateDepartment();
 
 private:
 	UFUNCTION() void CallHiring();
@@ -71,7 +72,6 @@ private:
 	UFUNCTION() void CallArtistSupSpawn();
 	UFUNCTION() void CallFloorManagerSpawn();
 	UFUNCTION() void PublishGame();
-	UFUNCTION() void CreateDepartment();
 	UFUNCTION() void EditPlacedItems();
 	UFUNCTION() void Return();
 

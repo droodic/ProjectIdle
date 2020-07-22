@@ -86,7 +86,7 @@ public:
 	bool IdeaInProduction = false;
 	bool IsWidgetInDisplay = false;
 	bool InEditMode = false;
-	bool IsFloorUpgraded = false;
+	UPROPERTY() bool IsFloorUpgraded = false;
 	UUserWidget* CurrentWidgetInDisplay;
 	AEmployee* CurrentEmployeeInDisplay;
 

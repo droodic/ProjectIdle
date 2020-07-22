@@ -24,6 +24,7 @@ public:
 	UPROPERTY(EditAnywhere) int FloorMaterialID;
 	UPROPERTY(EditAnywhere) TArray<class AItem*> InventoryList;
 	UPROPERTY(EditAnywhere) TArray<class AWorkstation*> WorkstationList;
+	UPROPERTY(EditAnywhere) bool IsFloorUpgraded;
     TArray<class Idea*> IdeaList;
 
 
