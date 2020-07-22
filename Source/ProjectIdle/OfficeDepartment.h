@@ -83,6 +83,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void PublishGame();
 	//For future use, will spawn any actor
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") AActor* GenerateSavedActor(UClass* ClassRef);
+	UFUNCTION(BlueprintCallable, Category = "CPP Functions") AActor* GenerateSavedDecoration(UClass* ClassRef);
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void GenerateActor(int Position, ERole EmpRole);
 	UFUNCTION(BlueprintCallable) void GetDepartmentUIValues();
 	void PopulateIdeaListFromSave(Idea* Idea);
