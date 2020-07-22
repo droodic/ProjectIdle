@@ -35,5 +35,6 @@ public:
 private:
 	UFUNCTION() void Return();
 	void SendIdea(int Index);
+	void SendIdeaFloorM(int Index);
 	void AddValuesToButton(class Idea* idea);
 };

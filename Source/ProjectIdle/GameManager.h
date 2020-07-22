@@ -60,6 +60,8 @@ public:
 	UPROPERTY(BlueprintReadWrite) class UShopWidget* ShopWidget;
 	UPROPERTY(BlueprintReadWrite) class AWall* Wall;
 	UPROPERTY(BlueprintReadWrite) class AEmployee* Emp;
+	UPROPERTY(BlueprintReadWrite) class AFloorManager* FLoorM;
+
 
 
 	UPROPERTY(BlueprintReadWrite) int EmployeeNameIndex;

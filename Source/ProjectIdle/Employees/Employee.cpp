@@ -391,6 +391,15 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		//if (isOver == true)
 		if(GM->FloorOneWorkDone == TotalPerFloor || GM->FloorTwoWorkDone == TotalPerFloor)
 		{
+			if (GM->FloorOneWorkDone == TotalPerFloor)
+			{
+				GM->FloorOneWorkDone = 0;
+			}
+			if (GM->FloorTwoWorkDone == TotalPerFloor)
+			{
+				GM->FloorTwoWorkDone = 0;
+			}
+
 			GM->IdeaInProduction = false;
 			GM->OfficeDepartmentList[this->FloorLevel - 1]->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartmentList[this->FloorLevel - 1]->CurrentIdea);
 			UI->MoneyWidget->ShowANotification("PRODUCTION OF A GAME FINISHED, WAITING FOR BEING PUBLISHED");

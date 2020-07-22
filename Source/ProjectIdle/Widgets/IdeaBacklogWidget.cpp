@@ -111,18 +111,19 @@ void UIdeaBacklogWidget::CallMeeting_M(AFloorManager* ManagerRef)
 	{
 		GM = GetWorld()->GetGameInstance<UGameManager>();
 	}
-	//GM->OfficeDepartmentList[GM->OfficeDepartment->FloorLevel - 1]->IdeaList[ManagerRef->IdeaIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
-	OfficeDepartment->IdeaList[ManagerRef->IdeaIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
+	GM->OfficeDepartmentList[0]->IdeaList[ManagerRef->IdeaIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
+	//OfficeDepartment->IdeaList[ManagerRef->IdeaIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
 	//UIdeaButton::IsInProduction = true;
 	GM->IdeaInProduction = true;
 	//CallMeetingBtn->SetIsEnabled(false);
-	//GM->MeetingDepartmentList[GM->OfficeDepartment->FloorLevel - 1]->MoveToMeeting();
-	GM->MeetingDepartment->MoveToMeeting();
+	GM->MeetingDepartmentList[0]->MoveToMeeting();
+	//GM->MeetingDepartment->MoveToMeeting();
 	ManagerRef->MeetingState = true;
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Movetomeeting");
 
 	//ManagerRef->MoveEmployee();
-	SendIdea(ManagerRef->IdeaIndex);
+	SendIdeaFloorM(ManagerRef->IdeaIndex);
+	//SendIdea(ManagerRef->IdeaIndex);
 }
 //Called by CallMeeting
 void UIdeaBacklogWidget::SendIdea(int Index) {
@@ -134,6 +135,27 @@ void UIdeaBacklogWidget::SendIdea(int Index) {
 	else if (GM->MeetingDepartment != nullptr) {
 		//auto tIdea = OfficeDepartment->IdeaList[Index];
 		auto tIdea = GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->IdeaList[Index];
+		if (tIdea != nullptr)
+		{
+			GEngine->AddOnScreenDebugMessage(1036, 5.f, FColor::Red, "tIdea work");
+			//GM->MeetingDepartment->TakeIdea(tIdea);
+			GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->TakeIdea(tIdea);
+		}
+		//GM->MeetingDepartment->TakeIdea(OfficeDepartment->IdeaList[ChosenIndex]);
+		GEngine->AddOnScreenDebugMessage(103, 5.f, FColor::Red, "Meeting TakeIdea");
+	}
+}
+
+
+void UIdeaBacklogWidget::SendIdeaFloorM(int Index) {
+
+	//Gm populated in CallMeeting
+	if (GM->MeetingDepartment == nullptr) {
+		GEngine->AddOnScreenDebugMessage(102, 5.f, FColor::Red, "GM->MeetingDepartment is null");
+	}
+	else if (GM->MeetingDepartment != nullptr) {
+		//auto tIdea = OfficeDepartment->IdeaList[Index];
+		auto tIdea = GM->OfficeDepartmentList[0]->IdeaList[Index];
 		if (tIdea != nullptr)
 		{
 			GEngine->AddOnScreenDebugMessage(1036, 5.f, FColor::Red, "tIdea work");

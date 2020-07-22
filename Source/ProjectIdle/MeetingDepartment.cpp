@@ -164,10 +164,22 @@ void AMeetingDepartment::MoveToMeeting()
 			if (!MoreEmployeeThanChair) {
 				for (auto Emp : GM->EmployeeList) {
 					//if (Dep->DepRole == Emp->EmployeeRole) {
-					if (Cast<AFloorManager>(Emp) && GM->OfficeDepartment->ManagerRef != nullptr && !OnlyOnce) {
-						EmployeesAtMeetingList.Add(Cast<AEmployee>(GM->OfficeDepartment->ManagerRef));
-						Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
-						OnlyOnce = true;
+					//if (Cast<AFloorManager>(Emp) && GM->OfficeDepartment->ManagerRef != nullptr && !OnlyOnce) {
+					if (Cast<AFloorManager>(Emp) && GM->OfficeDepartmentList[0]->ManagerRef != nullptr && !OnlyOnce) {
+						if (Emp->FloorLevel == 1) {
+							EmployeesAtMeetingList.Add(Cast<AEmployee>(GM->OfficeDepartmentList[0]->ManagerRef));
+							for (auto Chair : GM->MeetingChairList)
+							{
+								if (Chair->FloorLevel == 1 && !Chair->IsChairTaken)
+								{
+									Emp->MoveEmployee(Chair->GetActorLocation());
+									Chair->IsChairTaken = true;
+									break;
+								}
+							}
+							//Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
+							OnlyOnce = true;
+						}
 					}
 					else if (Cast<AFloorManager>(Emp) == nullptr) {
 						//EmployeesAtMeetingList.Add(Emp);
