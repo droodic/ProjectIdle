@@ -46,6 +46,8 @@ void UGameManager::SaveGame(FString SaveFile)
 	SaveGameInstance->SavedTime = FDateTime::Now();
 	SaveGameInstance->FloorMaterialID = FloorMaterialID;
 	GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Floor mat ID: " + FString::FromInt(SaveGameInstance->FloorMaterialID));
+	SaveGameInstance->IsFloorUpgraded = IsFloorUpgraded;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, FString::FromInt(IsFloorUpgraded));
 
 
 	if (OfficeDepartment->ManagerRef != nullptr) {
@@ -119,6 +121,11 @@ void UGameManager::LoadGame(FString SaveFile)
 		OfficeDepartment->PopulateIdeaListFromSave(Idea);
 	}
 
+	IsFloorUpgraded = SaveGameInstance->IsFloorUpgraded;
+	if (IsFloorUpgraded) {
+		OfficeDepartment->OfficeDepMenuWidget->CreateDepartment();
+	}
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, FString::FromInt(IsFloorUpgraded));
 
 	//GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Floor mat ID: " + FString::FromInt(SaveGameInstance->FloorMaterialID));
 	for (auto Floor : OfficeDepartment->FloorMaterialList) {
