@@ -403,6 +403,7 @@ void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 
 			auto Emp = World->SpawnActor<AEmployee>(SpawnActors[Position], SpawnLocation, SpawnRotation, SpawnParameters);
 			Emp->EmployeeRole = EmpRole;
+			//GM->TotalSalary += Emp->Salary;
 			if (Cast<ASupervisor>(Emp) != nullptr) {
 				Cast<ASupervisor>(Emp)->InitSupervisor(EmpRole); //quick workaround annoying beginplay pedantics of spawning
 				Emp->AssignSupervisor();
