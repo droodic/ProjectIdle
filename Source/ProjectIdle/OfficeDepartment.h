@@ -93,6 +93,7 @@ public:
 	void PopulateIdeaListFromSave(Idea* Idea);
 	void SpawnItemInWorld(AItem* item);
 	void EditPlacedItems();
+	void ReturnToOfficeDepartment();
 	void Return();
 	void BacklogReturn();
 	void ShopReturn();

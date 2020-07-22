@@ -131,16 +131,9 @@ void AOfficeDepartment::Tick(float DeltaTime)
 
 	if (bInSpawnCamera)
 	{
-		if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->IsInputKeyDown(EKeys::RightMouseButton))
+		if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->WasInputKeyJustPressed(EKeys::SpaceBar))
 		{
-			bInSpawnCamera = false;
-
-			if (PlayersCamera)
-			{
-				UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(PlayersCamera);
-			}
-
-			OfficeDepMenuWidget->AddToViewport();
+			ReturnToOfficeDepartment();
 		}
 	}
 }
@@ -250,7 +243,6 @@ void AOfficeDepartment::PublishGame()
 		if (GM->Money >= INT32_MAX || GM->Money + moneyGenerated > INT32_MAX)
 		{
 			UI->MoneyWidget->ShowANotification("MAX MONEY");
-
 		}
 		else
 		{
@@ -259,6 +251,9 @@ void AOfficeDepartment::PublishGame()
 
 			UI->MoneyWidget->ShowANotification("+ $" + FString::FromInt(moneyGenerated) + ".00", FLinearColor::Green);
 		}
+
+		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->MoneyGenerated = moneyGenerated;
+		OfficeDepMenuWidget->IdeaGeneratedMoney_T->SetText(FText::AsCurrency(moneyGenerated));
 	}
 	else
 	{
@@ -272,10 +267,12 @@ void AOfficeDepartment::PublishGame()
 		else
 		{
 			GM->Money += moneyGenerated;
-
 			UI->MoneyWidget->ShowANotification("+ $" + FString::FromInt(moneyGenerated) + ".00", FLinearColor::Green);
 		}
+
+		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->MoneyGenerated = moneyGenerated;
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->PublishedColor = FLinearColor::Red;
+		OfficeDepMenuWidget->IdeaGeneratedMoney_T->SetText(FText::AsCurrency(moneyGenerated));
 	}
 }
 
@@ -357,12 +354,29 @@ void AOfficeDepartment::SpawnItemInWorld(AItem* item)
 void AOfficeDepartment::EditPlacedItems()
 {
 	bInSpawnCamera = true;
+	GM->InEditMode = true;
 
 	OfficeDepMenuWidget->RemoveFromViewport();
 
 	PlayersCamera = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetViewTarget();
 
-	GM->InEditMode = true;
+	if (SpawnItemCamera != nullptr && this->FloorLevel == 1)
+	{
+		UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(SpawnItemCamera);
+	}
+}
+
+void AOfficeDepartment::ReturnToOfficeDepartment()
+{
+	bInSpawnCamera = false;
+	GM->InEditMode = false;
+
+	if (PlayersCamera)
+	{
+		UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(PlayersCamera);
+	}
+
+	OfficeDepMenuWidget->AddToViewport();
 }
 
 //Future transition 

@@ -61,5 +61,5 @@ private:
 
 private:
 	void BeginPlay() override;
-	void NotifyActorOnClicked(FKey ButtonPressed = EKeys::LeftMouseButton) override;
+	void NotifyActorOnClicked(FKey ButtonPressed = EKeys::RightMouseButton) override;
 };

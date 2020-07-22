@@ -104,7 +104,7 @@ void UShopWidget::AddItemToCheckout(class AItem* item)
 
 	if (CheckList.Num() > 0)
 	{
-		for (size_t i = 0; i < CheckList.Num(); i++)
+		for (int i = 0; i < CheckList.Num(); i++)
 		{
 			if (CheckList[i]->ItemID == item->ItemID)
 			{
@@ -119,7 +119,6 @@ void UShopWidget::AddItemToCheckout(class AItem* item)
 				break;
 			}
 		}
-
 		if (!isInCheckout)
 		{
 			auto ItemButton = CreateWidget<UItemButton>(this, ItemButtonClass);
@@ -162,7 +161,7 @@ void UShopWidget::AddItemToCheckout(class AItem* item)
 
 void UShopWidget::RemoveItemFromCheckout(int itemID)
 {
-	for (size_t i = 0; i < CheckList.Num(); i++)
+	for (int i = 0; i < CheckList.Num(); i++)
 	{
 		if (CheckList[i]->ItemID == itemID)
 		{

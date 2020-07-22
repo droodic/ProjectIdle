@@ -35,6 +35,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* Total_Artist_Btn;
 	UPROPERTY(meta = (BindWidget)) class UButton* EditPlacedItems_Btn;
 	UPROPERTY(meta = (BindWidget)) class UButton* Return_Btn;
+	UPROPERTY(meta = (BindWidget)) class UTextBlock* IdeaGeneratedMoney_T;
 	UPROPERTY() FString Worker;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* CreateDep_Btn;

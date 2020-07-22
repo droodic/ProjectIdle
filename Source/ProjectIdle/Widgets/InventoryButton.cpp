@@ -41,6 +41,7 @@ void UInventoryButton::NativeConstruct()
 
 void UInventoryButton::OnClicked()
 {
+
 	switch (Item->ItemCategory)
 	{
 	case ECategory::ComputerComponents:
@@ -50,7 +51,8 @@ void UInventoryButton::OnClicked()
 	case ECategory::Materials:
 		if (Item->ItemSubCategory == ESubCategory::Floor)
 		{
-			GameManager->OfficeDepartment->OfficeDepMenuWidget->CurrentFloorMat_I->SetBrushFromTexture(Item->ItemImage);
+			//GameManager->OfficeDepartment->OfficeDepMenuWidget->CurrentFloorMat_I->SetBrushFromTexture(Item->ItemImage);
+			GameManager->OfficeDepartmentList[GameManager->Character->CurrentFloor - 1]->OfficeDepMenuWidget->CurrentFloorMat_I->SetBrushFromTexture(Item->ItemImage);
 
 			for (int i = 0; i < GameManager->FloorList.Num(); i++)
 			{
@@ -59,11 +61,13 @@ void UInventoryButton::OnClicked()
 		}
 		else if (Item->ItemSubCategory == ESubCategory::Wall)
 		{
-			GameManager->OfficeDepartment->OfficeDepMenuWidget->CurrentWallMat_I->SetBrushFromTexture(Item->ItemImage);
+			//GameManager->OfficeDepartment->OfficeDepMenuWidget->CurrentWallMat_I->SetBrushFromTexture(Item->ItemImage);
+			GameManager->OfficeDepartmentList[GameManager->Character->CurrentFloor - 1]->OfficeDepMenuWidget->CurrentWallMat_I->SetBrushFromTexture(Item->ItemImage);
 		}
 		break;
 	case ECategory::OfficeDecorations:
-		GameManager->OfficeDepartment->SpawnItemInWorld(Item);
+		GameManager->OfficeDepartmentList[GameManager->Character->CurrentFloor - 1]->SpawnItemInWorld(Item);
+		//GameManager->OfficeDepartment->SpawnItemInWorld(Item);
 		break;
 	}
 
