@@ -49,13 +49,17 @@ void UCeoDepMenuWidget::NativeConstruct()
 	{
 		PublishGame_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::PublishGame);
 	}
-	if (!Return_Btn->OnClicked.IsBound())
-	{
-		Return_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::Return);
-	}
 	if (!CreateDep_Btn->OnClicked.IsBound())
 	{
 		CreateDep_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::CreateDepartment);
+	}
+	if (!EditPlacedItems_Btn->OnClicked.IsBound())
+	{
+		EditPlacedItems_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::EditPlacedItems);
+	}
+	if (!Return_Btn->OnClicked.IsBound())
+	{
+		Return_Btn->OnClicked.AddDynamic(this, &UCeoDepMenuWidget::Return);
 	}
 }
 
@@ -193,17 +197,6 @@ void UCeoDepMenuWidget::ActivateWorkstation(ERole StationRole, EPosition OwnerPo
 	}
 }
 
-void UCeoDepMenuWidget::PublishGame()
-{
-	PublishGame_Btn->SetIsEnabled(false);
-	OfficeDepartment->PublishGame();
-}
-
-void UCeoDepMenuWidget::Return()
-{
-	OfficeDepartment->Return();
-}
-
 void UCeoDepMenuWidget::GetFinishedIdea(Idea* idea)
 {
 	idea->IdeaButton = Cast<UIdeaButton>(CreateWidget(this, IdeaButtonWidgetClass));
@@ -275,6 +268,22 @@ void UCeoDepMenuWidget::AddValuesToButton(Idea* idea)
 
 	idea->IdeaButton->storedIndex = Index;
 	idea->IdeaButton->IsFinished = true;
+}
+
+void UCeoDepMenuWidget::PublishGame()
+{
+	PublishGame_Btn->SetIsEnabled(false);
+	OfficeDepartment->PublishGame();
+}
+
+void UCeoDepMenuWidget::EditPlacedItems()
+{
+	OfficeDepartment->EditPlacedItems();
+}
+
+void UCeoDepMenuWidget::Return()
+{
+	OfficeDepartment->Return();
 }
 
 void UCeoDepMenuWidget::CreateDepartment()

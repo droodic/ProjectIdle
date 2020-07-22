@@ -44,7 +44,7 @@ void AOfficeDepartment::OnInteract()
 {
 	if (OfficeDepMenuWidget != nullptr)
 	{
-		if (!OfficeDepMenuWidget->IsInViewport())
+		if (!OfficeDepMenuWidget->IsInViewport() && !bInSpawnCamera)
 		{
 			UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetCharacterMovement()->DisableMovement();
 			OfficeDepMenuWidget->AddToViewport();
@@ -352,6 +352,22 @@ void AOfficeDepartment::SpawnItemInWorld(AItem* item)
 		APreviewItem* previewItemReference = GetWorld()->SpawnActor<APreviewItem>(PreviewItemBP, hitResult.Location, item->ItemMesh->GetRelativeRotation());
 		previewItemReference->ItemReference = item;
 	}
+}
+
+void AOfficeDepartment::EditPlacedItems()
+{
+	bInSpawnCamera = true;
+
+	OfficeDepMenuWidget->RemoveFromViewport();
+
+	PlayersCamera = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetViewTarget();
+
+	if (SpawnItemCamera != nullptr)
+	{
+		UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(SpawnItemCamera);
+	}
+
+	GM->InEditMode = true;
 }
 
 //Future transition 

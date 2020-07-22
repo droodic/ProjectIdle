@@ -99,6 +99,7 @@ void APreviewItem::Tick(float DeltaTime)
 
 	if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->WasInputKeyJustPressed(EKeys::RightMouseButton))
 	{
+		GameManager->InEditMode = false;
 		Destroy();
 	}
 }

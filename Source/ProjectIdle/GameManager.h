@@ -41,12 +41,6 @@ public:
 	UPROPERTY(BlueprintReadWrite) TArray<class AMeetingDepartment*> MeetingDepartmentList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AMeetingDepartment*> UnassignedMeetingDepartmentList;
 
-
-
-
-
-
-
 	UPROPERTY(BlueprintReadWrite) int NumOfProgrammers;
 	UPROPERTY(BlueprintReadWrite) int NumOfArtists;
 	UPROPERTY(BlueprintReadWrite) int Money;
@@ -74,6 +68,7 @@ public:
 
 	bool IdeaInProduction = false;
 	bool IsWidgetInDisplay = false;
+	bool InEditMode = false;
 	bool IsFloorUpgraded = false;
 	UUserWidget* CurrentWidgetInDisplay;
 	AEmployee* CurrentEmployeeInDisplay;
