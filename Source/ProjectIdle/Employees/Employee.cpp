@@ -365,7 +365,10 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		{
 			GM->IdeaInProduction = false;
 			GM->OfficeDepartmentList[this->FloorLevel - 1]->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartment->CurrentIdea);
-			UI->MoneyWidget->ShowANotification("PRODUCTION OF A GAME FINISHED, WAITING FOR BEING PUBLISHED");
+			UI->MoneyWidget->ShowANotification("GAME PRODUCTION FINISHED!");
+			UI->MoneyWidget->ShowANotification("Paying Employee Salaries...");
+			UI->MoneyWidget->ShowANotification(FString::FromInt(GM->TotalSalary), FLinearColor::Red);
+			GM->Money -= GM->TotalSalary;
 			CompileValue = 0;
 		}
 	}
@@ -401,19 +404,21 @@ void AEmployee::NotifyActorEndOverlap(AActor* OtherActor)
 void AEmployee::Promote()
 {
 	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, "Promote button called");
-	float AddMorale = FMath::FRandRange(.25f, .75f);
+	float AddMorale = FMath::FRandRange(1.f, 1.5f);
 
 	if (GM->Money >= CostEmployeePromote)
 	{
+		GM->TotalSalary -= Salary;
+
 		//float AddMorale = FMath::FRandRange(1, 10);
 		GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, FString::Printf(TEXT("Number: x: %f"), AddMorale));
 		switch (Position)
 		{
 		case EPosition::Intern:
 			Position = EPosition::Junior;
-			Salary += 200;
+			Salary += 1000;
 			if (Morale < 10) {
-				Morale += AddMorale + 0.5f;
+				Morale += AddMorale + 1.25f;
 				if (Morale >= 10) {
 					Morale = 10;
 				}
@@ -423,9 +428,9 @@ void AEmployee::Promote()
 			break;
 		case EPosition::Junior:
 			Position = EPosition::Regular;
-			Salary += 200;
+			Salary += 2500;
 			if (Morale < 10) {
-				Morale += AddMorale + 1.f;
+				Morale += AddMorale + 2.5f;
 				if (Morale >= 10) {
 					Morale = 10;
 				}
@@ -435,7 +440,7 @@ void AEmployee::Promote()
 			break;
 		case EPosition::Regular:
 			Position = EPosition::Senior;
-			Salary += 200;
+			Salary += 5000;
 			if (Morale < 10) {
 				Morale += AddMorale + 2.5f;
 				if (Morale >= 10) {
@@ -446,6 +451,7 @@ void AEmployee::Promote()
 			break;
 		}
 		UI->RefreshEmployeeSheet(this);
+		GM->TotalSalary += Salary;
 	}
 }
 
@@ -464,7 +470,7 @@ void AEmployee::Fire()
 			}
 		}
 	}
-
+	GM->TotalSalary -= Salary;
 	MoveEmployee(GM->DoorList[this->FloorLevel - 1]->GetActorLocation());
 }
 
