@@ -12,7 +12,9 @@ AFloorManager::AFloorManager() {
 
 void AFloorManager::BeginPlay() {
 	Super::BeginPlay();
-	GM->OfficeDepartment->ManagerRef = this;
+	//GM->OfficeDepartment->ManagerRef = this;
+	GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->ManagerRef = this;
+	GM->FLoorM = this;
 	StartPosition = GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->ChairMesh->GetComponentLocation();
 	MoveEmployee(StartPosition);
 
@@ -25,8 +27,8 @@ void AFloorManager::Tick(float DeltaTime) {
 		if (IdeaGenerationState && !AI->IsMoving && !GM->OfficeDepartment->IsGenerating) {
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Manager gen idea");
 
-			//GM->OfficeDepartmentList[0]->GenerateIdea();
-			GM->OfficeDepartment->GenerateIdea();
+			GM->OfficeDepartmentList[0]->GenerateIdea();
+			//GM->OfficeDepartment->GenerateIdea();
 			GeneratingIdea = true;
 			IdeaGenerationState = false;
 		}
@@ -36,8 +38,10 @@ void AFloorManager::Tick(float DeltaTime) {
 			//call meeting handled by ideabacklog widget function after, migrate somehow here? 
 			//MAKE THIS TIMER, CALLED VERY OFTEN, or find better way
 
-			GM->MeetingDepartment->BackFromMeeting();
-			if (GM->MeetingDepartment->CanReturn) {
+			//GM->MeetingDepartment->BackFromMeeting();
+			GM->MeetingDepartmentList[0]->BackFromMeeting();
+			//if (GM->MeetingDepartment->CanReturn) {
+			if(GM->MeetingDepartmentList[0]->CanReturn){
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Manager backfrommeeting");
 
 				MeetingState = false;

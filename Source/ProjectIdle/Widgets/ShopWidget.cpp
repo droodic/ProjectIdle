@@ -55,7 +55,12 @@ void UShopWidget::Buy()
 
 				if (CheckList[i]->Item->ItemCategory == ECategory::Materials || CheckList[i]->Item->ItemCategory == ECategory::OfficeDecorations)
 				{
-					GameManager->OfficeDepartment->OfficeDepMenuWidget->AddItemToInventory(CheckList[i]->Item);
+					//GameManager->OfficeDepartment->OfficeDepMenuWidget->AddItemToInventory(CheckList[i]->Item);
+					GameManager->OfficeDepartmentList[GameManager->Character->CurrentFloor - 1]->OfficeDepMenuWidget->AddItemToInventory(CheckList[i]->Item);
+					for (auto UnassignCEO : GameManager->UnassignedOfficeDepartmentList)
+					{
+						UnassignCEO->OfficeDepMenuWidget->AddItemToInventory(CheckList[i]->Item);
+					}
 				}
 
 				if (CheckList[i]->Item->ItemCategory == ECategory::Materials)

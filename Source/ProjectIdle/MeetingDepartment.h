@@ -32,6 +32,8 @@ public:
 	UPROPERTY() class UMeetingDepWidget* MeetingWidget;
 	
 	class Idea* CurrentIdea;
+	TArray<class Idea*> CurrentIdeaList;
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool StartingMeetingDep;

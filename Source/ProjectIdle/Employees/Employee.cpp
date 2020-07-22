@@ -50,6 +50,7 @@ void AEmployee::BeginPlay()
 	Super::BeginPlay();
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Beginplay");
 	GM = GetWorld()->GetGameInstance<UGameManager>();
+	GM->Emp = this;
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0)->GetHUD());
 	Camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
 	//WorkTimer = GetWorldTimerManager();
@@ -121,19 +122,22 @@ void AEmployee::BeginPlay()
 
 void AEmployee::IsDepartmentWorking() {
 	for (auto Employee : GM->EmployeeList) {
-		if (Employee->EmployeeRole == EmployeeRole && Employee->CurrentWorkload > 5.f) {
-			Employee->AssignedWorkload /= 2;
-			this->AssignedWorkload = Employee->AssignedWorkload;
-			this->CurrentWorkload = AssignedWorkload;//Employee->CurrentWorkload / 2;
-			Employee->CurrentWorkload /= 2;
+		if (Employee->FloorLevel == FloorLevel)
+		{
+			if (Employee->EmployeeRole == EmployeeRole && Employee->CurrentWorkload > 5.f) {
+				Employee->AssignedWorkload /= 2;
+				this->AssignedWorkload = Employee->AssignedWorkload;
+				this->CurrentWorkload = AssignedWorkload;//Employee->CurrentWorkload / 2;
+				Employee->CurrentWorkload /= 2;
 
-			//Recalc Compile values of employee which you are taking workload from
-			Employee->NumCompile /= 2;
-			Employee->CompileValue = 0;//triggers recalc flag in tick
+				//Recalc Compile values of employee which you are taking workload from
+				Employee->NumCompile /= 2;
+				Employee->CompileValue = 0;//triggers recalc flag in tick
 
-			BeginWork();
-			GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Newly hired employee takes part in current department dev"));
-			break;
+				BeginWork();
+				GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Newly hired employee takes part in current department dev"));
+				break;
+			}
 		}
 	}
 }
@@ -171,7 +175,7 @@ void AEmployee::Tick(float DeltaTime)
 
 	//add a if enabled condition or smth
 
-	if (HasWorkload && CurrentWorkload > 0 && !AI->IsMoving && !WorkstationRef->IsCompiling && !NeedAssistance) {
+	if (HasWorkload && this->CurrentWorkload > 0 && !AI->IsMoving && !WorkstationRef->IsCompiling && !NeedAssistance) {
 		WorkloadProgress(DeltaTime * ((Performance / 2.5) + (Morale / 5) * GM->SpeedRate * GM->CheatSpeedRate));
 	}
 	if (HelpWidget != nullptr && NeedAssistance && HelpWidget->IsVisible()) {
@@ -322,28 +326,50 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		//If none remain, give player money if idea was successful
 		for (auto AnEmployee : GM->EmployeeList) {
 			auto ThisEmployeeAI = Cast<AAIController>(GetController());
-			if (EmployeeRole == ERole::Programmer && AnEmployee->EmployeeRole == ERole::Programmer) {
-				if (AnEmployee->CurrentWorkload >= 15) {//change to editor editable constant 
-					AnEmployee->CurrentWorkload /= 2;
-					CurrentWorkload += AnEmployee->CurrentWorkload / 2;
-					GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Programmer workload finished, taking workload from another employee"));
-					break;
+			if (AnEmployee->FloorLevel == this->FloorLevel)
+			{
+				if (EmployeeRole == ERole::Programmer && AnEmployee->EmployeeRole == ERole::Programmer) {
+					if (AnEmployee->CurrentWorkload >= 15) {//change to editor editable constant 
+						AnEmployee->CurrentWorkload /= 2;
+						CurrentWorkload += AnEmployee->CurrentWorkload / 2;
+						GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Programmer workload finished, taking workload from another employee"));
+						break;
 
+					}
 				}
-			}
 
-			else if (EmployeeRole == ERole::Artist && AnEmployee->EmployeeRole == ERole::Artist) {
-				if (AnEmployee->CurrentWorkload >= 15) {
-					AnEmployee->CurrentWorkload /= 2;
-					CurrentWorkload += AnEmployee->CurrentWorkload / 2;
-					GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Artist workload finished, taking workload from another employee"));
-					break;
+				else if (EmployeeRole == ERole::Artist && AnEmployee->EmployeeRole == ERole::Artist) {
+					if (AnEmployee->CurrentWorkload >= 15) {
+						AnEmployee->CurrentWorkload /= 2;
+						CurrentWorkload += AnEmployee->CurrentWorkload / 2;
+						GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Artist workload finished, taking workload from another employee"));
+						break;
+					}
 				}
 			}
 		}
 
 	}
 	if (CurrentWorkload <= 0) { //Change to condition checking if all other employee are also done, then prepare to give money
+
+		if (this->FloorLevel == 1)
+		{
+			GM->FloorOneWorkDone++;
+		}
+		else if (this-> FloorLevel == 2)
+		{
+			GM->FloorTwoWorkDone++;
+		}
+
+		//auto Size = GM->FloorOneWorkDone;
+		//FString sizeString = FString::FromInt(Size);
+		//UE_LOG(LogTemp, Warning, TEXT("%sizeString"), *sizeString)
+
+
+		int TotalPerFloor = 0;
+		TotalPerFloor = GM->FloorList[this->FloorLevel - 1]->FloorArtistCount + GM->FloorList[this->FloorLevel -1]->FloorProgrammerCount;
+
+
 		HasWorkload = false;
 		WorkProgressBar->SetVisibility(false);
 		//go back to regular animation ?
@@ -354,21 +380,33 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		NeedAssistance = false;
 		HelpWidget->SetVisibility(false);
 
-		for (auto AnEmployee : GM->EmployeeList)
+		//bool isOver = true;
+		//for (auto AnEmployee : GM->EmployeeList)
+		//{
+		//	if (AnEmployee->HasWorkload == true)
+		//	{
+		//		isOver = false;
+		//	}
+		//}
+		//if (isOver == true)
+		if(GM->FloorOneWorkDone == TotalPerFloor || GM->FloorTwoWorkDone == TotalPerFloor)
 		{
-			if (AnEmployee->HasWorkload == true)
+			if (GM->FloorOneWorkDone == TotalPerFloor)
 			{
-				isOver = false;
+				GM->FloorOneWorkDone = 0;
 			}
-		}
-		if (isOver == true)
-		{
+			if (GM->FloorTwoWorkDone == TotalPerFloor)
+			{
+				GM->FloorTwoWorkDone = 0;
+			}
+
 			GM->IdeaInProduction = false;
 			GM->OfficeDepartmentList[this->FloorLevel - 1]->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartment->CurrentIdea);
 			UI->MoneyWidget->ShowANotification("GAME PRODUCTION FINISHED!");
 			UI->MoneyWidget->ShowANotification("Paying Employee Salaries...");
 			UI->MoneyWidget->ShowANotification(FString::FromInt(GM->TotalSalary), FLinearColor::Red);
 			GM->Money -= GM->TotalSalary;
+			GM->OfficeDepartmentList[this->FloorLevel - 1]->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartmentList[this->FloorLevel - 1]->CurrentIdea);
 			CompileValue = 0;
 		}
 	}

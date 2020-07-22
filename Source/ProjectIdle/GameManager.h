@@ -61,11 +61,18 @@ public:
 	UPROPERTY(BlueprintReadWrite) class UMeetingDepWidget* MeetingWidget;
 	UPROPERTY(BlueprintReadWrite) class UShopWidget* ShopWidget;
 	UPROPERTY(BlueprintReadWrite) class AWall* Wall;
+	UPROPERTY(BlueprintReadWrite) class AEmployee* Emp;
+	UPROPERTY(BlueprintReadWrite) class AFloorManager* FLoorM;
+
+
 
 	UPROPERTY(BlueprintReadWrite) int EmployeeNameIndex;
 	UPROPERTY(BlueprintReadWrite) float SpeedRate = 1;
 	UPROPERTY(BlueprintReadWrite) float CheatSpeedRate = 1;
 	UPROPERTY(BlueprintReadWrite) int CurrentOfficeFloor = 1;
+
+	UPROPERTY(BlueprintReadWrite) int FloorOneWorkDone = 0;
+	UPROPERTY(BlueprintReadWrite) int FloorTwoWorkDone = 0;
 
 
 	bool IdeaInProduction = false;
