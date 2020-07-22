@@ -223,28 +223,66 @@ void UCeoDepMenuWidget::ClearFinishedGames()
 
 void UCeoDepMenuWidget::AddItemToInventory(AItem* item)
 {
-	UInventoryButton* NewItemButton = CreateWidget<UInventoryButton>(this, InventoryButtonWidgetClass);
+	bool bInInventory = false;
 
-	NewItemButton->Item = item;
-	NewItemButton->Item_I->SetBrushFromTexture(item->ItemImage);
-	NewItemButton->ItemName_T->SetText(FText::FromString(item->ItemName));
+	UInventoryButton* newItemButton = CreateWidget<UInventoryButton>(this, InventoryButtonWidgetClass);
+
+	newItemButton->Item = item;
+	newItemButton->Item_I->SetBrushFromTexture(item->ItemImage);
+	newItemButton->ItemName_T->SetText(FText::FromString(item->ItemName));
 
 	if (item->ItemSubCategory == ESubCategory::Other)
 	{
-		if (item->ItemButton->ItemCount > 1)
+		if (OfficeDecoration_WB->GetChildrenCount() > 0)
 		{
-			NewItemButton->ItemCount_T->SetText(FText::FromString(FString::FromInt(item->ItemButton->ItemCount)));
-		}
+			for (int i = 0; i < OfficeDecoration_WB->GetChildrenCount(); i++)
+			{
+				auto button = Cast<UInventoryButton>(OfficeDecoration_WB->GetChildAt(i));
 
-		OfficeDecoration_WB->AddChildToWrapBox(NewItemButton);
+				if (item->ItemID == button->Item->ItemID)
+				{
+					button->Item->ItemCount += item->ItemButton->ItemCount;
+					button->ItemCount_T->SetText(FText::FromString(FString::FromInt(button->Item->ItemCount)));
+					break;
+					bInInventory = true;
+				}
+				else
+				{
+					bInInventory = false;
+				}
+
+			}
+			if (!bInInventory)
+			{
+				newItemButton->Item->ItemCount = item->ItemButton->ItemCount;
+
+				if (newItemButton->Item->ItemCount > 1)
+				{
+					newItemButton->ItemCount_T->SetText(FText::FromString(FString::FromInt(newItemButton->Item->ItemCount)));
+				}
+
+				OfficeDecoration_WB->AddChildToWrapBox(newItemButton);
+			}
+		}
+		else
+		{
+			newItemButton->Item->ItemCount = item->ItemButton->ItemCount;
+
+			if (newItemButton->Item->ItemCount > 1)
+			{
+				newItemButton->ItemCount_T->SetText(FText::FromString(FString::FromInt(newItemButton->Item->ItemCount)));
+			}
+
+			OfficeDecoration_WB->AddChildToWrapBox(newItemButton);
+		}
 	}
 	else if (item->ItemSubCategory == ESubCategory::Floor)
 	{
-		FloorMaterial_HB->AddChildToHorizontalBox(NewItemButton);
+		FloorMaterial_HB->AddChildToHorizontalBox(newItemButton);
 	}
 	else if (item->ItemSubCategory == ESubCategory::Wall)
 	{
-		WallMaterial_HB->AddChildToHorizontalBox(NewItemButton);
+		WallMaterial_HB->AddChildToHorizontalBox(newItemButton);
 	}
 }
 

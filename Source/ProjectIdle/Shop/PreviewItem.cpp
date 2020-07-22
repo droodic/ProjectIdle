@@ -25,7 +25,7 @@ void APreviewItem::BeginPlay()
 	Super::BeginPlay();
 
 	GameManager = GetWorld()->GetGameInstance<UGameManager>();
-	OfficeDepartmentWidget = GameManager->OfficeDepartment->OfficeDepMenuWidget;
+	OfficeDepartment = GameManager->OfficeDepartmentList[GameManager->Character->CurrentFloor - 1];
 }
 
 void APreviewItem::Tick(float DeltaTime)
@@ -62,10 +62,10 @@ void APreviewItem::Tick(float DeltaTime)
 			if (ItemReference != nullptr)
 			{
 				GetWorld()->SpawnActor<AItem>(ItemReference->ItemBP, hitResult.Location, MeshComponent->GetRelativeRotation());
-				
-				for (int i = 0; i < OfficeDepartmentWidget->OfficeDecoration_WB->GetChildrenCount(); i++)
+
+				for (int i = 0; i < OfficeDepartment->OfficeDepMenuWidget->OfficeDecoration_WB->GetChildrenCount(); i++)
 				{
-					auto inventoryButton = Cast<UInventoryButton>(OfficeDepartmentWidget->OfficeDecoration_WB->GetChildAt(i));
+					auto inventoryButton = Cast<UInventoryButton>(OfficeDepartment->OfficeDepMenuWidget->OfficeDecoration_WB->GetChildAt(i));
 
 					if (ItemReference->ItemID == inventoryButton->Item->ItemID)
 					{
@@ -78,7 +78,7 @@ void APreviewItem::Tick(float DeltaTime)
 						}
 						else
 						{
-							OfficeDepartmentWidget->OfficeDecoration_WB->RemoveChildAt(i);
+							OfficeDepartment->OfficeDepMenuWidget->OfficeDecoration_WB->RemoveChildAt(i);
 						}
 					}
 				}
@@ -96,10 +96,9 @@ void APreviewItem::Tick(float DeltaTime)
 	{
 		MeshComponent->AddLocalRotation(FRotator(0.f, RotationRate, 0.f));
 	}
-
-	if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->WasInputKeyJustPressed(EKeys::RightMouseButton))
+	if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->WasInputKeyJustPressed(EKeys::SpaceBar))
 	{
-		GameManager->InEditMode = false;
+		OfficeDepartment->ReturnToOfficeDepartment();
 		Destroy();
 	}
 }

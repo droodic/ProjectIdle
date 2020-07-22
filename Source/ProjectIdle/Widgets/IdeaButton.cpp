@@ -31,11 +31,13 @@ void UIdeaButton::ButtonClicked()
 	{
 		OfficeDepartment->OfficeDepMenuWidget->PublishGame_Btn->SetIsEnabled(true);
 		OfficeDepartment->OfficeDepMenuWidget->ChosenIndex = storedIndex;
+		OfficeDepartment->OfficeDepMenuWidget->IdeaGeneratedMoney_T->SetText(FText::FromString("Not yet Published."));
 		IdeaButton->SetBackgroundColor(PublishedColor);
 	}
 	else if (IsPublished)
 	{
 		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, "The game is published");
+		OfficeDepartment->OfficeDepMenuWidget->IdeaGeneratedMoney_T->SetText(FText::AsCurrency(MoneyGenerated));
 		OfficeDepartment->OfficeDepMenuWidget->PublishGame_Btn->SetIsEnabled(false);
 	}
 	else if (!GM->IdeaInProduction)

@@ -28,7 +28,7 @@ private:
 	bool bOnce = false;
 
 	class UGameManager* GameManager;
-	class UCeoDepMenuWidget* OfficeDepartmentWidget;
+	class AOfficeDepartment* OfficeDepartment;
 
 protected:
 	void BeginPlay() override;

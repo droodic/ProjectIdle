@@ -21,6 +21,7 @@ public:
 	class AOfficeDepartment* OfficeDepartment;
 
 	int storedIndex;
+	int MoneyGenerated;
 
 	bool IsFinished = false;
 	bool IsPublished = false;
@@ -40,8 +41,6 @@ public:
 	UPROPERTY(EditAnywhere) struct FLinearColor SelectedColor;
 	UPROPERTY(EditAnywhere) struct FLinearColor PublishedColor;
 
-	//bool IsInProduction;
-
 public:
 	virtual void NativeConstruct() override;
 
@@ -50,5 +49,3 @@ public:
 private:
 	UFUNCTION() void ButtonClicked();
 };
-
-//bool UIdeaButton::IsInProduction = false;
