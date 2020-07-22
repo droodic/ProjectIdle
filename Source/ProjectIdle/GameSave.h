@@ -15,15 +15,17 @@ class PROJECTIDLE_API UGameSave : public USaveGame
 public:
 	UGameSave();
 	UGameManager* GM;
-	int NumEmployees;
-	bool AutoManaging;
-	bool IdeaInProduction;
+	UPROPERTY(EditAnywhere) bool IdeaInProduction;
+	UPROPERTY(EditAnywhere)	bool AutoManaging;
+	UPROPERTY(EditAnywhere) int NumEmployees;
 	UPROPERTY(EditAnywhere) FDateTime SavedTime;
 	UPROPERTY(EditAnywhere) FVector Saved_PlayerLocation;
 	UPROPERTY(EditAnywhere) int Saved_Money;
+	UPROPERTY(EditAnywhere) int FloorMaterialID;
 	UPROPERTY(EditAnywhere) TArray<class AItem*> InventoryList;
 	UPROPERTY(EditAnywhere) TArray<class AWorkstation*> WorkstationList;
     TArray<class Idea*> IdeaList;
+
 
 public:
 	// void SaveEmployeeRecords(FArchive Ar); Method 1

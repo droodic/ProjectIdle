@@ -46,16 +46,18 @@ public:
 
 	class UGameManager* GM;
 
+	//UPROPERTY(SaveGame, BlueprintReadWrite) int FloorMatID = 0;
+
 	UPROPERTY() USceneComponent* Root;
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* Mesh;
-	UPROPERTY(EditAnywhere) UMaterial* Material;
-	UPROPERTY(EditAnywhere) UMaterial* UpgradeMaterial;
+	UPROPERTY( EditAnywhere) UMaterial* Material;
+	UPROPERTY( EditAnywhere) UMaterial* UpgradeMaterial;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "IsEnabled") bool IsEnabled;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "IsEnabled") bool RemovableWall;
-	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere, Category = "ObjectType") ObjectType Type;
-	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere, Category = "FloorType") FloorType Flooring;
-	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere, Category = "WallPosition") WallPosition WallDirection;
+	UPROPERTY( BlueprintReadWrite, EditAnywhere, Category = "ObjectType") ObjectType Type;
+	UPROPERTY( BlueprintReadWrite, EditAnywhere, Category = "FloorType") FloorType Flooring;
+	UPROPERTY( BlueprintReadWrite, EditAnywhere, Category = "WallPosition") WallPosition WallDirection;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool StartingFloor;
 
@@ -79,7 +81,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION() void UpdateWallMaterial(UMaterialInterface* NewMaterial);
+	UFUNCTION() void UpdateWallMaterial(AItem* FloorItem);
 	UFUNCTION() void UpdateWallMaterialTest();
 	UFUNCTION() void ActivateWallAndFloor();
 	UFUNCTION() void DeactivateWallAndFloor();
