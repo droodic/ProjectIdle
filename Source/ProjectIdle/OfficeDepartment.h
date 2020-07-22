@@ -65,6 +65,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool StartingOffice;
 
 	UPROPERTY(EditAnywhere) class ACameraActor* SpawnItemCamera;
+	UPROPERTY(EditAnywhere) class ACameraActor* SpawnItemCameraTwo;
+	//UPROPERTY(EditAnywhere) TArray<TSubclassOf<class ACameraActor>> SpawnItemCameraList;
+
 	UPROPERTY(EditAnywhere) class TSubclassOf<class APreviewItem> PreviewItemBP;
 
 private:

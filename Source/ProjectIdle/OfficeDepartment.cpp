@@ -362,9 +362,14 @@ void AOfficeDepartment::EditPlacedItems()
 
 	PlayersCamera = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetViewTarget();
 
-	if (SpawnItemCamera != nullptr)
+	if (SpawnItemCamera != nullptr && this->FloorLevel == 1)
 	{
 		UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(SpawnItemCamera);
+	}
+
+	if (SpawnItemCamera != nullptr && this->FloorLevel == 2)
+	{
+		UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(SpawnItemCameraTwo);
 	}
 
 	GM->InEditMode = true;
