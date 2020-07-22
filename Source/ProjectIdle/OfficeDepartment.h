@@ -31,6 +31,7 @@ public:
 
 	//TArray<TSubclassOf<AItem*>> List;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) TArray<TSubclassOf<class AItem>> GameItemList;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) TArray<TSubclassOf<class AItem>> FloorMaterialList;
 	TArray<class Idea*> IdeaList;
 	TArray<class Idea*> FinishedIdeaList;
 	

@@ -44,6 +44,9 @@ void UGameManager::SaveGame(FString SaveFile)
 		SaveGameInstance->IdeaList.Add(Idea);
 	}
 	SaveGameInstance->SavedTime = FDateTime::Now();
+	SaveGameInstance->FloorMaterialID = FloorMaterialID;
+	GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Floor mat ID: " + FString::FromInt(SaveGameInstance->FloorMaterialID));
+
 
 	if (OfficeDepartment->ManagerRef != nullptr) {
 		SaveGameInstance->NumEmployees = EmployeeList.Num();
@@ -116,6 +119,17 @@ void UGameManager::LoadGame(FString SaveFile)
 		OfficeDepartment->PopulateIdeaListFromSave(Idea);
 	}
 
+
+	//GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Floor mat ID: " + FString::FromInt(SaveGameInstance->FloorMaterialID));
+	for (auto Floor : OfficeDepartment->FloorMaterialList) {
+
+		if (SaveGameInstance->FloorMaterialID == Floor.GetDefaultObject()->ItemID) {
+			for (auto F : FloorList) {
+				F->UpdateWallMaterial(Floor.GetDefaultObject());
+			}
+			//FloorList[i]->UpdateWallMaterial(Floor);
+		}
+	}
 
 	//if (SaveGameInstance->AutoManaging == true) {
 	FDateTime CurrentTime = FDateTime::Now();
@@ -356,4 +370,6 @@ void UGameManager::OnGameLoadedFixup(UWorld* World) {
 
 		}
 	}
+
+
 }
