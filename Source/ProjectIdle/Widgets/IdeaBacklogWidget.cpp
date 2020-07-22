@@ -29,12 +29,16 @@ void UIdeaBacklogWidget::NativeConstruct() {
 
 void UIdeaBacklogWidget::DisplayNewIdea(Idea* idea) {
 
+	GM = GetWorld()->GetGameInstance<UGameManager>();
+
 	GEngine->AddOnScreenDebugMessage(5, 5.f, FColor::Red, "Displaying new idea");
 
 	idea->IdeaButton = Cast<UIdeaButton>(CreateWidget(this, IdeaButtonWidgetClass));
 	AddValuesToButton(idea);
 
 	IdeaScrollBox->AddChild(idea->IdeaButton);
+	GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->BacklogWidget->CallMeetingBtn->SetIsEnabled(true);
+
 }
 
 void UIdeaBacklogWidget::Return()
@@ -47,7 +51,7 @@ void UIdeaBacklogWidget::Return()
 
 	//OfficeDepartment->BacklogReturn();
 	GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->BacklogReturn();
-	GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->BacklogWidget->CallMeetingBtn->SetIsEnabled(false);
+	//GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->BacklogWidget->CallMeetingBtn->SetIsEnabled(false);
 
 	//CallMeetingBtn->SetIsEnabled(false);
 }
@@ -85,28 +89,21 @@ void UIdeaBacklogWidget::CallMeeting()
 		GM = GetWorld()->GetGameInstance<UGameManager>();
 		GEngine->AddOnScreenDebugMessage(101, 5.f, FColor::Red, "populate GM");
 	}
-	//if (GM->Character->CurrentFloor == 1)
-	//{
-		//int CurrentFloorLevel = 0;
 
-		//if (GM->OfficeDepartment->ManagerRef->AutoManaging)
-		//{
-		//	CurrentFloorLevel = GM->OfficeDepartment->ManagerRef->FloorLevel;
-		//}
-		//else
-		//{
-		int	CurrentFloorLevel = GM->Character->CurrentFloor - 1;
-		//}
+	int	CurrentFloorLevel = GM->Character->CurrentFloor - 1;
+
 		GM->OfficeDepartmentList[CurrentFloorLevel]->IdeaList[ChosenIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
 		//OfficeDepartment->IdeaList[ChosenIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
 		//UIdeaButton::IsInProduction = true;
-		//GM->IdeaInProduction = true;
+
+		GM->IdeaInProduction = true;
+	    
 		GM->OfficeDepartmentList[CurrentFloorLevel]->BacklogWidget->CallMeetingBtn->SetIsEnabled(false);
 		//CallMeetingBtn->SetIsEnabled(false);
 		//GM->MeetingDepartment->MoveToMeeting();
 		GM->MeetingDepartmentList[CurrentFloorLevel]->MoveToMeeting();
 		SendIdea(ChosenIndex);
-	//}
+
 }
 void UIdeaBacklogWidget::CallMeeting_M(AFloorManager* ManagerRef)
 {
@@ -135,8 +132,8 @@ void UIdeaBacklogWidget::SendIdea(int Index) {
 		GEngine->AddOnScreenDebugMessage(102, 5.f, FColor::Red, "GM->MeetingDepartment is null");
 	}
 	else if (GM->MeetingDepartment != nullptr) {
-		auto tIdea = OfficeDepartment->IdeaList[Index];
-		//auto tIdea = GM->OfficeDepartmentList[GM->OfficeDepartment->FloorLevel - 1]->IdeaList[Index];
+		//auto tIdea = OfficeDepartment->IdeaList[Index];
+		auto tIdea = GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->IdeaList[Index];
 		if (tIdea != nullptr)
 		{
 			GEngine->AddOnScreenDebugMessage(1036, 5.f, FColor::Red, "tIdea work");

@@ -53,6 +53,7 @@ void AMeetingDepartment::BeginPlay()
 void AMeetingDepartment::TakeIdea(Idea* SentIdea)
 {
 	CurrentIdea = SentIdea;
+	//CurrentIdeaList.Add(SentIdea);
 
 	if (MeetingWidget != nullptr && UserWidget != nullptr && SentIdea != nullptr) {
 		MeetingWidget->I_GameCover->SetColorAndOpacity(SentIdea->CoverColor);
@@ -201,7 +202,6 @@ void AMeetingDepartment::MoveToMeeting()
 void AMeetingDepartment::BackFromMeeting()
 {
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Backfrommeetingcall");
-
 	auto Counter = EmployeesAtMeetingList.Num();
 	GEngine->AddOnScreenDebugMessage(2109130941, 5.f, FColor::Green, "Counter: " + FString::FromInt(Counter));
 	if (Counter == 0) {
@@ -242,20 +242,27 @@ void AMeetingDepartment::BackFromMeeting()
 
 		for (auto Emp : GM->EmployeeList) {
 
-			if (Emp->Position != EPosition::Supervisor && Emp->Position != EPosition::FloorManager) {
-				if (Emp->EmployeeRole == ERole::Artist)
-				{
-					Emp->AssignedWorkload = CurrentIdea->ArtistWorkload / GM->NumOfArtists;
-					Emp->CurrentWorkload = Emp->AssignedWorkload;
-					Emp->BeginWork();
-				}
-				else if (Emp->EmployeeRole == ERole::Programmer)
-				{
-					Emp->AssignedWorkload = CurrentIdea->ProgrammerWorkload / GM->NumOfProgrammers;
-					Emp->CurrentWorkload = Emp->AssignedWorkload;
-					Emp->BeginWork();
-				}
+			if (Emp->FloorLevel == this->FloorLevel) {
 
+
+				if (Emp->Position != EPosition::Supervisor && Emp->Position != EPosition::FloorManager) {
+					if (Emp->EmployeeRole == ERole::Artist)
+					{
+
+						Emp->AssignedWorkload = CurrentIdea->ArtistWorkload / GM->NumOfArtists;
+						//Emp->AssignedWorkload = CurrentIdeaList[0]->ArtistWorkload / 1; //GM->FloorList[this->FloorLevel - 1]->FloorArtistCount;
+						Emp->CurrentWorkload = Emp->AssignedWorkload;
+						Emp->BeginWork();
+					}
+					else if (Emp->EmployeeRole == ERole::Programmer)
+					{
+						Emp->AssignedWorkload = CurrentIdea->ProgrammerWorkload / GM->NumOfProgrammers;
+						//Emp->AssignedWorkload = CurrentIdeaList[0]->ProgrammerWorkload / 1; // GM->FloorList[this->FloorLevel - 1]->FloorProgrammerCount;
+						Emp->CurrentWorkload = Emp->AssignedWorkload;
+						Emp->BeginWork();
+					}
+
+				}
 			}
 
 			Emp->IsAtMeeting = false;
@@ -263,12 +270,16 @@ void AMeetingDepartment::BackFromMeeting()
 
 		if (GM->MeetingWidget)
 		{
-			GM->MeetingWidget->StartMeetingBtn->SetIsEnabled(false);
+			//GM->MeetingWidget->StartMeetingBtn->SetIsEnabled(false);
 		}
 
-		auto backlogWidget = GM->OfficeDepartment->BacklogWidget;
+		//auto backlogWidget = GM->OfficeDepartment->BacklogWidget;
+		auto backlogWidget = GM->OfficeDepartmentList[this->FloorLevel - 1]->BacklogWidget;
 		backlogWidget->IdeaScrollBox->RemoveChild(Cast<UWidget>(CurrentIdea->IdeaButton));
-		GM->OfficeDepartment->ideasGenerated--;
+		//backlogWidget->IdeaScrollBox->RemoveChild(Cast<UWidget>(CurrentIdeaList[0]->IdeaButton));
+
+		GM->OfficeDepartmentList[this->FloorLevel - 1]->ideasGenerated--;
+		//GM->OfficeDepartment->ideasGenerated--;
 		if (MeetingWidget->IsInViewport()) {
 			MeetingWidget->RemoveFromViewport();
 		}

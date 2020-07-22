@@ -50,6 +50,7 @@ void AEmployee::BeginPlay()
 	Super::BeginPlay();
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Beginplay");
 	GM = GetWorld()->GetGameInstance<UGameManager>();
+	GM->Emp = this;
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0)->GetHUD());
 	Camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
 	//WorkTimer = GetWorldTimerManager();
@@ -125,7 +126,7 @@ void AEmployee::BeginPlay()
 
 void AEmployee::IsDepartmentWorking() {
 	for (auto Employee : GM->EmployeeList) {
-		if (Employee->FloorLevel == GM->Character->CurrentFloor)
+		if (Employee->FloorLevel == FloorLevel)
 		{
 			if (Employee->EmployeeRole == EmployeeRole && Employee->CurrentWorkload > 5.f) {
 				Employee->AssignedWorkload /= 2;
@@ -217,7 +218,7 @@ void AEmployee::Tick(float DeltaTime)
 
 	//add a if enabled condition or smth
 
-	if (HasWorkload && CurrentWorkload > 0 && !AI->IsMoving && !WorkstationRef->IsCompiling && !NeedAssistance) {
+	if (HasWorkload && this->CurrentWorkload > 0 && !AI->IsMoving && !WorkstationRef->IsCompiling && !NeedAssistance) {
 		WorkloadProgress(DeltaTime * ((Performance / 2.5) + (Morale / 5) * GM->SpeedRate * GM->CheatSpeedRate));
 	}
 	if (HelpWidget != nullptr && NeedAssistance && HelpWidget->IsVisible()) {
@@ -371,44 +372,67 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		//If none remain, give player money if idea was successful
 		for (auto AnEmployee : GM->EmployeeList) {
 			auto ThisEmployeeAI = Cast<AAIController>(GetController());
-			if (EmployeeRole == ERole::Programmer && AnEmployee->EmployeeRole == ERole::Programmer) {
-				if (AnEmployee->CurrentWorkload >= 15) {//change to editor editable constant 
-					AnEmployee->CurrentWorkload /= 2;
-					CurrentWorkload += AnEmployee->CurrentWorkload / 2;
-					GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Programmer workload finished, taking workload from another employee"));
-					break;
+			if (AnEmployee->FloorLevel == this->FloorLevel)
+			{
+				if (EmployeeRole == ERole::Programmer && AnEmployee->EmployeeRole == ERole::Programmer) {
+					if (AnEmployee->CurrentWorkload >= 15) {//change to editor editable constant 
+						AnEmployee->CurrentWorkload /= 2;
+						CurrentWorkload += AnEmployee->CurrentWorkload / 2;
+						GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Programmer workload finished, taking workload from another employee"));
+						break;
 
+					}
 				}
-			}
 
-			else if (EmployeeRole == ERole::Artist && AnEmployee->EmployeeRole == ERole::Artist) {
-				if (AnEmployee->CurrentWorkload >= 15) {
-					AnEmployee->CurrentWorkload /= 2;
-					CurrentWorkload += AnEmployee->CurrentWorkload / 2;
-					GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Artist workload finished, taking workload from another employee"));
-					break;
+				else if (EmployeeRole == ERole::Artist && AnEmployee->EmployeeRole == ERole::Artist) {
+					if (AnEmployee->CurrentWorkload >= 15) {
+						AnEmployee->CurrentWorkload /= 2;
+						CurrentWorkload += AnEmployee->CurrentWorkload / 2;
+						GEngine->AddOnScreenDebugMessage(210, 5, FColor::Emerald, TEXT("Artist workload finished, taking workload from another employee"));
+						break;
+					}
 				}
 			}
 		}
 
 	}
 	if (CurrentWorkload <= 0) { //Change to condition checking if all other employee are also done, then prepare to give money
+
+		if (this->FloorLevel == 1)
+		{
+			GM->FloorOneWorkDone++;
+		}
+		else if (this-> FloorLevel == 2)
+		{
+			GM->FloorTwoWorkDone++;
+		}
+
+		//auto Size = GM->FloorOneWorkDone;
+		//FString sizeString = FString::FromInt(Size);
+		//UE_LOG(LogTemp, Warning, TEXT("%sizeString"), *sizeString)
+
+
+		int TotalPerFloor = 0;
+		TotalPerFloor = GM->FloorList[this->FloorLevel - 1]->FloorArtistCount + GM->FloorList[this->FloorLevel -1]->FloorProgrammerCount;
+
+
 		HasWorkload = false;
 		WorkProgressBar->SetVisibility(false);
 		//go back to regular animation ?
 		IsWorking = false;
-		bool isOver = true;
-		for (auto AnEmployee : GM->EmployeeList)
-		{
-			if (AnEmployee->HasWorkload == true)
-			{
-				isOver = false;
-			}
-		}
-		if (isOver == true)
+		//bool isOver = true;
+		//for (auto AnEmployee : GM->EmployeeList)
+		//{
+		//	if (AnEmployee->HasWorkload == true)
+		//	{
+		//		isOver = false;
+		//	}
+		//}
+		//if (isOver == true)
+		if(GM->FloorOneWorkDone == TotalPerFloor || GM->FloorTwoWorkDone == TotalPerFloor)
 		{
 			GM->IdeaInProduction = false;
-			GM->OfficeDepartmentList[this->FloorLevel - 1]->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartment->CurrentIdea);
+			GM->OfficeDepartmentList[this->FloorLevel - 1]->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartmentList[this->FloorLevel - 1]->CurrentIdea);
 			UI->MoneyWidget->ShowANotification("PRODUCTION OF A GAME FINISHED, WAITING FOR BEING PUBLISHED");
 			GetWorldTimerManager().ClearTimer(HelpTimer);
 			CompileValue = 0;

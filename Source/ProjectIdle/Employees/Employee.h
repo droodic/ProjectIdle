@@ -103,6 +103,8 @@ public:
 	int CompileValue = 0;
 	int NumCompile;
 
+
+
 	bool IsDisplaying = false;
 	FTimerHandle HelpTimer;
 	int RandomHelpNumber;

@@ -5,6 +5,7 @@
 #include "Engine.h"
 #include "IdeaBacklogWidget.h"
 #include "Components/Button.h"
+#include "ProjectIdle/GameManager.h"
 #include "ProjectIdle/OfficeDepartment.h"
 #include "ProjectIdle/CeoDepMenuWidget.h"
 
