@@ -12,24 +12,30 @@ class PROJECTIDLE_API APreviewItem : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	APreviewItem();
 
-	UStaticMeshComponent* MeshComponent;
+	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* MeshComponent;
 
 	class AItem* ItemReference;
 
+	UPROPERTY(EditDefaultsOnly) class UMaterial* PreviewMaterial;
+	UPROPERTY(EditDefaultsOnly) class UMaterial* OverlappingMaterial;
+
+	UPROPERTY(EditDefaultsOnly) float RotationRate = 10.f;
+
 private:
 	bool bIsOverlapping = false;
+	bool bOnce = false;
+
+	class UGameManager* GameManager;
+	class UCeoDepMenuWidget* OfficeDepartmentWidget;
 
 protected:
-	// Called when the game starts or when spawned
 	void BeginPlay() override;
 	void NotifyActorBeginOverlap(AActor* OtherActor) override;
 	void NotifyActorEndOverlap(AActor* OtherActor) override;
 
 public:	
-	// Called every frame
 	void Tick(float DeltaTime) override;
 
 };

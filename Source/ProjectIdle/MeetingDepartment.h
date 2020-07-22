@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "InteractableObject.h"
 #include "Chair.h"
 #include "Workstation.h"
 #include "Department.h"
@@ -11,7 +12,7 @@
 #include "MeetingDepartment.generated.h"
 
 UCLASS()
-class PROJECTIDLE_API AMeetingDepartment : public ADepartment
+class PROJECTIDLE_API AMeetingDepartment : public ADepartment, public IInteractableObject
 {
 	GENERATED_BODY()
 	
@@ -46,5 +47,6 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	virtual void OnInteract();
 	void TakeIdea(class Idea* Idea);
 };

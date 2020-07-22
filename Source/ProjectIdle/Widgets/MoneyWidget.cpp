@@ -17,29 +17,21 @@ void UMoneyWidget::NativeConstruct()
 
 void UMoneyWidget::UpdateMoney(int32 Value)
 {
-	TotalMoney->SetText(FText::FromString("Money: " + FString::FromInt(Value)));
+	TotalMoney->SetText(FText::FromString("$" + FString::FromInt(Value) + ".00"));
 }
 
 void UMoneyWidget::ShowANotification(FString notifationText, FLinearColor color, float time)
 {
+	UBorder* border = WidgetTree->ConstructWidget<UBorder>();
 	UTextBlock* textBlock = WidgetTree->ConstructWidget<UTextBlock>();
 	
 	textBlock->Text = FText::FromString(notifationText);
 	textBlock->SetAutoWrapText(true);
-	textBlock->SetShadowColorAndOpacity(FLinearColor(color.R, color.G, color.B, 1.0f));
-	NotificationVerticalBox->AddChildToVerticalBox(textBlock);
+	border->AddChild(textBlock);
+	border->SetContentColorAndOpacity(color);
+	border->SetBrushColor(FLinearColor(1.f, 1.f, 1.f, 0.3f));
 
-	FTimerHandle TimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UMoneyWidget::RemoveNotification, time, false);
-}
-
-void UMoneyWidget::ShowANotification(FString notifationText, float time)
-{
-	UTextBlock* textBlock = WidgetTree->ConstructWidget<UTextBlock>();
-
-	textBlock->Text = FText::FromString(notifationText);
-	textBlock->SetAutoWrapText(true);
-	NotificationVerticalBox->AddChildToVerticalBox(textBlock);
+	NotificationVerticalBox->AddChildToVerticalBox(border);
 
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UMoneyWidget::RemoveNotification, time, false);

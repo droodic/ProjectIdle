@@ -22,7 +22,7 @@ enum class ESubCategory : uint8
 	Keyboard		   UMETA(DisplayName = "Keyboard"),
 	Desk			   UMETA(DisplayName = "Desk"),
 	Chair			   UMETA(DisplayName = "Chair"),
-	Floor		   UMETA(DisplayName = "Floor"),
+	Floor			   UMETA(DisplayName = "Floor"),
 	Wall			   UMETA(DisplayName = "Wall"),
 	Other			   UMETA(DisplayName = "Other")
 };
@@ -53,4 +53,13 @@ public:
 
 	class TSubclassOf<AItem> ItemBP;
 	class UItemButton* ItemButton;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite) class TSubclassOf<class APreviewItem> PreviewItemBP;
+
+private:
+	class UGameManager* GameManager;
+
+private:
+	void BeginPlay() override;
+	void NotifyActorOnClicked(FKey ButtonPressed = EKeys::LeftMouseButton) override;
 };

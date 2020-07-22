@@ -64,10 +64,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool StartingOffice;
 
 	UPROPERTY(EditAnywhere) class ACameraActor* SpawnItemCamera;
-	UPROPERTY(EditAnywhere) class TSubclassOf<class APreviewItem> SpawnPreviewItemBP;
+	UPROPERTY(EditAnywhere) class TSubclassOf<class APreviewItem> PreviewItemBP;
 
 private:
-	bool bInRadius = false;
+	//bool bInRadius = false;
 	bool bInSpawnCamera = false;
 
 	class AActor* PlayersCamera;
@@ -86,10 +86,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void GenerateActor(int Position, ERole EmpRole);
 	UFUNCTION(BlueprintCallable) void GetDepartmentUIValues();
 	void PopulateIdeaListFromSave(Idea* Idea);
+	void SpawnItemInWorld(AItem* item);
+	void EditPlacedItems();
 	void Return();
 	void BacklogReturn();
 	void ShopReturn();
-	void SpawnItemInWorld(AItem* item);
 
 protected:
 	virtual void BeginPlay() override;

@@ -1,4 +1,4 @@
- // Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "Employee.h"
@@ -78,10 +78,6 @@ void AEmployee::BeginPlay()
 			}
 		}
 
-		//auto Size = GM->EmployeeList.Num();
-		//FString sizeString = FString::FromInt(Size);
-		//UE_LOG(LogTemp, Warning, TEXT("%sizeString"), *sizeString)
-
 	}
 	this->SpawnDefaultController();
 	AI = Cast<AEmployeeAIC>(GetController());
@@ -148,8 +144,12 @@ void AEmployee::IsDepartmentWorking() {
 
 void AEmployee::BeginWork() {
 	//if compile phase in work
+	FRandomStream RandomStream;
+	RandomStream.GenerateNewSeed();
 	CompileValue = 0;
-	NumCompile = UKismetMathLibrary::RandomIntegerInRange(3, 5);
+	NumCompile = UKismetMathLibrary::RandomIntegerInRangeFromStream(3, 6, RandomStream);
+	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, FString::FromInt(NumCompile));
+
 	//make funciton to find self department and values, example get all department employees number
 	for (auto Dep : GM->DepartmentList) {
 		if (Dep->DepRole == EmployeeRole) {
@@ -164,52 +164,9 @@ void AEmployee::BeginWork() {
 
 void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 {
-	//replaced by InteractableInterface OnInteract method, remove later
-	//if (!NeedAssistance) {
-	//	if (!GM->IsWidgetInDisplay)
-	//	{
-	//		if (UI != nullptr && CanInspect)
-	//		{
-	//			IsDisplaying = true;
-	//			GM->CurrentEmployeeInDisplay = this;
-	//			UI->ShowEmployeeSheet(this);
-	//		}
-	//	}
-	//	else
-	//	{
-	//		if (CanInspect)
-	//		{
-	//			GM->IsWidgetInDisplay = false;
-	//			if (GM->CurrentWidgetInDisplay)
-	//			{
-	//				GM->CurrentWidgetInDisplay->RemoveFromViewport();
-	//			}
-	//		}
-
-	//		if (UI != nullptr && CanInspect && !IsDisplaying)
-	//		{
-	//			if (GM->CurrentEmployeeInDisplay != nullptr)
-	//			{
-	//				GM->CurrentEmployeeInDisplay->IsDisplaying = false;
-	//			}
-	//			GM->CurrentEmployeeInDisplay = this;
-	//			IsDisplaying = true;
-	//			UI->ShowEmployeeSheet(this);
-	//		}
-	//		else if (CanInspect && IsDisplaying)
-	//		{
-	//			IsDisplaying = false;
-	//			UI->EmpSheetWidget->RemoveFromViewport();
-	//		}
-	//	}
-	//}
-	//else if (NeedAssistance){
-	//	NeedAssistance = false;
-	//	GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Employee has been helped"));
-	//	HelpWidget->SetVisibility(false);
-	//}
-
+	//Migrated to Interact event
 }
+
 
 // Called every frame
 void AEmployee::Tick(float DeltaTime)
@@ -257,12 +214,11 @@ void AEmployee::GetHelp() {
 
 void AEmployee::OnInteract()
 {
-
 	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, TEXT("Interface Interact"));
 	if (!NeedAssistance) {
 		if (!GM->IsWidgetInDisplay)
 		{
-			if (UI != nullptr && CanInspect)
+			if (UI != nullptr)// && CanInspect)
 			{
 				IsDisplaying = true;
 				GM->CurrentEmployeeInDisplay = this;
@@ -271,16 +227,13 @@ void AEmployee::OnInteract()
 		}
 		else
 		{
-			if (CanInspect)
+			GM->IsWidgetInDisplay = false;
+			if (GM->CurrentWidgetInDisplay)
 			{
-				GM->IsWidgetInDisplay = false;
-				if (GM->CurrentWidgetInDisplay)
-				{
-					GM->CurrentWidgetInDisplay->RemoveFromViewport();
-				}
+				GM->CurrentWidgetInDisplay->RemoveFromViewport();
 			}
 
-			if (UI != nullptr && CanInspect && !IsDisplaying)
+			if (UI != nullptr && !IsDisplaying)
 			{
 				if (GM->CurrentEmployeeInDisplay != nullptr)
 				{
@@ -290,7 +243,7 @@ void AEmployee::OnInteract()
 				IsDisplaying = true;
 				UI->ShowEmployeeSheet(this);
 			}
-			else if (CanInspect && IsDisplaying)
+			else if (IsDisplaying)
 			{
 				IsDisplaying = false;
 				UI->EmpSheetWidget->RemoveFromViewport();
@@ -301,6 +254,7 @@ void AEmployee::OnInteract()
 		NeedAssistance = false;
 		GEngine->AddOnScreenDebugMessage(12411, 5, FColor::Red, TEXT("Employee has been helped"));
 		HelpWidget->SetVisibility(false);
+		Cast<AProjectIdleCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0))->PlayHelpAnim();
 	}
 
 }
@@ -420,6 +374,12 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		WorkProgressBar->SetVisibility(false);
 		//go back to regular animation ?
 		IsWorking = false;
+		bool isOver = true;
+
+		GetWorldTimerManager().ClearTimer(HelpTimer);
+		NeedAssistance = false;
+		HelpWidget->SetVisibility(false);
+
 		//bool isOver = true;
 		//for (auto AnEmployee : GM->EmployeeList)
 		//{
@@ -434,7 +394,6 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 			GM->IdeaInProduction = false;
 			GM->OfficeDepartmentList[this->FloorLevel - 1]->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartmentList[this->FloorLevel - 1]->CurrentIdea);
 			UI->MoneyWidget->ShowANotification("PRODUCTION OF A GAME FINISHED, WAITING FOR BEING PUBLISHED");
-			GetWorldTimerManager().ClearTimer(HelpTimer);
 			CompileValue = 0;
 		}
 	}
@@ -448,16 +407,16 @@ void AEmployee::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AEmployee::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr) {
-		CanInspect = true;
-	}
+	//if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr) {
+	//	CanInspect = true;
+	//}
 }
 
 void AEmployee::NotifyActorEndOverlap(AActor* OtherActor)
 {
 	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
 	{
-		CanInspect = false;
+		//CanInspect = false;
 		if (UI->EmpSheetWidget->IsInViewport())
 		{
 			UI->EmpSheetWidget->RemoveFromViewport();
@@ -472,10 +431,8 @@ void AEmployee::Promote()
 	GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, "Promote button called");
 	float AddMorale = FMath::FRandRange(.25f, .75f);
 
-
 	if (GM->Money >= CostEmployeePromote)
 	{
-
 		//float AddMorale = FMath::FRandRange(1, 10);
 		GEngine->AddOnScreenDebugMessage(2, 5, FColor::Green, FString::Printf(TEXT("Number: x: %f"), AddMorale));
 		switch (Position)
@@ -496,7 +453,6 @@ void AEmployee::Promote()
 			Position = EPosition::Regular;
 			Salary += 200;
 			if (Morale < 10) {
-
 				Morale += AddMorale + 1.f;
 				if (Morale >= 10) {
 					Morale = 10;
@@ -517,7 +473,6 @@ void AEmployee::Promote()
 			GM->Money -= CostEmployeePromote;
 			break;
 		}
-
 		UI->RefreshEmployeeSheet(this);
 	}
 }

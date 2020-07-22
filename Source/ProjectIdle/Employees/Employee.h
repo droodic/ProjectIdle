@@ -84,7 +84,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool IsWorking;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool DefaultEmployee;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool HasBeenEvaluated;
-	bool CanInspect = false; //Used for right click ui 
+	//bool CanInspect = false; //Used for right click ui 
 
 	//bool IsMoving;
 	//Managers

@@ -4,6 +4,7 @@
 #include "OfficeDepartment.h"
 #include "Idea.h"
 #include "Shop/Item.h"
+#include "Shop/PreviewItem.h"
 #include "CeoDepMenuWidget.h"
 #include "Department.h"
 #include "GameManager.h"
@@ -41,9 +42,9 @@ Idea AOfficeDepartment::GenerateIdeaValues()
 
 void AOfficeDepartment::OnInteract()
 {
-	if (bInRadius && OfficeDepMenuWidget != nullptr)
+	if (OfficeDepMenuWidget != nullptr)
 	{
-		if (!OfficeDepMenuWidget->IsInViewport())
+		if (!OfficeDepMenuWidget->IsInViewport() && !bInSpawnCamera)
 		{
 			UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetCharacterMovement()->DisableMovement();
 			OfficeDepMenuWidget->AddToViewport();
@@ -256,13 +257,14 @@ void AOfficeDepartment::PublishGame()
 			GM->Money += moneyGenerated;
 			//GM->Money += UKismetMathLibrary::RandomIntegerInRange(15000, 25000); //Use algo later, and do real way of assgning money
 
-			UI->MoneyWidget->ShowANotification("$" + FString::FromInt(moneyGenerated) + ".00");
+			UI->MoneyWidget->ShowANotification("+ $" + FString::FromInt(moneyGenerated) + ".00", FLinearColor::Green);
 		}
 	}
 	else
 	{
 		UI->MoneyWidget->ShowANotification("SORRY, THE GAME WAS NOT A SUCCESS", FLinearColor::Red);
 		auto moneyGenerated = UKismetMathLibrary::RandomIntegerInRange(100, 1000);
+
 		if (GM->Money >= INT32_MAX || GM->Money + moneyGenerated > INT32_MAX)
 		{
 			UI->MoneyWidget->ShowANotification("MAX MONEY");
@@ -271,7 +273,7 @@ void AOfficeDepartment::PublishGame()
 		{
 			GM->Money += moneyGenerated;
 
-			UI->MoneyWidget->ShowANotification("$" + FString::FromInt(moneyGenerated) + ".00");
+			UI->MoneyWidget->ShowANotification("+ $" + FString::FromInt(moneyGenerated) + ".00", FLinearColor::Green);
 		}
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->PublishedColor = FLinearColor::Red;
 	}
@@ -302,17 +304,17 @@ void AOfficeDepartment::NotifyActorOnClicked(FKey ButtonPressed)
 
 void AOfficeDepartment::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
-	{
-		bInRadius = true;
-	}
+	//if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
+	//{
+	//	bInRadius = true;
+	//}
 }
 
 void AOfficeDepartment::NotifyActorEndOverlap(AActor* OtherActor)
 {
 	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr)
 	{
-		bInRadius = false;
+		//bInRadius = false;
 
 		/*if (OfficeDepMenuWidget->IsInViewport())
 		{
@@ -345,12 +347,27 @@ void AOfficeDepartment::SpawnItemInWorld(AItem* item)
 	FHitResult hitResult;
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHitResultUnderCursorByChannel(ETraceTypeQuery::TraceTypeQuery1, true, hitResult);
 
-	auto itemReference = TSubclassOf<AItem>(GetWorld()->SpawnActor<AItem>(item->ItemBP, hitResult.Location, item->ItemMesh->GetRelativeRotation())->GetClass());
-	
-	/*do
+	if (PreviewItemBP != nullptr)
 	{
-		itemReference->SetActorLocation(hitResult.Location);
-	} while (!UGameplayStatics::GetPlayerController(GetWorld(), 0)->IsInputKeyDown(EKeys::LeftMouseButton));*/
+		APreviewItem* previewItemReference = GetWorld()->SpawnActor<APreviewItem>(PreviewItemBP, hitResult.Location, item->ItemMesh->GetRelativeRotation());
+		previewItemReference->ItemReference = item;
+	}
+}
+
+void AOfficeDepartment::EditPlacedItems()
+{
+	bInSpawnCamera = true;
+
+	OfficeDepMenuWidget->RemoveFromViewport();
+
+	PlayersCamera = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetViewTarget();
+
+	if (SpawnItemCamera != nullptr)
+	{
+		UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(SpawnItemCamera);
+	}
+
+	GM->InEditMode = true;
 }
 
 //Future transition 

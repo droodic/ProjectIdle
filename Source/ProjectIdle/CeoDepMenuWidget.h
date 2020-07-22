@@ -33,6 +33,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_ProgSup_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_ArtistSup_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* Total_Artist_Btn;
+	UPROPERTY(meta = (BindWidget)) class UButton* EditPlacedItems_Btn;
 	UPROPERTY(meta = (BindWidget)) class UButton* Return_Btn;
 	UPROPERTY() FString Worker;
 
@@ -69,8 +70,9 @@ private:
 	UFUNCTION() void CallArtistSupSpawn();
 	UFUNCTION() void CallFloorManagerSpawn();
 	UFUNCTION() void PublishGame();
-	UFUNCTION() void Return();
 	UFUNCTION() void CreateDepartment();
+	UFUNCTION() void EditPlacedItems();
+	UFUNCTION() void Return();
 
 	void AddValuesToButton(class Idea* idea);
 };
