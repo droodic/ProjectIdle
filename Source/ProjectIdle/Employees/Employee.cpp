@@ -455,36 +455,27 @@ void AEmployee::Promote()
 		case EPosition::Intern:
 			Position = EPosition::Junior;
 			Salary += 1000;
-			if (Morale < 10) {
 				Morale += AddMorale + 1.25f;
-				if (Morale >= 10) {
-					Morale = 10;
-				}
-			}
+
+			
 			GM->Money -= CostEmployeePromote;
 			CostEmployeePromote = PromoteToRegular;
 			break;
 		case EPosition::Junior:
 			Position = EPosition::Regular;
 			Salary += 2500;
-			if (Morale < 10) {
 				Morale += AddMorale + 2.5f;
-				if (Morale >= 10) {
-					Morale = 10;
-				}
-			}
+
+			
 			GM->Money -= CostEmployeePromote;
 			CostEmployeePromote = PromoteToSenior;
 			break;
 		case EPosition::Regular:
 			Position = EPosition::Senior;
 			Salary += 5000;
-			if (Morale < 10) {
 				Morale += AddMorale + 2.5f;
-				if (Morale >= 10) {
-					Morale = 10;
-				}
-			}
+
+		
 			GM->Money -= CostEmployeePromote;
 			break;
 		}

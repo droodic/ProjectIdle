@@ -118,43 +118,43 @@ void UGameManager::LoadGame(FString SaveFile)
 
 
 	//if (SaveGameInstance->AutoManaging == true) {
-		FDateTime CurrentTime = FDateTime::Now();
-		FTimespan Difference;
-		Difference = CurrentTime - SaveGameInstance->SavedTime;
+	FDateTime CurrentTime = FDateTime::Now();
+	FTimespan Difference;
+	Difference = CurrentTime - SaveGameInstance->SavedTime;
 
-		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Time spent since last save:(seconds) " + FString::FromInt(Difference.GetTotalSeconds()));
+	GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Time spent since last save:(seconds) " + FString::FromInt(Difference.GetTotalSeconds()));
 
-		int IdeasToGenerate = Difference.GetTotalSeconds();
-		if (IdeasToGenerate > 0){ //&& SaveGameInstance->NumEmployees > 0) {
-			int Multiplier = 1; //SaveGameInstance->NumEmployees / 8;   numEmployees not loading, find out why
-			IdeasToGenerate /= 180 * (Multiplier); // 3 minutes per idea generate
-			OfficeDepartment->OfficeDepMenuWidget->ClearFinishedGames();
-			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Loading Ideas generated since last save" + FString::FromInt(Difference.GetTotalSeconds()));
-			for (int i = 0; i < IdeasToGenerate; i++) {
-				//Generate Idea in Publish List
-				auto randomNumber = UKismetMathLibrary::RandomIntegerInRange(0, 100);
-				auto newIdea = new Idea("GAME " + FString::FromInt(randomNumber), "Game description of game " + FString::FromInt(randomNumber), Idea::GetRandomGenre(), FLinearColor::MakeRandomColor(), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f));
-				if (OfficeDepartment->OfficeDepMenuWidget != nullptr) {
+	int IdeasToGenerate = Difference.GetTotalSeconds();
+	if (IdeasToGenerate > 0) { //&& SaveGameInstance->NumEmployees > 0) {
+		int Multiplier = 1; //SaveGameInstance->NumEmployees / 8;   numEmployees not loading, find out why
+		IdeasToGenerate /= 180 * (Multiplier); // 3 minutes per idea generate
+		OfficeDepartment->OfficeDepMenuWidget->ClearFinishedGames();
+		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Loading Ideas generated since last save" + FString::FromInt(Difference.GetTotalSeconds()));
+		for (int i = 0; i < IdeasToGenerate; i++) {
+			//Generate Idea in Publish List
+			auto randomNumber = UKismetMathLibrary::RandomIntegerInRange(0, 100);
+			auto newIdea = new Idea("GAME " + FString::FromInt(randomNumber), "Game description of game " + FString::FromInt(randomNumber), Idea::GetRandomGenre(), FLinearColor::MakeRandomColor(), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f));
+			if (OfficeDepartment->OfficeDepMenuWidget != nullptr) {
 
-					OfficeDepartmentList[Character->CurrentFloor - 1]->OfficeDepMenuWidget->GetFinishedIdea(newIdea);
-				}
+				OfficeDepartmentList[Character->CurrentFloor - 1]->OfficeDepMenuWidget->GetFinishedIdea(newIdea);
 			}
 		}
-		//else if (SaveGameInstance->NumEmployees <= 0) {
-		//	GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "NumEmployees loaded as 0 - Publish idea generation failed");
-
-		//}
+	}
+	//else if (SaveGameInstance->NumEmployees <= 0) {
+	//	GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "NumEmployees loaded as 0 - Publish idea generation failed");
 
 	//}
 
-
-	//SaveGameInstance->SavedTime = FDateTime::Now(); //Reset
-
-	//float SavedTicks = SaveGameInstance->SavedTime.GetTicks();
-	//float SavedHours = SaveGameInstance->SavedTime.GetHour();
+//}
 
 
-	//IdeaInProduction = SaveGameInstance->IdeaInProduction;
+//SaveGameInstance->SavedTime = FDateTime::Now(); //Reset
+
+//float SavedTicks = SaveGameInstance->SavedTime.GetTicks();
+//float SavedHours = SaveGameInstance->SavedTime.GetHour();
+
+
+//IdeaInProduction = SaveGameInstance->IdeaInProduction;
 
 	FString outPath = FPaths::ProjectSavedDir() + SaveFile;
 
@@ -282,13 +282,10 @@ void UGameManager::OnGameLoadedFixup(UWorld* World) {
 		// be overlapping an object that loaded, but will be subsequently destroyed below as it was there at level start
 		// but not there at save time
 		UClass* SpawnClass = FindObject<UClass>(ANY_PACKAGE, *ActorRecord.MyClass);
-		if (SpawnClass)
+		FVector SpawnLocation;
+		FRotator SpawnRotation;
+		if (SpawnClass && Cast<AEmployee>(SpawnClass)) //&& Cast<AEmployee>(SpawnClass))
 		{
-
-			FVector SpawnLocation;
-			FRotator SpawnRotation;
-
-
 
 			//OfficeDepartment->GenerateActor(0, ERole::Programmer);
 			AActor* NewActor = OfficeDepartment->GenerateSavedActor(SpawnClass);//IFemployee, figure way to scale with other type actor like workstation?
@@ -304,6 +301,38 @@ void UGameManager::OnGameLoadedFixup(UWorld* World) {
 				GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Cannot Spawn Actor - Collision Problem");
 			}
 		}
+		else if(SpawnClass){
+			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Orange, "Spawning Decoration");
+
+			AActor* NewActor = OfficeDepartment->GenerateSavedDecoration(SpawnClass);
+			FMemoryReader MemoryReader(ActorRecord.MyData, true);
+			FSaveGameArchive Ar(MemoryReader);
+			if (NewActor != nullptr) {
+				NewActor->Serialize(Ar);
+				NewActor->SetActorTransform(ActorRecord.MyTransform);
+				ISaveableActorInterface::Execute_ActorLoaded(NewActor);
+			}
+			else {
+				GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Cannot Spawn Actor - Collision Problem");
+			}
+			//Not Employee
+			
+		}
+		//else if (SpawnClass) //Not Employee
+		//{
+		//	AActor* NewActor = GWorld->SpawnActor(SpawnClass, &SpawnPos, &SpawnRot, SpawnParams);
+		//	FMemoryReader MemoryReader(ActorRecord.MyData, true);
+		//	FSaveGameArchive Ar(MemoryReader);
+
+		//	if (NewActor != nullptr) {
+		//		NewActor->Serialize(Ar);
+		//		NewActor->SetActorTransform(ActorRecord.MyTransform);
+		//		ISaveableActorInterface::Execute_ActorLoaded(NewActor);
+		//	}
+		//	else {
+		//		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Cannot Spawn Actor - Collision Problem");
+		//	}
+		//}
 	}
 
 	// These are actors in the world that are not in our save data, destroy them (for example, a weapon pickup that was, well, picked up)

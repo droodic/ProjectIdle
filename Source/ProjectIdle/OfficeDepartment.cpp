@@ -71,7 +71,7 @@ void AOfficeDepartment::BeginPlay()
 	{
 		GM->OfficeDepartmentList.Add(this);
 	}
-	else{
+	else {
 		GM->UnassignedOfficeDepartmentList.Add(this);
 	}
 
@@ -428,13 +428,37 @@ AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
 	SpawnLocation = FVector(0, 0, 0); //GM->Door->GetActorLocation() + NewVector; 
 	SpawnRotation = FRotator::ZeroRotator;
 
+
 	auto Emp = World->SpawnActor<AEmployee>(ClassRef, SpawnLocation, SpawnRotation, SpawnParameters);
 	if (Cast<ASupervisor>(Emp) != nullptr) {
 		Cast<ASupervisor>(Emp)->InitSupervisor(Emp->EmployeeRole); //quick workaround annoying beginplay pedantics of spawning
 		Emp->AssignSupervisor();
+		GetDepartmentUIValues();
 	}
-	GetDepartmentUIValues();
+
+
 	return Emp;
+
+}
+
+AActor* AOfficeDepartment::GenerateSavedDecoration(UClass* ClassRef)
+{
+	UWorld* World = GetWorld();
+
+	FVector SpawnLocation;
+	FRotator SpawnRotation;
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.Owner = this;
+	SpawnParameters.Instigator = GetInstigator();
+	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+	FVector NewVector = FVector(0, -50, 0);
+	SpawnLocation = FVector(0, 0, 0); //GM->Door->GetActorLocation() + NewVector; 
+	SpawnRotation = FRotator::ZeroRotator;
+
+	auto Item = GWorld->SpawnActor(ClassRef, &SpawnLocation, &SpawnRotation, SpawnParameters);
+	return Item;
+
 }
 
 void AOfficeDepartment::PopulateIdeaListFromSave(Idea* Idea) {
