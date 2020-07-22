@@ -95,7 +95,7 @@ void AEmployee::BeginPlay()
 	}
 
 	//GM->Wall->AssignFloorLevel();
-
+	GM->TotalSalary += Salary;
 
 
 

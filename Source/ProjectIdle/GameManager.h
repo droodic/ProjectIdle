@@ -44,6 +44,8 @@ public:
 	UPROPERTY(BlueprintReadWrite) int NumOfProgrammers;
 	UPROPERTY(BlueprintReadWrite) int NumOfArtists;
 	UPROPERTY(BlueprintReadWrite) int Money;
+	UPROPERTY(BlueprintReadWrite) int TotalSalary;
+
 	UPROPERTY(BlueprintReadWrite) TArray<class AChair*> MeetingChairList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AWorkstation*> WorkstationList;
 
