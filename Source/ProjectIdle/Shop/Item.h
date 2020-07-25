@@ -35,7 +35,7 @@ class PROJECTIDLE_API AItem : public AActor
 public:
 	AItem();
 
-	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* ItemMesh;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite) UStaticMeshComponent* ItemMesh;
 	UPROPERTY(EditDefaultsOnly) class UMaterial* Material;
 
 	UPROPERTY(EditAnywhere) int ItemCompileRate; //If Monitor for now yolo
@@ -51,13 +51,13 @@ public:
 
 	UPROPERTY(EditDefaultsOnly) class UTexture2D* ItemImage;
 
-	class TSubclassOf<AItem> ItemBP;
+	UPROPERTY(BlueprintReadWrite) class TSubclassOf<AItem> ItemBP;
 	class UItemButton* ItemButton;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite) class TSubclassOf<class APreviewItem> PreviewItemBP;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite) class UGameManager* GameManager;
 private:
-	class UGameManager* GameManager;
 
 private:
 	void BeginPlay() override;

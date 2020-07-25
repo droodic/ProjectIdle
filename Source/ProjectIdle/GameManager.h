@@ -70,9 +70,6 @@ public:
 	UPROPERTY(BlueprintReadWrite) class AFloorManager* FLoorM;
 	UPROPERTY(BlueprintReadWrite) class AElevator* Elevator;
 
-
-
-
 	UPROPERTY(BlueprintReadWrite) int EmployeeNameIndex;
 	UPROPERTY(BlueprintReadWrite) float SpeedRate = 1;
 	UPROPERTY(BlueprintReadWrite) float CheatSpeedRate = 1;
@@ -85,7 +82,7 @@ public:
 
 	bool IdeaInProduction = false;
 	bool IsWidgetInDisplay = false;
-	bool InEditMode = false;
+	UPROPERTY(BlueprintReadWrite) bool InEditMode = false;
 	UPROPERTY() bool IsFloorUpgraded = false;
 	UUserWidget* CurrentWidgetInDisplay;
 	AEmployee* CurrentEmployeeInDisplay;
@@ -99,7 +96,6 @@ public:
 	UFUNCTION(BlueprintCallable) void LoadGame(FString SaveFile);
 	UFUNCTION(BlueprintCallable) void PopulateSaveFiles();
 	void OnGameLoadedFixup(UWorld* World);
-	
 
 protected:
 	UPROPERTY(BlueprintReadOnly)

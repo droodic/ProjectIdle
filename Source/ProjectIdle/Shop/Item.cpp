@@ -10,6 +10,7 @@
 AItem::AItem()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
 	RootComponent = ItemMesh;
 }
@@ -30,6 +31,10 @@ void AItem::NotifyActorOnClicked(FKey ButtonPressed)
 		{
 			APreviewItem* previewItemReference = GetWorld()->SpawnActor<APreviewItem>(PreviewItemBP, hitResult.Location, ItemMesh->GetRelativeRotation());
 			previewItemReference->ItemReference = this;
+		}
+		else
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "PreviewItemBP is null");
 		}
 
 		Destroy();

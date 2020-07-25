@@ -54,7 +54,7 @@ void AOfficeDepartment::OnInteract()
 				GM->CurrentWidgetInDisplay->RemoveFromViewport();
 			}
 		}
-		else
+		else if (!bInSpawnCamera)
 		{
 			OfficeDepMenuWidget->RemoveFromViewport();
 			UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
@@ -91,6 +91,10 @@ void AOfficeDepartment::BeginPlay()
 	{
 		ShopWidget = CreateWidget<UShopWidget>(UGameplayStatics::GetPlayerController(this, 0), UserWidgets[2]);
 		ShopWidget->OfficeDepartment = this;
+	}
+	if (UserWidgets[3] != nullptr)
+	{
+		SpawnItemWidget = CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(this, 0), UserWidgets[3]);
 	}
 
 	//GM->OnGameLoadedFixup(GetWorld());
@@ -333,6 +337,7 @@ void AOfficeDepartment::SpawnItemInWorld(AItem* item)
 	bInSpawnCamera = true;
 
 	OfficeDepMenuWidget->RemoveFromViewport();
+	SpawnItemWidget->AddToViewport();
 
 	PlayersCamera = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetViewTarget();
 
@@ -357,10 +362,11 @@ void AOfficeDepartment::EditPlacedItems()
 	GM->InEditMode = true;
 
 	OfficeDepMenuWidget->RemoveFromViewport();
+	SpawnItemWidget->AddToViewport();
 
 	PlayersCamera = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetViewTarget();
 
-	if (SpawnItemCamera != nullptr && this->FloorLevel == 1)
+	if (SpawnItemCamera != nullptr)
 	{
 		UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(SpawnItemCamera);
 	}
@@ -376,6 +382,7 @@ void AOfficeDepartment::ReturnToOfficeDepartment()
 		UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(PlayersCamera);
 	}
 
+	SpawnItemWidget->RemoveFromViewport();
 	OfficeDepMenuWidget->AddToViewport();
 }
 

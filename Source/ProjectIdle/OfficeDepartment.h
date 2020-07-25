@@ -48,6 +48,7 @@ public:
 	UPROPERTY() class UCeoDepMenuWidget* OfficeDepMenuWidget; 
 	UPROPERTY() class UIdeaBacklogWidget* BacklogWidget;
 	UPROPERTY() class UShopWidget* ShopWidget;
+	class UUserWidget* SpawnItemWidget;
 
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* ComputerMesh;
@@ -65,7 +66,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool StartingOffice;
 
 	UPROPERTY(EditAnywhere) class ACameraActor* SpawnItemCamera;
-	UPROPERTY(EditAnywhere) class ACameraActor* SpawnItemCameraTwo;
 	//UPROPERTY(EditAnywhere) TArray<TSubclassOf<class ACameraActor>> SpawnItemCameraList;
 
 	UPROPERTY(EditAnywhere) class TSubclassOf<class APreviewItem> PreviewItemBP;

@@ -84,6 +84,7 @@ void APreviewItem::Tick(float DeltaTime)
 				}
 			}
 
+			OfficeDepartment->ReturnToOfficeDepartment();
 			Destroy();
 		}
 	}
@@ -105,6 +106,8 @@ void APreviewItem::Tick(float DeltaTime)
 
 void APreviewItem::NotifyActorBeginOverlap(AActor* OtherActor)
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Overlapping with an object");
+
 	bIsOverlapping = true;
 
 	for (int i = 0; i < MeshComponent->GetNumMaterials(); i++)
@@ -118,6 +121,8 @@ void APreviewItem::NotifyActorBeginOverlap(AActor* OtherActor)
 
 void APreviewItem::NotifyActorEndOverlap(AActor* OtherActor)
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Stop Overlapping with an object");
+
 	bIsOverlapping = false;
 
 	for (int i = 0; i < MeshComponent->GetNumMaterials(); i++)
