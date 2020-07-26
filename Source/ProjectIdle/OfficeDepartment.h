@@ -70,6 +70,8 @@ public:
 
 	UPROPERTY(EditAnywhere) class TSubclassOf<class APreviewItem> PreviewItemBP;
 
+	UPROPERTY(EditAnywhere) bool IdeaCurrentFloor = false;
+
 private:
 	//bool bInRadius = false;
 	bool bInSpawnCamera = false;

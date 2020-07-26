@@ -55,8 +55,8 @@ void UMeetingDepWidget::StartMeeting()
 		else if (SelectedApproach == "Perfectionist") {
 			GM->SpeedRate = 0.75;
 			GM->OfficeDepartment->AddedChance = 10.0f;
-			GM->MeetingDepartment->BackFromMeeting();
-			//GM->MeetingDepartmentList[GM->OfficeDepartment->FloorLevel - 1]->BackFromMeeting();
+			//GM->MeetingDepartment->BackFromMeeting();
+			GM->MeetingDepartmentList[GM->OfficeDepartment->FloorLevel - 1]->BackFromMeeting();
 
 
 			//T_SuccessChance->SetText(FText::AsPercent((GM->MeetingDepartment->CurrentIdea->SuccessChance + 10.0f / 100.f)));
@@ -65,8 +65,8 @@ void UMeetingDepWidget::StartMeeting()
 		else if (SelectedApproach == "Crunch Time") {
 			GM->SpeedRate = 1.25;
 			GM->OfficeDepartment->AddedChance = -10.0f;
-			GM->MeetingDepartment->BackFromMeeting();
-			//GM->MeetingDepartmentList[GM->OfficeDepartment->FloorLevel - 1]->BackFromMeeting();
+			//GM->MeetingDepartment->BackFromMeeting();
+			GM->MeetingDepartmentList[GM->OfficeDepartment->FloorLevel - 1]->BackFromMeeting();
 			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Crunch time approach"));
 		}
 	}
