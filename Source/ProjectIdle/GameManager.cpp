@@ -72,11 +72,6 @@ void UGameManager::SaveGame(FString SaveFile)
 	SaveGameData.MapName = *mapName;
 	mapName.Split("UEDPIE_0_", nullptr, &mapName);
 
-
-	//FString mapName = World->GetMapName();
-	//mapName.Split("_", nullptr, &mapName, ESearchCase::IgnoreCase, ESearchDir::FromEnd);
-	//SaveGameData.MapName = *mapName;
-
 	TArray<AActor*> Actors;
 	UGameplayStatics::GetAllActorsWithInterface(GetWorld(), USaveableActorInterface::StaticClass(), Actors);
 
@@ -161,21 +156,6 @@ void UGameManager::LoadGame(FString SaveFile)
 			}
 		}
 	}
-	//else if (SaveGameInstance->NumEmployees <= 0) {
-	//	GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "NumEmployees loaded as 0 - Publish idea generation failed");
-
-	//}
-
-//}
-
-
-//SaveGameInstance->SavedTime = FDateTime::Now(); //Reset
-
-//float SavedTicks = SaveGameInstance->SavedTime.GetTicks();
-//float SavedHours = SaveGameInstance->SavedTime.GetHour();
-
-
-//IdeaInProduction = SaveGameInstance->IdeaInProduction;
 
 	FString outPath = FPaths::ProjectSavedDir() + SaveFile;
 
@@ -226,7 +206,6 @@ void UGameManager::OnGameLoadedFixup(UWorld* World) {
 	if (BinaryData.Num() == 0)
 	{
 		checkSlow(World->GetFirstPlayerController() != nullptr);
-		//		FixupPlayer(World, charPawn);
 		return;
 	}
 
@@ -244,8 +223,6 @@ void UGameManager::OnGameLoadedFixup(UWorld* World) {
 
 	TArray<FActorSavedData> ActorDatas = SaveGameData.SavedActors;
 
-	//AMasteringCharacter* Char = nullptr; // if ever more than one, we'll need an array and a map to their inventory
-
 	// iterate these arrays backwards as we will remove objects as we go, can also use iterators, but RemoveAt is simpler here for now
 	for (int i = Actors.Num() - 1; i >= 0; --i)
 	{
@@ -260,12 +237,6 @@ void UGameManager::OnGameLoadedFixup(UWorld* World) {
 			{
 				FMemoryReader MemoryReader(ActorRecord.MyData, true);
 				FSaveGameArchive Ar(MemoryReader);
-
-				//AMasteringCharacter* Mast = Cast<AMasteringCharacter>(Actor);
-				//if (Mast != nullptr)
-				//{
-				//	Char = Mast;
-				//}
 
 				Actor->Serialize(Ar);
 				Actor->SetActorTransform(ActorRecord.MyTransform);
@@ -285,8 +256,6 @@ void UGameManager::OnGameLoadedFixup(UWorld* World) {
 			}
 		}
 	}
-
-	//FixupPlayer(World, Char);
 
 	// These are actors in our save data, but not in the world, spawn them
 	for (FActorSavedData ActorRecord : ActorDatas)
@@ -315,51 +284,23 @@ void UGameManager::OnGameLoadedFixup(UWorld* World) {
 			if (NewActor != nullptr && Cast<AEmployee>(NewActor)) {
 				NewActor->Serialize(Ar);
 				NewActor->SetActorTransform(ActorRecord.MyTransform);
-				//Cast<AEmployee>(NewActor)->GetMesh()->SetSkeletalMesh(OfficeDepartment->EmployeeMeshList[Cast<AEmployee>(NewActor)->MeshID]);
 				ISaveableActorInterface::Execute_ActorLoaded(NewActor);
 				if (Cast<AEmployee>(NewActor) != nullptr) {
 					GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::White, "Spawn Employee");
-
 					Cast<AEmployee>(NewActor)->GetMesh()->SetSkeletalMesh(OfficeDepartment->EmployeeMeshList[Cast<AEmployee>(NewActor)->MeshID]);
 				}
-
 			}
-			else if (Cast<AEmployee>(NewActor) == nullptr) {
+			else if (NewActor != nullptr && Cast<AEmployee>(NewActor) == nullptr) {
 				GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Orange, "Spawning Decoration");
-
-				//NewActor = OfficeDepartment->GenerateSavedActor(SpawnClass);
-//				FMemoryReader MemoryReader(ActorRecord.MyData, true);
-//				FSaveGameArchive Ar(MemoryReader);
-				if (NewActor != nullptr) {
-					NewActor->Serialize(Ar);
-					NewActor->SetActorTransform(ActorRecord.MyTransform);
-					ISaveableActorInterface::Execute_ActorLoaded(NewActor);
-				}
-				else {
-					GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Cannot Spawn Actor - Collision Problem");
-				}
+				NewActor->Serialize(Ar);
+				NewActor->SetActorTransform(ActorRecord.MyTransform);
+				ISaveableActorInterface::Execute_ActorLoaded(NewActor);
 			}
 
-			else if(NewActor == nullptr){
+			else if (NewActor == nullptr) {
 				GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Cannot Spawn Actor - Collision Problem");
 			}
 		}
-	
-		//else if (SpawnClass) //Not Employee
-		//{
-		//	AActor* NewActor = GWorld->SpawnActor(SpawnClass, &SpawnPos, &SpawnRot, SpawnParams);
-		//	FMemoryReader MemoryReader(ActorRecord.MyData, true);
-		//	FSaveGameArchive Ar(MemoryReader);
-
-		//	if (NewActor != nullptr) {
-		//		NewActor->Serialize(Ar);
-		//		NewActor->SetActorTransform(ActorRecord.MyTransform);
-		//		ISaveableActorInterface::Execute_ActorLoaded(NewActor);
-		//	}
-		//	else {
-		//		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Cannot Spawn Actor - Collision Problem");
-		//	}
-		//}
 	}
 
 	// These are actors in the world that are not in our save data, destroy them (for example, a weapon pickup that was, well, picked up)

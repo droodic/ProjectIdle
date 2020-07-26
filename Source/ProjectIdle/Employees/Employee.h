@@ -46,8 +46,8 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere) bool IsAtMeeting;
 
-	UPROPERTY(SaveGame, EditAnywhere) ERole EmployeeRole;
-	UPROPERTY(SaveGame, EditAnywhere) EPosition Position = EPosition::Intern;
+	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere) ERole EmployeeRole;
+	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere) EPosition Position = EPosition::Intern;
 	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere) FText EmployeeName;
 	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere) float Morale = 1;
 	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere) float Performance;
@@ -93,7 +93,10 @@ public:
 	class AWorkstation* WorkstationRef;
 
 	//Animation
-	UPROPERTY(BlueprintReadWrite, EditAnywhere) UAnimSequence* WorkAnimation;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere) UAnimSequence* WorkAnim;
+	//UPROPERTY(BlueprintReadWrite, EditAnywhere) UAnimSequence* SitToTypeAnimation;
+	//UPROPERTY(BlueprintReadWrite, EditAnywhere) UAnimSequence* TypeAnimation;
+	//UPROPERTY(BlueprintReadWrite, EditAnywhere) UAnimMontage* WorkAnimation;
 	bool HasAnimated = false;
 
 	UPROPERTY(VisibleAnywhere)

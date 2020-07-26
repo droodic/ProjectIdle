@@ -272,11 +272,12 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 	//UI->MoneyWidget->ShowANotification(RateString);
 
 	//Test function - Workers reduce workloads, make function / use timer +event instead of tick
-	if (!IsWorking && WorkAnimation != nullptr) {
+	if (!IsWorking && WorkAnim != nullptr) {
 		FRotator AdjustRotate = FRotator(0, 90, 0);
 		SetActorRotation(WorkstationRef->ChairMesh->GetComponentRotation() + AdjustRotate);
 		WorkProgressBar->SetVisibility(true);
 		IsWorking = true;
+
 		GetWorldTimerManager().SetTimer(HelpTimer, this, &AEmployee::GetHelp, 1.f, true);
 
 	}
