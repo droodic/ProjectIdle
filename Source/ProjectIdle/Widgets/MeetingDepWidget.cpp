@@ -7,6 +7,7 @@
 #include "ProjectIdle/OfficeDepartment.h"
 #include "ProjectIdle/MeetingDepartment.h"
 #include "ProjectIdle/Widgets/MeetingDepWidget.h"
+#include "ProjectIdle/Employees/FloorManager.h"
 #include "ProjectIdle/GameHUD.h"
 
 
@@ -46,8 +47,16 @@ void UMeetingDepWidget::StartMeeting()
 			GM->SpeedRate = 1;
 			GM->OfficeDepartment->AddedChance = 0.0f;
 			//GM->MeetingDepartment->BackFromMeeting();
-		    GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
-
+			if (GM->FLoorM->AutoManaging && GM->FLoorM->FloorLevel != GM->Character->CurrentFloor || !GM->FLoorM->AutoManaging)
+			{
+				GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO"));
+			}
+			else if (GM->FLoorM->AutoManaging)
+			{
+				GM->MeetingDepartmentList[GM->FLoorM->FloorLevel - 1]->BackFromMeeting();
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach Floor M"));
+			}
 			//T_SuccessChance->SetText(FText::AsPercent((GM->MeetingDepartment->CurrentIdea->SuccessChance / 100.f)));
 			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach"));
 		}
@@ -56,7 +65,14 @@ void UMeetingDepWidget::StartMeeting()
 			GM->SpeedRate = 0.75;
 			GM->OfficeDepartment->AddedChance = 10.0f;
 			//GM->MeetingDepartment->BackFromMeeting();
-			GM->MeetingDepartmentList[GM->OfficeDepartment->FloorLevel - 1]->BackFromMeeting();
+			if (GM->FLoorM->AutoManaging)
+			{
+				GM->MeetingDepartmentList[GM->FLoorM->FloorLevel - 1]->BackFromMeeting();
+			}
+			else
+			{
+				GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
+			}
 
 
 			//T_SuccessChance->SetText(FText::AsPercent((GM->MeetingDepartment->CurrentIdea->SuccessChance + 10.0f / 100.f)));
@@ -66,7 +82,14 @@ void UMeetingDepWidget::StartMeeting()
 			GM->SpeedRate = 1.25;
 			GM->OfficeDepartment->AddedChance = -10.0f;
 			//GM->MeetingDepartment->BackFromMeeting();
-			GM->MeetingDepartmentList[GM->OfficeDepartment->FloorLevel - 1]->BackFromMeeting();
+			if (GM->FLoorM->AutoManaging)
+			{
+				GM->MeetingDepartmentList[GM->FLoorM->FloorLevel - 1]->BackFromMeeting();
+			}
+			else
+			{
+				GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
+			}
 			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Crunch time approach"));
 		}
 	}

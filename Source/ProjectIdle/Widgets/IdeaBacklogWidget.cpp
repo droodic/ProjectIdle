@@ -97,6 +97,7 @@ void UIdeaBacklogWidget::CallMeeting()
 		//UIdeaButton::IsInProduction = true;
 
 		GM->IdeaInProduction = true;
+		GM->MeetingDepartmentList[CurrentFloorLevel]->MeetingWidget->MeetingFloor = CurrentFloorLevel;
 		GM->OfficeDepartmentList[CurrentFloorLevel]->IdeaCurrentFloor = true;
 	    
 		GM->OfficeDepartmentList[CurrentFloorLevel]->BacklogWidget->CallMeetingBtn->SetIsEnabled(false);
@@ -112,14 +113,15 @@ void UIdeaBacklogWidget::CallMeeting_M(AFloorManager* ManagerRef)
 	{
 		GM = GetWorld()->GetGameInstance<UGameManager>();
 	}
-	GM->OfficeDepartmentList[0]->IdeaList[ManagerRef->IdeaIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
+	GM->OfficeDepartmentList[GM->FLoorM->FloorLevel - 1]->IdeaList[ManagerRef->IdeaIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
 	//OfficeDepartment->IdeaList[ManagerRef->IdeaIndex]->IdeaButton->IdeaButton->SetIsEnabled(false);
 	//UIdeaButton::IsInProduction = true;
 	GM->IdeaInProduction = true;
+	GM->MeetingDepartmentList[GM->FLoorM->FloorLevel - 1]->MeetingWidget->MeetingFloor = GM->FLoorM->FloorLevel;
 	GM->OfficeDepartmentList[GM->FLoorM->FloorLevel - 1]->IdeaCurrentFloor = true;
 
 	//CallMeetingBtn->SetIsEnabled(false);
-	GM->MeetingDepartmentList[0]->MoveToMeeting();
+	GM->MeetingDepartmentList[GM->FLoorM->FloorLevel - 1]->MoveToMeeting();
 	//GM->MeetingDepartment->MoveToMeeting();
 	ManagerRef->MeetingState = true;
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Movetomeeting");
@@ -158,12 +160,12 @@ void UIdeaBacklogWidget::SendIdeaFloorM(int Index) {
 	}
 	else if (GM->MeetingDepartment != nullptr) {
 		//auto tIdea = OfficeDepartment->IdeaList[Index];
-		auto tIdea = GM->OfficeDepartmentList[0]->IdeaList[Index];
+		auto tIdea = GM->OfficeDepartmentList[GM->FLoorM->FloorLevel - 1]->IdeaList[Index];
 		if (tIdea != nullptr)
 		{
 			GEngine->AddOnScreenDebugMessage(1036, 5.f, FColor::Red, "tIdea work");
 			//GM->MeetingDepartment->TakeIdea(tIdea);
-			GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->TakeIdea(tIdea);
+			GM->MeetingDepartmentList[GM->FLoorM->FloorLevel - 1]->TakeIdea(tIdea);
 		}
 		//GM->MeetingDepartment->TakeIdea(OfficeDepartment->IdeaList[ChosenIndex]);
 		GEngine->AddOnScreenDebugMessage(103, 5.f, FColor::Red, "Meeting TakeIdea");
