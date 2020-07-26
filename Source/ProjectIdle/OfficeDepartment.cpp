@@ -379,6 +379,27 @@ void AOfficeDepartment::ReturnToOfficeDepartment()
 	OfficeDepMenuWidget->AddToViewport();
 }
 
+void AOfficeDepartment::GetRandomMesh(AEmployee* EmployeeRef) {
+	FRandomStream RStream;
+	RStream.GenerateNewSeed();
+
+	int Random = UKismetMathLibrary::RandomIntegerInRangeFromStream(0, GM->OfficeDepartment->EmployeeMeshList.Num() - 1, RStream);
+
+
+	while (PreviousMeshID == Random)
+	{
+		Random = UKismetMathLibrary::RandomIntegerInRangeFromStream(0, GM->OfficeDepartment->EmployeeMeshList.Num() - 1, RStream);
+	}
+
+
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, FString::FromInt(Random));
+	EmployeeRef->GetMesh()->SetSkeletalMesh(GM->OfficeDepartment->EmployeeMeshList[Random]);
+	EmployeeRef->MeshID = Random;
+	PreviousMeshID = Random;
+
+}
+
 //Future transition 
 void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 {
@@ -417,10 +438,47 @@ void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 				Cast<ASupervisor>(Emp)->InitSupervisor(EmpRole); //quick workaround annoying beginplay pedantics of spawning
 				Emp->AssignSupervisor();
 			}
+			GetRandomMesh(Emp);
 			GetDepartmentUIValues();
+
 		}
 	}
 }
+
+//AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
+//{
+//	//GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Orange, "Spawning Saved Actor");
+//
+//	UWorld* World = GetWorld();
+//
+//	FVector SpawnLocation;
+//	FRotator SpawnRotation;
+//	FActorSpawnParameters SpawnParameters;
+//	SpawnParameters.Owner = this;
+//	SpawnParameters.Instigator = GetInstigator();
+//	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+//
+//	FVector NewVector = FVector(0, -50, 0);
+//	SpawnLocation = FVector(0, 0, 0); //GM->Door->GetActorLocation() + NewVector; 
+//	SpawnRotation = FRotator::ZeroRotator;
+//
+//	auto Emp = World->SpawnActor<AEmployee>(ClassRef, SpawnLocation, SpawnRotation, SpawnParameters);
+//	if (Cast<ASupervisor>(Emp) != nullptr) {
+//		Cast<ASupervisor>(Emp)->InitSupervisor(Emp->EmployeeRole); //quick workaround annoying beginplay pedantics of spawning
+//		Emp->AssignSupervisor();
+//		GetDepartmentUIValues();
+//	}
+//
+//	//GetRandomMesh(Emp)
+//	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::White, "Loading Emp");
+//
+//	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::White, FString::FromInt(Emp->MeshID));
+//	Emp->GetMesh()->SetSkeletalMesh(EmployeeMeshList[Emp->MeshID]);
+//
+//	GetDepartmentUIValues();
+//	return Emp;
+//
+//}
 
 AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
 {
@@ -437,36 +495,16 @@ AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
 	SpawnLocation = FVector(0, 0, 0); //GM->Door->GetActorLocation() + NewVector; 
 	SpawnRotation = FRotator::ZeroRotator;
 
-
-	auto Emp = World->SpawnActor<AEmployee>(ClassRef, SpawnLocation, SpawnRotation, SpawnParameters);
-	if (Cast<ASupervisor>(Emp) != nullptr) {
-		Cast<ASupervisor>(Emp)->InitSupervisor(Emp->EmployeeRole); //quick workaround annoying beginplay pedantics of spawning
-		Emp->AssignSupervisor();
+	auto ActorRef = GWorld->SpawnActor(ClassRef, &SpawnLocation, &SpawnRotation, SpawnParameters);
+	if (Cast<ASupervisor>(ActorRef) != nullptr)
+	{
+		Cast<ASupervisor>(ActorRef)->InitSupervisor(Cast<ASupervisor>(ActorRef)->EmployeeRole); //quick workaround annoying beginplay pedantics of spawning
+		Cast<ASupervisor>(ActorRef)->AssignSupervisor();
 		GetDepartmentUIValues();
 	}
 
 
-	return Emp;
-
-}
-
-AActor* AOfficeDepartment::GenerateSavedDecoration(UClass* ClassRef)
-{
-	UWorld* World = GetWorld();
-
-	FVector SpawnLocation;
-	FRotator SpawnRotation;
-	FActorSpawnParameters SpawnParameters;
-	SpawnParameters.Owner = this;
-	SpawnParameters.Instigator = GetInstigator();
-	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-
-	FVector NewVector = FVector(0, -50, 0);
-	SpawnLocation = FVector(0, 0, 0); //GM->Door->GetActorLocation() + NewVector; 
-	SpawnRotation = FRotator::ZeroRotator;
-
-	auto Item = GWorld->SpawnActor(ClassRef, &SpawnLocation, &SpawnRotation, SpawnParameters);
-	return Item;
+	return ActorRef;
 
 }
 

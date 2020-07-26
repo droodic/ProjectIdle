@@ -109,6 +109,7 @@ public:
 	FTimerHandle HelpTimer;
 	int RandomHelpNumber;
 	UPROPERTY(BlueprintReadWrite) bool NeedAssistance;
+	UPROPERTY(SaveGame, EditAnywhere) int MeshID = 0;
 
 protected:
 	// Called when the game starts or when spawned

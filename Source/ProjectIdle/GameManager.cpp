@@ -305,40 +305,46 @@ void UGameManager::OnGameLoadedFixup(UWorld* World) {
 		UClass* SpawnClass = FindObject<UClass>(ANY_PACKAGE, *ActorRecord.MyClass);
 		FVector SpawnLocation;
 		FRotator SpawnRotation;
-		if (SpawnClass && Cast<AEmployee>(SpawnClass)) //&& Cast<AEmployee>(SpawnClass))
+		if (SpawnClass) //&& Cast<AEmployee>(SpawnClass))
 		{
-
 			//OfficeDepartment->GenerateActor(0, ERole::Programmer);
 			AActor* NewActor = OfficeDepartment->GenerateSavedActor(SpawnClass);//IFemployee, figure way to scale with other type actor like workstation?
 			FMemoryReader MemoryReader(ActorRecord.MyData, true);
 			FSaveGameArchive Ar(MemoryReader);
 
-			if (NewActor != nullptr) {
+			if (NewActor != nullptr && Cast<AEmployee>(NewActor)) {
 				NewActor->Serialize(Ar);
 				NewActor->SetActorTransform(ActorRecord.MyTransform);
+				//Cast<AEmployee>(NewActor)->GetMesh()->SetSkeletalMesh(OfficeDepartment->EmployeeMeshList[Cast<AEmployee>(NewActor)->MeshID]);
 				ISaveableActorInterface::Execute_ActorLoaded(NewActor);
-			}
-			else {
-				GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Cannot Spawn Actor - Collision Problem");
-			}
-		}
-		else if(SpawnClass){
-			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Orange, "Spawning Decoration");
+				if (Cast<AEmployee>(NewActor) != nullptr) {
+					GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::White, "Spawn Employee");
 
-			AActor* NewActor = OfficeDepartment->GenerateSavedDecoration(SpawnClass);
-			FMemoryReader MemoryReader(ActorRecord.MyData, true);
-			FSaveGameArchive Ar(MemoryReader);
-			if (NewActor != nullptr) {
-				NewActor->Serialize(Ar);
-				NewActor->SetActorTransform(ActorRecord.MyTransform);
-				ISaveableActorInterface::Execute_ActorLoaded(NewActor);
+					Cast<AEmployee>(NewActor)->GetMesh()->SetSkeletalMesh(OfficeDepartment->EmployeeMeshList[Cast<AEmployee>(NewActor)->MeshID]);
+				}
+
 			}
-			else {
+			else if (Cast<AEmployee>(NewActor) == nullptr) {
+				GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Orange, "Spawning Decoration");
+
+				//NewActor = OfficeDepartment->GenerateSavedActor(SpawnClass);
+//				FMemoryReader MemoryReader(ActorRecord.MyData, true);
+//				FSaveGameArchive Ar(MemoryReader);
+				if (NewActor != nullptr) {
+					NewActor->Serialize(Ar);
+					NewActor->SetActorTransform(ActorRecord.MyTransform);
+					ISaveableActorInterface::Execute_ActorLoaded(NewActor);
+				}
+				else {
+					GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Cannot Spawn Actor - Collision Problem");
+				}
+			}
+
+			else if(NewActor == nullptr){
 				GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Cannot Spawn Actor - Collision Problem");
 			}
-			//Not Employee
-			
 		}
+	
 		//else if (SpawnClass) //Not Employee
 		//{
 		//	AActor* NewActor = GWorld->SpawnActor(SpawnClass, &SpawnPos, &SpawnRot, SpawnParams);

@@ -30,6 +30,7 @@ public:
 	UPROPERTY(BlueprintReadWrite) float AvgArtistMorale = 0.f;
 
 	//TArray<TSubclassOf<AItem*>> List;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) TArray<USkeletalMesh*> EmployeeMeshList;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) TArray<TSubclassOf<class AItem>> GameItemList;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) TArray<TSubclassOf<class AItem>> FloorMaterialList;
 	TArray<class Idea*> IdeaList;
@@ -70,6 +71,9 @@ public:
 
 	UPROPERTY(EditAnywhere) class TSubclassOf<class APreviewItem> PreviewItemBP;
 
+	int PreviousMeshID = -1;
+	//int PreviousMeshID2 = -1;
+
 private:
 	//bool bInRadius = false;
 	bool bInSpawnCamera = false;
@@ -87,7 +91,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void PublishGame();
 	//For future use, will spawn any actor
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") AActor* GenerateSavedActor(UClass* ClassRef);
-	UFUNCTION(BlueprintCallable, Category = "CPP Functions") AActor* GenerateSavedDecoration(UClass* ClassRef);
+	//UFUNCTION(BlueprintCallable, Category = "CPP Functions") AActor* GenerateSavedDecoration(UClass* ClassRef);
 	UFUNCTION(BlueprintCallable, Category = "CPP Functions") void GenerateActor(int Position, ERole EmpRole);
 	UFUNCTION(BlueprintCallable) void GetDepartmentUIValues();
 	void PopulateIdeaListFromSave(Idea* Idea);
@@ -97,7 +101,7 @@ public:
 	void Return();
 	void BacklogReturn();
 	void ShopReturn();
-
+	void GetRandomMesh(AEmployee* EmployeeRef);
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
