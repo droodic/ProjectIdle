@@ -390,20 +390,37 @@ void AOfficeDepartment::GetRandomMesh(AEmployee* EmployeeRef) {
 	FRandomStream RStream;
 	RStream.GenerateNewSeed();
 
-	int Random = UKismetMathLibrary::RandomIntegerInRangeFromStream(0, GM->OfficeDepartment->EmployeeMeshList.Num() - 1, RStream);
+	int RandomGendre = UKismetMathLibrary::RandomIntegerInRange(0, 1);
+	if (RandomGendre == 0) {	//Male
 
+		int Random = UKismetMathLibrary::RandomIntegerInRangeFromStream(0, GM->OfficeDepartment->MaleEmployeeMeshList.Num() - 1, RStream);
 
-	while (PreviousMeshID == Random)
-	{
-		Random = UKismetMathLibrary::RandomIntegerInRangeFromStream(0, GM->OfficeDepartment->EmployeeMeshList.Num() - 1, RStream);
+		while (PreviousMeshID == Random)
+		{
+			Random = UKismetMathLibrary::RandomIntegerInRangeFromStream(0, GM->OfficeDepartment->MaleEmployeeMeshList.Num() - 1, RStream);
+		}
+
+		EmployeeRef->GetMesh()->SetSkeletalMesh(GM->OfficeDepartment->MaleEmployeeMeshList[Random]);
+		EmployeeRef->MeshID = Random;
+		EmployeeRef->Gendre = 0;
+		EmployeeRef->GetName(0);
+		PreviousMeshID = Random;
+	}
+	else if (RandomGendre == 1) {
+
+		int Random = UKismetMathLibrary::RandomIntegerInRangeFromStream(0, GM->OfficeDepartment->FemaleEmployeeMeshList.Num() - 1, RStream);
+		while (PreviousMeshID == Random)
+		{
+			Random = UKismetMathLibrary::RandomIntegerInRangeFromStream(0, GM->OfficeDepartment->FemaleEmployeeMeshList.Num() - 1, RStream);
+		}
+
+		EmployeeRef->GetMesh()->SetSkeletalMesh(GM->OfficeDepartment->FemaleEmployeeMeshList[Random]);
+		EmployeeRef->MeshID = Random;
+		EmployeeRef->Gendre = 1;
+		EmployeeRef->GetName(1);
+		PreviousMeshID = Random;
 	}
 
-
-
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, FString::FromInt(Random));
-	EmployeeRef->GetMesh()->SetSkeletalMesh(GM->OfficeDepartment->EmployeeMeshList[Random]);
-	EmployeeRef->MeshID = Random;
-	PreviousMeshID = Random;
 
 }
 

@@ -286,8 +286,12 @@ void UGameManager::OnGameLoadedFixup(UWorld* World) {
 				NewActor->SetActorTransform(ActorRecord.MyTransform);
 				ISaveableActorInterface::Execute_ActorLoaded(NewActor);
 				if (Cast<AEmployee>(NewActor) != nullptr) {
-					GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::White, "Spawn Employee");
-					Cast<AEmployee>(NewActor)->GetMesh()->SetSkeletalMesh(OfficeDepartment->EmployeeMeshList[Cast<AEmployee>(NewActor)->MeshID]);
+					if (Cast<AEmployee>(NewActor)->Gendre == 0) {
+						Cast<AEmployee>(NewActor)->GetMesh()->SetSkeletalMesh(OfficeDepartment->MaleEmployeeMeshList[Cast<AEmployee>(NewActor)->MeshID]);
+					}
+					else if (Cast<AEmployee>(NewActor)->Gendre == 1) {
+						Cast<AEmployee>(NewActor)->GetMesh()->SetSkeletalMesh(OfficeDepartment->FemaleEmployeeMeshList[Cast<AEmployee>(NewActor)->MeshID]);
+					}
 				}
 			}
 			else if (NewActor != nullptr && Cast<AEmployee>(NewActor) == nullptr) {

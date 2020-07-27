@@ -55,7 +55,6 @@ public:
 	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere) float CostEmployeePromote = 5000;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
 
-
 	UPROPERTY() float PromoteToRegular = 20000;
 	UPROPERTY() float PromoteToSenior = 50000;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector MeetingLocation;
@@ -105,7 +104,7 @@ public:
 	int CompileValueOriginal = 0;
 	int CompileValue = 0;
 	int NumCompile;
-
+	UPROPERTY(SaveGame) int Gendre; //0male, 1female
 
 
 	bool IsDisplaying = false;
@@ -136,8 +135,8 @@ public:
 	void IsDepartmentWorking();
 	void WorkOnTask();
 	void AssignSupervisor();
-
 	void StartGetHelp(); //Call Timer start
+	UFUNCTION(BlueprintImplementableEvent) void GetName(int GendreID);
 	UFUNCTION() void GetHelp(); //Timer Event
 
 	//void OnInteract() override;  //virtual void OnInteract() override;

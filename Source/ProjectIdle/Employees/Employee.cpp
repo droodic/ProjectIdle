@@ -318,10 +318,6 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 			CurrentWorkload -= Multiplier;
 		}
 	}
-
-
-
-
 	if (CurrentWorkload <= 0) {
 		//Self workload finished, check to see if others remain. If others in same department remain, go to them, and take 50% of their remainding workload if there's more than 10 seconds left of WL
 		//If none remain, give player money if idea was successful
