@@ -6,6 +6,7 @@
 #include "ProjectIdle/SaveableActorInterface.h"
 #include "ProjectIdle/InteractableObject.h"
 #include "GameFramework/Character.h"
+#include "Components/SceneCaptureComponent2D.h"
 #include "Employee.generated.h"
 
 UENUM(Meta = (ScriptName = "Role"))
@@ -61,6 +62,8 @@ public:
 
 	UPROPERTY(SaveGame) int WorkstationPositionRef;
 	//class AWorkstation* WorkstationRef;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly) USpringArmComponent* CameraBoom;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) class USceneCaptureComponent2D* FaceCamera;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) class UWidgetComponent* WorkProgressBar;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) class UWidgetComponent* HelpWidget;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) float AssignedWorkload;

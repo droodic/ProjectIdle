@@ -42,6 +42,9 @@ AEmployee::AEmployee()
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("RangeBox"));
 	CollisionBox->AttachTo(RootComponent);
 	CollisionBox->SetBoxExtent(FVector(350, 350, 350));
+
+	FaceCamera = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("FaceCamera")); //Maybe make Employee BP to set this up, because if later Employee classes emerge if we
+	FaceCamera->AttachTo(GetMesh());
 }
 
 // Called when the game starts or when spawned
