@@ -63,7 +63,7 @@ public:
 	UPROPERTY(SaveGame) int WorkstationPositionRef;
 	//class AWorkstation* WorkstationRef;
 	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly) USpringArmComponent* CameraBoom;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) class USceneCaptureComponent2D* FaceCamera;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) USceneCaptureComponent2D* FaceCamera;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) class UWidgetComponent* WorkProgressBar;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) class UWidgetComponent* HelpWidget;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) float AssignedWorkload;

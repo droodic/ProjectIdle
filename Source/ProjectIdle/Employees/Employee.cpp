@@ -234,6 +234,10 @@ void AEmployee::OnInteract()
 			if (GM->CurrentWidgetInDisplay)
 			{
 				GM->CurrentWidgetInDisplay->RemoveFromViewport();
+				if (FaceCamera->IsActive()) {
+					FaceCamera->SetActive(false);
+					FaceCamera->SetVisibility(false);
+				}
 			}
 
 			if (UI != nullptr && !IsDisplaying)
@@ -249,8 +253,12 @@ void AEmployee::OnInteract()
 			else if (IsDisplaying)
 			{
 				IsDisplaying = false;
-				FaceCamera->SetActive(false);
-				FaceCamera->SetVisibility(false);
+
+				if (FaceCamera->IsActive()) {
+					FaceCamera->SetActive(false);
+					FaceCamera->SetVisibility(false);
+				}
+
 				UI->EmpSheetWidget->RemoveFromViewport();
 
 			}
@@ -438,10 +446,11 @@ void AEmployee::NotifyActorEndOverlap(AActor* OtherActor)
 			UI->EmpSheetWidget->RemoveFromViewport();
 			GM->IsWidgetInDisplay = false;
 			IsDisplaying = false;
-			if (FaceCamera->IsActive()) {
-				FaceCamera->SetActive(false);
-				FaceCamera->SetVisibility(false);
-			}
+
+		}
+		if (FaceCamera->IsActive()) {
+			FaceCamera->SetActive(false);
+			FaceCamera->SetVisibility(false);
 		}
 	}
 }
@@ -526,6 +535,11 @@ void AEmployee::FiredFinal()
 	}
 	GM->EmployeeList.Remove(this);
 	UI->CloseEmployeeSheet();
+	if (FaceCamera->IsActive()) {
+		FaceCamera->SetActive(false);
+		FaceCamera->SetVisibility(false);
+	}
+
 	this->Destroy();
 }
 
