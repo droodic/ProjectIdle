@@ -249,7 +249,10 @@ void AEmployee::OnInteract()
 			else if (IsDisplaying)
 			{
 				IsDisplaying = false;
+				FaceCamera->SetActive(false);
+				FaceCamera->SetVisibility(false);
 				UI->EmpSheetWidget->RemoveFromViewport();
+
 			}
 		}
 	}
@@ -435,6 +438,10 @@ void AEmployee::NotifyActorEndOverlap(AActor* OtherActor)
 			UI->EmpSheetWidget->RemoveFromViewport();
 			GM->IsWidgetInDisplay = false;
 			IsDisplaying = false;
+			if (FaceCamera->IsActive()) {
+				FaceCamera->SetActive(false);
+				FaceCamera->SetVisibility(false);
+			}
 		}
 	}
 }

@@ -52,7 +52,9 @@ void AGameHUD::ShowEmployeeSheet(class AEmployee* employee)
 		EmpSheetWidget->EmployeeRole_T->Text = EmpSheetWidget->RoleToText(employee->EmployeeRole);
 		EmpSheetWidget->EmployeePosition = employee->Position;
 		EmpSheetWidget->Salary = employee->Salary;
-		employee->FaceCamera->CaptureScene();
+		//employee->FaceCamera->CaptureScene();
+		employee->FaceCamera->Activate();
+		employee->FaceCamera->SetVisibility(true);
 		//EmpSheetWidget->FaceImage->SetBrushFromTexture(employee->FaceCamera->TextureTarget);
 
 		if (Cast<AFloorManager>(EmpSheetWidget->Employee) == nullptr && Cast<ASupervisor>(EmpSheetWidget->Employee) == nullptr) {
