@@ -56,8 +56,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite) class TSubclassOf<class APreviewItem> PreviewItemBP;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite) class UGameManager* GameManager;
-private:
+	UPROPERTY(BlueprintReadWrite) class UGameManager* GameManager;
 
 private:
 	void BeginPlay() override;

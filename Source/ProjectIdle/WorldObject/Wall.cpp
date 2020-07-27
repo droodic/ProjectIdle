@@ -62,7 +62,7 @@ void AWall::Tick(float DeltaTime)
 void AWall::UpdateWallMaterial(AItem* FloorItem)
 {
 	//Mesh->SetMaterial(0, NewMaterial);
-	Mesh->SetMaterial(1, FloorItem->Material->GetMaterial());
+	Mesh->SetMaterial(0, FloorItem->Material->GetMaterial());
 	GM->FloorMaterialID = FloorItem->ItemID;
 }
 

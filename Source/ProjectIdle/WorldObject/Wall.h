@@ -6,8 +6,6 @@
 #include "GameFramework/Actor.h"
 #include "Wall.generated.h"
 
-
-
 UENUM(Meta = (ScriptName = "ObjectType"))
 enum class ObjectType : uint8
 {
@@ -68,10 +66,6 @@ public:
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) int FloorArtistCount = 0;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) int FloorProgrammerCount = 0;
-
-
-
-
 
 protected:
 	// Called when the game starts or when spawned
