@@ -47,7 +47,13 @@ void UMeetingDepWidget::StartMeeting()
 			GM->SpeedRate = 1;
 			GM->OfficeDepartment->AddedChance = 0.0f;
 			//GM->MeetingDepartment->BackFromMeeting();
-			if (GM->FLoorM->AutoManaging && GM->FLoorM->FloorLevel != GM->Character->CurrentFloor || !GM->FLoorM->AutoManaging)
+
+			if (GM->FLoorM == nullptr)
+			{
+				GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO, Null floor"));
+			}
+		    else if (!GM->FLoorM->AutoManaging || GM->FLoorM->AutoManaging && GM->FLoorM->FloorLevel != GM->Character->CurrentFloor)
 			{
 				GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
 				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO"));
@@ -65,13 +71,20 @@ void UMeetingDepWidget::StartMeeting()
 			GM->SpeedRate = 0.75;
 			GM->OfficeDepartment->AddedChance = 10.0f;
 			//GM->MeetingDepartment->BackFromMeeting();
-			if (GM->FLoorM->AutoManaging)
-			{
-				GM->MeetingDepartmentList[GM->FLoorM->FloorLevel - 1]->BackFromMeeting();
-			}
-			else
+			if (GM->FLoorM == nullptr)
 			{
 				GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO, Null floor"));
+			}
+			else if (!GM->FLoorM->AutoManaging || GM->FLoorM->AutoManaging && GM->FLoorM->FloorLevel != GM->Character->CurrentFloor)
+			{
+				GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO"));
+			}
+			else if (GM->FLoorM->AutoManaging)
+			{
+				GM->MeetingDepartmentList[GM->FLoorM->FloorLevel - 1]->BackFromMeeting();
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach Floor M"));
 			}
 
 
@@ -82,13 +95,20 @@ void UMeetingDepWidget::StartMeeting()
 			GM->SpeedRate = 1.25;
 			GM->OfficeDepartment->AddedChance = -10.0f;
 			//GM->MeetingDepartment->BackFromMeeting();
-			if (GM->FLoorM->AutoManaging)
-			{
-				GM->MeetingDepartmentList[GM->FLoorM->FloorLevel - 1]->BackFromMeeting();
-			}
-			else
+			if (GM->FLoorM == nullptr)
 			{
 				GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO, Null floor"));
+			}
+			else if (!GM->FLoorM->AutoManaging || GM->FLoorM->AutoManaging && GM->FLoorM->FloorLevel != GM->Character->CurrentFloor)
+			{
+				GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO"));
+			}
+			else if (GM->FLoorM->AutoManaging)
+			{
+				GM->MeetingDepartmentList[GM->FLoorM->FloorLevel - 1]->BackFromMeeting();
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach Floor M"));
 			}
 			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Crunch time approach"));
 		}

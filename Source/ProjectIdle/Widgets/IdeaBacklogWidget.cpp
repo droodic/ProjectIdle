@@ -97,7 +97,7 @@ void UIdeaBacklogWidget::CallMeeting()
 		//UIdeaButton::IsInProduction = true;
 
 		GM->IdeaInProduction = true;
-		GM->MeetingDepartmentList[CurrentFloorLevel]->MeetingWidget->MeetingFloor = CurrentFloorLevel;
+		GM->MeetingDepartmentList[CurrentFloorLevel]->MeetingWidget->MeetingFloor = CurrentFloorLevel + 1;
 		GM->OfficeDepartmentList[CurrentFloorLevel]->IdeaCurrentFloor = true;
 	    
 		GM->OfficeDepartmentList[CurrentFloorLevel]->BacklogWidget->CallMeetingBtn->SetIsEnabled(false);
@@ -120,6 +120,8 @@ void UIdeaBacklogWidget::CallMeeting_M(AFloorManager* ManagerRef)
 	GM->MeetingDepartmentList[GM->FLoorM->FloorLevel - 1]->MeetingWidget->MeetingFloor = GM->FLoorM->FloorLevel;
 	GM->OfficeDepartmentList[GM->FLoorM->FloorLevel - 1]->IdeaCurrentFloor = true;
 
+
+	GM->OfficeDepartmentList[GM->FLoorM->FloorLevel - 1]->BacklogWidget->CallMeetingBtn->SetIsEnabled(false);
 	//CallMeetingBtn->SetIsEnabled(false);
 	GM->MeetingDepartmentList[GM->FLoorM->FloorLevel - 1]->MoveToMeeting();
 	//GM->MeetingDepartment->MoveToMeeting();

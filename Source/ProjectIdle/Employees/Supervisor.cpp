@@ -48,7 +48,7 @@ void ASupervisor::BeginPlay()
 
 	//GM->WorkStation->UpdateWorkstationPosition();
 	for (auto Workstation : GM->WorkstationList) {
-		if (Workstation->IsEnabled == true && !Workstation->HasEmployee && Workstation->StationRole == EmployeeRole && Workstation->StationOwnerPosition == EPosition::Supervisor) {
+		if (Workstation->IsEnabled == true && !Workstation->HasEmployee && Workstation->StationRole == EmployeeRole && Workstation->StationOwnerPosition == EPosition::Supervisor && Workstation->FloorLevel == this->FloorLevel) {
 			Workstation->UpdateWorkstationPosition(this);
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Assigning Sup Workstation");
 			break;
