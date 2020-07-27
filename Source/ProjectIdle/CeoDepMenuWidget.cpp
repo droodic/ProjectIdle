@@ -119,13 +119,22 @@ void UCeoDepMenuWidget::CallArtistSupSpawn()
 
 void UCeoDepMenuWidget::CallFloorManagerSpawn()
 {
-	if (OfficeDepartment->ManagerRef == nullptr && GM->Money >= 100000) {
-
+	//if (OfficeDepartment->ManagerRef == nullptr && GM->Money >= 100000) {
+	  if(GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->ManagerRef == nullptr && GM->Money >= 100000) {
 		GM->Money -= 100000;
 		//ActivateWorkstation(ERole::Artist, EPosition::FloorManager, true);
 		//GM->ArtistDepartment->HasSupervisor = true;
 		OfficeDepartment->GenerateActor(5, ERole::Management);
-		Hire_FloorManager_Btn->SetIsEnabled(false);
+		for (auto Office : GM->OfficeDepartmentList)
+		{
+			Office->OfficeDepMenuWidget->Hire_FloorManager_Btn->SetIsEnabled(false);
+		}
+
+		for (auto OfficeOffline : GM->UnassignedOfficeDepartmentList)
+		{
+			OfficeOffline->OfficeDepMenuWidget->Hire_FloorManager_Btn->SetIsEnabled(false);
+		}
+		//Hire_FloorManager_Btn->SetIsEnabled(false);
 		//OfficeDepartment->GetDepartmentUIValues();
 	}
 }

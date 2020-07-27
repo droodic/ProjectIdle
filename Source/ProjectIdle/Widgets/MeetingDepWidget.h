@@ -20,7 +20,7 @@ public:
 	class AGameHUD* UI;
 	//class AMeetingDepartment* MeetingDep;
 
-	//UPROPERTY() float SpeedRate = 1;
+	UPROPERTY() float MeetingFloor = 0;
 #pragma region ChosenIdea
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UComboBoxString* ApproachComboBox;
 	UPROPERTY(BlueprintReadWrite) FString SelectedApproach = "Default";

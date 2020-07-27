@@ -75,6 +75,8 @@ public:
 	int PreviousMeshID = -1;
 	//int PreviousMeshID2 = -1;
 
+	UPROPERTY(EditAnywhere) bool IdeaCurrentFloor = false;
+
 private:
 	//bool bInRadius = false;
 	bool bInSpawnCamera = false;

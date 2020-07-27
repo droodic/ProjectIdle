@@ -40,10 +40,13 @@ void UIdeaButton::ButtonClicked()
 		OfficeDepartment->OfficeDepMenuWidget->IdeaGeneratedMoney_T->SetText(FText::AsCurrency(MoneyGenerated));
 		OfficeDepartment->OfficeDepMenuWidget->PublishGame_Btn->SetIsEnabled(false);
 	}
-	else if (!GM->IdeaInProduction)
+	//else if (!GM->IdeaInProduction)
+	else if(!GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->IdeaCurrentFloor)
 	{
 		BacklogWidget->ChosenIndex = storedIndex;
-		BacklogWidget->CallMeetingBtn->SetIsEnabled(true);
+		//BacklogWidget->CallMeetingBtn->SetIsEnabled(true);
+		GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->BacklogWidget->CallMeetingBtn->SetIsEnabled(true);
+
 	}
 }
 
