@@ -42,6 +42,9 @@ AEmployee::AEmployee()
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("RangeBox"));
 	CollisionBox->AttachTo(RootComponent);
 	CollisionBox->SetBoxExtent(FVector(350, 350, 350));
+
+	FaceCamera = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("FaceCamera")); //Maybe make Employee BP to set this up, because if later Employee classes emerge if we
+	FaceCamera->AttachTo(GetMesh());
 }
 
 // Called when the game starts or when spawned
@@ -231,6 +234,10 @@ void AEmployee::OnInteract()
 			if (GM->CurrentWidgetInDisplay)
 			{
 				GM->CurrentWidgetInDisplay->RemoveFromViewport();
+				if (FaceCamera->IsActive()) {
+					FaceCamera->SetActive(false);
+					FaceCamera->SetVisibility(false);
+				}
 			}
 
 			if (UI != nullptr && !IsDisplaying)
@@ -246,7 +253,14 @@ void AEmployee::OnInteract()
 			else if (IsDisplaying)
 			{
 				IsDisplaying = false;
+
+				if (FaceCamera->IsActive()) {
+					FaceCamera->SetActive(false);
+					FaceCamera->SetVisibility(false);
+				}
+
 				UI->EmpSheetWidget->RemoveFromViewport();
+
 			}
 		}
 	}
@@ -272,11 +286,12 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 	//UI->MoneyWidget->ShowANotification(RateString);
 
 	//Test function - Workers reduce workloads, make function / use timer +event instead of tick
-	if (!IsWorking && WorkAnimation != nullptr) {
+	if (!IsWorking && WorkAnim != nullptr) {
 		FRotator AdjustRotate = FRotator(0, 90, 0);
 		SetActorRotation(WorkstationRef->ChairMesh->GetComponentRotation() + AdjustRotate);
 		WorkProgressBar->SetVisibility(true);
 		IsWorking = true;
+
 		GetWorldTimerManager().SetTimer(HelpTimer, this, &AEmployee::GetHelp, 1.f, true);
 
 	}
@@ -317,10 +332,6 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 			CurrentWorkload -= Multiplier;
 		}
 	}
-
-
-
-
 	if (CurrentWorkload <= 0) {
 		//Self workload finished, check to see if others remain. If others in same department remain, go to them, and take 50% of their remainding workload if there's more than 10 seconds left of WL
 		//If none remain, give player money if idea was successful
@@ -438,6 +449,11 @@ void AEmployee::NotifyActorEndOverlap(AActor* OtherActor)
 			UI->EmpSheetWidget->RemoveFromViewport();
 			GM->IsWidgetInDisplay = false;
 			IsDisplaying = false;
+
+		}
+		if (FaceCamera->IsActive()) {
+			FaceCamera->SetActive(false);
+			FaceCamera->SetVisibility(false);
 		}
 	}
 }
@@ -522,6 +538,11 @@ void AEmployee::FiredFinal()
 	}
 	GM->EmployeeList.Remove(this);
 	UI->CloseEmployeeSheet();
+	if (FaceCamera->IsActive()) {
+		FaceCamera->SetActive(false);
+		FaceCamera->SetVisibility(false);
+	}
+
 	this->Destroy();
 }
 

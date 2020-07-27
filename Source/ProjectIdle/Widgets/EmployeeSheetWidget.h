@@ -23,6 +23,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Fire_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Action_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* Action_BtnTxt;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UImage* FaceImage;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* EmployeeName_T;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* EmployeeRole_T;

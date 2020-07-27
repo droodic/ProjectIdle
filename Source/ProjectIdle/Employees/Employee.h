@@ -6,6 +6,7 @@
 #include "ProjectIdle/SaveableActorInterface.h"
 #include "ProjectIdle/InteractableObject.h"
 #include "GameFramework/Character.h"
+#include "Components/SceneCaptureComponent2D.h"
 #include "Employee.generated.h"
 
 UENUM(Meta = (ScriptName = "Role"))
@@ -46,8 +47,8 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere) bool IsAtMeeting;
 
-	UPROPERTY(SaveGame, EditAnywhere) ERole EmployeeRole;
-	UPROPERTY(SaveGame, EditAnywhere) EPosition Position = EPosition::Intern;
+	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere) ERole EmployeeRole;
+	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere) EPosition Position = EPosition::Intern;
 	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere) FText EmployeeName;
 	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere) float Morale = 1;
 	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere) float Performance;
@@ -55,13 +56,14 @@ public:
 	UPROPERTY(SaveGame, BlueprintReadWrite, EditAnywhere) float CostEmployeePromote = 5000;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
 
-
 	UPROPERTY() float PromoteToRegular = 20000;
 	UPROPERTY() float PromoteToSenior = 50000;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) FVector MeetingLocation;
 
 	UPROPERTY(SaveGame) int WorkstationPositionRef;
 	//class AWorkstation* WorkstationRef;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly) USpringArmComponent* CameraBoom;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) USceneCaptureComponent2D* FaceCamera;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) class UWidgetComponent* WorkProgressBar;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) class UWidgetComponent* HelpWidget;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) float AssignedWorkload;
@@ -93,7 +95,10 @@ public:
 	class AWorkstation* WorkstationRef;
 
 	//Animation
-	UPROPERTY(BlueprintReadWrite, EditAnywhere) UAnimSequence* WorkAnimation;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere) UAnimSequence* WorkAnim;
+	//UPROPERTY(BlueprintReadWrite, EditAnywhere) UAnimSequence* SitToTypeAnimation;
+	//UPROPERTY(BlueprintReadWrite, EditAnywhere) UAnimSequence* TypeAnimation;
+	//UPROPERTY(BlueprintReadWrite, EditAnywhere) UAnimMontage* WorkAnimation;
 	bool HasAnimated = false;
 
 	UPROPERTY(VisibleAnywhere)
@@ -103,12 +108,13 @@ public:
 	int CompileValue = 0;
 	int NumCompile;
 
-
-
 	bool IsDisplaying = false;
 	FTimerHandle HelpTimer;
 	int RandomHelpNumber;
+
 	UPROPERTY(BlueprintReadWrite) bool NeedAssistance;
+	UPROPERTY(SaveGame, EditAnywhere) int Gendre; //0male, 1female
+	UPROPERTY(SaveGame, EditAnywhere) int MeshID = 0;
 
 protected:
 	// Called when the game starts or when spawned
@@ -132,8 +138,8 @@ public:
 	void IsDepartmentWorking();
 	void WorkOnTask();
 	void AssignSupervisor();
-
 	void StartGetHelp(); //Call Timer start
+	UFUNCTION(BlueprintImplementableEvent) void GetGendreName(int GendreID);
 	UFUNCTION() void GetHelp(); //Timer Event
 
 	//void OnInteract() override;  //virtual void OnInteract() override;

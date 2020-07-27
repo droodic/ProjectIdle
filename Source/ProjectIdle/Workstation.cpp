@@ -24,12 +24,13 @@ AWorkstation::AWorkstation()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	ChairMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ChairMesh"));
 	DeskMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DeskMesh"));
 	ComputerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ComputerMesh"));
-	ChairMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ChairMesh"));
 	ChairMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	KeyboardMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("KeyboardMesh"));
-	RootComponent = DeskMesh;
+	RootComponent = ChairMesh;
 
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("RangeBox"));
 	CollisionBox->AttachTo(RootComponent);
@@ -38,8 +39,9 @@ AWorkstation::AWorkstation()
 	StationRole = ERole::Programmer;//Default to stop crashing
 
 	ComputerMesh->SetupAttachment(RootComponent);
-	ChairMesh->SetupAttachment(RootComponent);
 	KeyboardMesh->SetupAttachment(RootComponent);
+	DeskMesh->SetupAttachment(RootComponent);
+
 
 	CompileProgressBar = CreateDefaultSubobject<UWidgetComponent>(TEXT("WorkloadProgressBar")); //Maybe make Employee BP to set this up, because if later Employee classes emerge if we
 	CompileProgressBar->AttachTo(RootComponent);

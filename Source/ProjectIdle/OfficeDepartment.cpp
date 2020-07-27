@@ -54,7 +54,7 @@ void AOfficeDepartment::OnInteract()
 				GM->CurrentWidgetInDisplay->RemoveFromViewport();
 			}
 		}
-		else
+		else if (!bInSpawnCamera)
 		{
 			OfficeDepMenuWidget->RemoveFromViewport();
 			UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
@@ -91,6 +91,10 @@ void AOfficeDepartment::BeginPlay()
 	{
 		ShopWidget = CreateWidget<UShopWidget>(UGameplayStatics::GetPlayerController(this, 0), UserWidgets[2]);
 		ShopWidget->OfficeDepartment = this;
+	}
+	if (UserWidgets[3] != nullptr)
+	{
+		SpawnItemWidget = CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(this, 0), UserWidgets[3]);
 	}
 
 	//GM->OnGameLoadedFixup(GetWorld());
@@ -333,6 +337,7 @@ void AOfficeDepartment::SpawnItemInWorld(AItem* item)
 	bInSpawnCamera = true;
 
 	OfficeDepMenuWidget->RemoveFromViewport();
+	SpawnItemWidget->AddToViewport();
 
 	PlayersCamera = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetViewTarget();
 
@@ -357,10 +362,11 @@ void AOfficeDepartment::EditPlacedItems()
 	GM->InEditMode = true;
 
 	OfficeDepMenuWidget->RemoveFromViewport();
+	SpawnItemWidget->AddToViewport();
 
 	PlayersCamera = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetViewTarget();
 
-	if (SpawnItemCamera != nullptr && this->FloorLevel == 1)
+	if (SpawnItemCamera != nullptr)
 	{
 		UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(SpawnItemCamera);
 	}
@@ -376,7 +382,46 @@ void AOfficeDepartment::ReturnToOfficeDepartment()
 		UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(PlayersCamera);
 	}
 
+	SpawnItemWidget->RemoveFromViewport();
 	OfficeDepMenuWidget->AddToViewport();
+}
+
+void AOfficeDepartment::GetRandomMesh(AEmployee* EmployeeRef) {
+	FRandomStream RStream;
+	RStream.GenerateNewSeed();
+
+	int RandomGendre = UKismetMathLibrary::RandomIntegerInRange(0, 1);
+	if (RandomGendre == 0) {	//Male
+
+		int Random = UKismetMathLibrary::RandomIntegerInRangeFromStream(0, GM->OfficeDepartment->MaleEmployeeMeshList.Num() - 1, RStream);
+
+		while (PreviousMeshID == Random)
+		{
+			Random = UKismetMathLibrary::RandomIntegerInRangeFromStream(0, GM->OfficeDepartment->MaleEmployeeMeshList.Num() - 1, RStream);
+		}
+
+		EmployeeRef->GetMesh()->SetSkeletalMesh(GM->OfficeDepartment->MaleEmployeeMeshList[Random]);
+		EmployeeRef->MeshID = Random;
+		EmployeeRef->Gendre = 0;
+		EmployeeRef->GetGendreName(0);
+		PreviousMeshID = Random;
+	}
+	else if (RandomGendre == 1) {
+
+		int Random = UKismetMathLibrary::RandomIntegerInRangeFromStream(0, GM->OfficeDepartment->FemaleEmployeeMeshList.Num() - 1, RStream);
+		while (PreviousMeshID == Random)
+		{
+			Random = UKismetMathLibrary::RandomIntegerInRangeFromStream(0, GM->OfficeDepartment->FemaleEmployeeMeshList.Num() - 1, RStream);
+		}
+
+		EmployeeRef->GetMesh()->SetSkeletalMesh(GM->OfficeDepartment->FemaleEmployeeMeshList[Random]);
+		EmployeeRef->MeshID = Random;
+		EmployeeRef->Gendre = 1;
+		EmployeeRef->GetGendreName(1);
+		PreviousMeshID = Random;
+	}
+
+
 }
 
 //Future transition 
@@ -417,10 +462,47 @@ void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 				Cast<ASupervisor>(Emp)->InitSupervisor(EmpRole); //quick workaround annoying beginplay pedantics of spawning
 				Emp->AssignSupervisor();
 			}
+			GetRandomMesh(Emp);
 			GetDepartmentUIValues();
+
 		}
 	}
 }
+
+//AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
+//{
+//	//GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Orange, "Spawning Saved Actor");
+//
+//	UWorld* World = GetWorld();
+//
+//	FVector SpawnLocation;
+//	FRotator SpawnRotation;
+//	FActorSpawnParameters SpawnParameters;
+//	SpawnParameters.Owner = this;
+//	SpawnParameters.Instigator = GetInstigator();
+//	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+//
+//	FVector NewVector = FVector(0, -50, 0);
+//	SpawnLocation = FVector(0, 0, 0); //GM->Door->GetActorLocation() + NewVector; 
+//	SpawnRotation = FRotator::ZeroRotator;
+//
+//	auto Emp = World->SpawnActor<AEmployee>(ClassRef, SpawnLocation, SpawnRotation, SpawnParameters);
+//	if (Cast<ASupervisor>(Emp) != nullptr) {
+//		Cast<ASupervisor>(Emp)->InitSupervisor(Emp->EmployeeRole); //quick workaround annoying beginplay pedantics of spawning
+//		Emp->AssignSupervisor();
+//		GetDepartmentUIValues();
+//	}
+//
+//	//GetRandomMesh(Emp)
+//	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::White, "Loading Emp");
+//
+//	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::White, FString::FromInt(Emp->MeshID));
+//	Emp->GetMesh()->SetSkeletalMesh(EmployeeMeshList[Emp->MeshID]);
+//
+//	GetDepartmentUIValues();
+//	return Emp;
+//
+//}
 
 AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
 {
@@ -437,36 +519,16 @@ AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
 	SpawnLocation = FVector(0, 0, 0); //GM->Door->GetActorLocation() + NewVector; 
 	SpawnRotation = FRotator::ZeroRotator;
 
-
-	auto Emp = World->SpawnActor<AEmployee>(ClassRef, SpawnLocation, SpawnRotation, SpawnParameters);
-	if (Cast<ASupervisor>(Emp) != nullptr) {
-		Cast<ASupervisor>(Emp)->InitSupervisor(Emp->EmployeeRole); //quick workaround annoying beginplay pedantics of spawning
-		Emp->AssignSupervisor();
+	auto ActorRef = GWorld->SpawnActor(ClassRef, &SpawnLocation, &SpawnRotation, SpawnParameters);
+	if (Cast<ASupervisor>(ActorRef) != nullptr)
+	{
+		Cast<ASupervisor>(ActorRef)->InitSupervisor(Cast<ASupervisor>(ActorRef)->EmployeeRole); //quick workaround annoying beginplay pedantics of spawning
+		Cast<ASupervisor>(ActorRef)->AssignSupervisor();
 		GetDepartmentUIValues();
 	}
 
 
-	return Emp;
-
-}
-
-AActor* AOfficeDepartment::GenerateSavedDecoration(UClass* ClassRef)
-{
-	UWorld* World = GetWorld();
-
-	FVector SpawnLocation;
-	FRotator SpawnRotation;
-	FActorSpawnParameters SpawnParameters;
-	SpawnParameters.Owner = this;
-	SpawnParameters.Instigator = GetInstigator();
-	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-
-	FVector NewVector = FVector(0, -50, 0);
-	SpawnLocation = FVector(0, 0, 0); //GM->Door->GetActorLocation() + NewVector; 
-	SpawnRotation = FRotator::ZeroRotator;
-
-	auto Item = GWorld->SpawnActor(ClassRef, &SpawnLocation, &SpawnRotation, SpawnParameters);
-	return Item;
+	return ActorRef;
 
 }
 

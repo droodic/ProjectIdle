@@ -14,7 +14,7 @@ class PROJECTIDLE_API APreviewItem : public AActor
 public:	
 	APreviewItem();
 
-	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* MeshComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite) UStaticMeshComponent* MeshComponent;
 
 	class AItem* ItemReference;
 

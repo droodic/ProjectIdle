@@ -64,30 +64,33 @@ void ASupervisor::CheckForHelp() {
 	
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Supervisor checking for help");
 
-	if (CheckingForHelp) {
-		if (FVector::Dist(GetActorLocation(), TargetEmployee->GetActorLocation()) <= 250) {
-			TargetEmployee->NeedAssistance = false;
-			TargetEmployee->HelpWidget->SetVisibility(false);
-			MoveEmployee(StartPosition);
-			CheckingForHelp = false;
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Supervisor helped employee, returning");
+	if (!IsEvaluating) {
+		if (CheckingForHelp) {
+			if (FVector::Dist(GetActorLocation(), TargetEmployee->GetActorLocation()) <= 250) {
+				TargetEmployee->NeedAssistance = false;
+				TargetEmployee->HelpWidget->SetVisibility(false);
+				MoveEmployee(StartPosition);
+				CheckingForHelp = false;
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Supervisor helped employee, returning");
 
+			}
 		}
-	}
-	
-	if (!CheckingForHelp) {
-		for (auto Employee : GM->EmployeeList) {
-			if (Employee->EmployeeRole == EmployeeRole && Employee->IsWorking && Employee->CurrentWorkload > 0 && Employee->NeedAssistance) {
-				MoveEmployee(Employee->GetActorLocation(), 100.f);
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Moving to help employee");
 
-				CheckingForHelp = true;
-				TargetEmployee = Employee;
-				//Employee->NeedAssistance = false;
-				break;
+		if (!CheckingForHelp) {
+			for (auto Employee : GM->EmployeeList) {
+				if (Employee->EmployeeRole == EmployeeRole && Employee->IsWorking && Employee->CurrentWorkload > 0 && Employee->NeedAssistance) {
+					MoveEmployee(Employee->GetActorLocation(), 100.f);
+					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Moving to help employee");
+
+					CheckingForHelp = true;
+					TargetEmployee = Employee;
+					//Employee->NeedAssistance = false;
+					break;
+				}
 			}
 		}
 	}
+
 	
 
 }
