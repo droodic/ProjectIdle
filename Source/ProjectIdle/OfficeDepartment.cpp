@@ -403,7 +403,7 @@ void AOfficeDepartment::GetRandomMesh(AEmployee* EmployeeRef) {
 		EmployeeRef->GetMesh()->SetSkeletalMesh(GM->OfficeDepartment->MaleEmployeeMeshList[Random]);
 		EmployeeRef->MeshID = Random;
 		EmployeeRef->Gendre = 0;
-		EmployeeRef->GetName(0);
+		EmployeeRef->GetGendreName(0);
 		PreviousMeshID = Random;
 	}
 	else if (RandomGendre == 1) {
@@ -417,7 +417,7 @@ void AOfficeDepartment::GetRandomMesh(AEmployee* EmployeeRef) {
 		EmployeeRef->GetMesh()->SetSkeletalMesh(GM->OfficeDepartment->FemaleEmployeeMeshList[Random]);
 		EmployeeRef->MeshID = Random;
 		EmployeeRef->Gendre = 1;
-		EmployeeRef->GetName(1);
+		EmployeeRef->GetGendreName(1);
 		PreviousMeshID = Random;
 	}
 

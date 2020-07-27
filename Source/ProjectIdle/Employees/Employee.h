@@ -104,13 +104,13 @@ public:
 	int CompileValueOriginal = 0;
 	int CompileValue = 0;
 	int NumCompile;
-	UPROPERTY(SaveGame) int Gendre; //0male, 1female
-
 
 	bool IsDisplaying = false;
 	FTimerHandle HelpTimer;
 	int RandomHelpNumber;
+
 	UPROPERTY(BlueprintReadWrite) bool NeedAssistance;
+	UPROPERTY(SaveGame, EditAnywhere) int Gendre; //0male, 1female
 	UPROPERTY(SaveGame, EditAnywhere) int MeshID = 0;
 
 protected:
@@ -136,7 +136,7 @@ public:
 	void WorkOnTask();
 	void AssignSupervisor();
 	void StartGetHelp(); //Call Timer start
-	UFUNCTION(BlueprintImplementableEvent) void GetName(int GendreID);
+	UFUNCTION(BlueprintImplementableEvent) void GetGendreName(int GendreID);
 	UFUNCTION() void GetHelp(); //Timer Event
 
 	//void OnInteract() override;  //virtual void OnInteract() override;
