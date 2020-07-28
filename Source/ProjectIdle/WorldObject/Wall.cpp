@@ -120,7 +120,6 @@ void AWall::DeactivateWallAndFloor()
 
 void AWall::AssignFloorLevel()
 {
-
 	for (int i = 0; i <= GM->FloorList.Num() - 1; i++)
 	{
 		for (int j = 0; j < GM->WallList.Num(); j++)
@@ -219,7 +218,4 @@ void AWall::AssignFloorLevel()
 		}
 
 	}
-
-
-
 }
