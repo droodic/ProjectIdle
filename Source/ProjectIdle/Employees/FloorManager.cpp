@@ -24,10 +24,10 @@ void AFloorManager::BeginPlay() {
 void AFloorManager::Tick(float DeltaTime) {
 	if (AutoManaging) {
 		//Start idea gen state
-		if (IdeaGenerationState && !AI->IsMoving && !GM->OfficeDepartment->IsGenerating) {
+		if (IdeaGenerationState && !AI->IsMoving && !GM->OfficeDepartmentList[this->FloorLevel -1]->IsGenerating) {
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Manager gen idea");
 
-			GM->OfficeDepartmentList[0]->GenerateIdea();
+			GM->OfficeDepartmentList[this->FloorLevel - 1]->GenerateIdea();
 			//GM->OfficeDepartment->GenerateIdea();
 			GeneratingIdea = true;
 			IdeaGenerationState = false;
@@ -39,9 +39,9 @@ void AFloorManager::Tick(float DeltaTime) {
 			//MAKE THIS TIMER, CALLED VERY OFTEN, or find better way
 
 			//GM->MeetingDepartment->BackFromMeeting();
-			GM->MeetingDepartmentList[0]->BackFromMeeting();
+			GM->MeetingDepartmentList[this->FloorLevel - 1]->BackFromMeeting();
 			//if (GM->MeetingDepartment->CanReturn) {
-			if(GM->MeetingDepartmentList[0]->CanReturn){
+			if(GM->MeetingDepartmentList[this->FloorLevel - 1]->CanReturn){
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Manager backfrommeeting");
 
 				MeetingState = false;
@@ -73,7 +73,7 @@ void AFloorManager::AutomateTasks(bool PlayerInput) {
 		AutoManaging = true;
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Starting loop");
 		if (!IdeaGenerationState) {
-			if (FVector::Dist(GetActorLocation(), GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->ChairMesh->GetComponentLocation()) <= 115.0f) {
+			if (FVector::Dist(GetActorLocation(), GM->OfficeDepartmentList[this->FloorLevel - 1]->ChairMesh->GetComponentLocation()) <= 115.0f) {
 				AI->IsMoving = false;
 				IdeaGenerationState = true;
 			}

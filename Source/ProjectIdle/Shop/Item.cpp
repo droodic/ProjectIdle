@@ -29,13 +29,11 @@ void AItem::NotifyActorOnClicked(FKey ButtonPressed)
 
 		if (PreviewItemBP != nullptr)
 		{
-			APreviewItem* previewItemReference = GetWorld()->SpawnActor<APreviewItem>(PreviewItemBP, hitResult.Location, ItemMesh->GetRelativeRotation());
+			APreviewItem* previewItemReference = GetWorld()->SpawnActor<APreviewItem>(PreviewItemBP.Get(), hitResult.Location, ItemMesh->GetRelativeRotation());
 			previewItemReference->ItemReference = this;
 		}
 		else
-		{
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "PreviewItemBP is null");
-		}
 
 		Destroy();
 	}

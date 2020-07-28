@@ -45,7 +45,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float CurrIdeaProgress = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) float MaxIdeaProgress = 100;
 
-	UPROPERTY(EditAnywhere, Category = "Widgets") TArray<TSubclassOf<UUserWidget>> UserWidgets;
+	UPROPERTY(EditDefaultsOnly, Category = "Widgets") TArray<TSubclassOf<UUserWidget>> UserWidgets;
 
 	UPROPERTY() class UCeoDepMenuWidget* OfficeDepMenuWidget; 
 	UPROPERTY() class UIdeaBacklogWidget* BacklogWidget;
@@ -67,13 +67,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool StartingOffice;
 
-	UPROPERTY(EditAnywhere) class ACameraActor* SpawnItemCamera;
+	UPROPERTY(EditInstanceOnly, Category = "Floor") class ACameraActor* SpawnItemCamera;
 	//UPROPERTY(EditAnywhere) TArray<TSubclassOf<class ACameraActor>> SpawnItemCameraList;
 
-	UPROPERTY(EditAnywhere) class TSubclassOf<class APreviewItem> PreviewItemBP;
+	UPROPERTY(EditDefaultsOnly) class TSubclassOf<class APreviewItem> PreviewItemBP;
 
 	int PreviousMeshID = -1;
 	//int PreviousMeshID2 = -1;
+
+	UPROPERTY(EditAnywhere) bool IdeaCurrentFloor = false;
 
 private:
 	//bool bInRadius = false;

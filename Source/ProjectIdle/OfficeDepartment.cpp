@@ -377,7 +377,7 @@ void AOfficeDepartment::ReturnToOfficeDepartment()
 	bInSpawnCamera = false;
 	GM->InEditMode = false;
 
-	if (PlayersCamera)
+	if (PlayersCamera != nullptr)
 	{
 		UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(PlayersCamera);
 	}

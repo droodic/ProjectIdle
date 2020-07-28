@@ -163,41 +163,43 @@ void AMeetingDepartment::MoveToMeeting()
 		else if (!Dep->HasSupervisor) {
 			if (!MoreEmployeeThanChair) {
 				for (auto Emp : GM->EmployeeList) {
-					//if (Dep->DepRole == Emp->EmployeeRole) {
-					//if (Cast<AFloorManager>(Emp) && GM->OfficeDepartment->ManagerRef != nullptr && !OnlyOnce) {
-					if (Cast<AFloorManager>(Emp) && GM->OfficeDepartmentList[0]->ManagerRef != nullptr && !OnlyOnce) {
-						if (Emp->FloorLevel == 1) {
-							EmployeesAtMeetingList.Add(Cast<AEmployee>(GM->OfficeDepartmentList[0]->ManagerRef));
-							for (auto Chair : GM->MeetingChairList)
-							{
-								if (Chair->FloorLevel == 1 && !Chair->IsChairTaken)
+					if (Emp->FloorLevel == FloorLevel) {
+						//if (Dep->DepRole == Emp->EmployeeRole) {
+						//if (Cast<AFloorManager>(Emp) && GM->OfficeDepartment->ManagerRef != nullptr && !OnlyOnce) {
+						if (Cast<AFloorManager>(Emp) && GM->OfficeDepartmentList[GM->FLoorM->FloorLevel - 1]->ManagerRef != nullptr && !OnlyOnce) {
+							
+								EmployeesAtMeetingList.Add(Cast<AEmployee>(GM->OfficeDepartmentList[GM->FLoorM->FloorLevel - 1]->ManagerRef));
+								for (auto Chair : GM->MeetingChairList)
 								{
-									Emp->MoveEmployee(Chair->GetActorLocation());
-									Chair->IsChairTaken = true;
-									break;
+									if (Chair->FloorLevel == Emp->FloorLevel && !Chair->IsChairTaken)
+									{
+										Emp->MoveEmployee(Chair->GetActorLocation());
+										Chair->IsChairTaken = true;
+										break;
+									}
 								}
-							}
-							//Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
-							OnlyOnce = true;
+								//Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
+								OnlyOnce = true;
+							
 						}
-					}
-					else if (Cast<AFloorManager>(Emp) == nullptr) {
-						//EmployeesAtMeetingList.Add(Emp);
-						//Emp->IsAtMeeting = true;
-						if (Emp->FloorLevel == CurrentFloorLevel)
-						{
-							EmployeesAtMeetingList.Add(Emp);
-							Emp->IsAtMeeting = true;
-							for (auto Chair : GM->MeetingChairList)
-							{
-								if (Emp->FloorLevel == Chair->FloorLevel && !Chair->IsChairTaken)
+						else if (Cast<AFloorManager>(Emp) == nullptr) {
+							//EmployeesAtMeetingList.Add(Emp);
+							//Emp->IsAtMeeting = true;
+							//if (Emp->FloorLevel == CurrentFloorLevel)
+							//{
+								EmployeesAtMeetingList.Add(Emp);
+								Emp->IsAtMeeting = true;
+								for (auto Chair : GM->MeetingChairList)
 								{
-									Emp->MoveEmployee(Chair->GetActorLocation());
-									Chair->IsChairTaken = true;
-									break;
+									if (Emp->FloorLevel == Chair->FloorLevel && !Chair->IsChairTaken)
+									{
+										Emp->MoveEmployee(Chair->GetActorLocation());
+										Chair->IsChairTaken = true;
+										break;
+									}
 								}
-							}
-							//Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
+								//Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
+							//}
 						}
 					}
 					//Emp->MoveEmployee(FVector(0, 0, 0));

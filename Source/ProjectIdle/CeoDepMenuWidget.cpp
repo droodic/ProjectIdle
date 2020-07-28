@@ -119,13 +119,22 @@ void UCeoDepMenuWidget::CallArtistSupSpawn()
 
 void UCeoDepMenuWidget::CallFloorManagerSpawn()
 {
-	if (OfficeDepartment->ManagerRef == nullptr && GM->Money >= 100000) {
-
+	//if (OfficeDepartment->ManagerRef == nullptr && GM->Money >= 100000) {
+	  if(GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->ManagerRef == nullptr && GM->Money >= 100000) {
 		GM->Money -= 100000;
 		//ActivateWorkstation(ERole::Artist, EPosition::FloorManager, true);
 		//GM->ArtistDepartment->HasSupervisor = true;
 		OfficeDepartment->GenerateActor(5, ERole::Management);
-		Hire_FloorManager_Btn->SetIsEnabled(false);
+		for (auto Office : GM->OfficeDepartmentList)
+		{
+			Office->OfficeDepMenuWidget->Hire_FloorManager_Btn->SetIsEnabled(false);
+		}
+
+		for (auto OfficeOffline : GM->UnassignedOfficeDepartmentList)
+		{
+			OfficeOffline->OfficeDepMenuWidget->Hire_FloorManager_Btn->SetIsEnabled(false);
+		}
+		//Hire_FloorManager_Btn->SetIsEnabled(false);
 		//OfficeDepartment->GetDepartmentUIValues();
 	}
 }
@@ -223,7 +232,7 @@ void UCeoDepMenuWidget::ClearFinishedGames()
 
 void UCeoDepMenuWidget::AddItemToInventory(AItem* item)
 {
-	bool bInInventory = false;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, "Once from function");
 
 	UInventoryButton* newItemButton = CreateWidget<UInventoryButton>(this, InventoryButtonWidgetClass);
 
@@ -233,7 +242,31 @@ void UCeoDepMenuWidget::AddItemToInventory(AItem* item)
 
 	if (item->ItemSubCategory == ESubCategory::Other)
 	{
+		TMap<AItem*, int> itemsInInventory;
+
 		if (OfficeDecoration_WB->GetChildrenCount() > 0)
+		{
+			for (auto items : OfficeDecoration_WB->GetAllChildren())
+			{
+				auto itemInButton = Cast<UInventoryButton>(items);
+				itemsInInventory.Add(itemInButton->Item, itemInButton->Item->ItemCount);
+			}
+		}
+		else
+		{
+			newItemButton->Item->ItemCount = item->ItemButton->ItemCount;
+
+			if (newItemButton->Item->ItemCount > 1)
+			{
+				newItemButton->ItemCount_T->SetText(FText::FromString(FString::FromInt(newItemButton->Item->ItemCount)));
+			}
+
+			OfficeDecoration_WB->AddChildToWrapBox(newItemButton);
+
+			return;
+		}
+
+		if (itemsInInventory.Contains(item))
 		{
 			for (int i = 0; i < OfficeDecoration_WB->GetChildrenCount(); i++)
 			{
@@ -241,27 +274,11 @@ void UCeoDepMenuWidget::AddItemToInventory(AItem* item)
 
 				if (item->ItemID == button->Item->ItemID)
 				{
+					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, "Once from loop, found id");
+
 					button->Item->ItemCount += item->ItemButton->ItemCount;
 					button->ItemCount_T->SetText(FText::FromString(FString::FromInt(button->Item->ItemCount)));
-					break;
-					bInInventory = true;
 				}
-				else
-				{
-					bInInventory = false;
-				}
-
-			}
-			if (!bInInventory)
-			{
-				newItemButton->Item->ItemCount = item->ItemButton->ItemCount;
-
-				if (newItemButton->Item->ItemCount > 1)
-				{
-					newItemButton->ItemCount_T->SetText(FText::FromString(FString::FromInt(newItemButton->Item->ItemCount)));
-				}
-
-				OfficeDecoration_WB->AddChildToWrapBox(newItemButton);
 			}
 		}
 		else
