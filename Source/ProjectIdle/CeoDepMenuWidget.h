@@ -33,6 +33,13 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_ProgSup_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* Hire_ArtistSup_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* Total_Artist_Btn;
+
+	//Load Game Notificator Bindings
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UCanvasPanel* LoadGameCanvas;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_CompanyName;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_TimePast;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* T_NumIdeas;
+
 	UPROPERTY(meta = (BindWidget)) class UButton* EditPlacedItems_Btn;
 	UPROPERTY(meta = (BindWidget)) class UButton* Return_Btn;
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* IdeaGeneratedMoney_T;
@@ -63,6 +70,7 @@ public:
 	UFUNCTION() void ActivateWorkstation(enum ERole StationRole, enum EPosition OwnerPosition, bool IsSupervisor);
 	UFUNCTION() void ClearFinishedGames();
 	UFUNCTION() void CreateDepartment();
+	//UFUNCTION() void Display
 
 private:
 	UFUNCTION() void CallHiring();
