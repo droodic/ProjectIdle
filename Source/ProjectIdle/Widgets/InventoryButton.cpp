@@ -57,13 +57,19 @@ void UInventoryButton::OnClicked()
 
 				for (int i = 0; i < GameManager->FloorList.Num(); i++)
 				{
-					GameManager->FloorList[i]->UpdateWallMaterial(Item);
+					GameManager->FloorList[i]->UpdateMaterial(Item);
 				}
 			}
 			else if (Item->ItemSubCategory == ESubCategory::Wall)
 			{
 				//GameManager->OfficeDepartment->OfficeDepMenuWidget->CurrentWallMat_I->SetBrushFromTexture(Item->ItemImage);
 				GameManager->OfficeDepartmentList[GameManager->Character->CurrentFloor - 1]->OfficeDepMenuWidget->CurrentWallMat_I->SetBrushFromTexture(Item->ItemImage);
+
+				for (int i = 0; i < GameManager->WallList.Num(); i++)
+				{
+					GameManager->WallList[i]->UpdateMaterial(Item);
+				}
+
 			}
 			break;
 		case ECategory::OfficeDecorations:

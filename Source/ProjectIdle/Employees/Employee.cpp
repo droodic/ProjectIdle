@@ -101,8 +101,6 @@ void AEmployee::BeginPlay()
 	//GM->Wall->AssignFloorLevel();
 	GM->TotalSalary += Salary;
 
-
-
 	if (Position != EPosition::Supervisor && Position != EPosition::FloorManager) {
 		//GM->WorkStation->UpdateWorkstationPosition();
 		for (auto Workstation : GM->WorkstationList) {
@@ -169,7 +167,6 @@ void AEmployee::NotifyActorOnClicked(FKey ButtonPressed)
 {
 	//Migrated to Interact event
 }
-
 
 // Called every frame
 void AEmployee::Tick(float DeltaTime)
@@ -270,10 +267,7 @@ void AEmployee::OnInteract()
 		HelpWidget->SetVisibility(false);
 		Cast<AProjectIdleCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0))->PlayHelpAnim();
 	}
-
 }
-
-
 
 void AEmployee::WorkloadProgress(float Multiplier) {
 
@@ -359,7 +353,6 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 				}
 			}
 		}
-
 	}
 	if (CurrentWorkload <= 0) { //Change to condition checking if all other employee are also done, then prepare to give money
 
@@ -581,6 +574,3 @@ void AEmployee::AssignSupervisor()
 //void AEmployee::ActorSaveDataSaved()
 //{
 //}
-
-
-

@@ -127,7 +127,7 @@ void UGameManager::LoadGame(FString SaveFile)
 
 		if (SaveGameInstance->FloorMaterialID == Floor.GetDefaultObject()->ItemID) {
 			for (auto F : FloorList) {
-				F->UpdateWallMaterial(Floor.GetDefaultObject());
+				F->UpdateMaterial(Floor.GetDefaultObject());
 			}
 			//FloorList[i]->UpdateWallMaterial(Floor);
 		}

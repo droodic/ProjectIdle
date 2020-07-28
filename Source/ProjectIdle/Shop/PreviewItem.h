@@ -37,5 +37,4 @@ protected:
 
 public:	
 	void Tick(float DeltaTime) override;
-
 };
