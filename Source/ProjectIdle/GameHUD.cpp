@@ -52,6 +52,13 @@ void AGameHUD::ShowEmployeeSheet(class AEmployee* employee)
 		EmpSheetWidget->EmployeeRole_T->Text = EmpSheetWidget->RoleToText(employee->EmployeeRole);
 		EmpSheetWidget->EmployeePosition = employee->Position;
 		EmpSheetWidget->Salary = employee->Salary;
+		//employee->FaceCamera->CaptureScene();
+		if (!employee->FaceCamera->IsActive()) {
+			employee->FaceCamera->Activate();
+			employee->FaceCamera->SetVisibility(true);
+		}
+
+		//EmpSheetWidget->FaceImage->SetBrushFromTexture(employee->FaceCamera->TextureTarget);
 
 		if (Cast<AFloorManager>(EmpSheetWidget->Employee) == nullptr && Cast<ASupervisor>(EmpSheetWidget->Employee) == nullptr) {
 			EmpSheetWidget->Promote_Btn->SetVisibility(ESlateVisibility::Visible);
@@ -67,7 +74,6 @@ void AGameHUD::ShowEmployeeSheet(class AEmployee* employee)
 			EmpSheetWidget->Promote_Btn->SetVisibility(ESlateVisibility::Hidden);
 			EmpSheetWidget->Fire_Btn->SetVisibility(ESlateVisibility::Hidden);
 		}
-
 
 		if (employee->HasBeenEvaluated) {
 			EmpSheetWidget->Performance_Box->SetVisibility(ESlateVisibility::Visible);

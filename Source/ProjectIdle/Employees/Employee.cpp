@@ -42,6 +42,9 @@ AEmployee::AEmployee()
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("RangeBox"));
 	CollisionBox->AttachTo(RootComponent);
 	CollisionBox->SetBoxExtent(FVector(350, 350, 350));
+
+	FaceCamera = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("FaceCamera")); //Maybe make Employee BP to set this up, because if later Employee classes emerge if we
+	FaceCamera->AttachTo(GetMesh());
 }
 
 // Called when the game starts or when spawned
@@ -231,6 +234,10 @@ void AEmployee::OnInteract()
 			if (GM->CurrentWidgetInDisplay)
 			{
 				GM->CurrentWidgetInDisplay->RemoveFromViewport();
+				if (FaceCamera->IsActive()) {
+					FaceCamera->SetActive(false);
+					FaceCamera->SetVisibility(false);
+				}
 			}
 
 			if (UI != nullptr && !IsDisplaying)
@@ -246,7 +253,14 @@ void AEmployee::OnInteract()
 			else if (IsDisplaying)
 			{
 				IsDisplaying = false;
+
+				if (FaceCamera->IsActive()) {
+					FaceCamera->SetActive(false);
+					FaceCamera->SetVisibility(false);
+				}
+
 				UI->EmpSheetWidget->RemoveFromViewport();
+
 			}
 		}
 	}
@@ -391,13 +405,16 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 			if (GM->FloorOneWorkDone == TotalPerFloor)
 			{
 				GM->FloorOneWorkDone = 0;
+				GM->OfficeDepartmentList[0]->IdeaCurrentFloor = false;
 			}
 			if (GM->FloorTwoWorkDone == TotalPerFloor)
 			{
 				GM->FloorTwoWorkDone = 0;
+				GM->OfficeDepartmentList[1]->IdeaCurrentFloor = false;
 			}
 
 			GM->IdeaInProduction = false;
+
 			GM->OfficeDepartmentList[this->FloorLevel - 1]->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartmentList[this->FloorLevel - 1]->CurrentIdea);
 			//GM->OfficeDepartmentList[this->FloorLevel - 1]->OfficeDepMenuWidget->GetFinishedIdea(GM->MeetingDepartment->CurrentIdea);
 			UI->MoneyWidget->ShowANotification("GAME PRODUCTION FINISHED!");
@@ -432,6 +449,11 @@ void AEmployee::NotifyActorEndOverlap(AActor* OtherActor)
 			UI->EmpSheetWidget->RemoveFromViewport();
 			GM->IsWidgetInDisplay = false;
 			IsDisplaying = false;
+
+		}
+		if (FaceCamera->IsActive()) {
+			FaceCamera->SetActive(false);
+			FaceCamera->SetVisibility(false);
 		}
 	}
 }
@@ -516,6 +538,11 @@ void AEmployee::FiredFinal()
 	}
 	GM->EmployeeList.Remove(this);
 	UI->CloseEmployeeSheet();
+	if (FaceCamera->IsActive()) {
+		FaceCamera->SetActive(false);
+		FaceCamera->SetVisibility(false);
+	}
+
 	this->Destroy();
 }
 
