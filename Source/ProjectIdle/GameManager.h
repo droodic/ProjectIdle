@@ -79,6 +79,7 @@ public:
 	UPROPERTY(BlueprintReadWrite) int FloorTwoWorkDone = 0;
 
 	int FloorMaterialID = 0;
+	int WallMaterialID = 0;
 
 	bool IdeaInProduction = false;
 	bool IsWidgetInDisplay = false;

@@ -75,12 +75,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION() void UpdateWallMaterial(AItem* FloorItem);
-	UFUNCTION() void UpdateWallMaterialTest();
+	UFUNCTION() void UpdateMaterial(AItem* floorMaterial);
 	UFUNCTION() void ActivateWallAndFloor();
 	UFUNCTION() void DeactivateWallAndFloor();
 	UFUNCTION() void EnableObject(bool Enabled);
 	UFUNCTION() void AssignFloorLevel();
-
-
 };

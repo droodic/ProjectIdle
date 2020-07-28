@@ -26,7 +26,8 @@ ADoor::ADoor()
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("RangeBox"));
 	CollisionBox->AttachTo(DoorMesh);
 
-
+	SpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("SpawnPoint"));
+	SpawnPoint->AttachToComponent(Root, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 // Called when the game starts or when spawned
@@ -46,13 +47,6 @@ void ADoor::BeginPlay()
 	//DoorLocation = this->GetActorLocation();
 }
 
-// Called every frame
-void ADoor::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
 //Fire Employee
 void ADoor::NotifyActorBeginOverlap(AActor* OtherActor)
 {
@@ -67,17 +61,16 @@ void ADoor::NotifyActorBeginOverlap(AActor* OtherActor)
 
 	if (Player != nullptr && GM->IsFloorUpgraded)
 	{
-		FVector NewVector = FVector(0, -100, 100);
 		if (Player->CurrentFloor == 1)
 		{
-			Player->SetActorLocation(GM->DoorList[1]->GetActorLocation() + NewVector);
+			Player->SetActorLocation(GM->DoorList[1]->SpawnPoint->GetComponentLocation());
 			Player->CurrentFloor = 2;
 			return;
 		}
 
 		if (Player->CurrentFloor == 2)
 		{
-			Player->SetActorLocation(GM->DoorList[0]->GetActorLocation() + NewVector);
+			Player->SetActorLocation(GM->DoorList[0]->SpawnPoint->GetComponentLocation());
 			Player->CurrentFloor = 1;
 			return;
 		}

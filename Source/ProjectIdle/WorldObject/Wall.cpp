@@ -15,7 +15,7 @@
 // Sets default values
 AWall::AWall()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
@@ -35,7 +35,7 @@ void AWall::BeginPlay()
 	EnableObject(IsEnabled);
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->Wall = this;
-	
+
 	if (this->Type == ObjectType::Wall)
 	{
 		GM->WallList.Add(this);
@@ -56,20 +56,20 @@ void AWall::BeginPlay()
 void AWall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
-void AWall::UpdateWallMaterial(AItem* FloorItem)
+void AWall::UpdateMaterial(AItem* itemMaterial)
 {
-	//Mesh->SetMaterial(0, NewMaterial);
-	Mesh->SetMaterial(0, FloorItem->Material->GetMaterial());
-	GM->FloorMaterialID = FloorItem->ItemID;
-}
+	Mesh->SetMaterial(0, itemMaterial->Material->GetMaterial());
 
-void AWall::UpdateWallMaterialTest()
-{
-	Mesh->SetMaterial(0, Material);
-	Mesh->SetMaterial(1, Material);
+	switch (itemMaterial->ItemSubCategory)
+	{
+	case ESubCategory::Floor:
+		GM->FloorMaterialID = itemMaterial->ItemID;
+		break;
+	case ESubCategory::Wall:
+		GM->WallMaterialID = itemMaterial->ItemID;
+	}
 }
 
 void AWall::ActivateWallAndFloor()
@@ -121,7 +121,7 @@ void AWall::DeactivateWallAndFloor()
 void AWall::AssignFloorLevel()
 {
 
-	for (int i = 0; i <= GM->FloorList.Num() -1; i++)
+	for (int i = 0; i <= GM->FloorList.Num() - 1; i++)
 	{
 		for (int j = 0; j < GM->WallList.Num(); j++)
 		{
@@ -167,7 +167,7 @@ void AWall::AssignFloorLevel()
 					Workstation->FloorLevel = GM->FloorList[i]->FloorLevel;
 				}
 			}
-			
+
 		}
 
 		for (auto Door : GM->DoorList)

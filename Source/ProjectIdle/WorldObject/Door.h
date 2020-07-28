@@ -24,6 +24,7 @@ public:
 	UPROPERTY() USceneComponent* Root;
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* DoorMesh;
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* DoorFrameMesh;
+	UPROPERTY(VisibleAnywhere) USceneComponent* SpawnPoint;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool StartingDoor;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
@@ -34,7 +35,5 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 };
