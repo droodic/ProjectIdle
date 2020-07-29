@@ -13,6 +13,8 @@ AItem::AItem()
 
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
 	RootComponent = ItemMesh;
+
+	AutoReceiveInput = EAutoReceiveInput::Player0;
 }
 
 void AItem::BeginPlay()
@@ -33,10 +35,9 @@ void AItem::NotifyActorOnClicked(FKey ButtonPressed)
 			previewItemReference->ItemReference = this;
 		}
 		else
-		{
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "PreviewItemBP is null");
-		}
 
+		ItemMesh->SetStaticMesh(nullptr);
 		Destroy();
 	}
 	else

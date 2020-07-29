@@ -127,7 +127,7 @@ void UGameManager::LoadGame(FString SaveFile)
 
 		if (SaveGameInstance->FloorMaterialID == Floor.GetDefaultObject()->ItemID) {
 			for (auto F : FloorList) {
-				F->UpdateWallMaterial(Floor.GetDefaultObject());
+				F->UpdateMaterial(Floor.GetDefaultObject());
 			}
 			//FloorList[i]->UpdateWallMaterial(Floor);
 		}
@@ -145,6 +145,12 @@ void UGameManager::LoadGame(FString SaveFile)
 		int Multiplier = 1; //SaveGameInstance->NumEmployees / 8;   numEmployees not loading, find out why
 		IdeasToGenerate /= 180 * (Multiplier); // 3 minutes per idea generate
 		OfficeDepartment->OfficeDepMenuWidget->ClearFinishedGames();
+		
+		OfficeDepartment->OfficeDepMenuWidget->T_TimePast->SetText(FText::AsTimespan(Difference));
+		OfficeDepartment->OfficeDepMenuWidget->T_NumIdeas->SetText(FText::FromString(FString::FromInt(IdeasToGenerate)));
+
+		OfficeDepartment->OfficeDepMenuWidget->LoadGameCanvas->SetVisibility(ESlateVisibility::Visible);
+
 		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Loading Ideas generated since last save" + FString::FromInt(Difference.GetTotalSeconds()));
 		for (int i = 0; i < IdeasToGenerate; i++) {
 			//Generate Idea in Publish List

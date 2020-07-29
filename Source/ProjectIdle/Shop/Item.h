@@ -51,13 +51,13 @@ public:
 
 	UPROPERTY(EditDefaultsOnly) class UTexture2D* ItemImage;
 
-	UPROPERTY(BlueprintReadWrite) class TSubclassOf<AItem> ItemBP;
+	class TSubclassOf<AItem> ItemBP;
 	class UItemButton* ItemButton;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite) class TSubclassOf<class APreviewItem> PreviewItemBP;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite) class UGameManager* GameManager;
 private:
+	class UGameManager* GameManager;
 
 private:
 	void BeginPlay() override;

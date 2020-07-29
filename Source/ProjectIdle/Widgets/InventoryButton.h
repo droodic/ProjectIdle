@@ -16,7 +16,6 @@ class PROJECTIDLE_API UInventoryButton : public UUserWidget
 
 public:
 	UInventoryButton(const FObjectInitializer& ObjectInitializer);
-	class UGameManager* GameManager;
 	AWorkstation* CurrentStation;
 
 	AItem* Item;
@@ -26,6 +25,9 @@ public:
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* ItemCount_T;
 
 	UPROPERTY(EditAnywhere) TSubclassOf<class AItem> ItemBP;
+
+private:
+	class UGameManager* GameManager;
 
 private:
 	void NativeConstruct() override;

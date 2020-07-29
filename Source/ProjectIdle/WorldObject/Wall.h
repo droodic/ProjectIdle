@@ -6,8 +6,6 @@
 #include "GameFramework/Actor.h"
 #include "Wall.generated.h"
 
-
-
 UENUM(Meta = (ScriptName = "ObjectType"))
 enum class ObjectType : uint8
 {
@@ -85,12 +83,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION() void UpdateWallMaterial(AItem* FloorItem);
-	UFUNCTION() void UpdateWallMaterialTest();
+	UFUNCTION() void UpdateMaterial(AItem* floorMaterial);
 	UFUNCTION() void ActivateWallAndFloor();
 	UFUNCTION() void DeactivateWallAndFloor();
 	UFUNCTION() void EnableObject(bool Enabled);
 	UFUNCTION() void AssignFloorLevel();
-
-
 };
