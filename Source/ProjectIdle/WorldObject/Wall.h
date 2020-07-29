@@ -69,6 +69,10 @@ public:
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) int FloorArtistCount = 0;
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) int FloorProgrammerCount = 0;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool ArtistSupOnCurrentFloor = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool ProgrammerSupOnCurrentFloor = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool SupOnCurrentFloor = false;
+
 
 
 

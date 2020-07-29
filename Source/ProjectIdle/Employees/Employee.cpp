@@ -563,7 +563,7 @@ void AEmployee::AssignSupervisor()
 {
 	for (int i = 0; i < GM->WorkstationList.Num(); i++)
 	{
-		if (GM->WorkstationList[i]->StationRole == this->EmployeeRole && GM->WorkstationList[i]->StationOwnerPosition == this->Position)
+		if (GM->WorkstationList[i]->StationRole == this->EmployeeRole && GM->WorkstationList[i]->StationOwnerPosition == this->Position && GM->WorkstationList[i]->FloorLevel == this->FloorLevel)
 		{
 			this->StartPosition = GM->WorkstationList[i]->StationLocation;
 			this->WorkstationRef = GM->WorkstationList[i];
