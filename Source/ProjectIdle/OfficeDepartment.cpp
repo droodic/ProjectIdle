@@ -420,8 +420,6 @@ void AOfficeDepartment::GetRandomMesh(AEmployee* EmployeeRef) {
 		EmployeeRef->GetGendreName(1);
 		PreviousMeshID = Random;
 	}
-
-
 }
 
 //Future transition 
@@ -469,40 +467,39 @@ void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 	}
 }
 
-//AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
-//{
-//	//GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Orange, "Spawning Saved Actor");
-//
-//	UWorld* World = GetWorld();
-//
-//	FVector SpawnLocation;
-//	FRotator SpawnRotation;
-//	FActorSpawnParameters SpawnParameters;
-//	SpawnParameters.Owner = this;
-//	SpawnParameters.Instigator = GetInstigator();
-//	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-//
-//	FVector NewVector = FVector(0, -50, 0);
-//	SpawnLocation = FVector(0, 0, 0); //GM->Door->GetActorLocation() + NewVector; 
-//	SpawnRotation = FRotator::ZeroRotator;
-//
-//	auto Emp = World->SpawnActor<AEmployee>(ClassRef, SpawnLocation, SpawnRotation, SpawnParameters);
-//	if (Cast<ASupervisor>(Emp) != nullptr) {
-//		Cast<ASupervisor>(Emp)->InitSupervisor(Emp->EmployeeRole); //quick workaround annoying beginplay pedantics of spawning
-//		Emp->AssignSupervisor();
-//		GetDepartmentUIValues();
-//	}
-//
-//	//GetRandomMesh(Emp)
-//	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::White, "Loading Emp");
-//
-//	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::White, FString::FromInt(Emp->MeshID));
-//	Emp->GetMesh()->SetSkeletalMesh(EmployeeMeshList[Emp->MeshID]);
-//
-//	GetDepartmentUIValues();
-//	return Emp;
-//
-//}
+/*AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
+{
+	//GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Orange, "Spawning Saved Actor");
+
+	UWorld* World = GetWorld();
+
+	FVector SpawnLocation;
+	FRotator SpawnRotation;
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.Owner = this;
+	SpawnParameters.Instigator = GetInstigator();
+	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+	FVector NewVector = FVector(0, -50, 0);
+	SpawnLocation = FVector(0, 0, 0); //GM->Door->GetActorLocation() + NewVector; 
+	SpawnRotation = FRotator::ZeroRotator;
+
+	auto Emp = World->SpawnActor<AEmployee>(ClassRef, SpawnLocation, SpawnRotation, SpawnParameters);
+	if (Cast<ASupervisor>(Emp) != nullptr) {
+		Cast<ASupervisor>(Emp)->InitSupervisor(Emp->EmployeeRole); //quick workaround annoying beginplay pedantics of spawning
+		Emp->AssignSupervisor();
+		GetDepartmentUIValues();
+	}
+
+	//GetRandomMesh(Emp)
+	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::White, "Loading Emp");
+
+	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::White, FString::FromInt(Emp->MeshID));
+	Emp->GetMesh()->SetSkeletalMesh(EmployeeMeshList[Emp->MeshID]);
+
+	GetDepartmentUIValues();
+	return Emp;
+}*/
 
 AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
 {
@@ -527,9 +524,7 @@ AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
 		GetDepartmentUIValues();
 	}
 
-
 	return ActorRef;
-
 }
 
 void AOfficeDepartment::PopulateIdeaListFromSave(Idea* Idea) {

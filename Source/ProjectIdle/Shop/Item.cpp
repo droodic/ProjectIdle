@@ -9,8 +9,6 @@
 // Sets default values
 AItem::AItem()
 {
-	PrimaryActorTick.bCanEverTick = true;
-
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
 	RootComponent = ItemMesh;
 
@@ -19,6 +17,8 @@ AItem::AItem()
 
 void AItem::BeginPlay()
 {
+	Super::BeginPlay();
+
 	GameManager = GetWorld()->GetGameInstance<UGameManager>();
 }
 
@@ -37,7 +37,6 @@ void AItem::NotifyActorOnClicked(FKey ButtonPressed)
 		else
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "PreviewItemBP is null");
 
-		ItemMesh->SetStaticMesh(nullptr);
 		Destroy();
 	}
 	else

@@ -54,10 +54,12 @@ public:
 	class TSubclassOf<AItem> ItemBP;
 	class UItemButton* ItemButton;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite) class TSubclassOf<class APreviewItem> PreviewItemBP;
+	UPROPERTY(EditDefaultsOnly) class TSubclassOf<class APreviewItem> PreviewItemBP;
 
 private:
 	class UGameManager* GameManager;
+
+	bool bItemInEditMode = false;
 
 private:
 	void BeginPlay() override;

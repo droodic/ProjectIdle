@@ -237,6 +237,7 @@ void UCeoDepMenuWidget::AddItemToInventory(AItem* item)
 	UInventoryButton* newItemButton = CreateWidget<UInventoryButton>(this, InventoryButtonWidgetClass);
 
 	newItemButton->Item = item;
+	newItemButton->Item->ItemBP = item->ItemBP;
 	newItemButton->Item_I->SetBrushFromTexture(item->ItemImage);
 	newItemButton->ItemName_T->SetText(FText::FromString(item->ItemName));
 
