@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Employees/Employee.h"
+#include "GameManager.h"
 #include "GameFramework/SaveGame.h"
 #include "GameSave.generated.h"
 
@@ -20,6 +21,13 @@ public:
 	UPROPERTY(EditAnywhere) int NumEmployees;
 	UPROPERTY(EditAnywhere) FDateTime SavedTime;
 	UPROPERTY(EditAnywhere) FVector Saved_PlayerLocation;
+
+	UPROPERTY(EditAnywhere) CRating CompanyRating;
+	UPROPERTY(EditAnywhere) int CompanyLevel;
+	UPROPERTY(EditAnywhere) float CurrentExp;
+	UPROPERTY(EditAnywhere) float MaxExp;
+
+
 	UPROPERTY(EditAnywhere) int Saved_Money;
 	UPROPERTY(EditAnywhere) int FloorMaterialID;
 	UPROPERTY(EditAnywhere) TArray<class AItem*> InventoryList;

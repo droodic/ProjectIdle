@@ -44,10 +44,15 @@ void UGameManager::SaveGame(FString SaveFile)
 		SaveGameInstance->IdeaList.Add(Idea);
 	}
 	SaveGameInstance->SavedTime = FDateTime::Now();
+
+	//Save Company Rating / Level
+	SaveGameInstance->CompanyLevel = CompanyLevel;
+	SaveGameInstance->CurrentExp = CurrentExp;
+	SaveGameInstance->MaxExp = MaxExp;
+
+	//Save Floor Material
 	SaveGameInstance->FloorMaterialID = FloorMaterialID;
-	GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Floor mat ID: " + FString::FromInt(SaveGameInstance->FloorMaterialID));
 	SaveGameInstance->IsFloorUpgraded = IsFloorUpgraded;
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, FString::FromInt(IsFloorUpgraded));
 
 
 	if (OfficeDepartment->ManagerRef != nullptr) {
@@ -55,7 +60,6 @@ void UGameManager::SaveGame(FString SaveFile)
 		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Saving manager");
 		SaveGameInstance->AutoManaging = OfficeDepartment->ManagerRef->AutoManaging;
 		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "numemployeee saved: " + FString::FromInt(SaveGameInstance->NumEmployees));
-
 	}
 
 	//SaveGameInstance->IdeaInProduction = IdeaInProduction;
@@ -121,6 +125,10 @@ void UGameManager::LoadGame(FString SaveFile)
 		OfficeDepartment->OfficeDepMenuWidget->CreateDepartment();
 	}
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, FString::FromInt(IsFloorUpgraded));
+
+	CompanyLevel = SaveGameInstance->CompanyLevel;
+	CurrentExp = SaveGameInstance->CurrentExp;
+	MaxExp = SaveGameInstance->MaxExp;
 
 	//GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Floor mat ID: " + FString::FromInt(SaveGameInstance->FloorMaterialID));
 	for (auto Floor : OfficeDepartment->FloorMaterialList) {

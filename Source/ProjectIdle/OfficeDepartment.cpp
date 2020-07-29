@@ -67,6 +67,7 @@ void AOfficeDepartment::BeginPlay()
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->OfficeDepartment = this;
+	GM->CompanyRating = CRating::Indie;
 	if (StartingOffice)
 	{
 		GM->OfficeDepartmentList.Add(this);
@@ -233,6 +234,23 @@ void AOfficeDepartment::CallMeeting()
 	*/
 }
 
+
+void AOfficeDepartment::GiveCompanyExperience() {
+	auto Exp = UKismetMathLibrary::RandomFloatInRange(25.f, 35.f);
+	GM->CurrentExp += Exp;
+
+	if (GM->CurrentExp >= GM->MaxExp) { //Level up
+		GM->CompanyLevel++;
+		GM->CurrentExp = 0;
+		GM->MaxExp += 100 * (2.5f + GM->CompanyLevel);
+	}
+
+	//
+	//if (GM->CompanyLevel % 2 == 0 && GM->CompanyRating == CRating::Indie) {
+	//	GM->CompanyRating = CRating::Startup;
+	//}
+}
+
 void AOfficeDepartment::PublishGame()
 {
 	FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->IsPublished = true;
@@ -243,7 +261,7 @@ void AOfficeDepartment::PublishGame()
 	UI->MoneyWidget->ShowANotification(FString::FromInt(successChance) + " Chance");
 	if (successChance >= rateRolled)
 	{
-		auto moneyGenerated = UKismetMathLibrary::RandomIntegerInRange(15000, 25000);
+		auto moneyGenerated = (UKismetMathLibrary::RandomIntegerInRange(3000, 7500) * (GM->CompanyLevel + 1));
 		if (GM->Money >= INT32_MAX || GM->Money + moneyGenerated > INT32_MAX)
 		{
 			UI->MoneyWidget->ShowANotification("MAX MONEY");
@@ -278,6 +296,8 @@ void AOfficeDepartment::PublishGame()
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->PublishedColor = FLinearColor::Red;
 		OfficeDepMenuWidget->IdeaGeneratedMoney_T->SetText(FText::AsCurrency(moneyGenerated));
 	}
+
+	GiveCompanyExperience();
 }
 
 void AOfficeDepartment::NotifyActorOnClicked(FKey ButtonPressed)

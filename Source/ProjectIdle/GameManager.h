@@ -17,8 +17,19 @@
 #include "GameManager.generated.h"
 
 /**
- * 
+ *
  */
+UENUM(Meta = (ScriptName = "Rating"))
+enum class CRating : uint8
+{
+	Indie				   UMETA(DisplayName = "Indie"),
+	Startup				   UMETA(DisplayName = "Startup"),
+	C			           UMETA(DisplayName = "C"),
+	B				       UMETA(DisplayName = "B"),
+	A			           UMETA(DisplayName = "A"),
+	AAA			           UMETA(DisplayName = "AAA"),
+};
+
 UCLASS()
 class PROJECTIDLE_API UGameManager : public UGameInstance
 {
@@ -42,6 +53,11 @@ public:
 	UPROPERTY(BlueprintReadWrite) TArray<class AMeetingDepartment*> UnassignedMeetingDepartmentList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AElevator*> ElevatorList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AElevator*> UnassignedElevatorList;
+
+	UPROPERTY(BlueprintReadWrite) CRating CompanyRating;
+	UPROPERTY(BlueprintReadWrite) int CompanyLevel;
+	UPROPERTY(BlueprintReadWrite) float CurrentExp = 0.f;
+	UPROPERTY(BlueprintReadWrite) float MaxExp = 100.f;
 
 	UPROPERTY(BlueprintReadWrite) int NumOfProgrammers;
 	UPROPERTY(BlueprintReadWrite) int NumOfArtists;
@@ -100,6 +116,6 @@ public:
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
-	TArray<FString> SaveFileNames;
+		TArray<FString> SaveFileNames;
 	TArray<uint8> BinaryData;
 };

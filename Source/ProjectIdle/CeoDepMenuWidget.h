@@ -16,7 +16,7 @@ class PROJECTIDLE_API UCeoDepMenuWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	class UGameManager* GM;
+	UPROPERTY(BlueprintReadWrite) class UGameManager* GM;
 
 	UPROPERTY(BlueprintReadWrite) class AOfficeDepartment* OfficeDepartment;
 
