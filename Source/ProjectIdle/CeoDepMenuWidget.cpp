@@ -423,7 +423,6 @@ void UCeoDepMenuWidget::CreateDepartment()
 			CEO->OfficeDepMenuWidget->CreateDep_Btn->SetIsEnabled(false);
 		}
 
-
-
+		OfficeDepartment->GiveCompanyExperience(100.f);
 	}
 }
