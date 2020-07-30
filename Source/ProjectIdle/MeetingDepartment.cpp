@@ -164,12 +164,14 @@ void AMeetingDepartment::MoveToMeeting()
 						{
 							if (Dep->SupervisorRef->FloorLevel == GM->CurrentOfficeFloor)
 							{
+								Dep->SupervisorRef->IsAtMeeting = true;
+								//EmployeesAtMeetingList.Add(Cast<AEmployee>(Dep->SupervisorRef));
 								for (auto Chair : GM->MeetingChairList)
 								{
 									if (Chair->FloorLevel == Dep->SupervisorRef->FloorLevel && !Chair->IsChairTaken)
 									{
 										Dep->SupervisorRef->MoveEmployee(Chair->GetActorLocation());
-										EmployeesAtMeetingList.Add(Dep->SupervisorRef);
+										EmployeesAtMeetingList.Add(Cast<AEmployee>(Dep->SupervisorRef));
 										Chair->IsChairTaken = true;
 										break;
 									}
@@ -178,7 +180,10 @@ void AMeetingDepartment::MoveToMeeting()
 						}
 					}
 
-					if (GM->OfficeDepartmentList[GM->CurrentOfficeFloor - 1]->ManagerRef == nullptr) {
+	
+
+
+					 if (GM->OfficeDepartmentList[GM->CurrentOfficeFloor - 1]->ManagerRef == nullptr) {
 						for (auto Dep : GM->DepartmentList)
 						{
 							if (Dep->SupervisorRef->FloorLevel == GM->CurrentOfficeFloor)

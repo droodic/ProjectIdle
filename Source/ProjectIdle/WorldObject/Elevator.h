@@ -23,6 +23,7 @@ public:
 	UPROPERTY() FVector ElevatorLocation;
 	UPROPERTY() USceneComponent* Root;
 	UPROPERTY(VisibleAnywhere) UStaticMeshComponent* ElevatorMesh;
+	UPROPERTY(VisibleAnywhere) USceneComponent* SpawnPoint;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool StartingElevator;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Floor") int FloorLevel = -1;
