@@ -49,6 +49,7 @@ void UGameManager::SaveGame(FString SaveFile)
 	SaveGameInstance->CompanyLevel = CompanyLevel;
 	SaveGameInstance->CurrentExp = CurrentExp;
 	SaveGameInstance->MaxExp = MaxExp;
+	SaveGameInstance->CompanyRating = CompanyRating;
 
 	//Save Floor Material
 	SaveGameInstance->FloorMaterialID = FloorMaterialID;
@@ -142,6 +143,7 @@ void UGameManager::LoadGame(FString SaveFile)
 	CompanyLevel = SaveGameInstance->CompanyLevel;
 	CurrentExp = SaveGameInstance->CurrentExp;
 	MaxExp = SaveGameInstance->MaxExp;
+	CompanyRating = SaveGameInstance->CompanyRating;
 
 	//GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Floor mat ID: " + FString::FromInt(SaveGameInstance->FloorMaterialID));
 	for (auto Floor : OfficeDepartment->FloorMaterialList) {
@@ -170,7 +172,7 @@ void UGameManager::LoadGame(FString SaveFile)
 	int IdeasToGenerate = Difference.GetTotalSeconds();
 	if (IdeasToGenerate > 0) { //&& SaveGameInstance->NumEmployees > 0) {
 		int Multiplier = 1; //SaveGameInstance->NumEmployees / 8;   numEmployees not loading, find out why
-		IdeasToGenerate /= 3 * (Multiplier); // 3 minutes per idea generate
+		IdeasToGenerate /= 180 * (Multiplier); // 3 minutes per idea generate
 		OfficeDepartment->OfficeDepMenuWidget->ClearFinishedGames();
 
 		OfficeDepartment->OfficeDepMenuWidget->T_TimePast->SetText(FText::AsTimespan(Difference));
@@ -364,5 +366,5 @@ void UGameManager::OnGameLoadedFixup(UWorld* World) {
 		}
 	}
 
-
+	SaveGame("Default");
 }

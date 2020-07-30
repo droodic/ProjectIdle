@@ -235,8 +235,8 @@ void AOfficeDepartment::CallMeeting()
 }
 
 
-void AOfficeDepartment::GiveCompanyExperience() {
-	auto Exp = UKismetMathLibrary::RandomFloatInRange(50.f, 75.f);
+void AOfficeDepartment::GiveCompanyExperience(int Experience) {
+	auto Exp = UKismetMathLibrary::RandomFloatInRange(Experience, Experience+15);
 	GM->CurrentExp += Exp;
 
 	if (GM->CurrentExp >= GM->MaxExp) { //Level up
@@ -299,6 +299,7 @@ void AOfficeDepartment::PublishGame()
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->MoneyGenerated = moneyGenerated;
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->Downloads = UKismetMathLibrary::RandomIntegerInRange(10000, 50000);
 		OfficeDepMenuWidget->IdeaGeneratedMoney_T->SetText(FText::AsCurrency(moneyGenerated));
+		GiveCompanyExperience(70.f);
 	}
 	else
 	{
@@ -321,9 +322,9 @@ void AOfficeDepartment::PublishGame()
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->Downloads = UKismetMathLibrary::RandomIntegerInRange(10, 500);
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->PublishedColor = FLinearColor::Red;
 		OfficeDepMenuWidget->IdeaGeneratedMoney_T->SetText(FText::AsCurrency(moneyGenerated));
+		GiveCompanyExperience(35.f);
 	}
 
-	GiveCompanyExperience();
 }
 
 void AOfficeDepartment::NotifyActorOnClicked(FKey ButtonPressed)
@@ -500,15 +501,15 @@ void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 				//SpawnRotation = GM->DoorList[floor - 1]->GetActorRotation();
 			}
 
-			if (Position == 4)
-			{
-				SpawnRotation = FRotator(0, -90, 0);
-				SpawnLocation = FVector(510.0, -1520.0, 160.0); // Array of grid vector position later on
-				AWorkstation* Station = World->SpawnActorDeferred<AWorkstation>(SpawnActors[Position], FTransform(SpawnRotation, SpawnLocation, FVector::OneVector), nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
-				Station->WorkstationInit(EmpRole);
-				Station->FinishSpawning(FTransform(SpawnRotation, SpawnLocation, FVector::OneVector));
-				return;
-			}
+			//if (Position == 4)
+			//{
+			//	SpawnRotation = FRotator(0, -90, 0);
+			//	SpawnLocation = FVector(510.0, -1520.0, 160.0); // Array of grid vector position later on
+			//	AWorkstation* Station = World->SpawnActorDeferred<AWorkstation>(SpawnActors[Position], FTransform(SpawnRotation, SpawnLocation, FVector::OneVector), nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+			//	Station->WorkstationInit(EmpRole);
+			//	Station->FinishSpawning(FTransform(SpawnRotation, SpawnLocation, FVector::OneVector));
+			//	return;
+			//}
 
 			auto Emp = World->SpawnActor<AEmployee>(SpawnActors[Position], SpawnLocation, SpawnRotation, SpawnParameters);
 			Emp->EmployeeRole = EmpRole;
@@ -517,6 +518,7 @@ void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 				Cast<ASupervisor>(Emp)->InitSupervisor(EmpRole); //quick workaround annoying beginplay pedantics of spawning
 				Emp->AssignSupervisor();
 			}
+			GiveCompanyExperience(50.f);
 			GetRandomMesh(Emp);
 			GetDepartmentUIValues();
 

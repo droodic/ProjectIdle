@@ -105,7 +105,7 @@ public:
 	void BacklogReturn();
 	void ShopReturn();
 	void GetRandomMesh(AEmployee* EmployeeRef);
-	void GiveCompanyExperience();
+	void GiveCompanyExperience(int Experience);
 
 protected:
 	virtual void BeginPlay() override;
