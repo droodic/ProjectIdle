@@ -522,12 +522,15 @@ void AEmployee::FiredFinal()
 		if (this->EmployeeRole == ERole::Programmer)
 		{
 			GM->NumOfProgrammers--;
+			GM->FloorList[GM->Character->CurrentFloor - 1]->FloorProgrammerCount--;
 		}
 		if (this->EmployeeRole == ERole::Artist)
 		{
 			GM->NumOfArtists--;
+			GM->FloorList[GM->Character->CurrentFloor - 1]->FloorArtistCount--;
 		}
-		GM->WorkstationList[this->WorkstationPositionRef]->HasEmployee = false;
+		WorkstationRef->HasEmployee = false;
+		//GM->WorkstationList[this->WorkstationPositionRef]->HasEmployee = false;
 	}
 	GM->EmployeeList.Remove(this);
 	UI->CloseEmployeeSheet();
