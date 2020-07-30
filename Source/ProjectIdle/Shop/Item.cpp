@@ -36,7 +36,7 @@ void AItem::NotifyActorOnClicked(FKey ButtonPressed)
 		}
 		else
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "PreviewItemBP is null");
-
+		GameManager->IsHoldingAPreview = true;
 		Destroy();
 	}
 	else

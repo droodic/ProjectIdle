@@ -5,6 +5,8 @@
 #include "Engine.h"
 #include "IdeaBacklogWidget.h"
 #include "Components/Button.h"
+#include "ProjectIdle/Idea.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "ProjectIdle/GameManager.h"
 #include "ProjectIdle/OfficeDepartment.h"
 #include "ProjectIdle/CeoDepMenuWidget.h"
@@ -24,6 +26,22 @@ void UIdeaButton::NativeConstruct()
 	}
 }
 
+void UIdeaButton::DisplayStatistics()
+{
+	FString stadisticText;
+
+	if (IsSuccessful)
+	{
+		stadisticText = "\t\t" + IdeaReference->IdeaName + "\n" + "Downloads: " + FString::FromInt(UKismetMathLibrary::RandomIntegerInRange(10000, 50000)) + "\nTrend: Successful";
+	}
+	else
+	{
+		stadisticText = "\t\t" + IdeaReference->IdeaName + "\n" + "Downloads: " + FString::FromInt(UKismetMathLibrary::RandomIntegerInRange(10, 500)) + "\nTrend: Unsuccessful";
+	}
+
+	OfficeDepartment->OfficeDepMenuWidget->IdeaStatistics_T->SetText(FText::FromString(stadisticText));
+}
+
 void UIdeaButton::ButtonClicked()
 {
 	auto GM = GetWorld()->GetGameInstance<UGameManager>();
@@ -39,6 +57,7 @@ void UIdeaButton::ButtonClicked()
 		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, "The game is published");
 		OfficeDepartment->OfficeDepMenuWidget->IdeaGeneratedMoney_T->SetText(FText::AsCurrency(MoneyGenerated));
 		OfficeDepartment->OfficeDepMenuWidget->PublishGame_Btn->SetIsEnabled(false);
+		DisplayStatistics();
 	}
 	//else if (!GM->IdeaInProduction)
 	else if(!GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->IdeaCurrentFloor)

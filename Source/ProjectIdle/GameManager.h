@@ -79,7 +79,7 @@ public:
 	UPROPERTY(BlueprintReadWrite) class UMeetingDepWidget* MeetingWidget;
 	UPROPERTY(BlueprintReadWrite) class UShopWidget* ShopWidget;
 	UPROPERTY(BlueprintReadWrite) class UElevatorWidget* ElevatorWidget;
-
+	
 
 	UPROPERTY(BlueprintReadWrite) class AWall* Wall;
 	UPROPERTY(BlueprintReadWrite) class AEmployee* Emp;
@@ -97,6 +97,8 @@ public:
 	int FloorMaterialID = 0;
 	int WallMaterialID = 0;
 
+	bool IsEditMode;
+	bool IsHoldingAPreview = false;
 	bool IdeaInProduction = false;
 	bool IsWidgetInDisplay = false;
 	UPROPERTY(BlueprintReadWrite) bool InEditMode = false;

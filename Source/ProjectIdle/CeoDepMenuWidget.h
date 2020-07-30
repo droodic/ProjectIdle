@@ -45,6 +45,10 @@ public:
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* IdeaGeneratedMoney_T;
 	UPROPERTY() FString Worker;
 
+	UPROPERTY(meta = (BindWidget)) class UBorder* NewItem_Border;
+	UPROPERTY(meta = (BindWidget)) class UTextBlock* IdeaStatistics_T;
+
+
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* CreateDep_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UComboBoxString* SelectComboBox;
 	UPROPERTY(BlueprintReadWrite) FString Selected = "Development";

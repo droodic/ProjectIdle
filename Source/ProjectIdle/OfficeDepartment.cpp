@@ -271,9 +271,11 @@ void AOfficeDepartment::PublishGame()
 			GM->Money += moneyGenerated;
 			//GM->Money += UKismetMathLibrary::RandomIntegerInRange(15000, 25000); //Use algo later, and do real way of assgning money
 
-			UI->MoneyWidget->ShowANotification("+ $" + FString::FromInt(moneyGenerated) + ".00", FLinearColor::Green);
+			UI->MoneyWidget->ShowANotification("+ $" + FString::FromInt(moneyGenerated) + ".00", FLinearColor::Green, 10.f);
 		}
 
+		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->IsSuccessful = true;
+		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->DisplayStatistics();
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->MoneyGenerated = moneyGenerated;
 		OfficeDepMenuWidget->IdeaGeneratedMoney_T->SetText(FText::AsCurrency(moneyGenerated));
 	}
@@ -292,6 +294,8 @@ void AOfficeDepartment::PublishGame()
 			UI->MoneyWidget->ShowANotification("+ $" + FString::FromInt(moneyGenerated) + ".00", FLinearColor::Green);
 		}
 
+		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->IsSuccessful = false;
+		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->DisplayStatistics();
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->MoneyGenerated = moneyGenerated;
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->PublishedColor = FLinearColor::Red;
 		OfficeDepMenuWidget->IdeaGeneratedMoney_T->SetText(FText::AsCurrency(moneyGenerated));

@@ -87,7 +87,10 @@ void APreviewItem::Tick(float DeltaTime)
 				}
 			}
 
-			OfficeDepartment->ReturnToOfficeDepartment();
+			if (!GameManager->IsEditMode) {
+				OfficeDepartment->ReturnToOfficeDepartment();
+			}
+			GameManager->IsHoldingAPreview = false;
 			Destroy();
 		}
 	}

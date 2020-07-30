@@ -307,7 +307,7 @@ void UCeoDepMenuWidget::AddItemToInventory(AItem* item)
 void UCeoDepMenuWidget::AddValuesToButton(Idea* idea)
 {
 	idea->IdeaButton->GameCover_I->SetColorAndOpacity(idea->CoverColor);
-
+	idea->IdeaButton->IdeaReference = idea;
 	idea->IdeaButton->GameTitle_T->SetText(FText::FromString(idea->IdeaName));
 	idea->IdeaButton->GameDescription_T->SetText(FText::FromString(idea->IdeaDescription));
 	idea->IdeaButton->Genre_T->SetText(Idea::GenreToText(idea->Genre));
