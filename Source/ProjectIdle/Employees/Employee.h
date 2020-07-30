@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Sound/SoundCue.h"
+#include "Components/AudioComponent.h"
 #include "ProjectIdle/SaveableActorInterface.h"
 #include "ProjectIdle/InteractableObject.h"
 #include "GameFramework/Character.h"
@@ -117,6 +119,9 @@ public:
 	UPROPERTY(SaveGame, EditAnywhere) int Gendre; //0male, 1female
 	UPROPERTY(SaveGame, EditAnywhere) int MeshID = 0;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Audio") class USoundCue* TypingSound;
+	UAudioComponent* TypingAudio;
+		 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -22,6 +22,7 @@
 #include "Runtime/AIModule/Classes/Blueprint/AIBlueprintHelperLibrary.h"
 #include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
 #include "ProjectIdle/WorldObject/Wall.h"
+#include "UObject/ConstructorHelpers.h"
 
 // Sets default values
 AEmployee::AEmployee()
@@ -45,6 +46,15 @@ AEmployee::AEmployee()
 
 	FaceCamera = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("FaceCamera")); //Maybe make Employee BP to set this up, because if later Employee classes emerge if we
 	FaceCamera->AttachTo(GetMesh());
+
+	static ConstructorHelpers::FObjectFinder<USoundCue> TypingSoundCue(TEXT("SoundCue'/Game/Sounds/EmployeeTypingSoundCue.EmployeeTypingSoundCue'"));
+	if (TypingSoundCue.Succeeded())
+	{
+		TypingSound = TypingSoundCue.Object;
+		TypingAudio = CreateDefaultSubobject<UAudioComponent>(TEXT("TypingAudio"));
+		TypingAudio->SetSound(TypingSound);
+		TypingAudio->bAutoActivate = false;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -150,7 +160,6 @@ void AEmployee::BeginWork() {
 	CompileValue = 0;
 	NumCompile = UKismetMathLibrary::RandomIntegerInRangeFromStream(3, 6, RandomStream);
 	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, FString::FromInt(NumCompile));
-
 	//make funciton to find self department and values, example get all department employees number
 	for (auto Dep : GM->DepartmentList) {
 		if (Dep->DepRole == EmployeeRole) {
@@ -285,7 +294,7 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		SetActorRotation(WorkstationRef->ChairMesh->GetComponentRotation() + AdjustRotate);
 		WorkProgressBar->SetVisibility(true);
 		IsWorking = true;
-
+		//TypingAudio->Play();
 		GetWorldTimerManager().SetTimer(HelpTimer, this, &AEmployee::GetHelp, 1.f, true);
 
 	}
@@ -327,6 +336,7 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		}
 	}
 	if (CurrentWorkload <= 0) {
+		TypingAudio->Stop();
 		//Self workload finished, check to see if others remain. If others in same department remain, go to them, and take 50% of their remainding workload if there's more than 10 seconds left of WL
 		//If none remain, give player money if idea was successful
 		for (auto AnEmployee : GM->EmployeeList) {
