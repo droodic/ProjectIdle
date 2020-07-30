@@ -88,6 +88,7 @@ public:
 	UPROPERTY(SaveGame, EditAnywhere, BlueprintReadWrite) bool HasBeenEvaluated;
 	//bool CanInspect = false; //Used for right click ui 
 
+
 	//bool IsMoving;
 	//Managers
 	class AGameHUD* UI;

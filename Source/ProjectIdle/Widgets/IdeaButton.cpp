@@ -39,7 +39,7 @@ void UIdeaButton::DisplayStatistics()
 		stadisticText = "\t\t" + IdeaReference->IdeaName + "\n" + "Downloads: " + FString::FromInt(UKismetMathLibrary::RandomIntegerInRange(10, 500)) + "\nTrend: Unsuccessful";
 	}
 
-	OfficeDepartment->OfficeDepMenuWidget->IdeaStatistics_T->SetText(FText::FromString(stadisticText));
+	//OfficeDepartment->OfficeDepMenuWidget->IdeaStatistics_T->SetText(FText::FromString(stadisticText));
 }
 
 void UIdeaButton::ButtonClicked()

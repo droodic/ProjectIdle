@@ -53,6 +53,8 @@ public:
 	UPROPERTY(BlueprintReadWrite) TArray<class AMeetingDepartment*> UnassignedMeetingDepartmentList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AElevator*> ElevatorList;
 	UPROPERTY(BlueprintReadWrite) TArray<class AElevator*> UnassignedElevatorList;
+	UPROPERTY(BlueprintReadWrite) TArray<class AProgrammingDepartment*> ProgrammingDepList;
+
 
 	UPROPERTY(BlueprintReadWrite) CRating CompanyRating;
 	UPROPERTY(BlueprintReadWrite) int CompanyLevel;

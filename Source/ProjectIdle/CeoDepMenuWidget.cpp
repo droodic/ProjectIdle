@@ -95,24 +95,33 @@ void UCeoDepMenuWidget::CallProgrammerSpawn()
 
 void UCeoDepMenuWidget::CallProgrammerSupSpawn()
 {
-	if (!GM->ProgrammingDepartment->HasSupervisor && GM->Money >= 30000) {
+	//if (!GM->ProgrammingDepartment->HasSupervisor && GM->Money >= 30000) {
+	if (!GM->FloorList[GM->Character->CurrentFloor - 1]->ProgrammerSupOnCurrentFloor && GM->Money >= 30000) {
 		GM->Money -= 30000;
 		GM->ProgrammingDepartment->HasSupervisor = true;
+		GM->FloorList[GM->Character->CurrentFloor - 1]->ProgrammerSupOnCurrentFloor = true;
+		GM->FloorList[GM->Character->CurrentFloor - 1]->SupOnCurrentFloor = true;
 		ActivateWorkstation(ERole::Programmer, EPosition::Supervisor, true);
 		OfficeDepartment->GenerateActor(2, ERole::Programmer);
-		Hire_ProgSup_Btn->SetIsEnabled(false);
+		GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->OfficeDepMenuWidget->Hire_ProgSup_Btn->SetIsEnabled(false);
+		//Hire_ProgSup_Btn->SetIsEnabled(false);
 		//OfficeDepartment->GetDepartmentUIValues();
 	}
 }
 
 void UCeoDepMenuWidget::CallArtistSupSpawn()
 {
-	if (!GM->ArtistDepartment->HasSupervisor && GM->Money >= 30000) {
+	//if (!GM->ArtistDepartment->HasSupervisor && GM->Money >= 30000) {
+	  if (!GM->FloorList[GM->Character->CurrentFloor - 1]->ArtistSupOnCurrentFloor && GM->Money >= 30000) {
 		GM->Money -= 30000;
 		ActivateWorkstation(ERole::Artist, EPosition::Supervisor, true);
+		GM->FloorList[GM->Character->CurrentFloor - 1]->ArtistSupOnCurrentFloor = true;
+		GM->FloorList[GM->Character->CurrentFloor - 1]->SupOnCurrentFloor = true;
+
 		GM->ArtistDepartment->HasSupervisor = true;
 		OfficeDepartment->GenerateActor(2, ERole::Artist);
-		Hire_ArtistSup_Btn->SetIsEnabled(false);
+		GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->OfficeDepMenuWidget->Hire_ArtistSup_Btn->SetIsEnabled(false);
+		//Hire_ArtistSup_Btn->SetIsEnabled(false);
 		//OfficeDepartment->GetDepartmentUIValues();
 	}
 }
@@ -407,6 +416,14 @@ void UCeoDepMenuWidget::CreateDepartment()
 			GM->ElevatorList[GM->ElevatorList.Num() - 1]->FloorLevel = GM->ElevatorList.Num();
 			break;
 		}
+
+		for (auto CEO : GM->OfficeDepartmentList)
+		{
+			//GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->OfficeDepMenuWidget->CreateDep_Btn->SetIsEnabled(false);
+			CEO->OfficeDepMenuWidget->CreateDep_Btn->SetIsEnabled(false);
+		}
+
+
 
 	}
 }

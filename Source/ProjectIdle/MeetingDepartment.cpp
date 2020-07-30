@@ -146,28 +146,170 @@ void AMeetingDepartment::MoveToMeeting()
 		MoreEmployeeThanChair = true;
 	}
 	bool OnlyOnce = false;
-	for (auto Dep : GM->DepartmentList) {
-		//GEngine->AddOnScreenDebugMessage(Index++, 3.f, FColor::Red, "Loop through Deplist", true);
+	//GEngine->AddOnScreenDebugMessage(Index++, 3.f, FColor::Red, "Loop through Deplist", true);
 
-		if (Dep->HasSupervisor) {
-			Dep->SupervisorRef->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
-			EmployeesAtMeetingList.Add(Dep->SupervisorRef);
-			if (GM->OfficeDepartment->ManagerRef != nullptr && !OnlyOnce) {
-				EmployeesAtMeetingList.Add(Cast<AEmployee>(GM->OfficeDepartment->ManagerRef));
-				GM->OfficeDepartment->ManagerRef->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
-				OnlyOnce = true;
-			}
-			//GEngine->AddOnScreenDebugMessage(Index++, 5.f, FColor::Red, "Supervisor found");
-			//break;
-		}
-		else if (!Dep->HasSupervisor) {
-			if (!MoreEmployeeThanChair) {
-				for (auto Emp : GM->EmployeeList) {
-					if (Emp->FloorLevel == FloorLevel) {
-						//if (Dep->DepRole == Emp->EmployeeRole) {
-						//if (Cast<AFloorManager>(Emp) && GM->OfficeDepartment->ManagerRef != nullptr && !OnlyOnce) {
-						if (Cast<AFloorManager>(Emp) && GM->OfficeDepartmentList[GM->FLoorM->FloorLevel - 1]->ManagerRef != nullptr && !OnlyOnce) {
-							
+	       //for (auto Dep : GM->DepartmentList) {
+	   for(int i = 0; i < GM->FloorList.Num(); i++) {
+                if(GM->FloorList[i]->ProgrammerSupOnCurrentFloor && GM->FloorList[i]->ArtistSupOnCurrentFloor && i + 1 == GM->CurrentOfficeFloor) {
+
+					//FString ok = FString::FromInt(GM->CurrentOfficeFloor);
+					//UE_LOG(LogTemp, Warning, TEXT("%sizeString"), *ok)
+					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Two Sup good floor");
+
+					if (GM->OfficeDepartmentList[GM->CurrentOfficeFloor - 1]->ManagerRef != nullptr) {
+
+						EmployeesAtMeetingList.Add(Cast<AEmployee>(GM->OfficeDepartmentList[GM->FLoorM->FloorLevel - 1]->ManagerRef));
+
+						for (auto Dep : GM->DepartmentList)
+						{
+							if (Dep->SupervisorRef->FloorLevel == GM->CurrentOfficeFloor)
+							{
+								Dep->SupervisorRef->IsAtMeeting = true;
+								//EmployeesAtMeetingList.Add(Cast<AEmployee>(Dep->SupervisorRef));
+								for (auto Chair : GM->MeetingChairList)
+								{
+									if (Chair->FloorLevel == Dep->SupervisorRef->FloorLevel && !Chair->IsChairTaken)
+									{
+										Dep->SupervisorRef->MoveEmployee(Chair->GetActorLocation());
+										EmployeesAtMeetingList.Add(Cast<AEmployee>(Dep->SupervisorRef));
+										Chair->IsChairTaken = true;
+										break;
+									}
+								}
+							}
+						}
+					}
+
+	
+
+
+					 if (GM->OfficeDepartmentList[GM->CurrentOfficeFloor - 1]->ManagerRef == nullptr) {
+						for (auto Dep : GM->DepartmentList)
+						{
+							if (Dep->SupervisorRef->FloorLevel == GM->CurrentOfficeFloor)
+							{
+								for (auto Chair : GM->MeetingChairList)
+								{
+									if (Chair->FloorLevel == Dep->SupervisorRef->FloorLevel && !Chair->IsChairTaken)
+									{
+										Dep->SupervisorRef->MoveEmployee(Chair->GetActorLocation());
+										EmployeesAtMeetingList.Add(Dep->SupervisorRef);
+										Chair->IsChairTaken = true;
+										break;
+									}
+								}
+							}
+						}
+					}
+				////if (Dep->SupervisorRef->FloorLevel == GM->CurrentOfficeFloor) {
+				//	Dep->SupervisorRef->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
+				//	EmployeesAtMeetingList.Add(Dep->SupervisorRef);
+				//	if (GM->OfficeDepartmentList[GM->CurrentOfficeFloor - 1]->ManagerRef != nullptr && !OnlyOnce && Dep->SupervisorRef->FloorLevel == GM->CurrentOfficeFloor) {
+				//		EmployeesAtMeetingList.Add(Cast<AEmployee>(GM->OfficeDepartment->ManagerRef));
+				//		//GM->OfficeDepartmentList[GM->CurrentOfficeFloor - 1]->ManagerRef->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
+				//		for (auto Chair : GM->MeetingChairList)
+				//		{
+				//			if (Chair->FloorLevel == Dep->SupervisorRef->FloorLevel && !Chair->IsChairTaken)
+				//			{
+				//				Dep->SupervisorRef->MoveEmployee(Chair->GetActorLocation());
+				//				Chair->IsChairTaken = true;
+				//				break;
+				//			}
+				//		}
+				//		OnlyOnce = true;
+				//	}
+					//GEngine->AddOnScreenDebugMessage(Index++, 5.f, FColor::Red, "Supervisor found");
+					//break;
+				}
+				else if (GM->FloorList[i]->ProgrammerSupOnCurrentFloor && i + 1 == GM->CurrentOfficeFloor)
+				{
+					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "1 Sup programmer , good floor");
+
+					for (auto Dep : GM->DepartmentList)
+					{
+						if (Dep->SupervisorRef) {
+							if (Dep->SupervisorRef->FloorLevel == GM->CurrentOfficeFloor)
+							{
+								for (auto Chair : GM->MeetingChairList)
+								{
+									if (Chair->FloorLevel == Dep->SupervisorRef->FloorLevel && !Chair->IsChairTaken)
+									{
+										Dep->SupervisorRef->MoveEmployee(Chair->GetActorLocation());
+										EmployeesAtMeetingList.Add(Dep->SupervisorRef);
+										Chair->IsChairTaken = true;
+										break;
+									}
+								}
+							}
+						}
+					}
+
+						for (auto Emp : GM->EmployeeList) {
+							if (Emp->EmployeeRole == ERole::Artist) {
+								EmployeesAtMeetingList.Add(Emp);
+								Emp->IsAtMeeting = true;
+								for (auto Chair : GM->MeetingChairList)
+								{
+									if (Emp->FloorLevel == Chair->FloorLevel && !Chair->IsChairTaken)
+									{
+										Emp->MoveEmployee(Chair->GetActorLocation());
+										Chair->IsChairTaken = true;
+										break;
+									}
+								}
+							}
+
+						}
+				}
+				else if (GM->FloorList[i]->ArtistSupOnCurrentFloor && i + 1 == GM->CurrentOfficeFloor)
+				{
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "1 Sup artist , good floor");
+
+			 		for (auto Dep : GM->DepartmentList)
+					{
+						if (Dep->SupervisorRef) {
+							if (Dep->SupervisorRef->FloorLevel == GM->CurrentOfficeFloor)
+							{
+								for (auto Chair : GM->MeetingChairList)
+								{
+									if (Chair->FloorLevel == Dep->SupervisorRef->FloorLevel && !Chair->IsChairTaken)
+									{
+										Dep->SupervisorRef->MoveEmployee(Chair->GetActorLocation());
+										EmployeesAtMeetingList.Add(Dep->SupervisorRef);
+										Chair->IsChairTaken = true;
+										break;
+									}
+								}
+							}
+						}
+					}
+
+					for (auto Emp : GM->EmployeeList) {
+						if (Emp->EmployeeRole == ERole::Programmer) {
+							EmployeesAtMeetingList.Add(Emp);
+							Emp->IsAtMeeting = true;
+							for (auto Chair : GM->MeetingChairList)
+							{
+								if (Emp->FloorLevel == Chair->FloorLevel && !Chair->IsChairTaken)
+								{
+									Emp->MoveEmployee(Chair->GetActorLocation());
+									Chair->IsChairTaken = true;
+									break;
+								}
+							}
+						}
+
+					}
+
+                }
+			else if (!GM->FloorList[i]->ProgrammerSupOnCurrentFloor && !GM->FloorList[i]->ArtistSupOnCurrentFloor && i + 1 == GM->CurrentOfficeFloor) {
+				if (!MoreEmployeeThanChair) {
+					for (auto Emp : GM->EmployeeList) {
+						if (Emp->FloorLevel == FloorLevel) {
+							//if (Dep->DepRole == Emp->EmployeeRole) {
+							//if (Cast<AFloorManager>(Emp) && GM->OfficeDepartment->ManagerRef != nullptr && !OnlyOnce) {
+							if (Cast<AFloorManager>(Emp) && GM->OfficeDepartmentList[GM->FLoorM->FloorLevel - 1]->ManagerRef != nullptr && !OnlyOnce) {
+
 								EmployeesAtMeetingList.Add(Cast<AEmployee>(GM->OfficeDepartmentList[GM->FLoorM->FloorLevel - 1]->ManagerRef));
 								for (auto Chair : GM->MeetingChairList)
 								{
@@ -180,13 +322,13 @@ void AMeetingDepartment::MoveToMeeting()
 								}
 								//Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
 								OnlyOnce = true;
-							
-						}
-						else if (Cast<AFloorManager>(Emp) == nullptr) {
-							//EmployeesAtMeetingList.Add(Emp);
-							//Emp->IsAtMeeting = true;
-							//if (Emp->FloorLevel == CurrentFloorLevel)
-							//{
+
+							}
+							else if (Cast<AFloorManager>(Emp) == nullptr) {
+								//EmployeesAtMeetingList.Add(Emp);
+								//Emp->IsAtMeeting = true;
+								//if (Emp->FloorLevel == CurrentFloorLevel)
+								//{
 								EmployeesAtMeetingList.Add(Emp);
 								Emp->IsAtMeeting = true;
 								for (auto Chair : GM->MeetingChairList)
@@ -200,22 +342,22 @@ void AMeetingDepartment::MoveToMeeting()
 								}
 								//Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
 							//}
+							}
 						}
+						//Emp->MoveEmployee(FVector(0, 0, 0));
+						//GEngine->AddOnScreenDebugMessage(Index++, 5.f, FColor::Red, "No supp- Sending employee");
+					//}
 					}
-					//Emp->MoveEmployee(FVector(0, 0, 0));
-					//GEngine->AddOnScreenDebugMessage(Index++, 5.f, FColor::Red, "No supp- Sending employee");
-				//}
+					break;
 				}
-				break;
-			}
-			else {
-				//Debug Message to prevent crash, implement later NEED SUPERVISOR, EMPLOYEEROOM TOO FULL
-				//Cant hire floormanager without both supervisor?
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "NEED SUPERVISOR, EMPLOYEEROOM TOO FULL");
+				else {
+					//Debug Message to prevent crash, implement later NEED SUPERVISOR, EMPLOYEEROOM TOO FULL
+					//Cant hire floormanager without both supervisor?
+					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "NEED SUPERVISOR, EMPLOYEEROOM TOO FULL");
 
+				}
 			}
-		}
-	}
+	   }
 
 	if (GM->MeetingWidget)
 	{

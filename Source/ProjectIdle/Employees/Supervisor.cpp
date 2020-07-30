@@ -3,6 +3,7 @@
 
 #include "Supervisor.h"
 #include "ProjectIdle/GameManager.h"
+#include "ProjectIdle/OfficeDepartment.h"
 
 ASupervisor::ASupervisor() {
 	Salary = 100.f;
@@ -131,15 +132,22 @@ void ASupervisor::Tick(float DeltaTime)
 }
 
 void ASupervisor::InitSupervisor(ERole Department) {
+
+	if (GM->Character) {
+		this->FloorLevel = GM->Character->CurrentFloor;
+	}
+
 	if (Department == ERole::Programmer) {
 		this->EmployeeRole = Department;
 		GM->ProgrammingDepartment->HasSupervisor = true;
 		GM->ProgrammingDepartment->SupervisorRef = this;
+		GM->FloorList[GM->Character->CurrentFloor - 1]->ProgrammerSupOnCurrentFloor = true;
 	}
 	else if (Department == ERole::Artist) {
 		this->EmployeeRole = Department;
 		GM->ArtistDepartment->HasSupervisor = true;
 		GM->ArtistDepartment->SupervisorRef = this;
+		GM->FloorList[GM->Character->CurrentFloor - 1]->ArtistSupOnCurrentFloor = true;
 	}
 	//EvaluateEmployee();
 }
@@ -149,11 +157,16 @@ void ASupervisor::FiredFinal()
 	Super::FiredFinal();
 	if (EmployeeRole == ERole::Programmer) {
 		GM->ProgrammingDepartment->HasSupervisor = false;
+		GM->FloorList[GM->Character->CurrentFloor - 1]->ProgrammerSupOnCurrentFloor = false;
 		GM->ProgrammingDepartment->SupervisorRef = nullptr;
+		GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->OfficeDepMenuWidget->Hire_ProgSup_Btn->SetIsEnabled(true);
 	}
 	else if (EmployeeRole == ERole::Artist) {
 		GM->ArtistDepartment->HasSupervisor = false;
+		GM->FloorList[GM->Character->CurrentFloor - 1]->ArtistSupOnCurrentFloor = false;
 		GM->ArtistDepartment->SupervisorRef = nullptr;
+		GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->OfficeDepMenuWidget->Hire_ArtistSup_Btn->SetIsEnabled(true);
+
 	}
 }
 

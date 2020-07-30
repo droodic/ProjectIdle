@@ -23,6 +23,9 @@ AElevator::AElevator()
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("RangeBox"));
 	CollisionBox->AttachTo(ElevatorMesh);
 
+	SpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("SpawnPoint"));
+	SpawnPoint->AttachToComponent(Root, FAttachmentTransformRules::KeepRelativeTransform);
+
 }
 
 // Called when the game starts or when spawned
@@ -58,14 +61,14 @@ void AElevator::Tick(float DeltaTime)
 
 void AElevator::OnInteract()
 {
-	if (!ElevatorWidget->IsInViewport())
-	{
-		ElevatorWidget->AddToViewport();
-	}
-	else
-	{
-		ElevatorWidget->RemoveFromParent();
-	}
+	//if (!ElevatorWidget->IsInViewport())
+	//{
+	//	ElevatorWidget->AddToViewport();
+	//}
+	//else
+	//{
+	//	ElevatorWidget->RemoveFromParent();
+	//}
 }
 
 
@@ -76,18 +79,21 @@ void AElevator::NotifyActorBeginOverlap(AActor* OtherActor)
 
 	if (Player != nullptr && GM->IsFloorUpgraded)
 	{
-		FVector NewVector = FVector(0, -100, 100);
 		if (Player->CurrentFloor == 1)
 		{
-			Player->SetActorLocation(GM->ElevatorList[1]->GetActorLocation() + NewVector);
+			GM->Character->PlayerControl->PlayerCameraManager->StartCameraFade(1.f, 0.f, 3.f, FLinearColor::Black, true, true);
+			Player->SetActorLocation(GM->ElevatorList[1]->SpawnPoint->GetComponentLocation());
 			Player->CurrentFloor = 2;
+			//UI->MoneyWidget->ShowANotification("Welcome to Floor 2");
 			return;
 		}
 
 		if (Player->CurrentFloor == 2)
 		{
-			Player->SetActorLocation(GM->ElevatorList[0]->GetActorLocation() + NewVector);
+			GM->Character->PlayerControl->PlayerCameraManager->StartCameraFade(1.f, 0.f, 3.f, FLinearColor::Black, true, true);
+			Player->SetActorLocation(GM->ElevatorList[0]->SpawnPoint->GetComponentLocation());
 			Player->CurrentFloor = 1;
+			//UI->MoneyWidget->ShowANotification("Welcome to Floor 1");
 			return;
 		}
 	}
@@ -97,7 +103,7 @@ void AElevator::NotifyActorEndOverlap(AActor* OtherActor)
 {
 	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr && ElevatorWidget->IsInViewport())
 	{
-		ElevatorWidget->RemoveFromViewport();
+		//ElevatorWidget->RemoveFromViewport();
 	}
 }
 
