@@ -53,7 +53,7 @@ void UGameManager::SaveGame(FString SaveFile)
 	//Save Floor Material
 	SaveGameInstance->FloorMaterialID = FloorMaterialID;
 	SaveGameInstance->IsFloorUpgraded = IsFloorUpgraded;
-
+	SaveGameInstance->WallMaterialID = WallMaterialID;
 
 	if (OfficeDepartment->ManagerRef != nullptr) {
 		SaveGameInstance->NumEmployees = EmployeeList.Num();
@@ -111,9 +111,11 @@ void UGameManager::LoadGame(FString SaveFile)
 	Money = SaveGameInstance->Saved_Money;
 	InventoryList.Empty();
 	OfficeDepartment->IdeaList.Empty();
+
 	for (auto Item : SaveGameInstance->InventoryList) {
 		InventoryList.Add(Item);
 	}
+
 	for (auto Idea : SaveGameInstance->IdeaList) {
 		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Loading Idea");
 		OfficeDepartment->IdeaList.Add(Idea);
@@ -139,7 +141,13 @@ void UGameManager::LoadGame(FString SaveFile)
 			}
 			//FloorList[i]->UpdateWallMaterial(Floor);
 		}
+		if (SaveGameInstance->WallMaterialID == Floor.GetDefaultObject()->ItemID) {
+			for (auto W : WallList) {
+				W->UpdateMaterial(Floor.GetDefaultObject());
+			}
+		}
 	}
+
 
 	//if (SaveGameInstance->AutoManaging == true) {
 	FDateTime CurrentTime = FDateTime::Now();

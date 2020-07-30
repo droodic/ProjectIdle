@@ -30,6 +30,7 @@ public:
 
 	UPROPERTY(EditAnywhere) int Saved_Money;
 	UPROPERTY(EditAnywhere) int FloorMaterialID;
+	UPROPERTY(EditAnywhere) int WallMaterialID;
 	UPROPERTY(EditAnywhere) TArray<class AItem*> InventoryList;
 	UPROPERTY(EditAnywhere) TArray<class AWorkstation*> WorkstationList;
 	UPROPERTY(EditAnywhere) bool IsFloorUpgraded;
