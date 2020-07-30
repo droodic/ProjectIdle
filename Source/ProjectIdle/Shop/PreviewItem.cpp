@@ -64,27 +64,31 @@ void APreviewItem::Tick(float DeltaTime)
 			if (ItemReference != nullptr)
 			{
 				auto itemReference = GetWorld()->SpawnActor<AItem>(ItemReference->ItemBP, hitResult.Location, MeshComponent->GetRelativeRotation());
-				itemReference->ItemBP = ItemReference->ItemBP;
-
-				for (int i = 0; i < OfficeDepartment->OfficeDepMenuWidget->OfficeDecoration_WB->GetChildrenCount(); i++)
-				{
-					auto inventoryButton = Cast<UInventoryButton>(OfficeDepartment->OfficeDepMenuWidget->OfficeDecoration_WB->GetChildAt(i));
-
-					if (ItemReference->ItemID == inventoryButton->Item->ItemID)
+				if (itemReference != nullptr) {
+					itemReference->ItemBP = ItemReference->ItemBP;
+					for (int i = 0; i < OfficeDepartment->OfficeDepMenuWidget->OfficeDecoration_WB->GetChildrenCount(); i++)
 					{
-						GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, FString::FromInt(inventoryButton->Item->ItemCount));
+						auto inventoryButton = Cast<UInventoryButton>(OfficeDepartment->OfficeDepMenuWidget->OfficeDecoration_WB->GetChildAt(i));
+						if (inventoryButton) {
+							if (ItemReference->ItemID == inventoryButton->Item->ItemID)
+							{
+								GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, FString::FromInt(inventoryButton->Item->ItemCount));
 
-						if (inventoryButton->Item->ItemCount > 1)
-						{
-							inventoryButton->Item->ItemCount--;
-							inventoryButton->ItemCount_T->SetText(FText::FromString(FString::FromInt(inventoryButton->Item->ItemCount)));
+								if (inventoryButton->Item->ItemCount > 1)
+								{
+									inventoryButton->Item->ItemCount--;
+									inventoryButton->ItemCount_T->SetText(FText::FromString(FString::FromInt(inventoryButton->Item->ItemCount)));
+								}
+								else
+								{
+									OfficeDepartment->OfficeDepMenuWidget->OfficeDecoration_WB->RemoveChildAt(i);
+								}
+							}
 						}
-						else
-						{
-							OfficeDepartment->OfficeDepMenuWidget->OfficeDecoration_WB->RemoveChildAt(i);
-						}
+
 					}
 				}
+				
 			}
 
 			if (!GameManager->InEditMode) 

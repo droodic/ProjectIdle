@@ -16,7 +16,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite) UStaticMeshComponent* MeshComponent;
 
-	class AItem* ItemReference;
+	UPROPERTY() AItem* ItemReference;
 
 	UPROPERTY(EditDefaultsOnly) class UMaterial* PreviewMaterial;
 	UPROPERTY(EditDefaultsOnly) class UMaterial* OverlappingMaterial;

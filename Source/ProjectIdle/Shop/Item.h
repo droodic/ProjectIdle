@@ -51,15 +51,15 @@ public:
 
 	UPROPERTY(EditDefaultsOnly) class UTexture2D* ItemImage;
 
-	class TSubclassOf<AItem> ItemBP;
-	class UItemButton* ItemButton;
+	UPROPERTY() class TSubclassOf<AItem> ItemBP;
+	UPROPERTY() class UItemButton* ItemButton;
 
 	UPROPERTY(EditDefaultsOnly) class TSubclassOf<class APreviewItem> PreviewItemBP;
 
 private:
 	class UGameManager* GameManager;
 
-	bool bItemInEditMode = false;
+	UPROPERTY() bool bItemInEditMode = false;
 
 private:
 	void BeginPlay() override;
