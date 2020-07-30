@@ -98,15 +98,22 @@ public:
 
 	int FloorMaterialID = 0;
 	int WallMaterialID = 0;
-
-	bool IsEditMode;
-	bool IsHoldingAPreview = false;
-	bool IdeaInProduction = false;
-	bool IsWidgetInDisplay = false;
-	UPROPERTY(BlueprintReadWrite) bool InEditMode = false;
 	UPROPERTY() bool IsFloorUpgraded = false;
+
+	
+	bool InEditMode = false;
+	bool IsHoldingAPreview = false;
+	
+	bool IdeaInProduction = false;
+
+#pragma region WidgetDisplay
+
+	bool IsWidgetInDisplay = false;
 	UUserWidget* CurrentWidgetInDisplay;
 	AEmployee* CurrentEmployeeInDisplay;
+
+#pragma endregion
+
 
 public:
 	virtual void Init();

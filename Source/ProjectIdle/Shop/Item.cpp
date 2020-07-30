@@ -26,21 +26,22 @@ void AItem::NotifyActorOnClicked(FKey ButtonPressed)
 {
 	if (GameManager->InEditMode)
 	{
-		FHitResult hitResult;
-		UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHitResultUnderCursorByChannel(ETraceTypeQuery::TraceTypeQuery1, true, hitResult);
-
-		if (PreviewItemBP != nullptr)
+		if (!GameManager->IsHoldingAPreview)
 		{
-			APreviewItem* previewItemReference = GetWorld()->SpawnActor<APreviewItem>(PreviewItemBP, hitResult.Location, ItemMesh->GetRelativeRotation());
-			previewItemReference->ItemReference = this;
+			FHitResult hitResult;
+			UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHitResultUnderCursorByChannel(ETraceTypeQuery::TraceTypeQuery1, true, hitResult);
+
+			if (PreviewItemBP != nullptr)
+			{
+				APreviewItem* previewItemReference = GetWorld()->SpawnActor<APreviewItem>(PreviewItemBP, hitResult.Location, ItemMesh->GetRelativeRotation());
+				previewItemReference->ItemReference = this;
+			}
+			else
+			{ GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "PreviewItemBP is null"); }
+
+			GameManager->IsHoldingAPreview = true;
+			Destroy();
 		}
-		else
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "PreviewItemBP is null");
-		GameManager->IsHoldingAPreview = true;
-		Destroy();
 	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, "Not on edit Mode");
-	}
+	else { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, "Not on edit Mode"); }
 }

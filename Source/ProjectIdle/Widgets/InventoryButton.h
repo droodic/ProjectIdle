@@ -16,9 +16,10 @@ class PROJECTIDLE_API UInventoryButton : public UUserWidget
 
 public:
 	UInventoryButton(const FObjectInitializer& ObjectInitializer);
-	AWorkstation* CurrentStation;
+	
+	class AWorkstation* CurrentStation;
 
-	AItem* Item;
+	class AItem* Item;
 	UPROPERTY(meta = (BindWidget)) class UButton* Item_Btn;
 	UPROPERTY(meta = (BindWidget)) class UImage* Item_I;
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* ItemName_T;
