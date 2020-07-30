@@ -57,7 +57,7 @@ public:
 
 
 	UPROPERTY(BlueprintReadWrite) CRating CompanyRating;
-	UPROPERTY(BlueprintReadWrite) int CompanyLevel;
+	UPROPERTY(BlueprintReadWrite) int CompanyLevel = 1;
 	UPROPERTY(BlueprintReadWrite) float CurrentExp = 0.f;
 	UPROPERTY(BlueprintReadWrite) float MaxExp = 100.f;
 

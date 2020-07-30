@@ -114,6 +114,17 @@ void UGameManager::LoadGame(FString SaveFile)
 
 	for (auto Item : SaveGameInstance->InventoryList) {
 		InventoryList.Add(Item);
+		if (Item->ItemCategory == ECategory::Materials) {
+			if (Item->ItemSubCategory == ESubCategory::Floor) {
+				OfficeDepartment->OfficeDepMenuWidget->AddItemToInventory(Item);
+				//OfficeDepartment->OfficeDepMenuWidget->FloorMaterial_HB->AddChild(Item.Default);
+			}
+			else if (Item->ItemSubCategory == ESubCategory::Wall) {
+				OfficeDepartment->OfficeDepMenuWidget->WallMaterial_HB;
+				OfficeDepartment->OfficeDepMenuWidget->AddItemToInventory(Item);
+
+			}
+		}
 	}
 
 	for (auto Idea : SaveGameInstance->IdeaList) {
@@ -159,9 +170,9 @@ void UGameManager::LoadGame(FString SaveFile)
 	int IdeasToGenerate = Difference.GetTotalSeconds();
 	if (IdeasToGenerate > 0) { //&& SaveGameInstance->NumEmployees > 0) {
 		int Multiplier = 1; //SaveGameInstance->NumEmployees / 8;   numEmployees not loading, find out why
-		IdeasToGenerate /= 180 * (Multiplier); // 3 minutes per idea generate
+		IdeasToGenerate /= 3 * (Multiplier); // 3 minutes per idea generate
 		OfficeDepartment->OfficeDepMenuWidget->ClearFinishedGames();
-		
+
 		OfficeDepartment->OfficeDepMenuWidget->T_TimePast->SetText(FText::AsTimespan(Difference));
 		OfficeDepartment->OfficeDepMenuWidget->T_NumIdeas->SetText(FText::FromString(FString::FromInt(IdeasToGenerate)));
 		OfficeDepartment->OfficeDepMenuWidget->LoadGameCanvas->SetVisibility(ESlateVisibility::Visible);
@@ -221,6 +232,7 @@ void UGameManager::LoadGame(FString SaveFile)
 	//UGameplayStatics:
 	//UGameplayStatics::OpenLevel(GetWorld(), "TopDownExampleMap");
 }
+
 
 void UGameManager::OnGameLoadedFixup(UWorld* World) {
 

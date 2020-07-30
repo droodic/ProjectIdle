@@ -236,19 +236,39 @@ void AOfficeDepartment::CallMeeting()
 
 
 void AOfficeDepartment::GiveCompanyExperience() {
-	auto Exp = UKismetMathLibrary::RandomFloatInRange(25.f, 35.f);
+	auto Exp = UKismetMathLibrary::RandomFloatInRange(50.f, 75.f);
 	GM->CurrentExp += Exp;
 
 	if (GM->CurrentExp >= GM->MaxExp) { //Level up
 		GM->CompanyLevel++;
 		GM->CurrentExp = 0;
 		GM->MaxExp += 100 * (2.5f + GM->CompanyLevel);
+
+		if (GM->CompanyLevel % 2 == 0) {
+			switch (GM->CompanyRating)
+			{
+			case CRating::Indie:
+				GM->CompanyRating = CRating::Startup;
+				break;
+			case CRating::Startup:
+				GM->CompanyRating = CRating::C;
+				break;
+			case CRating::C:
+				GM->CompanyRating = CRating::B;
+				break;
+			case CRating::B:
+				GM->CompanyRating = CRating::A;
+				break;
+			case CRating::A:
+				GM->CompanyRating = CRating::AAA;
+				break;
+			}
+			//GM->CompanyLevel = 1;
+		}
+
 	}
 
-	//
-	//if (GM->CompanyLevel % 2 == 0 && GM->CompanyRating == CRating::Indie) {
-	//	GM->CompanyRating = CRating::Startup;
-	//}
+
 }
 
 void AOfficeDepartment::PublishGame()
