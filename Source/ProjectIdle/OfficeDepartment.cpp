@@ -297,6 +297,7 @@ void AOfficeDepartment::PublishGame()
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->IsSuccessful = true;
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->DisplayStatistics();
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->MoneyGenerated = moneyGenerated;
+		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->Downloads = UKismetMathLibrary::RandomIntegerInRange(10000, 50000);
 		OfficeDepMenuWidget->IdeaGeneratedMoney_T->SetText(FText::AsCurrency(moneyGenerated));
 	}
 	else
@@ -317,6 +318,7 @@ void AOfficeDepartment::PublishGame()
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->IsSuccessful = false;
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->DisplayStatistics();
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->MoneyGenerated = moneyGenerated;
+		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->Downloads = UKismetMathLibrary::RandomIntegerInRange(10, 500);
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->PublishedColor = FLinearColor::Red;
 		OfficeDepMenuWidget->IdeaGeneratedMoney_T->SetText(FText::AsCurrency(moneyGenerated));
 	}
