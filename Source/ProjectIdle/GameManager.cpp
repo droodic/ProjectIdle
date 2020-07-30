@@ -156,7 +156,6 @@ void UGameManager::LoadGame(FString SaveFile)
 		
 		OfficeDepartment->OfficeDepMenuWidget->T_TimePast->SetText(FText::AsTimespan(Difference));
 		OfficeDepartment->OfficeDepMenuWidget->T_NumIdeas->SetText(FText::FromString(FString::FromInt(IdeasToGenerate)));
-
 		OfficeDepartment->OfficeDepMenuWidget->LoadGameCanvas->SetVisibility(ESlateVisibility::Visible);
 
 		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Loading Ideas generated since last save" + FString::FromInt(Difference.GetTotalSeconds()));

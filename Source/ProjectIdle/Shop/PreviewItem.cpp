@@ -56,7 +56,7 @@ void APreviewItem::Tick(float DeltaTime)
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHitResultUnderCursorByChannel(ETraceTypeQuery::TraceTypeQuery1, true, hitResult);
 
 	MeshComponent->SetWorldLocation(hitResult.Location);
-
+	
 	if (!bIsOverlapping)
 	{
 		if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->WasInputKeyJustPressed(EKeys::LeftMouseButton))

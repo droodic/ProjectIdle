@@ -109,7 +109,7 @@ public:
 #pragma region WidgetDisplay
 
 	bool IsWidgetInDisplay = false;
-	UUserWidget* CurrentWidgetInDisplay;
+	UPROPERTY() UUserWidget* CurrentWidgetInDisplay;
 	AEmployee* CurrentEmployeeInDisplay;
 
 #pragma endregion
