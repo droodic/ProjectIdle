@@ -59,8 +59,10 @@ void UShopWidget::Buy()
 					GameManager->OfficeDepartmentList[GameManager->Character->CurrentFloor - 1]->OfficeDepMenuWidget->AddItemToInventory(CheckList[i]->Item);
 					for (auto UnassignCEO : GameManager->UnassignedOfficeDepartmentList)
 					{
-						//UnassignCEO->OfficeDepMenuWidget->AddItemToInventory(CheckList[i]->Item);
+						UnassignCEO->OfficeDepMenuWidget->AddItemToInventory(CheckList[i]->Item);
 					}
+
+					GameManager->OfficeDepartmentList[GameManager->Character->CurrentFloor - 1]->OfficeDepMenuWidget->NewItem_Border->SetVisibility(ESlateVisibility::HitTestInvisible);
 				}
 
 				if (CheckList[i]->Item->ItemCategory == ECategory::Materials)
@@ -77,7 +79,6 @@ void UShopWidget::Buy()
 				}
 			}
 
-			GameManager->OfficeDepartmentList[GameManager->Character->CurrentFloor - 1]->OfficeDepMenuWidget->NewItem_Border->SetVisibility(ESlateVisibility::HitTestInvisible);
 
 			GameManager->Money -= Total;
 			Money_T->SetText(FText::AsCurrency(GameManager->Money));

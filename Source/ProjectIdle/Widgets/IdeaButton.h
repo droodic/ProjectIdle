@@ -22,6 +22,7 @@ public:
 
 	int storedIndex;
 	int MoneyGenerated;
+	int Downloads;
 
 	bool IsFinished = false;
 	bool IsPublished = false;
