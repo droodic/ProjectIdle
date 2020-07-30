@@ -114,112 +114,123 @@ void UGameManager::LoadGame(FString SaveFile)
 
 	for (auto Item : SaveGameInstance->InventoryList) {
 		InventoryList.Add(Item);
-	}
-
-	for (auto Idea : SaveGameInstance->IdeaList) {
-		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Loading Idea");
-		OfficeDepartment->IdeaList.Add(Idea);
-		OfficeDepartment->PopulateIdeaListFromSave(Idea);
-	}
-
-	IsFloorUpgraded = SaveGameInstance->IsFloorUpgraded;
-	if (IsFloorUpgraded) {
-		OfficeDepartment->OfficeDepMenuWidget->CreateDepartment();
-	}
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, FString::FromInt(IsFloorUpgraded));
-
-	CompanyLevel = SaveGameInstance->CompanyLevel;
-	CurrentExp = SaveGameInstance->CurrentExp;
-	MaxExp = SaveGameInstance->MaxExp;
-
-	//GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Floor mat ID: " + FString::FromInt(SaveGameInstance->FloorMaterialID));
-	for (auto Floor : OfficeDepartment->FloorMaterialList) {
-
-		if (SaveGameInstance->FloorMaterialID == Floor.GetDefaultObject()->ItemID) {
-			for (auto F : FloorList) {
-				F->UpdateMaterial(Floor.GetDefaultObject());
+		if (Item->ItemCategory == ECategory::Materials) {
+			if (Item->ItemSubCategory == ESubCategory::Floor) {
+				OfficeDepartment->OfficeDepMenuWidget->AddItemToInventory(Item);
+				//OfficeDepartment->OfficeDepMenuWidget->FloorMaterial_HB->AddChild(Item.Default);
 			}
-			//FloorList[i]->UpdateWallMaterial(Floor);
-		}
-		if (SaveGameInstance->WallMaterialID == Floor.GetDefaultObject()->ItemID) {
-			for (auto W : WallList) {
-				W->UpdateMaterial(Floor.GetDefaultObject());
+			else if (Item->ItemSubCategory == ESubCategory::Wall) {
+				OfficeDepartment->OfficeDepMenuWidget->WallMaterial_HB;
+				OfficeDepartment->OfficeDepMenuWidget->AddItemToInventory(Item);
+
 			}
 		}
-	}
 
+		for (auto Idea : SaveGameInstance->IdeaList) {
+			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Loading Idea");
+			OfficeDepartment->IdeaList.Add(Idea);
+			OfficeDepartment->PopulateIdeaListFromSave(Idea);
+		}
 
-	//if (SaveGameInstance->AutoManaging == true) {
-	FDateTime CurrentTime = FDateTime::Now();
-	FTimespan Difference;
-	Difference = CurrentTime - SaveGameInstance->SavedTime;
+		IsFloorUpgraded = SaveGameInstance->IsFloorUpgraded;
+		if (IsFloorUpgraded) {
+			OfficeDepartment->OfficeDepMenuWidget->CreateDepartment();
+		}
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, FString::FromInt(IsFloorUpgraded));
 
-	GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Time spent since last save:(seconds) " + FString::FromInt(Difference.GetTotalSeconds()));
+		CompanyLevel = SaveGameInstance->CompanyLevel;
+		CurrentExp = SaveGameInstance->CurrentExp;
+		MaxExp = SaveGameInstance->MaxExp;
 
-	int IdeasToGenerate = Difference.GetTotalSeconds();
-	if (IdeasToGenerate > 0) { //&& SaveGameInstance->NumEmployees > 0) {
-		int Multiplier = 1; //SaveGameInstance->NumEmployees / 8;   numEmployees not loading, find out why
-		IdeasToGenerate /= 180 * (Multiplier); // 3 minutes per idea generate
-		OfficeDepartment->OfficeDepMenuWidget->ClearFinishedGames();
-		
-		OfficeDepartment->OfficeDepMenuWidget->T_TimePast->SetText(FText::AsTimespan(Difference));
-		OfficeDepartment->OfficeDepMenuWidget->T_NumIdeas->SetText(FText::FromString(FString::FromInt(IdeasToGenerate)));
-		OfficeDepartment->OfficeDepMenuWidget->LoadGameCanvas->SetVisibility(ESlateVisibility::Visible);
+		//GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Floor mat ID: " + FString::FromInt(SaveGameInstance->FloorMaterialID));
+		for (auto Floor : OfficeDepartment->FloorMaterialList) {
 
-		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Loading Ideas generated since last save" + FString::FromInt(Difference.GetTotalSeconds()));
-		for (int i = 0; i < IdeasToGenerate; i++) {
-			//Generate Idea in Publish List
-			auto randomNumber = UKismetMathLibrary::RandomIntegerInRange(0, 100);
-			auto newIdea = new Idea("GAME " + FString::FromInt(randomNumber), "Game description of game " + FString::FromInt(randomNumber), Idea::GetRandomGenre(), FLinearColor::MakeRandomColor(), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f));
-			if (OfficeDepartment->OfficeDepMenuWidget != nullptr) {
-
-				OfficeDepartmentList[Character->CurrentFloor - 1]->OfficeDepMenuWidget->GetFinishedIdea(newIdea);
+			if (SaveGameInstance->FloorMaterialID == Floor.GetDefaultObject()->ItemID) {
+				for (auto F : FloorList) {
+					F->UpdateMaterial(Floor.GetDefaultObject());
+				}
+				//FloorList[i]->UpdateWallMaterial(Floor);
+			}
+			if (SaveGameInstance->WallMaterialID == Floor.GetDefaultObject()->ItemID) {
+				for (auto W : WallList) {
+					W->UpdateMaterial(Floor.GetDefaultObject());
+				}
 			}
 		}
+
+
+		//if (SaveGameInstance->AutoManaging == true) {
+		FDateTime CurrentTime = FDateTime::Now();
+		FTimespan Difference;
+		Difference = CurrentTime - SaveGameInstance->SavedTime;
+
+		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Time spent since last save:(seconds) " + FString::FromInt(Difference.GetTotalSeconds()));
+
+		int IdeasToGenerate = Difference.GetTotalSeconds();
+		if (IdeasToGenerate > 0) { //&& SaveGameInstance->NumEmployees > 0) {
+			int Multiplier = 1; //SaveGameInstance->NumEmployees / 8;   numEmployees not loading, find out why
+			IdeasToGenerate /= 3 * (Multiplier); // 3 minutes per idea generate
+			OfficeDepartment->OfficeDepMenuWidget->ClearFinishedGames();
+
+			OfficeDepartment->OfficeDepMenuWidget->T_TimePast->SetText(FText::AsTimespan(Difference));
+			OfficeDepartment->OfficeDepMenuWidget->T_NumIdeas->SetText(FText::FromString(FString::FromInt(IdeasToGenerate)));
+			OfficeDepartment->OfficeDepMenuWidget->LoadGameCanvas->SetVisibility(ESlateVisibility::Visible);
+
+			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Loading Ideas generated since last save" + FString::FromInt(Difference.GetTotalSeconds()));
+			for (int i = 0; i < IdeasToGenerate; i++) {
+				//Generate Idea in Publish List
+				auto randomNumber = UKismetMathLibrary::RandomIntegerInRange(0, 100);
+				auto newIdea = new Idea("GAME " + FString::FromInt(randomNumber), "Game description of game " + FString::FromInt(randomNumber), Idea::GetRandomGenre(), FLinearColor::MakeRandomColor(), UKismetMathLibrary::RandomFloatInRange(0.f, 100.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f), UKismetMathLibrary::RandomFloatInRange(50.f, 150.f));
+				if (OfficeDepartment->OfficeDepMenuWidget != nullptr) {
+
+					OfficeDepartmentList[Character->CurrentFloor - 1]->OfficeDepMenuWidget->GetFinishedIdea(newIdea);
+				}
+			}
+		}
+
+		FString outPath = FPaths::ProjectSavedDir() + SaveFile;
+
+		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Loading saveName : " + outPath);
+		if (!FFileHelper::LoadFileToArray(BinaryData, *outPath))
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "LOAD FAILED");
+			UE_LOG(LogTemp, Warning, TEXT("%s"), *(FString("Game Load Failed: ") + outPath));
+			return;
+		}
+
+
+		checkSlow(World != nullptr);
+		FMemoryReader FromBinary = FMemoryReader(BinaryData, true);
+		FromBinary.Seek(0);
+
+		FGameSavedData SaveGameData;
+		FromBinary << SaveGameData;
+
+		FromBinary.FlushCache();
+		FromBinary.Close();
+
+		//UMasteringGameInstance* gameInst = UMasteringGameInstance::GetInstance();
+		//FVector playerSafeLoc = SaveGameData.PlayerSafeLocation;
+		//gameInst->SetPlayerSafeLocation(playerSafeLoc);
+
+		FString mapName = SaveGameData.MapName.ToString();
+		FString currentMapName = GetWorld()->GetMapName();
+		currentMapName.Split("UEDPIE_0_", nullptr, &currentMapName);
+
+		OnGameLoadedFixup(GetWorld());
+		//if (mapName == currentMapName)
+		//{
+		//	//GetWorld()->ServerTravel("?Restart", true);
+		//	UGameplayStatics::OpenLevel(GetWorld(), *mapName);
+		//}
+		//else
+		//{
+		//	UGameplayStatics::OpenLevel(GetWorld(), *mapName);
+		//}
+
+		//UGameplayStatics:
+		//UGameplayStatics::OpenLevel(GetWorld(), "TopDownExampleMap");
 	}
-
-	FString outPath = FPaths::ProjectSavedDir() + SaveFile;
-
-	GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "Loading saveName : " + outPath);
-	if (!FFileHelper::LoadFileToArray(BinaryData, *outPath))
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Red, "LOAD FAILED");
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *(FString("Game Load Failed: ") + outPath));
-		return;
-	}
-
-
-	checkSlow(World != nullptr);
-	FMemoryReader FromBinary = FMemoryReader(BinaryData, true);
-	FromBinary.Seek(0);
-
-	FGameSavedData SaveGameData;
-	FromBinary << SaveGameData;
-
-	FromBinary.FlushCache();
-	FromBinary.Close();
-
-	//UMasteringGameInstance* gameInst = UMasteringGameInstance::GetInstance();
-	//FVector playerSafeLoc = SaveGameData.PlayerSafeLocation;
-	//gameInst->SetPlayerSafeLocation(playerSafeLoc);
-
-	FString mapName = SaveGameData.MapName.ToString();
-	FString currentMapName = GetWorld()->GetMapName();
-	currentMapName.Split("UEDPIE_0_", nullptr, &currentMapName);
-
-	OnGameLoadedFixup(GetWorld());
-	//if (mapName == currentMapName)
-	//{
-	//	//GetWorld()->ServerTravel("?Restart", true);
-	//	UGameplayStatics::OpenLevel(GetWorld(), *mapName);
-	//}
-	//else
-	//{
-	//	UGameplayStatics::OpenLevel(GetWorld(), *mapName);
-	//}
-
-	//UGameplayStatics:
-	//UGameplayStatics::OpenLevel(GetWorld(), "TopDownExampleMap");
 }
 
 void UGameManager::OnGameLoadedFixup(UWorld* World) {
