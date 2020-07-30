@@ -50,7 +50,7 @@ public:
 	UPROPERTY() class UCeoDepMenuWidget* OfficeDepMenuWidget; 
 	UPROPERTY() class UIdeaBacklogWidget* BacklogWidget;
 	UPROPERTY() class UShopWidget* ShopWidget;
-	class UUserWidget* SpawnItemWidget;
+	UPROPERTY() UUserWidget* SpawnItemWidget;
 
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* ComputerMesh;

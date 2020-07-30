@@ -6,7 +6,6 @@
 #include "IdeaBacklogWidget.h"
 #include "Components/Button.h"
 #include "ProjectIdle/Idea.h"
-#include "Kismet/KismetMathLibrary.h"
 #include "ProjectIdle/GameManager.h"
 #include "ProjectIdle/OfficeDepartment.h"
 #include "ProjectIdle/CeoDepMenuWidget.h"
@@ -79,16 +78,7 @@ void UIdeaButton::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 
 void UIdeaButton::DisplayStatistics()
 {
-	FString stadisticText;
-
-	if (IsSuccessful)
-	{
-		stadisticText = "\t\t" + IdeaReference->IdeaName + "\n" + "Downloads: " + FString::FromInt(UKismetMathLibrary::RandomIntegerInRange(10000, 50000)) + "\nTrend: Successful";
-	}
-	else
-	{
-		stadisticText = "\t\t" + IdeaReference->IdeaName + "\n" + "Downloads: " + FString::FromInt(UKismetMathLibrary::RandomIntegerInRange(10, 500)) + "\nTrend: Unsuccessful";
-	}
+	FString stadisticText = "\t\t" + IdeaReference->IdeaName + "\n" + "Downloads: " + FString::FromInt(Downloads) + "\nTrend: " + (IsSuccessful ? "Successful" : "Unsuccessful");
 
 	OfficeDepartment->OfficeDepMenuWidget->IdeaStadistics_T->SetText(FText::FromString(stadisticText));
 }

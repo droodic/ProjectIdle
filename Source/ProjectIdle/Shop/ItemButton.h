@@ -29,7 +29,7 @@ public:
 
 	UPROPERTY(EditAnywhere) TSubclassOf<class AItem> BPItem;
 
-	class AItem* Item;
+	UPROPERTY() class AItem* Item;
 
 	int ItemID;
 	int ItemCount = 1;

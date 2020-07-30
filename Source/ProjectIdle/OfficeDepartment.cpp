@@ -277,6 +277,7 @@ void AOfficeDepartment::PublishGame()
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->IsSuccessful = true;
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->DisplayStatistics();
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->MoneyGenerated = moneyGenerated;
+		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->Downloads = UKismetMathLibrary::RandomIntegerInRange(10000, 50000);
 		OfficeDepMenuWidget->IdeaGeneratedMoney_T->SetText(FText::AsCurrency(moneyGenerated));
 	}
 	else
@@ -297,6 +298,7 @@ void AOfficeDepartment::PublishGame()
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->IsSuccessful = false;
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->DisplayStatistics();
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->MoneyGenerated = moneyGenerated;
+		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->Downloads = UKismetMathLibrary::RandomIntegerInRange(10, 500);
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->PublishedColor = FLinearColor::Red;
 		OfficeDepMenuWidget->IdeaGeneratedMoney_T->SetText(FText::AsCurrency(moneyGenerated));
 	}
@@ -361,7 +363,9 @@ void AOfficeDepartment::SpawnItemInWorld(AItem* item)
 	bInSpawnCamera = true;
 
 	OfficeDepMenuWidget->RemoveFromViewport();
-	SpawnItemWidget->AddToViewport();
+	if (SpawnItemWidget != nullptr) {
+		SpawnItemWidget->AddToViewport();
+	}
 
 	PlayersCamera = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetViewTarget();
 
@@ -371,12 +375,21 @@ void AOfficeDepartment::SpawnItemInWorld(AItem* item)
 	}
 
 	FHitResult hitResult;
+	FActorSpawnParameters SpawnParam;
+	SpawnParam.Owner = this;
+	SpawnParam.Instigator = GetInstigator();
+	//SpawnParam.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHitResultUnderCursorByChannel(ETraceTypeQuery::TraceTypeQuery1, true, hitResult);
 
 	if (PreviewItemBP != nullptr)
 	{
-		APreviewItem* previewItemReference = GetWorld()->SpawnActor<APreviewItem>(PreviewItemBP, hitResult.Location, item->ItemMesh->GetRelativeRotation());
-		previewItemReference->ItemReference = item;
+		APreviewItem* previewItemReference = GetWorld()->SpawnActor<APreviewItem>(PreviewItemBP, hitResult.Location, item->ItemMesh->GetRelativeRotation(), SpawnParam);
+		if (previewItemReference != nullptr) {
+			previewItemReference->ItemReference = item;
+		}
+		else {
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, "Spawn Failed -- collision problem");
+		}
 	}
 }
 
@@ -505,7 +518,7 @@ void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
 	FVector NewVector = FVector(0, -50, 0);
-	SpawnLocation = FVector(0, 0, 0); //GM->Door->GetActorLocation() + NewVector; 
+	SpawnLocation = FVector(0, 0, 0); //GM->Door->GetActorLocation() + NewVector;
 	SpawnRotation = FRotator::ZeroRotator;
 
 	auto Emp = World->SpawnActor<AEmployee>(ClassRef, SpawnLocation, SpawnRotation, SpawnParameters);
