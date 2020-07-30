@@ -26,22 +26,6 @@ void UIdeaButton::NativeConstruct()
 	}
 }
 
-void UIdeaButton::DisplayStatistics()
-{
-	FString stadisticText;
-
-	if (IsSuccessful)
-	{
-		stadisticText = "\t\t" + IdeaReference->IdeaName + "\n" + "Downloads: " + FString::FromInt(UKismetMathLibrary::RandomIntegerInRange(10000, 50000)) + "\nTrend: Successful";
-	}
-	else
-	{
-		stadisticText = "\t\t" + IdeaReference->IdeaName + "\n" + "Downloads: " + FString::FromInt(UKismetMathLibrary::RandomIntegerInRange(10, 500)) + "\nTrend: Unsuccessful";
-	}
-
-	//OfficeDepartment->OfficeDepMenuWidget->IdeaStatistics_T->SetText(FText::FromString(stadisticText));
-}
-
 void UIdeaButton::ButtonClicked()
 {
 	auto GM = GetWorld()->GetGameInstance<UGameManager>();
@@ -91,4 +75,20 @@ void UIdeaButton::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 			}
 		}
 	}
+}
+
+void UIdeaButton::DisplayStatistics()
+{
+	FString stadisticText;
+
+	if (IsSuccessful)
+	{
+		stadisticText = "\t\t" + IdeaReference->IdeaName + "\n" + "Downloads: " + FString::FromInt(UKismetMathLibrary::RandomIntegerInRange(10000, 50000)) + "\nTrend: Successful";
+	}
+	else
+	{
+		stadisticText = "\t\t" + IdeaReference->IdeaName + "\n" + "Downloads: " + FString::FromInt(UKismetMathLibrary::RandomIntegerInRange(10, 500)) + "\nTrend: Unsuccessful";
+	}
+
+	OfficeDepartment->OfficeDepMenuWidget->IdeaStadistics_T->SetText(FText::FromString(stadisticText));
 }

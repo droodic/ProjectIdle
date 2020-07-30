@@ -87,9 +87,11 @@ void APreviewItem::Tick(float DeltaTime)
 				}
 			}
 
-			if (!GameManager->IsEditMode) {
+			if (!GameManager->InEditMode) 
+			{
 				OfficeDepartment->ReturnToOfficeDepartment();
 			}
+
 			GameManager->IsHoldingAPreview = false;
 			Destroy();
 		}
@@ -105,6 +107,7 @@ void APreviewItem::Tick(float DeltaTime)
 	}
 	if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->WasInputKeyJustPressed(EKeys::SpaceBar))
 	{
+		GameManager->IsHoldingAPreview = false;
 		OfficeDepartment->ReturnToOfficeDepartment();
 		Destroy();
 	}
