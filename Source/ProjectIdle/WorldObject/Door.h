@@ -19,6 +19,8 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		UBoxComponent* CollisionBox;
 
+
+	class AGameHUD* UI;
 	class UGameManager* GM;
 	UPROPERTY() FVector DoorLocation;
 	UPROPERTY() USceneComponent* Root;

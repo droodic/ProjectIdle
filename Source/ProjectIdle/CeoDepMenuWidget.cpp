@@ -417,7 +417,12 @@ void UCeoDepMenuWidget::CreateDepartment()
 			break;
 		}
 
-		GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->OfficeDepMenuWidget->CreateDep_Btn->SetIsEnabled(false);
+		for (auto CEO : GM->OfficeDepartmentList)
+		{
+			//GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->OfficeDepMenuWidget->CreateDep_Btn->SetIsEnabled(false);
+			CEO->OfficeDepMenuWidget->CreateDep_Btn->SetIsEnabled(false);
+		}
+
 
 
 	}

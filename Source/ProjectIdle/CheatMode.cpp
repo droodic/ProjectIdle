@@ -26,7 +26,7 @@ void UCheatMode::Cheat_MaxMoney()
 void UCheatMode::Cheat_MaxSpeed()
 {
 	GM = GetWorld()->GetGameInstance<UGameManager>();
-	GM->Character->GetCharacterMovement()->MaxWalkSpeed = 1000.0f;
+	GM->Character->GetCharacterMovement()->MaxWalkSpeed = 400.0f;
 	for (int i = 0; i < GM->EmployeeList.Num(); i++)
 	{
 		GM->EmployeeList[i]->GetCharacterMovement()->MaxWalkSpeed = Speed;

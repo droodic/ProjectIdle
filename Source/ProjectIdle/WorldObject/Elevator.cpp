@@ -61,14 +61,14 @@ void AElevator::Tick(float DeltaTime)
 
 void AElevator::OnInteract()
 {
-	if (!ElevatorWidget->IsInViewport())
-	{
-		ElevatorWidget->AddToViewport();
-	}
-	else
-	{
-		ElevatorWidget->RemoveFromParent();
-	}
+	//if (!ElevatorWidget->IsInViewport())
+	//{
+	//	ElevatorWidget->AddToViewport();
+	//}
+	//else
+	//{
+	//	ElevatorWidget->RemoveFromParent();
+	//}
 }
 
 
@@ -77,30 +77,33 @@ void AElevator::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	auto Player = Cast<AProjectIdleCharacter>(OtherActor);
 
-	//if (Player != nullptr && GM->IsFloorUpgraded)
-	//{
-	//	FVector NewVector = FVector(0, -100, 100);
-	//	if (Player->CurrentFloor == 1)
-	//	{
-	//		Player->SetActorLocation(GM->ElevatorList[1]->GetActorLocation() + NewVector);
-	//		Player->CurrentFloor = 2;
-	//		return;
-	//	}
+	if (Player != nullptr && GM->IsFloorUpgraded)
+	{
+		if (Player->CurrentFloor == 1)
+		{
+			GM->Character->PlayerControl->PlayerCameraManager->StartCameraFade(1.f, 0.f, 3.f, FLinearColor::Black, true, true);
+			Player->SetActorLocation(GM->ElevatorList[1]->SpawnPoint->GetComponentLocation());
+			Player->CurrentFloor = 2;
+			//UI->MoneyWidget->ShowANotification("Welcome to Floor 2");
+			return;
+		}
 
-	//	if (Player->CurrentFloor == 2)
-	//	{
-	//		Player->SetActorLocation(GM->ElevatorList[0]->GetActorLocation() + NewVector);
-	//		Player->CurrentFloor = 1;
-	//		return;
-	//	}
-	//}
+		if (Player->CurrentFloor == 2)
+		{
+			GM->Character->PlayerControl->PlayerCameraManager->StartCameraFade(1.f, 0.f, 3.f, FLinearColor::Black, true, true);
+			Player->SetActorLocation(GM->ElevatorList[0]->SpawnPoint->GetComponentLocation());
+			Player->CurrentFloor = 1;
+			//UI->MoneyWidget->ShowANotification("Welcome to Floor 1");
+			return;
+		}
+	}
 }
 
 void AElevator::NotifyActorEndOverlap(AActor* OtherActor)
 {
 	if (Cast<AProjectIdleCharacter>(OtherActor) != nullptr && ElevatorWidget->IsInViewport())
 	{
-		ElevatorWidget->RemoveFromViewport();
+		//ElevatorWidget->RemoveFromViewport();
 	}
 }
 
