@@ -118,7 +118,7 @@ void AWorkstation::UpdateWorkstationPosition(AEmployee* EmployeeRef)
 		{
 			EmployeeRef->WorkstationRef = this;
 			EmployeeRef->HasWorkStation = true;
-			EmployeeRef->StartPosition = StationLocation;
+			EmployeeRef->StartPosition = this->StationLocation;
 			HasEmployee = true;
 		}
 	}

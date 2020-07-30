@@ -19,6 +19,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere) UBoxComponent* CollisionBox;
 
+	class AGameHUD* UI;
 	class UGameManager* GM;
 	UPROPERTY() FVector ElevatorLocation;
 	UPROPERTY() USceneComponent* Root;
@@ -41,5 +42,5 @@ public:
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 	virtual void OnInteract();
-
+	
 };
