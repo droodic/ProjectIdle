@@ -422,8 +422,5 @@ void UCeoDepMenuWidget::CreateDepartment()
 			//GM->OfficeDepartmentList[GM->Character->CurrentFloor - 1]->OfficeDepMenuWidget->CreateDep_Btn->SetIsEnabled(false);
 			CEO->OfficeDepMenuWidget->CreateDep_Btn->SetIsEnabled(false);
 		}
-
-
-
 	}
 }
