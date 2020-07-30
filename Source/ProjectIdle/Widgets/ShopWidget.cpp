@@ -77,6 +77,8 @@ void UShopWidget::Buy()
 				}
 			}
 
+			GameManager->OfficeDepartmentList[GameManager->Character->CurrentFloor - 1]->OfficeDepMenuWidget->NewItem_Border->SetVisibility(ESlateVisibility::HitTestInvisible);
+
 			GameManager->Money -= Total;
 			Money_T->SetText(FText::AsCurrency(GameManager->Money));
 

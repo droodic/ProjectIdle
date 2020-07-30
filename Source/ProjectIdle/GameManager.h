@@ -17,8 +17,19 @@
 #include "GameManager.generated.h"
 
 /**
- * 
+ *
  */
+UENUM(Meta = (ScriptName = "Rating"))
+enum class CRating : uint8
+{
+	Indie				   UMETA(DisplayName = "Indie"),
+	Startup				   UMETA(DisplayName = "Startup"),
+	C			           UMETA(DisplayName = "C"),
+	B				       UMETA(DisplayName = "B"),
+	A			           UMETA(DisplayName = "A"),
+	AAA			           UMETA(DisplayName = "AAA"),
+};
+
 UCLASS()
 class PROJECTIDLE_API UGameManager : public UGameInstance
 {
@@ -45,6 +56,11 @@ public:
 	UPROPERTY(BlueprintReadWrite) TArray<class AProgrammingDepartment*> ProgrammingDepList;
 
 
+	UPROPERTY(BlueprintReadWrite) CRating CompanyRating;
+	UPROPERTY(BlueprintReadWrite) int CompanyLevel;
+	UPROPERTY(BlueprintReadWrite) float CurrentExp = 0.f;
+	UPROPERTY(BlueprintReadWrite) float MaxExp = 100.f;
+
 	UPROPERTY(BlueprintReadWrite) int NumOfProgrammers;
 	UPROPERTY(BlueprintReadWrite) int NumOfArtists;
 	UPROPERTY(BlueprintReadWrite) int Money;
@@ -65,7 +81,7 @@ public:
 	UPROPERTY(BlueprintReadWrite) class UMeetingDepWidget* MeetingWidget;
 	UPROPERTY(BlueprintReadWrite) class UShopWidget* ShopWidget;
 	UPROPERTY(BlueprintReadWrite) class UElevatorWidget* ElevatorWidget;
-
+	
 
 	UPROPERTY(BlueprintReadWrite) class AWall* Wall;
 	UPROPERTY(BlueprintReadWrite) class AEmployee* Emp;
@@ -83,6 +99,8 @@ public:
 	int FloorMaterialID = 0;
 	int WallMaterialID = 0;
 
+	bool IsEditMode;
+	bool IsHoldingAPreview = false;
 	bool IdeaInProduction = false;
 	bool IsWidgetInDisplay = false;
 	UPROPERTY(BlueprintReadWrite) bool InEditMode = false;
@@ -102,6 +120,6 @@ public:
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
-	TArray<FString> SaveFileNames;
+		TArray<FString> SaveFileNames;
 	TArray<uint8> BinaryData;
 };

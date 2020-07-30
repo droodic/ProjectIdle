@@ -105,6 +105,8 @@ public:
 	void BacklogReturn();
 	void ShopReturn();
 	void GetRandomMesh(AEmployee* EmployeeRef);
+	void GiveCompanyExperience();
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;

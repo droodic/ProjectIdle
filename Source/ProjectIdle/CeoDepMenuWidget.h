@@ -16,7 +16,7 @@ class PROJECTIDLE_API UCeoDepMenuWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	class UGameManager* GM;
+	UPROPERTY(BlueprintReadWrite) class UGameManager* GM;
 
 	UPROPERTY(BlueprintReadWrite) class AOfficeDepartment* OfficeDepartment;
 
@@ -44,6 +44,10 @@ public:
 	UPROPERTY(meta = (BindWidget)) class UButton* Return_Btn;
 	UPROPERTY(meta = (BindWidget)) class UTextBlock* IdeaGeneratedMoney_T;
 	UPROPERTY() FString Worker;
+
+	UPROPERTY(meta = (BindWidget)) class UBorder* NewItem_Border;
+	UPROPERTY(meta = (BindWidget)) class UTextBlock* IdeaStatistics_T;
+
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* CreateDep_Btn;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UComboBoxString* SelectComboBox;

@@ -26,6 +26,8 @@ void APreviewItem::BeginPlay()
 
 	GameManager = GetWorld()->GetGameInstance<UGameManager>();
 	OfficeDepartment = GameManager->OfficeDepartmentList[GameManager->Character->CurrentFloor - 1];
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, "Preview Item Spawn");
 }
 
 void APreviewItem::Tick(float DeltaTime)
@@ -61,7 +63,8 @@ void APreviewItem::Tick(float DeltaTime)
 		{
 			if (ItemReference != nullptr)
 			{
-				GetWorld()->SpawnActor<AItem>(ItemReference->ItemBP, hitResult.Location, MeshComponent->GetRelativeRotation());
+				auto itemReference = GetWorld()->SpawnActor<AItem>(ItemReference->ItemBP, hitResult.Location, MeshComponent->GetRelativeRotation());
+				itemReference->ItemBP = ItemReference->ItemBP;
 
 				for (int i = 0; i < OfficeDepartment->OfficeDepMenuWidget->OfficeDecoration_WB->GetChildrenCount(); i++)
 				{
@@ -84,7 +87,10 @@ void APreviewItem::Tick(float DeltaTime)
 				}
 			}
 
-			OfficeDepartment->ReturnToOfficeDepartment();
+			if (!GameManager->IsEditMode) {
+				OfficeDepartment->ReturnToOfficeDepartment();
+			}
+			GameManager->IsHoldingAPreview = false;
 			Destroy();
 		}
 	}
@@ -106,8 +112,6 @@ void APreviewItem::Tick(float DeltaTime)
 
 void APreviewItem::NotifyActorBeginOverlap(AActor* OtherActor)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Overlapping with an object");
-
 	bIsOverlapping = true;
 
 	for (int i = 0; i < MeshComponent->GetNumMaterials(); i++)
@@ -121,8 +125,6 @@ void APreviewItem::NotifyActorBeginOverlap(AActor* OtherActor)
 
 void APreviewItem::NotifyActorEndOverlap(AActor* OtherActor)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Stop Overlapping with an object");
-
 	bIsOverlapping = false;
 
 	for (int i = 0; i < MeshComponent->GetNumMaterials(); i++)

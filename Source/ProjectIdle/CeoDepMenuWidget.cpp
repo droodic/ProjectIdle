@@ -246,6 +246,7 @@ void UCeoDepMenuWidget::AddItemToInventory(AItem* item)
 	UInventoryButton* newItemButton = CreateWidget<UInventoryButton>(this, InventoryButtonWidgetClass);
 
 	newItemButton->Item = item;
+	newItemButton->Item->ItemBP = item->ItemBP;
 	newItemButton->Item_I->SetBrushFromTexture(item->ItemImage);
 	newItemButton->ItemName_T->SetText(FText::FromString(item->ItemName));
 
@@ -315,7 +316,7 @@ void UCeoDepMenuWidget::AddItemToInventory(AItem* item)
 void UCeoDepMenuWidget::AddValuesToButton(Idea* idea)
 {
 	idea->IdeaButton->GameCover_I->SetColorAndOpacity(idea->CoverColor);
-
+	idea->IdeaButton->IdeaReference = idea;
 	idea->IdeaButton->GameTitle_T->SetText(FText::FromString(idea->IdeaName));
 	idea->IdeaButton->GameDescription_T->SetText(FText::FromString(idea->IdeaDescription));
 	idea->IdeaButton->Genre_T->SetText(Idea::GenreToText(idea->Genre));

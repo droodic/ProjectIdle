@@ -67,6 +67,7 @@ void AOfficeDepartment::BeginPlay()
 	Super::BeginPlay();
 	GM = GetWorld()->GetGameInstance<UGameManager>();
 	GM->OfficeDepartment = this;
+	GM->CompanyRating = CRating::Indie;
 	if (StartingOffice)
 	{
 		GM->OfficeDepartmentList.Add(this);
@@ -233,6 +234,23 @@ void AOfficeDepartment::CallMeeting()
 	*/
 }
 
+
+void AOfficeDepartment::GiveCompanyExperience() {
+	auto Exp = UKismetMathLibrary::RandomFloatInRange(25.f, 35.f);
+	GM->CurrentExp += Exp;
+
+	if (GM->CurrentExp >= GM->MaxExp) { //Level up
+		GM->CompanyLevel++;
+		GM->CurrentExp = 0;
+		GM->MaxExp += 100 * (2.5f + GM->CompanyLevel);
+	}
+
+	//
+	//if (GM->CompanyLevel % 2 == 0 && GM->CompanyRating == CRating::Indie) {
+	//	GM->CompanyRating = CRating::Startup;
+	//}
+}
+
 void AOfficeDepartment::PublishGame()
 {
 	FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->IsPublished = true;
@@ -243,7 +261,7 @@ void AOfficeDepartment::PublishGame()
 	UI->MoneyWidget->ShowANotification(FString::FromInt(successChance) + " Chance");
 	if (successChance >= rateRolled)
 	{
-		auto moneyGenerated = UKismetMathLibrary::RandomIntegerInRange(15000, 25000);
+		auto moneyGenerated = (UKismetMathLibrary::RandomIntegerInRange(3000, 7500) * (GM->CompanyLevel + 1));
 		if (GM->Money >= INT32_MAX || GM->Money + moneyGenerated > INT32_MAX)
 		{
 			UI->MoneyWidget->ShowANotification("MAX MONEY");
@@ -253,9 +271,11 @@ void AOfficeDepartment::PublishGame()
 			GM->Money += moneyGenerated;
 			//GM->Money += UKismetMathLibrary::RandomIntegerInRange(15000, 25000); //Use algo later, and do real way of assgning money
 
-			UI->MoneyWidget->ShowANotification("+ $" + FString::FromInt(moneyGenerated) + ".00", FLinearColor::Green);
+			UI->MoneyWidget->ShowANotification("+ $" + FString::FromInt(moneyGenerated) + ".00", FLinearColor::Green, 10.f);
 		}
 
+		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->IsSuccessful = true;
+		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->DisplayStatistics();
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->MoneyGenerated = moneyGenerated;
 		OfficeDepMenuWidget->IdeaGeneratedMoney_T->SetText(FText::AsCurrency(moneyGenerated));
 	}
@@ -274,10 +294,14 @@ void AOfficeDepartment::PublishGame()
 			UI->MoneyWidget->ShowANotification("+ $" + FString::FromInt(moneyGenerated) + ".00", FLinearColor::Green);
 		}
 
+		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->IsSuccessful = false;
+		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->DisplayStatistics();
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->MoneyGenerated = moneyGenerated;
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->PublishedColor = FLinearColor::Red;
 		OfficeDepMenuWidget->IdeaGeneratedMoney_T->SetText(FText::AsCurrency(moneyGenerated));
 	}
+
+	GiveCompanyExperience();
 }
 
 void AOfficeDepartment::NotifyActorOnClicked(FKey ButtonPressed)
@@ -420,8 +444,6 @@ void AOfficeDepartment::GetRandomMesh(AEmployee* EmployeeRef) {
 		EmployeeRef->GetGendreName(1);
 		PreviousMeshID = Random;
 	}
-
-
 }
 
 //Future transition 
@@ -469,40 +491,39 @@ void AOfficeDepartment::GenerateActor(int Position, ERole EmpRole)
 	}
 }
 
-//AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
-//{
-//	//GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Orange, "Spawning Saved Actor");
-//
-//	UWorld* World = GetWorld();
-//
-//	FVector SpawnLocation;
-//	FRotator SpawnRotation;
-//	FActorSpawnParameters SpawnParameters;
-//	SpawnParameters.Owner = this;
-//	SpawnParameters.Instigator = GetInstigator();
-//	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-//
-//	FVector NewVector = FVector(0, -50, 0);
-//	SpawnLocation = FVector(0, 0, 0); //GM->Door->GetActorLocation() + NewVector; 
-//	SpawnRotation = FRotator::ZeroRotator;
-//
-//	auto Emp = World->SpawnActor<AEmployee>(ClassRef, SpawnLocation, SpawnRotation, SpawnParameters);
-//	if (Cast<ASupervisor>(Emp) != nullptr) {
-//		Cast<ASupervisor>(Emp)->InitSupervisor(Emp->EmployeeRole); //quick workaround annoying beginplay pedantics of spawning
-//		Emp->AssignSupervisor();
-//		GetDepartmentUIValues();
-//	}
-//
-//	//GetRandomMesh(Emp)
-//	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::White, "Loading Emp");
-//
-//	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::White, FString::FromInt(Emp->MeshID));
-//	Emp->GetMesh()->SetSkeletalMesh(EmployeeMeshList[Emp->MeshID]);
-//
-//	GetDepartmentUIValues();
-//	return Emp;
-//
-//}
+/*AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
+{
+	//GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Orange, "Spawning Saved Actor");
+
+	UWorld* World = GetWorld();
+
+	FVector SpawnLocation;
+	FRotator SpawnRotation;
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.Owner = this;
+	SpawnParameters.Instigator = GetInstigator();
+	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+	FVector NewVector = FVector(0, -50, 0);
+	SpawnLocation = FVector(0, 0, 0); //GM->Door->GetActorLocation() + NewVector; 
+	SpawnRotation = FRotator::ZeroRotator;
+
+	auto Emp = World->SpawnActor<AEmployee>(ClassRef, SpawnLocation, SpawnRotation, SpawnParameters);
+	if (Cast<ASupervisor>(Emp) != nullptr) {
+		Cast<ASupervisor>(Emp)->InitSupervisor(Emp->EmployeeRole); //quick workaround annoying beginplay pedantics of spawning
+		Emp->AssignSupervisor();
+		GetDepartmentUIValues();
+	}
+
+	//GetRandomMesh(Emp)
+	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::White, "Loading Emp");
+
+	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::White, FString::FromInt(Emp->MeshID));
+	Emp->GetMesh()->SetSkeletalMesh(EmployeeMeshList[Emp->MeshID]);
+
+	GetDepartmentUIValues();
+	return Emp;
+}*/
 
 AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
 {
@@ -527,9 +548,7 @@ AActor* AOfficeDepartment::GenerateSavedActor(UClass* ClassRef)
 		GetDepartmentUIValues();
 	}
 
-
 	return ActorRef;
-
 }
 
 void AOfficeDepartment::PopulateIdeaListFromSave(Idea* Idea) {

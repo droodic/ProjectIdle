@@ -25,6 +25,8 @@ public:
 
 	bool IsFinished = false;
 	bool IsPublished = false;
+	bool IsSuccessful;
+	class Idea* IdeaReference;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UButton* IdeaButton;
 
@@ -45,7 +47,7 @@ public:
 	virtual void NativeConstruct() override;
 
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
-
+	void DisplayStatistics();
 private:
 	UFUNCTION() void ButtonClicked();
 };
