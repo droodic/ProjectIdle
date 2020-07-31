@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Sound/SoundCue.h"
+#include "Components/AudioComponent.h"
 #include "GameFramework/HUD.h"
 #include "Components/WidgetComponent.h"
 #include "GameHUD.generated.h"
@@ -37,6 +39,9 @@ public:
 
 	class UMoneyWidget* MoneyWidget;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Audio") class USoundCue* NotificationSound;
+	UAudioComponent* NotificationAudio;
+
 private:
 	//UWorkstationUpgradeWidget* WorkstationWidget;
 
@@ -46,4 +51,5 @@ public:
 	void ShowStationUpgrade(class AWorkstation* station);
 	void CloseEmployeeSheet();
 	void ShowWidget(UUserWidget* Widgetc, TSubclassOf<UUserWidget> WidgetClass);
+	void PlayNotification();
 };

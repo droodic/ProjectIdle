@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Sound/SoundCue.h"
+#include "Components/AudioComponent.h"
 #include "Engine/GameInstance.h"
 #include "WorldObject/Door.h"
 #include "WorldObject/Wall.h"
@@ -105,6 +107,8 @@ public:
 	bool IsHoldingAPreview = false;
 	
 	bool IdeaInProduction = false;
+
+
 
 #pragma region WidgetDisplay
 

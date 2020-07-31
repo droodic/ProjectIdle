@@ -23,6 +23,7 @@
 #include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
 #include "ProjectIdle/WorldObject/Wall.h"
 #include "UObject/ConstructorHelpers.h"
+#include "ProjectIdle/AudioManager.h"
 
 // Sets default values
 AEmployee::AEmployee()
@@ -45,16 +46,15 @@ AEmployee::AEmployee()
 	CollisionBox->SetBoxExtent(FVector(350, 350, 350));
 
 	FaceCamera = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("FaceCamera")); //Maybe make Employee BP to set this up, because if later Employee classes emerge if we
-	FaceCamera->AttachTo(GetMesh());
 
-	static ConstructorHelpers::FObjectFinder<USoundCue> TypingSoundCue(TEXT("SoundCue'/Game/Sounds/EmployeeTypingSoundCue.EmployeeTypingSoundCue'"));
-	if (TypingSoundCue.Succeeded())
-	{
-		TypingSound = TypingSoundCue.Object;
-		TypingAudio = CreateDefaultSubobject<UAudioComponent>(TEXT("TypingAudio"));
-		TypingAudio->SetSound(TypingSound);
-		TypingAudio->bAutoActivate = false;
-	}
+	//static ConstructorHelpers::FObjectFinder<USoundCue> TypingSoundCue(TEXT("SoundCue'/Game/Sounds/EmployeeTypingSoundCue.EmployeeTypingSoundCue'"));
+	//if (TypingSoundCue.Succeeded())
+	//{
+	//	TypingSound = TypingSoundCue.Object;
+	//	TypingAudio = CreateDefaultSubobject<UAudioComponent>(TEXT("TypingAudio"));
+	//	TypingAudio->SetSound(TypingSound);
+	//	TypingAudio->bAutoActivate = false;
+	//}
 }
 
 // Called when the game starts or when spawned
@@ -67,6 +67,8 @@ void AEmployee::BeginPlay()
 	UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(this->GetOwner(), 0)->GetHUD());
 	Camera = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0);
 	//WorkTimer = GetWorldTimerManager();
+
+
 
 	if (Position != EPosition::Supervisor) { //move to bool function for scale
 		//something here for floormanager ui count
@@ -294,7 +296,6 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		SetActorRotation(WorkstationRef->ChairMesh->GetComponentRotation() + AdjustRotate);
 		WorkProgressBar->SetVisibility(true);
 		IsWorking = true;
-		//TypingAudio->Play();
 		GetWorldTimerManager().SetTimer(HelpTimer, this, &AEmployee::GetHelp, 1.f, true);
 
 	}
@@ -336,7 +337,8 @@ void AEmployee::WorkloadProgress(float Multiplier) {
 		}
 	}
 	if (CurrentWorkload <= 0) {
-		TypingAudio->Stop();
+		//TypingAudio->Stop();
+		
 		//Self workload finished, check to see if others remain. If others in same department remain, go to them, and take 50% of their remainding workload if there's more than 10 seconds left of WL
 		//If none remain, give player money if idea was successful
 		for (auto AnEmployee : GM->EmployeeList) {

@@ -96,6 +96,7 @@ public:
 	class AGameHUD* UI;
 	class UGameManager* GM;
 	class AWorkstation* WorkstationRef;
+	class AAudioManager* SM;
 
 	//Animation
 	UPROPERTY(BlueprintReadWrite, EditAnywhere) UAnimSequence* WorkAnim;
@@ -119,8 +120,8 @@ public:
 	UPROPERTY(SaveGame, EditAnywhere) int Gendre; //0male, 1female
 	UPROPERTY(SaveGame, EditAnywhere) int MeshID = 0;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Audio") class USoundCue* TypingSound;
-	UAudioComponent* TypingAudio;
+	//UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Audio") class USoundCue* TypingSound;
+	//UAudioComponent* TypingAudio;
 		 
 protected:
 	// Called when the game starts or when spawned

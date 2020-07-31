@@ -24,6 +24,7 @@
 #include "Components/WidgetComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "ProjectIdle/WorldObject/Door.h"
+#include "UObject/ConstructorHelpers.h"
 
 AOfficeDepartment::AOfficeDepartment()
 {
@@ -32,6 +33,34 @@ AOfficeDepartment::AOfficeDepartment()
 
 	ComputerMesh->SetupAttachment(RootComponent);
 	ChairMesh->SetupAttachment(RootComponent);
+
+
+	static ConstructorHelpers::FObjectFinder<USoundCue> SuccessSoundCue(TEXT("SoundCue'/Game/Sounds/PublishSuccessCue.PublishSuccessCue'"));
+	if (SuccessSoundCue.Succeeded())
+	{
+		SuccessSound = SuccessSoundCue.Object;
+		SuccessAudio = CreateDefaultSubobject<UAudioComponent>(TEXT("SuccessAudio"));
+		SuccessAudio->SetSound(SuccessSound);
+		SuccessAudio->bAutoActivate = false;
+	}
+
+	static ConstructorHelpers::FObjectFinder<USoundCue> FailSoundCue(TEXT("SoundCue'/Game/Sounds/PublishFailCue.PublishFailCue'"));
+	if (FailSoundCue.Succeeded())
+	{
+		FailSound = FailSoundCue.Object;
+		FailAudio = CreateDefaultSubobject<UAudioComponent>(TEXT("FailAudio"));
+		FailAudio->SetSound(FailSound);
+		FailAudio->bAutoActivate = false;
+	}
+
+	static ConstructorHelpers::FObjectFinder<USoundCue> LevelSoundCue(TEXT("SoundCue'/Game/Sounds/LevelUpCue.LevelUpCue'"));
+	if (LevelSoundCue.Succeeded())
+	{
+		LevelSound = LevelSoundCue.Object;
+		LevelAudio = CreateDefaultSubobject<UAudioComponent>(TEXT("LevelAudio"));
+		LevelAudio->SetSound(LevelSound);
+		LevelAudio->bAutoActivate = false;
+	}
 }
 
 Idea AOfficeDepartment::GenerateIdeaValues()
@@ -123,6 +152,7 @@ void AOfficeDepartment::Tick(float DeltaTime)
 			Index++;
 
 			UI->MoneyWidget->ShowANotification("IDEA GENERATED!");
+			
 
 			if (ManagerRef != nullptr && ManagerRef->GeneratingIdea) {
 
@@ -245,6 +275,7 @@ void AOfficeDepartment::GiveCompanyExperience(int Experience) {
 		GM->MaxExp += 100 * (2.5f + GM->CompanyLevel);
 
 		if (GM->CompanyLevel % 2 == 0) {
+			LevelAudio->Play();
 			switch (GM->CompanyRating)
 			{
 			case CRating::Indie:
@@ -281,6 +312,7 @@ void AOfficeDepartment::PublishGame()
 	UI->MoneyWidget->ShowANotification(FString::FromInt(successChance) + " Chance");
 	if (successChance >= rateRolled)
 	{
+		SuccessAudio->Play();
 		auto moneyGenerated = (UKismetMathLibrary::RandomIntegerInRange(3000, 7500) * (GM->CompanyLevel + 1));
 		if (GM->Money >= INT32_MAX || GM->Money + moneyGenerated > INT32_MAX)
 		{
@@ -303,6 +335,7 @@ void AOfficeDepartment::PublishGame()
 	}
 	else
 	{
+		FailAudio->Play();
 		UI->MoneyWidget->ShowANotification("SORRY, THE GAME WAS NOT A SUCCESS", FLinearColor::Red);
 		auto moneyGenerated = UKismetMathLibrary::RandomIntegerInRange(100, 1000);
 
