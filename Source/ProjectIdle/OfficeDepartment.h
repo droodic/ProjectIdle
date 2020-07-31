@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Sound/SoundCue.h"
+#include "Components/AudioComponent.h"
 #include "Department.h"
 #include "InteractableObject.h"
 #include "OfficeDepartment.generated.h"
@@ -76,6 +78,15 @@ public:
 	//int PreviousMeshID2 = -1;
 
 	UPROPERTY(EditAnywhere) bool IdeaCurrentFloor = false;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Audio") class USoundCue* FailSound;
+	UAudioComponent* FailAudio;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Audio") class USoundCue* SuccessSound;
+	UAudioComponent* SuccessAudio;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Audio") class USoundCue* LevelSound;
+	UAudioComponent* LevelAudio;
 
 private:
 	//bool bInRadius = false;
