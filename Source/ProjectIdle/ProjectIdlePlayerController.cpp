@@ -6,6 +6,7 @@
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "ProjectIdleCharacter.h"
 #include "Engine/World.h"
+#include "ProjectIdle/GameHUD.h"
 
 AProjectIdlePlayerController::AProjectIdlePlayerController()
 {
@@ -117,4 +118,9 @@ void AProjectIdlePlayerController::OnSetDestinationReleased()
 {
 	// clear flag to indicate we should stop updating the destination
 	bMoveToMouseCursor = false;
+}
+
+void AProjectIdlePlayerController::BeginPlay()
+{
+	Super::BeginPlay();
 }

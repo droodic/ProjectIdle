@@ -16,6 +16,7 @@ public:
 	AProjectIdleCharacter();
 
 	class UGameManager* GM;
+	class AGameHUD* UI;
 
 	// Called every frame.
 	virtual void Tick(float DeltaSeconds) override;

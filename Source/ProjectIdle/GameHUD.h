@@ -42,6 +42,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Audio") class USoundCue* NotificationSound;
 	UAudioComponent* NotificationAudio;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Audio") class USoundCue* FootStepSound;
+	UAudioComponent* FootStepAudio;
+
 private:
 	//UWorkstationUpgradeWidget* WorkstationWidget;
 
@@ -52,4 +55,5 @@ public:
 	void CloseEmployeeSheet();
 	void ShowWidget(UUserWidget* Widgetc, TSubclassOf<UUserWidget> WidgetClass);
 	void PlayNotification();
+	void WalkingSound(bool IsWalking);
 };

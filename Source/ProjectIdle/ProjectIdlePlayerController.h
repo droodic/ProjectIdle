@@ -11,6 +11,10 @@ class AProjectIdlePlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
+	class AGameHUD* UI;
+
+	virtual void BeginPlay() override;
+
 public:
 	AProjectIdlePlayerController();
 
