@@ -15,10 +15,21 @@ AGameHUD::AGameHUD()
 	if (NotificationSoundCue.Succeeded())
 	{
 		NotificationSound = NotificationSoundCue.Object;
-		NotificationAudio = CreateDefaultSubobject<UAudioComponent>(TEXT("LevelAudio"));
+		NotificationAudio = CreateDefaultSubobject<UAudioComponent>(TEXT("NotificationAudio"));
 		NotificationAudio->SetSound(NotificationSound);
 		NotificationAudio->bAutoActivate = false;
 	}
+
+	static ConstructorHelpers::FObjectFinder<USoundCue> FootStepCue(TEXT("SoundCue'/Game/Sounds/FootstepCue.FootstepCue'"));
+	if (FootStepCue.Succeeded())
+	{
+		FootStepSound = NotificationSoundCue.Object;
+		FootStepAudio = CreateDefaultSubobject<UAudioComponent>(TEXT("FootStepAudio"));
+		FootStepAudio->SetSound(FootStepSound);
+		FootStepAudio->bAutoActivate = false;
+	}
+
+
 }
 
 void AGameHUD::BeginPlay()
@@ -171,4 +182,16 @@ void AGameHUD::ShowStationUpgrade(class AWorkstation* station)
 void AGameHUD::PlayNotification()
 {
 	NotificationAudio->Play();
+}
+
+void AGameHUD::WalkingSound(bool IsWalking)
+{
+	if (IsWalking && FootStepAudio)
+	{
+		FootStepAudio->Play();
+	}
+	if (!IsWalking && FootStepAudio)
+	{
+		FootStepAudio->Stop();
+	}
 }

@@ -14,7 +14,7 @@ UMoneyWidget::UMoneyWidget(const FObjectInitializer& ObjectInitializer) : Super(
 void UMoneyWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	if (UI) {
+	if (UI == nullptr) {
 		UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
 	}
 
@@ -27,9 +27,7 @@ void UMoneyWidget::UpdateMoney(int32 Value)
 
 void UMoneyWidget::ShowANotification(FString notifationText, FLinearColor color, float time)
 {
-	if (UI) {
-		UI->PlayNotification();
-	}
+	UI->PlayNotification();
 	UBorder* border = WidgetTree->ConstructWidget<UBorder>();
 	UTextBlock* textBlock = WidgetTree->ConstructWidget<UTextBlock>();
 	
