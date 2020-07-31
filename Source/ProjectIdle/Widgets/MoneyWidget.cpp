@@ -4,6 +4,7 @@
 #include "MoneyWidget.h"
 #include "Engine/World.h"
 #include "Components/TextBlock.h"
+#include "ProjectIdle/GameHUD.h"
 
 UMoneyWidget::UMoneyWidget(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -13,6 +14,10 @@ UMoneyWidget::UMoneyWidget(const FObjectInitializer& ObjectInitializer) : Super(
 void UMoneyWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
+	if (UI) {
+		UI = Cast<AGameHUD>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHUD());
+	}
+
 }
 
 void UMoneyWidget::UpdateMoney(int32 Value)
@@ -22,6 +27,9 @@ void UMoneyWidget::UpdateMoney(int32 Value)
 
 void UMoneyWidget::ShowANotification(FString notifationText, FLinearColor color, float time)
 {
+	if (UI) {
+		UI->PlayNotification();
+	}
 	UBorder* border = WidgetTree->ConstructWidget<UBorder>();
 	UTextBlock* textBlock = WidgetTree->ConstructWidget<UTextBlock>();
 	

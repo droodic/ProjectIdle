@@ -13,6 +13,7 @@
 
 UGameManager::UGameManager() {
 	Money = 180000; //temp
+
 }
 
 void UGameManager::Init()

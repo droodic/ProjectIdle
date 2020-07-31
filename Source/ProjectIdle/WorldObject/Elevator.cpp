@@ -73,6 +73,7 @@ void AElevator::OnInteract()
 			GM->Character->SetActorLocation(GM->ElevatorList[1]->SpawnPoint->GetComponentLocation());
 			GM->Character->CurrentFloor = 2;
 			UI->MoneyWidget->ShowANotification("Welcome to Floor 2");
+			UI->PlayNotification();
 			return;
 		}
 
@@ -82,6 +83,8 @@ void AElevator::OnInteract()
 			GM->Character->SetActorLocation(GM->ElevatorList[0]->SpawnPoint->GetComponentLocation());
 			GM->Character->CurrentFloor = 1;
 			UI->MoneyWidget->ShowANotification("Welcome to Floor 1");
+			UI->PlayNotification();
+
 			return;
 		}
 	}

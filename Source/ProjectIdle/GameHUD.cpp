@@ -7,10 +7,18 @@
 #include "Widgets/EmployeeSheetWidget.h"
 #include "Employees/FloorManager.h"
 #include "Employees/Supervisor.h"
+#include "UObject/ConstructorHelpers.h"
 
 AGameHUD::AGameHUD()
 {
-
+	static ConstructorHelpers::FObjectFinder<USoundCue> NotificationSoundCue(TEXT("SoundCue'/Game/Sounds/NotificationCue.NotificationCue'"));
+	if (NotificationSoundCue.Succeeded())
+	{
+		NotificationSound = NotificationSoundCue.Object;
+		NotificationAudio = CreateDefaultSubobject<UAudioComponent>(TEXT("LevelAudio"));
+		NotificationAudio->SetSound(NotificationSound);
+		NotificationAudio->bAutoActivate = false;
+	}
 }
 
 void AGameHUD::BeginPlay()
@@ -158,4 +166,9 @@ void AGameHUD::ShowStationUpgrade(class AWorkstation* station)
 	//{
 	//	WorkstationWidget->RemoveFromViewport();
 	//}
+}
+
+void AGameHUD::PlayNotification()
+{
+	NotificationAudio->Play();
 }
