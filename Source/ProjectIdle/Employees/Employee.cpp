@@ -23,7 +23,6 @@
 #include "Runtime/Engine/Classes/Kismet/KismetMathLibrary.h"
 #include "ProjectIdle/WorldObject/Wall.h"
 #include "UObject/ConstructorHelpers.h"
-#include "ProjectIdle/AudioManager.h"
 
 // Sets default values
 AEmployee::AEmployee()

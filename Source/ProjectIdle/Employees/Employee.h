@@ -96,7 +96,6 @@ public:
 	class AGameHUD* UI;
 	class UGameManager* GM;
 	class AWorkstation* WorkstationRef;
-	class AAudioManager* SM;
 
 	//Animation
 	UPROPERTY(BlueprintReadWrite, EditAnywhere) UAnimSequence* WorkAnim;

@@ -14,6 +14,7 @@
 #include "GameHUD.h"
 #include "Engine/World.h"
 #include "GameManager.h"
+#include "ProjectIdle/GameHUD.h"
 
 AProjectIdleCharacter::AProjectIdleCharacter()
 {
@@ -90,7 +91,6 @@ void AProjectIdleCharacter::Tick(float DeltaSeconds)
 	PlayerControl->GetViewportSize(ScreenSizeX, ScreenSizeY);
 
 
-
 	//AddActorWorldOffset(GetCameraPanDirection() * 2);
 	//CameraBoom->AddWorldOffset(GetCameraPanDirection() * CameraMovementSpeed);
 
@@ -100,7 +100,6 @@ void AProjectIdleCharacter::Tick(float DeltaSeconds)
 		{
 			if (UWorld* World = GetWorld())
 			{
-
 				FHitResult HitResult;
 				FCollisionQueryParams Params(NAME_None, FCollisionQueryParams::GetUnknownStatId());
 				FVector StartLocation = TopDownCameraComponent->GetComponentLocation();
