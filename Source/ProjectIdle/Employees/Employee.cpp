@@ -192,6 +192,13 @@ void AEmployee::Tick(float DeltaTime)
 		HelpWidget->SetWorldRotation(Camera->GetCameraRotation());
 		HelpWidget->AddLocalRotation(FRotator(0, 180, 0));
 	}
+	if (WorkProgressBar != nullptr && WorkProgressBar->IsVisible()) {
+		WorkProgressBar->SetWorldRotation(Camera->GetCameraRotation());
+		WorkProgressBar->AddLocalRotation(FRotator(0, 180, 0));
+		if (!WorkProgressBar->IsVisible()) {
+			WorkProgressBar->SetVisibility(true); //temp solution to not showing on load
+		}
+	}
 }
 
 void AEmployee::GetHelp() {
