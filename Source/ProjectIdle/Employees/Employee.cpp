@@ -45,7 +45,7 @@ AEmployee::AEmployee()
 	CollisionBox->SetBoxExtent(FVector(350, 350, 350));
 
 	FaceCamera = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("FaceCamera")); //Maybe make Employee BP to set this up, because if later Employee classes emerge if we
-
+	FaceCamera->AttachTo(GetMesh());
 	//static ConstructorHelpers::FObjectFinder<USoundCue> TypingSoundCue(TEXT("SoundCue'/Game/Sounds/EmployeeTypingSoundCue.EmployeeTypingSoundCue'"));
 	//if (TypingSoundCue.Succeeded())
 	//{
