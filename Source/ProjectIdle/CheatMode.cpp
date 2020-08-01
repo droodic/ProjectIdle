@@ -11,7 +11,7 @@
 void UCheatMode::Cheat_AllCheatOn()
 {
 	Cheat_MaxMoney();
-	Cheat_MaxSpeed();
+	//Cheat_MaxSpeed();
 	Cheat_FastCompile();
 }
 
@@ -23,15 +23,15 @@ void UCheatMode::Cheat_MaxMoney()
 	GM->Money = INT32_MAX;
 }
 
-void UCheatMode::Cheat_MaxSpeed()
-{
-	GM = GetWorld()->GetGameInstance<UGameManager>();
-	GM->Character->GetCharacterMovement()->MaxWalkSpeed = 400.0f;
-	for (int i = 0; i < GM->EmployeeList.Num(); i++)
-	{
-		GM->EmployeeList[i]->GetCharacterMovement()->MaxWalkSpeed = Speed;
-	}
-}
+//void UCheatMode::Cheat_MaxSpeed()
+//{
+//	GM = GetWorld()->GetGameInstance<UGameManager>();
+//	GM->Character->GetCharacterMovement()->MaxWalkSpeed = 400.0f;
+//	for (int i = 0; i < GM->EmployeeList.Num(); i++)
+//	{
+//		GM->EmployeeList[i]->GetCharacterMovement()->MaxWalkSpeed = Speed;
+//	}
+//}
 
 void UCheatMode::Cheat_FastCompile()
 {

@@ -22,7 +22,7 @@ public:
 
 	UFUNCTION(Exec) void Cheat_AllCheatOn();
 	UFUNCTION(Exec) void Cheat_MaxMoney();
-	UFUNCTION(Exec) void Cheat_MaxSpeed();
+	//UFUNCTION(Exec) void Cheat_MaxSpeed();
 	UFUNCTION(Exec) void Cheat_FastCompile();
 
 

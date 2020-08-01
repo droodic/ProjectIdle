@@ -42,75 +42,151 @@ void UMeetingDepWidget::NativeConstruct()
 
 void UMeetingDepWidget::StartMeeting()
 {
-	if (GM->IdeaInProduction) {
-		if (SelectedApproach == "Default") {
-			GM->SpeedRate = 1;
-			GM->OfficeDepartment->AddedChance = 0.0f;
-			//GM->MeetingDepartment->BackFromMeeting();
+	if (GM->DepartmentList.Num() >= 2) {
+		if (GM->OfficeDepartmentList[0]->IdeaCurrentFloor || GM->OfficeDepartmentList[1]->IdeaCurrentFloor) {
+			if (SelectedApproach == "Default") {
+				GM->SpeedRate = 1;
+				GM->OfficeDepartment->AddedChance = 0.0f;
+				//GM->MeetingDepartment->BackFromMeeting();
 
-			if (GM->FLoorM == nullptr)
-			{
-				GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
-				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO, Null floor"));
+				if (GM->FLoorM == nullptr)
+				{
+					GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
+					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO, Null floor"));
+				}
+				else if (!GM->FLoorM->AutoManaging || GM->FLoorM->AutoManaging && GM->FLoorM->FloorLevel != GM->Character->CurrentFloor)
+				{
+					GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
+					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO"));
+				}
+				else if (GM->FLoorM->AutoManaging)
+				{
+					GM->MeetingDepartmentList[GM->FLoorM->FloorLevel - 1]->BackFromMeeting();
+					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach Floor M"));
+				}
+				//T_SuccessChance->SetText(FText::AsPercent((GM->MeetingDepartment->CurrentIdea->SuccessChance / 100.f)));
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach"));
 			}
-		    else if (!GM->FLoorM->AutoManaging || GM->FLoorM->AutoManaging && GM->FLoorM->FloorLevel != GM->Character->CurrentFloor)
-			{
-				GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
-				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO"));
+			//GM->OfficeDepartment->AddedChance = 0;
+			else if (SelectedApproach == "Perfectionist") {
+				GM->SpeedRate = 0.75;
+				GM->OfficeDepartment->AddedChance = 10.0f;
+				//GM->MeetingDepartment->BackFromMeeting();
+				if (GM->FLoorM == nullptr)
+				{
+					GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
+					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO, Null floor"));
+				}
+				else if (!GM->FLoorM->AutoManaging || GM->FLoorM->AutoManaging && GM->FLoorM->FloorLevel != GM->Character->CurrentFloor)
+				{
+					GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
+					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO"));
+				}
+				else if (GM->FLoorM->AutoManaging)
+				{
+					GM->MeetingDepartmentList[GM->FLoorM->FloorLevel - 1]->BackFromMeeting();
+					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach Floor M"));
+				}
+
+
+				//T_SuccessChance->SetText(FText::AsPercent((GM->MeetingDepartment->CurrentIdea->SuccessChance + 10.0f / 100.f)));
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Perfectionist approach"));
 			}
-			else if (GM->FLoorM->AutoManaging)
-			{
-				GM->MeetingDepartmentList[GM->FLoorM->FloorLevel - 1]->BackFromMeeting();
-				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach Floor M"));
+			else if (SelectedApproach == "Crunch Time") {
+				GM->SpeedRate = 1.25;
+				GM->OfficeDepartment->AddedChance = -10.0f;
+				//GM->MeetingDepartment->BackFromMeeting();
+				if (GM->FLoorM == nullptr)
+				{
+					GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
+					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO, Null floor"));
+				}
+				else if (!GM->FLoorM->AutoManaging || GM->FLoorM->AutoManaging && GM->FLoorM->FloorLevel != GM->Character->CurrentFloor)
+				{
+					GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
+					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO"));
+				}
+				else if (GM->FLoorM->AutoManaging)
+				{
+					GM->MeetingDepartmentList[GM->FLoorM->FloorLevel - 1]->BackFromMeeting();
+					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach Floor M"));
+				}
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Crunch time approach"));
 			}
-			//T_SuccessChance->SetText(FText::AsPercent((GM->MeetingDepartment->CurrentIdea->SuccessChance / 100.f)));
-			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach"));
 		}
-		//GM->OfficeDepartment->AddedChance = 0;
-		else if (SelectedApproach == "Perfectionist") {
-			GM->SpeedRate = 0.75;
-			GM->OfficeDepartment->AddedChance = 10.0f;
-			//GM->MeetingDepartment->BackFromMeeting();
-			if (GM->FLoorM == nullptr)
-			{
-				GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
-				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO, Null floor"));
+	}
+	else
+	{
+		if (GM->IdeaInProduction) {
+			if (SelectedApproach == "Default") {
+				GM->SpeedRate = 1;
+				GM->OfficeDepartment->AddedChance = 0.0f;
+				//GM->MeetingDepartment->BackFromMeeting();
+
+				if (GM->FLoorM == nullptr)
+				{
+					GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
+					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO, Null floor"));
+				}
+				else if (!GM->FLoorM->AutoManaging || GM->FLoorM->AutoManaging && GM->FLoorM->FloorLevel != GM->Character->CurrentFloor)
+				{
+					GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
+					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO"));
+				}
+				else if (GM->FLoorM->AutoManaging)
+				{
+					GM->MeetingDepartmentList[GM->FLoorM->FloorLevel - 1]->BackFromMeeting();
+					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach Floor M"));
+				}
+				//T_SuccessChance->SetText(FText::AsPercent((GM->MeetingDepartment->CurrentIdea->SuccessChance / 100.f)));
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach"));
 			}
-			else if (!GM->FLoorM->AutoManaging || GM->FLoorM->AutoManaging && GM->FLoorM->FloorLevel != GM->Character->CurrentFloor)
-			{
-				GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
-				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO"));
-			}
-			else if (GM->FLoorM->AutoManaging)
-			{
-				GM->MeetingDepartmentList[GM->FLoorM->FloorLevel - 1]->BackFromMeeting();
-				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach Floor M"));
-			}
+			//GM->OfficeDepartment->AddedChance = 0;
+			else if (SelectedApproach == "Perfectionist") {
+				GM->SpeedRate = 0.75;
+				GM->OfficeDepartment->AddedChance = 10.0f;
+				//GM->MeetingDepartment->BackFromMeeting();
+				if (GM->FLoorM == nullptr)
+				{
+					GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
+					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO, Null floor"));
+				}
+				else if (!GM->FLoorM->AutoManaging || GM->FLoorM->AutoManaging && GM->FLoorM->FloorLevel != GM->Character->CurrentFloor)
+				{
+					GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
+					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO"));
+				}
+				else if (GM->FLoorM->AutoManaging)
+				{
+					GM->MeetingDepartmentList[GM->FLoorM->FloorLevel - 1]->BackFromMeeting();
+					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach Floor M"));
+				}
 
 
-			//T_SuccessChance->SetText(FText::AsPercent((GM->MeetingDepartment->CurrentIdea->SuccessChance + 10.0f / 100.f)));
-			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Perfectionist approach"));
-		}
-		else if (SelectedApproach == "Crunch Time") {
-			GM->SpeedRate = 1.25;
-			GM->OfficeDepartment->AddedChance = -10.0f;
-			//GM->MeetingDepartment->BackFromMeeting();
-			if (GM->FLoorM == nullptr)
-			{
-				GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
-				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO, Null floor"));
+				//T_SuccessChance->SetText(FText::AsPercent((GM->MeetingDepartment->CurrentIdea->SuccessChance + 10.0f / 100.f)));
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Perfectionist approach"));
 			}
-			else if (!GM->FLoorM->AutoManaging || GM->FLoorM->AutoManaging && GM->FLoorM->FloorLevel != GM->Character->CurrentFloor)
-			{
-				GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
-				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO"));
+			else if (SelectedApproach == "Crunch Time") {
+				GM->SpeedRate = 1.25;
+				GM->OfficeDepartment->AddedChance = -10.0f;
+				//GM->MeetingDepartment->BackFromMeeting();
+				if (GM->FLoorM == nullptr)
+				{
+					GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
+					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO, Null floor"));
+				}
+				else if (!GM->FLoorM->AutoManaging || GM->FLoorM->AutoManaging && GM->FLoorM->FloorLevel != GM->Character->CurrentFloor)
+				{
+					GM->MeetingDepartmentList[GM->Character->CurrentFloor - 1]->BackFromMeeting();
+					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach CEO"));
+				}
+				else if (GM->FLoorM->AutoManaging)
+				{
+					GM->MeetingDepartmentList[GM->FLoorM->FloorLevel - 1]->BackFromMeeting();
+					GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach Floor M"));
+				}
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Crunch time approach"));
 			}
-			else if (GM->FLoorM->AutoManaging)
-			{
-				GM->MeetingDepartmentList[GM->FLoorM->FloorLevel - 1]->BackFromMeeting();
-				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Default Approach Floor M"));
-			}
-			GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Crunch time approach"));
 		}
 	}
 

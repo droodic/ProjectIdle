@@ -245,7 +245,7 @@ void AMeetingDepartment::MoveToMeeting()
 					}
 
 						for (auto Emp : GM->EmployeeList) {
-							if (Emp->EmployeeRole == ERole::Artist) {
+							if (Emp->EmployeeRole == ERole::Artist && Emp->FloorLevel == GM->CurrentOfficeFloor) {
 								EmployeesAtMeetingList.Add(Emp);
 								Emp->IsAtMeeting = true;
 								for (auto Chair : GM->MeetingChairList)
@@ -285,7 +285,7 @@ void AMeetingDepartment::MoveToMeeting()
 					}
 
 					for (auto Emp : GM->EmployeeList) {
-						if (Emp->EmployeeRole == ERole::Programmer) {
+						if (Emp->EmployeeRole == ERole::Programmer && Emp->FloorLevel == GM->CurrentOfficeFloor) {
 							EmployeesAtMeetingList.Add(Emp);
 							Emp->IsAtMeeting = true;
 							for (auto Chair : GM->MeetingChairList)
@@ -327,8 +327,8 @@ void AMeetingDepartment::MoveToMeeting()
 							else if (Cast<AFloorManager>(Emp) == nullptr) {
 								//EmployeesAtMeetingList.Add(Emp);
 								//Emp->IsAtMeeting = true;
-								//if (Emp->FloorLevel == CurrentFloorLevel)
-								//{
+								if (Emp->FloorLevel == GM->CurrentOfficeFloor)
+								{
 								EmployeesAtMeetingList.Add(Emp);
 								Emp->IsAtMeeting = true;
 								for (auto Chair : GM->MeetingChairList)
@@ -341,7 +341,7 @@ void AMeetingDepartment::MoveToMeeting()
 									}
 								}
 								//Emp->MoveEmployee(GM->MeetingChairList[ChairIndex++]->GetActorLocation());
-							//}
+							 }
 							}
 						}
 						//Emp->MoveEmployee(FVector(0, 0, 0));
