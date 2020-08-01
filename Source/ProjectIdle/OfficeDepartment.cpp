@@ -336,7 +336,7 @@ void AOfficeDepartment::PublishGame()
 	else
 	{
 		FailAudio->Play();
-		UI->MoneyWidget->ShowANotification("SORRY, THE GAME WAS NOT A SUCCESS", FLinearColor::Red);
+		//UI->MoneyWidget->ShowANotification("SORRY, THE GAME WAS NOT A SUCCESS", FLinearColor::Red);
 		auto moneyGenerated = UKismetMathLibrary::RandomIntegerInRange(100, 1000);
 
 		if (GM->Money >= INT32_MAX || GM->Money + moneyGenerated > INT32_MAX)
@@ -346,7 +346,7 @@ void AOfficeDepartment::PublishGame()
 		else
 		{
 			GM->Money += moneyGenerated;
-			UI->MoneyWidget->ShowANotification("+ $" + FString::FromInt(moneyGenerated) + ".00", FLinearColor::Green);
+			//UI->MoneyWidget->ShowANotification("+ $" + FString::FromInt(moneyGenerated) + ".00", FLinearColor::Green);
 		}
 
 		FinishedIdeaList[OfficeDepMenuWidget->ChosenIndex]->IdeaButton->IsSuccessful = false;
